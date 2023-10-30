@@ -1,0 +1,8 @@
+- Copy GooglePackages từ game cũ qua
+- Vào GoogleMobileAds/Resources/GoogleMobileAdsSettings --> Sửa Android Id và iOS Id
+- Vào Packages/manifest.json thêm các dòng vào:
+"appsflyer-unity-plugin": "https://github.com/AppsFlyerSDK/appsflyer-unity-plugin.git#upm",
+    "com.google.external-dependency-manager": "file:../GooglePackages/com.google.external-dependency-manager-1.2.175.tgz",
+    "com.google.firebase.analytics": "file:../GooglePackages/com.google.firebase.analytics-10.6.0.tgz",
+    "com.google.firebase.app": "file:../GooglePackages/com.google.firebase.app-10.6.0.tgz",
+    "com.google.firebase.remote-config": "file:../GooglePackages/com.google.firebase.remote-config-10.6.0.tgz",
