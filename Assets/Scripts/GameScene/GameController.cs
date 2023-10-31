@@ -8,6 +8,7 @@ namespace GameScene
         [SerializeField] private GameView view;
         [SerializeField] private GameModel model;
 
+        
         private void Awake()
         {
             
@@ -17,5 +18,7 @@ namespace GameScene
         {
             
         }
+        
+        
     }
 }
