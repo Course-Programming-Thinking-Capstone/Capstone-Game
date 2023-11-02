@@ -1234,22 +1234,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   modelSelector:
-  - selectType: 0
-    prefabs: {fileID: 4224047065698184668, guid: f9b1aefff01d64641a5a146f2896d1b9, type: 3}
   - selectType: 1
-    prefabs: {fileID: 4224047065698184668, guid: 418f91e9da981b54f9d9654c28c61aed, type: 3}
+    prefabs: {fileID: 4224047065698184668, guid: f9b1aefff01d64641a5a146f2896d1b9, type: 3}
   - selectType: 2
-    prefabs: {fileID: 4224047065698184668, guid: 879a53c6870614d4cb6672e910f4230d, type: 3}
+    prefabs: {fileID: 4224047065698184668, guid: 418f91e9da981b54f9d9654c28c61aed, type: 3}
   - selectType: 3
+    prefabs: {fileID: 4224047065698184668, guid: 879a53c6870614d4cb6672e910f4230d, type: 3}
+  - selectType: 4
     prefabs: {fileID: 4224047065698184668, guid: 12fc539f5272da14eb23bea3c955ab6c, type: 3}
   modelSelected:
-  - selectType: 0
-    prefabs: {fileID: 5923298832287941037, guid: 3e441366c01fbd1459adc13fdcf0e080, type: 3}
   - selectType: 1
-    prefabs: {fileID: 5923298832287941037, guid: dce785b0a25936246a347e3867be6f26, type: 3}
+    prefabs: {fileID: 5923298832287941037, guid: 3e441366c01fbd1459adc13fdcf0e080, type: 3}
   - selectType: 2
-    prefabs: {fileID: 5923298832287941037, guid: f25beabe53652d244b41bf4994b9e157, type: 3}
+    prefabs: {fileID: 5923298832287941037, guid: dce785b0a25936246a347e3867be6f26, type: 3}
   - selectType: 3
+    prefabs: {fileID: 5923298832287941037, guid: f25beabe53652d244b41bf4994b9e157, type: 3}
+  - selectType: 4
     prefabs: {fileID: 5923298832287941037, guid: c8c5460478258c545bec1dda3fa6a969, type: 3}
 --- !u!1 &2005999894
 GameObject:
