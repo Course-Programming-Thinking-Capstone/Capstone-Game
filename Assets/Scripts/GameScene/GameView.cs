@@ -7,14 +7,16 @@ namespace GameScene
         [SerializeField] private Transform selectorContainer;
         [SerializeField] private Transform selectedContainer;
 
-        private void SetParentSelector(Transform child)
+        public void SetParentSelector(Transform child)
         {
             child.SetParent(selectorContainer);
+            child.localScale = Vector3.one;
         }
         
-        private void SetParentSelected(Transform child)
+        public void SetParentSelected(Transform child)
         {
             child.SetParent(selectedContainer);
+            child.localScale = Vector3.one;
         }
     }
 }
