@@ -1,13 +1,13 @@
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace GameScene.Component
 {
-    public class Arrow : Selector
+    public class Arrow : Selector, IPointerDownHandler
     {
-        private void Awake()
+        public void OnPointerDown(PointerEventData eventData)
         {
-            var button = gameObject.GetComponent<Button>();
-            button.onClick.AddListener(OnClickButton);
+            OnClickButton();
         }
     }
 }

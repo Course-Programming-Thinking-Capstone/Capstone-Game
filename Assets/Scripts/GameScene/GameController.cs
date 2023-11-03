@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using GameScene.Component;
+using JetBrains.Annotations;
 using Services;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,6 +13,7 @@ namespace GameScene
         [Header("Reference model")] 
         [SerializeField] private GameView view;
         [SerializeField] private GameModel model;
+        [SerializeField] private Canvas  canvas;
 
         [Header("Testing only")] 
         [SerializeField] private List<SelectType> generateList;
@@ -18,7 +21,7 @@ namespace GameScene
         // SYSTEM
         private List<Arrow> storeSelector = new();
         private List<Arrow> storeSelected = new();
-
+        [CanBeNull] private RectTransform selectedTransform;
         private void Awake()
         {
             // Load services
@@ -30,6 +33,7 @@ namespace GameScene
             {
                 //  SceneManager.LoadScene(Constants.EntryScene);
             }
+            
         }
 
         private void Start()
@@ -37,6 +41,34 @@ namespace GameScene
             InitScene();
         }
 
+        private void Update()
+        {
+            if (Input.GetMouseButtonUp(0))
+            {
+       
+                MoveSelectedToPosition();
+            }
+            
+            if (selectedTransform)
+            {
+                MoveSelected();
+             
+            }
+
+         
+        }
+
+        private void MoveSelected()
+        {
+            // Move with mouse
+            Vector3 mousePos = Input.mousePosition;
+            selectedTransform!.position = mousePos;
+        }
+        private void MoveSelectedToPosition()
+        {
+            selectedTransform = null;
+        }
+        
         private void InitScene()
         {
             // Generate objects selector
@@ -54,10 +86,12 @@ namespace GameScene
             }
         }
 
-
+        // Event clicked selector
         private void OnClickedSelector(SelectType selectType)
         {
-            Debug.Log("Clicked" + selectType);
+            var obj = Instantiate(model.GetSelected(selectType));
+            view.SetParentSelected(obj.transform);
+            selectedTransform = obj.GetComponent<RectTransform>();
         }
     }
 }
