@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using GameScene.Component;
 using JetBrains.Annotations;
 using Services;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace GameScene
 {
@@ -86,23 +85,15 @@ namespace GameScene
         {
             if (isDelete)
             {
-                for (int i = 0; i < storeSelected.Count; i++)
-                {
-                    if (storeSelected[i] == selectedObject)
-                    {
-                        storeSelected.RemoveAt(i);
-                        break;
-                    }
-                }
+                storeSelected.Remove((Arrow)selectedObject);
                 SimplePool.Despawn(selectedObject!.gameObject);
+                view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
                 selectedObject = null;
                 isDelete = false;
             }
             else
             {
-                var index = storeSelected.Count;
-                var yPosition = -selectedObject!.RectTransform.sizeDelta.y * (index - 0.5f);
-                selectedObject!.RectTransform.anchoredPosition = new Vector3(0f, yPosition, 0f);
+                view.SetPositionSelected(selectedObject!.RectTransform, storeSelected.Count);
                 selectedObject = null;
             }
             
