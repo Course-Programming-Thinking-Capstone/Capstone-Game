@@ -22,8 +22,8 @@ namespace GameScene
         // SYSTEM
         private List<Arrow> storeSelector = new();
         private List<Arrow> storeSelected = new();
-        [CanBeNull] private RectTransform selectedTransform;
-        
+        [CanBeNull] private Selector  selectedObject;
+        private bool isDelete;
         #region INITIALIZE
         private void Awake()
         {
@@ -63,11 +63,11 @@ namespace GameScene
     
         private void Update()
         {
-            if (selectedTransform)
+            if (selectedObject)
             {
                 if (Input.GetMouseButtonUp(0))
                 {
-                    MoveSelectedToPosition();
+                    HandleMouseUp();
                 }
                 else
                 {
@@ -79,46 +79,58 @@ namespace GameScene
         private void MoveSelected()
         {
             Vector3 mousePos = Input.mousePosition;
-            selectedTransform!.position = mousePos;
+            selectedObject!.RectTransform.position = mousePos;
         }
 
-        private void MoveSelectedToPosition()
+        private void HandleMouseUp()
         {
-            var index = storeSelected.Count;
-            var yPosition = -selectedTransform!.sizeDelta.y * (index - 0.5f);
-            selectedTransform!.anchoredPosition = new Vector3(0f, yPosition, 0f);
-            selectedTransform = null;
+            if (isDelete)
+            {
+                for (int i = 0; i < storeSelected.Count; i++)
+                {
+                    if (storeSelected[i] == selectedObject)
+                    {
+                        storeSelected.RemoveAt(i);
+                        break;
+                    }
+                }
+                SimplePool.Despawn(selectedObject!.gameObject);
+                selectedObject = null;
+                isDelete = false;
+            }
+            else
+            {
+                var index = storeSelected.Count;
+                var yPosition = -selectedObject!.RectTransform.sizeDelta.y * (index - 0.5f);
+                selectedObject!.RectTransform.anchoredPosition = new Vector3(0f, yPosition, 0f);
+                selectedObject = null;
+            }
+            
+
         }
 
         #region CALL BACK
 
         // Event clicked selector
-        private void OnClickedSelector(Selector selectType)
+        private void OnClickedSelector(Selector selectedObject)
         {
             // Generate new selected
-            var obj = SimplePool.Spawn(model.GetSelected(selectType.SelectType));
+            var obj = SimplePool.Spawn(model.GetSelected(selectedObject.SelectType));
             view.SetParentSelected(obj.transform);
             // Generate init selected
-            selectedTransform = obj.GetComponent<RectTransform>();
             var arrow = obj.GetComponent<Arrow>();
-            storeSelected.Add(arrow);
             arrow.Init(OnClickedSelected);
+            storeSelected.Add(arrow);
+            
+            // assign to control
+            this.selectedObject = arrow;
+
+
         }
         private void OnClickedSelected(Selector selectedObject)
         {
-            Debug.Log("Selected");
-            var index = 0;
-            foreach (var arrow in storeSelected)
-            {
-                
-                if (arrow == selectedObject)
-                {
-                    Debug.Log(index);
-                    return;
-                }
-
-                index++;
-            }
+            this.selectedObject = selectedObject;
+            isDelete = true;
         }
 
         #endregion
