@@ -23,7 +23,8 @@ namespace GameScene
         private List<Arrow> storeSelector = new();
         private List<Arrow> storeSelected = new();
         [CanBeNull] private RectTransform selectedTransform;
-
+        
+        #region INITIALIZE
         private void Awake()
         {
             // Load services
@@ -36,12 +37,30 @@ namespace GameScene
                 //  SceneManager.LoadScene(Constants.EntryScene);
             }
         }
-
+        
         private void Start()
         {
             InitScene();
         }
+        private void InitScene()
+        {
+            // Generate objects selector
+            foreach (var o in generateList)
+            {
+                var obj = Instantiate(model.GetSelector(o));
+                view.SetParentSelector(obj.transform);
+                storeSelector.Add(obj.GetComponent<Arrow>());
+            }
 
+            // Assign callback for selector
+            foreach (var arrow in storeSelector)
+            {
+                arrow.Init(OnClickedSelector);
+            }
+        }
+
+        #endregion
+    
         private void Update()
         {
             if (selectedTransform)
@@ -71,30 +90,38 @@ namespace GameScene
             selectedTransform = null;
         }
 
-        private void InitScene()
-        {
-            // Generate objects selector
-            foreach (var o in generateList)
-            {
-                var obj = Instantiate(model.GetSelector(o));
-                view.SetParentSelector(obj.transform);
-                storeSelector.Add(obj.GetComponent<Arrow>());
-            }
-
-            // Assign callback for selector
-            foreach (var arrow in storeSelector)
-            {
-                arrow.Init(OnClickedSelector);
-            }
-        }
+        #region CALL BACK
 
         // Event clicked selector
-        private void OnClickedSelector(SelectType selectType)
+        private void OnClickedSelector(Selector selectType)
         {
-            var obj = Instantiate(model.GetSelected(selectType));
+            // Generate new selected
+            var obj = SimplePool.Spawn(model.GetSelected(selectType.SelectType));
             view.SetParentSelected(obj.transform);
+            // Generate init selected
             selectedTransform = obj.GetComponent<RectTransform>();
-            storeSelected.Add(obj.GetComponent<Arrow>());
+            var arrow = obj.GetComponent<Arrow>();
+            storeSelected.Add(arrow);
+            arrow.Init(OnClickedSelected);
         }
+        private void OnClickedSelected(Selector selectedObject)
+        {
+            Debug.Log("Selected");
+            var index = 0;
+            foreach (var arrow in storeSelected)
+            {
+                
+                if (arrow == selectedObject)
+                {
+                    Debug.Log(index);
+                    return;
+                }
+
+                index++;
+            }
+        }
+
+        #endregion
+     
     }
 }

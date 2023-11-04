@@ -6,13 +6,13 @@ namespace GameScene.Component
     public class Selector: MonoBehaviour
     {
         [SerializeField] private SelectType selectType;
-        private SelectType SelectType => selectType;
-        private UnityAction<SelectType> onClick;
+        public SelectType SelectType => selectType;
+        private UnityAction<Selector> onClick;
 
         /// <summary>
         /// Call Init when instantiate object 
         /// </summary>
-        public void Init(UnityAction<SelectType> onClickParam)
+        public void Init(UnityAction<Selector> onClickParam)
         {
             onClick = onClickParam;
         }
@@ -22,7 +22,7 @@ namespace GameScene.Component
         /// </summary>
         public void OnClickButton()
         {
-            onClick?.Invoke(SelectType);
+            onClick?.Invoke(this);
         }
     }
 }
