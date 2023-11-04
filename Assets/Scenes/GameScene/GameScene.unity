@@ -660,6 +660,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   view: {fileID: 372901246}
   model: {fileID: 1966046701}
+  canvas: {fileID: 1961906770}
   generateList: 01000000020000000300000004000000
 --- !u!1 &1398959422
 GameObject:
