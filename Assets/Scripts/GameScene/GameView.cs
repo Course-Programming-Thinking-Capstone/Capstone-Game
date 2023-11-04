@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -32,7 +33,18 @@ namespace GameScene
             {
                 SetPositionSelected(items[i], i +1);
             }
-      
+        }
+
+        public void MakeEmptySpace(List<RectTransform> items, int indexToMakeSpace)
+        {
+            for (int i = 0; i < items.Count; i++)
+            {
+                if (indexToMakeSpace == i)
+                {
+                    continue;
+                }
+                SetPositionSelected(items[i], i + 1);
+            }
         }
     }
 }

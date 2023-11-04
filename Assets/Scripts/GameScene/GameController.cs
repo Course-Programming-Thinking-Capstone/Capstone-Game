@@ -13,14 +13,13 @@ namespace GameScene
         private GameView view;
 
         [SerializeField] private GameModel model;
-        [SerializeField] private Canvas canvas;
 
         [Header("Testing only")] [SerializeField]
         private List<SelectType> generateList;
 
         // SYSTEM
-        private List<Arrow> storeSelector = new();
-        private List<Arrow> storeSelected = new();
+        private readonly List<Selector> storeSelector = new();
+        private readonly List<Selector> storeSelected = new();
         [CanBeNull] private Selector  selectedObject;
         private bool isDelete;
         #region INITIALIZE
@@ -79,11 +78,15 @@ namespace GameScene
         {
             Vector3 mousePos = Input.mousePosition;
             selectedObject!.RectTransform.position = mousePos;
+            // handle if inside
+            
+            // check if want to destroy
+            
         }
 
         private void HandleMouseUp()
         {
-            if (isDelete)
+            if (isDelete) // in delete zone
             {
                 storeSelected.Remove((Arrow)selectedObject);
                 SimplePool.Despawn(selectedObject!.gameObject);
@@ -91,39 +94,35 @@ namespace GameScene
                 selectedObject = null;
                 isDelete = false;
             }
-            else
+            else // Valid pos
             {
-                view.SetPositionSelected(selectedObject!.RectTransform, storeSelected.Count);
+                storeSelected.Insert(0, selectedObject);
+                view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
                 selectedObject = null;
             }
-            
-
         }
 
         #region CALL BACK
 
         // Event clicked selector
-        private void OnClickedSelector(Selector selectedObject)
+        private void OnClickedSelector(Selector selectedObj)
         {
             // Generate new selected
-            var obj = SimplePool.Spawn(model.GetSelected(selectedObject.SelectType));
+            var obj = SimplePool.Spawn(model.GetSelected(selectedObj.SelectType));
             view.SetParentSelected(obj.transform);
             // Generate init selected
             var arrow = obj.GetComponent<Arrow>();
             arrow.Init(OnClickedSelected);
-            storeSelected.Add(arrow);
-            
             // assign to control
-            this.selectedObject = arrow;
-
-
+            selectedObject = arrow;
         }
-        private void OnClickedSelected(Selector selectedObject)
+        private void OnClickedSelected(Selector selectedObj)
         {
-            this.selectedObject = selectedObject;
+            selectedObject = selectedObj;
             isDelete = true;
         }
 
+   
         #endregion
      
     }
