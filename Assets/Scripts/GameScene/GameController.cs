@@ -4,25 +4,33 @@ using GameScene.Component;
 using JetBrains.Annotations;
 using Services;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace GameScene
 {
     public class GameController : MonoBehaviour
     {
-        [Header("Reference model")] [SerializeField]
-        private GameView view;
-
+        [Header("Reference model")]
+        [SerializeField] private GameView view;
         [SerializeField] private GameModel model;
-        [SerializeField] private RectTransform deleteZone;
 
-        [Header("Testing only")] [SerializeField]
-        private List<SelectType> generateList;
+        [Header("Reference object game")]
+        [SerializeField] private RectTransform deleteZone;
+        [SerializeField] private Button playButton;
+
+        [Header("Testing only")]
+        [SerializeField] private List<SelectType> generateList;
+        [SerializeField] private Vector2 startPosition;
+        [SerializeField] private Vector2 targetPosition;
+        [SerializeField] private Vector2 boardSize;
 
         // SYSTEM
         private readonly List<Selector> storeSelector = new();
         private readonly List<Selector> storeSelected = new();
-        [CanBeNull] private Selector selectedObject;
         private bool isDelete;
+        private Transform playerTransform;
+        private Vector2 playerPosition;
+        [CanBeNull] private Selector selectedObject;
 
         #region INITIALIZE
 
@@ -59,6 +67,14 @@ namespace GameScene
             {
                 arrow.Init(OnClickedSelector);
             }
+
+            // Play button
+            playButton.onClick.AddListener(OnClickPlay);
+
+            // Init player
+            var player = Instantiate(model.PlayerModel);
+            playerPosition = startPosition;
+            view.InitPlayerPosition(player.GetComponent<RectTransform>(), boardSize, startPosition);
         }
 
         #endregion
@@ -138,6 +154,10 @@ namespace GameScene
             }
         }
 
+        private void ClearAllSelected()
+        {
+        }
+
         #region CALL BACK
 
         // Event clicked selector
@@ -156,6 +176,15 @@ namespace GameScene
         private void OnClickedSelected(Selector selectedObj)
         {
             selectedObject = selectedObj;
+        }
+
+        // Start Moving
+        private void OnClickPlay()
+        {
+            foreach (var item in storeSelected)
+            {
+                Debug.Log(item.SelectType);
+            }
         }
 
         #endregion

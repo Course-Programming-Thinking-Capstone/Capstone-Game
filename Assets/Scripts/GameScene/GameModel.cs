@@ -9,6 +9,9 @@ namespace GameScene
     {
         [SerializeField] private List<ModelSelector> modelSelector;
         [SerializeField] private List<ModelSelected> modelSelected;
+        [SerializeField]  private GameObject playerModel;
+
+        public GameObject PlayerModel => playerModel;
 
         public GameObject GetSelector(SelectType selectType)
         {
@@ -20,6 +23,8 @@ namespace GameScene
             var result = modelSelected.FirstOrDefault(o => o.SelectType == selectType);
             return result?.Prefabs;
         }
+        
+        
     }
 
     [Serializable]

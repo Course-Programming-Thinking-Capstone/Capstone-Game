@@ -7,6 +7,7 @@ namespace GameScene
     {
         [SerializeField] private Transform selectorContainer;
         [SerializeField] private Transform selectedContainer;
+        [SerializeField] private RectTransform playZone;
 
         public void SetParentSelector(Transform child)
         {
@@ -46,7 +47,24 @@ namespace GameScene
             }
         }
 
-    
+        public void InitPlayerPosition(RectTransform playerTransform, Vector2 map, Vector2 playerPos)
+        {
+            playerTransform.SetParent(playZone);
+            // Get the rectangular bounding box of your UI element
+            var rect = playZone.rect;
+            var anchoredPosition = playZone.anchoredPosition;
+            
+            var cellXSize = rect.width / map.x;
+            var cellYSize = rect.height / map.x;
+            
+            var lefBottomSize = new Vector2(anchoredPosition.x - rect.width / 2f, anchoredPosition.y - rect.height / 2f);
+
+            var playerPosToSet = lefBottomSize ;
+            playerPosToSet.x += cellXSize * (playerPos.x - 0.5f);
+            playerPosToSet.y += cellYSize * (playerPos.y - 0.5f);
+            playerTransform.anchoredPosition = playerPosToSet;
+        }
+        
         
     }
 }
