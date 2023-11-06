@@ -181,12 +181,11 @@ namespace GameScene
         // Start Moving
         private void OnClickPlay()
         {
-            foreach (var item in storeSelected)
-            {
-                Debug.Log(item.SelectType);
-            }
+            view.MovePlayer(
+                storeSelected.Select(o => o.SelectType).ToList()
+                , model.PlayerMoveTime);
         }
-
+        
         #endregion
     }
 }

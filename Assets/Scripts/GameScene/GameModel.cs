@@ -9,9 +9,11 @@ namespace GameScene
     {
         [SerializeField] private List<ModelSelector> modelSelector;
         [SerializeField] private List<ModelSelected> modelSelected;
-        [SerializeField]  private GameObject playerModel;
+        [SerializeField] private GameObject playerModel;
+        [SerializeField] private float playerMoveTime;
 
         public GameObject PlayerModel => playerModel;
+        public float PlayerMoveTime => playerMoveTime;
 
         public GameObject GetSelector(SelectType selectType)
         {
