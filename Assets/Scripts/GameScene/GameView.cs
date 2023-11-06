@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using DG.Tweening;
+using Spine.Unity;
 using UnityEngine;
 
 namespace GameScene
@@ -10,22 +10,34 @@ namespace GameScene
         [SerializeField] private Transform selectorContainer;
         [SerializeField] private Transform selectedContainer;
         [SerializeField] private RectTransform playZone;
+        [SerializeField] private string idleAnimation;
+        [SerializeField] private string moveAnimation;
         private RectTransform playerRectTransform;
+        private SkeletonGraphic playerSkeletonGraphic;
         private float cellXSize;
         private float cellYSize;
 
         public void MovePlayer(List<SelectType> selectTypes, float moveTime)
         {
             Vector2 currentPosition = playerRectTransform.anchoredPosition;
+            Quaternion currentRotation = playerRectTransform.rotation; // Lấy góc quay hiện tại
             int currentStep = 0;
-            MoveToNextStep(selectTypes, currentPosition, currentStep, moveTime);
+            if (!playerSkeletonGraphic)
+            {
+                playerSkeletonGraphic = playerRectTransform.GetComponent<SkeletonGraphic>();
+            }
+
+            MoveToNextStep(selectTypes, currentPosition, currentRotation, currentStep, moveTime);
         }
 
-        private void MoveToNextStep(List<SelectType> selectTypes, Vector2 currentPosition, int currentStep, float moveTime)
+        private void MoveToNextStep(List<SelectType> selectTypes, Vector2 currentPosition, Quaternion currentRotation,
+            int currentStep, float moveTime)
         {
             if (currentStep < selectTypes.Count)
             {
                 Vector2 moveDirection = Vector2.zero;
+                Quaternion targetRotation = currentRotation;
+
                 switch (selectTypes[currentStep])
                 {
                     case SelectType.None:
@@ -38,19 +50,27 @@ namespace GameScene
                         break;
                     case SelectType.Left:
                         moveDirection = Vector2.left * cellXSize;
+                        targetRotation = Quaternion.Euler(0, 0, 0);
                         break;
                     case SelectType.Right:
                         moveDirection = Vector2.right * cellXSize;
+                        targetRotation = Quaternion.Euler(0, 180, 0);
                         break;
                 }
 
-                // Tính vị trí mới
                 Vector2 targetPosition = currentPosition + moveDirection;
-                
-                playerRectTransform.DOAnchorPos(targetPosition, moveTime).SetEase(Ease.Linear).OnComplete(() =>
+                playerSkeletonGraphic.AnimationState.SetAnimation(0, moveAnimation, true);
+                Sequence sequence = DOTween.Sequence();
+                sequence.Append(playerRectTransform.DOAnchorPos(targetPosition, moveTime));
+                sequence.Join(playerRectTransform.DORotateQuaternion(targetRotation, moveTime / 2));
+                sequence.OnComplete(() =>
                 {
-                    MoveToNextStep(selectTypes, targetPosition, currentStep + 1, moveTime);
+                    MoveToNextStep(selectTypes, targetPosition, targetRotation, currentStep + 1, moveTime);
                 });
+            }
+            else
+            {
+                playerSkeletonGraphic.AnimationState.SetAnimation(0, idleAnimation, true);
             }
         }
 
@@ -103,14 +123,14 @@ namespace GameScene
 
             cellXSize = rect.width / map.x;
 
-            cellYSize = rect.height / map.x;
+            cellYSize = rect.height / map.y;
 
             var lefBottomSize =
                 new Vector2(anchoredPosition.x - rect.width / 2f, anchoredPosition.y - rect.height / 2f);
 
             var playerPosToSet = lefBottomSize;
             playerPosToSet.x += cellXSize * (playerPos.x - 0.5f);
-            playerPosToSet.y += cellYSize * (playerPos.y - 0.5f);
+            playerPosToSet.y += cellYSize * (playerPos.y - 0.55f);
             playerTransform.anchoredPosition = playerPosToSet;
         }
     }

@@ -157,8 +157,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -11.697, y: -1.4104}
-  m_SizeDelta: {x: 1073.9917, y: 811.257}
+  m_AnchoredPosition: {x: -11.697, y: -1.6082}
+  m_SizeDelta: {x: 1073.9917, y: 811.6526}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &265681268
 MonoBehaviour:
@@ -245,6 +245,8 @@ MonoBehaviour:
   selectorContainer: {fileID: 1328973360}
   selectedContainer: {fileID: 1249297808}
   playZone: {fileID: 265681267}
+  idleAnimation: action/idle/normal
+  moveAnimation: action/move-forward
 --- !u!1 &454645804
 GameObject:
   m_ObjectHideFlags: 0
@@ -1455,6 +1457,7 @@ MonoBehaviour:
   - selectType: 4
     prefabs: {fileID: 5923298832287941037, guid: c8c5460478258c545bec1dda3fa6a969, type: 3}
   playerModel: {fileID: 7698505076760131036, guid: 771eaa2e6a746c64c9302dbd6dea532e, type: 3}
+  playerMoveTime: 0.8
 --- !u!1 &2005999894
 GameObject:
   m_ObjectHideFlags: 0
