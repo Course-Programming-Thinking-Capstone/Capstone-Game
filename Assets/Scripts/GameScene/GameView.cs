@@ -108,7 +108,6 @@ namespace GameScene
                 {
                     continue;
                 }
-
                 SetPositionSelected(items[i], i + 1);
             }
         }
@@ -130,7 +129,7 @@ namespace GameScene
 
             var playerPosToSet = lefBottomSize;
             playerPosToSet.x += cellXSize * (playerPos.x - 0.5f);
-            playerPosToSet.y += cellYSize * (playerPos.y - 0.55f);
+            playerPosToSet.y += cellYSize * (playerPos.y - 0.7f);
             playerTransform.anchoredPosition = playerPosToSet;
         }
     }

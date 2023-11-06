@@ -154,10 +154,6 @@ namespace GameScene
             }
         }
 
-        private void ClearAllSelected()
-        {
-        }
-
         #region CALL BACK
 
         // Event clicked selector
@@ -185,7 +181,7 @@ namespace GameScene
                 storeSelected.Select(o => o.SelectType).ToList()
                 , model.PlayerMoveTime);
         }
-        
+
         #endregion
     }
 }
