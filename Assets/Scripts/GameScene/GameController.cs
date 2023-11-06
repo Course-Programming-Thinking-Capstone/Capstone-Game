@@ -16,6 +16,7 @@ namespace GameScene
 
         [Header("Reference object game")]
         [SerializeField] private RectTransform deleteZone;
+        [SerializeField] private RectTransform selectedZone;
         [SerializeField] private Button playButton;
 
         [Header("Testing only")]
@@ -27,9 +28,11 @@ namespace GameScene
         // SYSTEM
         private readonly List<Selector> storeSelector = new();
         private readonly List<Selector> storeSelected = new();
+        private readonly List<Vector2> storedPosition = new();
         private bool isDelete;
         private Transform playerTransform;
         private Vector2 playerPosition;
+        private float offSet = 0.2f;
         [CanBeNull] private Selector selectedObject;
 
         #region INITIALIZE
@@ -59,7 +62,7 @@ namespace GameScene
             {
                 var obj = Instantiate(model.GetSelector(o));
                 view.SetParentSelector(obj.transform);
-                storeSelector.Add(obj.GetComponent<Arrow>());
+                storeSelected.Add(obj.GetComponent<Selector>());
             }
 
             // Assign callback for selector
@@ -89,47 +92,9 @@ namespace GameScene
                 }
                 else
                 {
-                    MoveSelected();
+                    HandleMouseMoveSelected();
                 }
             }
-        }
-
-        private void MoveSelected()
-        {
-            Vector3 mousePos = Input.mousePosition;
-            selectedObject!.RectTransform.position = mousePos;
-            // handle if inside delete zone
-            if (IsPointInRT(mousePos, deleteZone))
-            {
-                isDelete = true;
-            }
-            else
-            {
-                isDelete = false;
-            }
-        }
-
-        bool IsPointInRT(Vector2 point, RectTransform rt)
-        {
-            // Get the rectangular bounding box of your UI element
-            var rect = rt.rect;
-            var anchoredPosition = rt.position;
-            // Get the left, right, top, and bottom boundaries of the rect
-            float leftSide = anchoredPosition.x - rect.width / 2f;
-            float rightSide = anchoredPosition.x + rect.width / 2f;
-            float topSide = anchoredPosition.y + rect.height / 2f;
-            float bottomSide = anchoredPosition.y - rect.height / 2f;
-
-            // Check to see if the point is in the calculated bounds
-            if (point.x >= leftSide &&
-                point.x <= rightSide &&
-                point.y >= bottomSide &&
-                point.y <= topSide)
-            {
-                return true;
-            }
-
-            return false;
         }
 
         private void HandleMouseUp()
@@ -154,6 +119,69 @@ namespace GameScene
             }
         }
 
+        private void HandleMouseMoveSelected()
+        {
+            Vector3 mousePos = Input.mousePosition;
+            selectedObject!.RectTransform.position = mousePos;
+            // handle if inside delete zone
+            if (IsPointInRT(mousePos, deleteZone))
+            {
+                isDelete = true;
+                return;
+            }
+
+            isDelete = false;
+            // check to make space
+            if (IsPointInRT(mousePos, selectedZone))
+            {
+                for (int i = 0; i < storedPosition.Count - 1; i++)
+                {
+                    if (i == 0 && storedPosition[i].y - offSet < mousePos.y)
+                    {
+                        view.MakeEmptySpace(storeSelected.Select(o => o.RectTransform).ToList(), i);
+                    }
+
+                    if (storedPosition[i].y + offSet > mousePos.y
+                        && storedPosition[i + 1].y - offSet < mousePos.y)
+                    {
+                        view.MakeEmptySpace(storeSelected.Select(o => o.RectTransform).ToList(), i);
+                    }
+                }
+            }
+        }
+
+        private bool IsPointInRT(Vector2 point, RectTransform rt)
+        {
+            // Get the rectangular bounding box of your UI element
+            var rect = rt.rect;
+            var anchoredPosition = rt.position;
+            // Get the left, right, top, and bottom boundaries of the rect
+            float leftSide = anchoredPosition.x - rect.width / 2f;
+            float rightSide = anchoredPosition.x + rect.width / 2f;
+            float topSide = anchoredPosition.y + rect.height / 2f;
+            float bottomSide = anchoredPosition.y - rect.height / 2f;
+
+            // Check to see if the point is in the calculated bounds
+            if (point.x >= leftSide &&
+                point.x <= rightSide &&
+                point.y >= bottomSide &&
+                point.y <= topSide)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public void StoreTempPosition()
+        {
+            storedPosition.Clear();
+            foreach (var item in storeSelected)
+            {
+                storedPosition.Add(item.RectTransform.position);
+            }
+        }
+
         #region CALL BACK
 
         // Event clicked selector
@@ -167,6 +195,7 @@ namespace GameScene
             arrow.Init(OnClickedSelected);
             // assign to control
             selectedObject = arrow;
+            StoreTempPosition();
         }
 
         private void OnClickedSelected(Selector selectedObj)
