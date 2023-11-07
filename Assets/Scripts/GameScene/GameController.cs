@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using GameScene.Component;
@@ -5,6 +6,7 @@ using JetBrains.Annotations;
 using Services;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 namespace GameScene
 {
@@ -78,6 +80,12 @@ namespace GameScene
             var player = Instantiate(model.PlayerModel);
             playerPosition = startPosition;
             view.InitPlayerPosition(player.GetComponent<RectTransform>(), boardSize, startPosition);
+          
+            // Init Candy
+            var candy = Instantiate(model.CandyModel).GetComponent<Candy>();
+            candy.Init(model.CandySprites[Random.Range(0, model.CandySprites.Count)]);
+            view.InitCandyPosition(candy.GetComponent<RectTransform>(), targetPosition);
+
         }
 
         #endregion
@@ -128,6 +136,35 @@ namespace GameScene
         }
 
         #region Calulate func
+
+        private bool CheckWin()
+        {
+            foreach (var item in storeSelected)
+            {
+                switch (item.SelectType)
+                {
+                    case SelectType.Up:
+                        playerPosition += Vector2.up;
+                        break;
+                    case SelectType.Down:
+                        playerPosition += Vector2.down;
+                        break;
+                    case SelectType.Left:
+                        playerPosition += Vector2.left;
+                        break;
+                    case SelectType.Right:
+                        playerPosition += Vector2.right;
+                        break;
+                    case SelectType.Collect:
+                        if (playerPosition == targetPosition)
+                        {
+                            return true;
+                        }
+                        break;
+                }
+            }
+            return false;
+        }
 
         private int CalculatedCurrentPosition(Vector2 mousePos)
         {
@@ -227,9 +264,18 @@ namespace GameScene
         // Start Moving
         private void OnClickPlay()
         {
+            var isWin = CheckWin();
             view.MovePlayer(
                 storeSelected.Select(o => o.SelectType).ToList()
                 , model.PlayerMoveTime);
+            if (isWin)
+            {
+                Debug.Log("PLAYER WIN");
+            }
+            else
+            {
+                Debug.Log("Failed");
+            }
         }
 
         #endregion

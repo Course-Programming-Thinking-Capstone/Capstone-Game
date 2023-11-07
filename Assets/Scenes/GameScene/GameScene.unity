@@ -1462,7 +1462,34 @@ MonoBehaviour:
     prefabs: {fileID: 5923298832287941037, guid: c8c5460478258c545bec1dda3fa6a969, type: 3}
   - selectType: 5
     prefabs: {fileID: 5923298832287941037, guid: 69864048f965f1a4492eb962ffe524dc, type: 3}
+  candySprites:
+  - {fileID: 21300000, guid: 799f5875c25094d8dba44a9851499e1a, type: 3}
+  - {fileID: 21300000, guid: 0790d5714b5544c6fa8276d009a959b9, type: 3}
+  - {fileID: 21300000, guid: 80a6b1c7f3a6d4f7b87de76c061f3be5, type: 3}
+  - {fileID: 21300000, guid: afcde55a8f1e645a09c299a8ef8e58b2, type: 3}
+  - {fileID: 21300000, guid: e488417a2c95b400d829a3c15a530a61, type: 3}
+  - {fileID: 21300000, guid: 08f0363d8c4bc4d7fac08b855cae2516, type: 3}
+  - {fileID: 21300000, guid: f07cbdc419d40421ab3732807de5571b, type: 3}
+  - {fileID: 21300000, guid: 9219556a9a61743deb951bcede94423d, type: 3}
+  - {fileID: 21300000, guid: 727ee252aa7c945aeaa3ea1bb5eaad8b, type: 3}
+  - {fileID: 21300000, guid: af1381df69b0c4f2ca1a0969df139bf4, type: 3}
+  - {fileID: 21300000, guid: c9fc23ba4048c4c1eb49fe0444d22057, type: 3}
+  - {fileID: 21300000, guid: 86fe3cabe72b14bf1b9092f7821222ed, type: 3}
+  - {fileID: 21300000, guid: c82c3e28f462747dba18552f9c31b8eb, type: 3}
+  - {fileID: 21300000, guid: 8f9335cddb67b400cbb29a1d8dc11a04, type: 3}
+  - {fileID: 21300000, guid: 28c82859ed06f433fa96b20378c316d5, type: 3}
+  - {fileID: 21300000, guid: 5789490ccd08f426e92fcdfefa0967e0, type: 3}
+  - {fileID: 21300000, guid: a509f6687e95c402aaff18856411f5de, type: 3}
+  - {fileID: 21300000, guid: 28524db5fe42c4923b3ad8f3f4fb742c, type: 3}
+  - {fileID: 21300000, guid: 0880325b431534468997449729cade2e, type: 3}
+  - {fileID: 21300000, guid: 1290ebdb32ab2475aa759c206aadbb89, type: 3}
+  - {fileID: 21300000, guid: 4d5f0dcce5afe4ca081bfbea9286791d, type: 3}
+  - {fileID: 21300000, guid: 6c6e19955f5eb434facf992f895ebb0a, type: 3}
+  - {fileID: 21300000, guid: edf8e8f16fef9444bb94de066813ddca, type: 3}
+  - {fileID: 21300000, guid: cf935d01586a84459a5e1c5a30b1563c, type: 3}
+  - {fileID: 21300000, guid: 9d50539b58fb64602b795d40aaf51368, type: 3}
   playerModel: {fileID: 7698505076760131036, guid: 771eaa2e6a746c64c9302dbd6dea532e, type: 3}
+  candyModel: {fileID: 196913557502182786, guid: 8e21a1d53cc27c74b80dadc6e7be8288, type: 3}
   playerMoveTime: 0.8
 --- !u!1 &2005999894
 GameObject:

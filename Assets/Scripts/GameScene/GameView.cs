@@ -131,7 +131,6 @@ namespace GameScene
             var anchoredPosition = playZone.anchoredPosition;
 
             cellXSize = rect.width / map.x;
-
             cellYSize = rect.height / map.y;
 
             var lefBottomSize =
@@ -141,6 +140,20 @@ namespace GameScene
             playerPosToSet.x += cellXSize * (playerPos.x - 0.5f);
             playerPosToSet.y += cellYSize * (playerPos.y - 0.7f);
             playerTransform.anchoredPosition = playerPosToSet;
+        }
+
+        public void InitCandyPosition(RectTransform candy, Vector2 playerPos)
+        {
+            candy.SetParent(playZone);
+            // Get the rectangular bounding box of your UI element
+            var rect = playZone.rect;
+            var anchoredPosition = playZone.anchoredPosition;
+            var lefBottomSize =
+                new Vector2(anchoredPosition.x - rect.width / 2f, anchoredPosition.y - rect.height / 2f);
+            var playerPosToSet = lefBottomSize;
+            playerPosToSet.x += cellXSize * (playerPos.x - 0.4f);
+            playerPosToSet.y += cellYSize * (playerPos.y - 0.5f);
+            candy.anchoredPosition = playerPosToSet;
         }
     }
 }
