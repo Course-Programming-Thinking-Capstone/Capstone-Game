@@ -247,6 +247,7 @@ MonoBehaviour:
   playZone: {fileID: 265681267}
   idleAnimation: action/idle/normal
   moveAnimation: action/move-forward
+  collectAnimation: activity/eat-chew
 --- !u!1 &454645804
 GameObject:
   m_ObjectHideFlags: 0
@@ -861,7 +862,7 @@ MonoBehaviour:
   deleteZone: {fileID: 2084806566}
   selectedZone: {fileID: 1249297808}
   playButton: {fileID: 1035767137}
-  generateList: 01000000020000000300000004000000
+  generateList: 0100000002000000030000000400000005000000
   startPosition: {x: 2, y: 2}
   targetPosition: {x: 3, y: 3}
   boardSize: {x: 8, y: 6}
@@ -1448,6 +1449,8 @@ MonoBehaviour:
     prefabs: {fileID: 4224047065698184668, guid: 879a53c6870614d4cb6672e910f4230d, type: 3}
   - selectType: 4
     prefabs: {fileID: 4224047065698184668, guid: 12fc539f5272da14eb23bea3c955ab6c, type: 3}
+  - selectType: 5
+    prefabs: {fileID: 4224047065698184668, guid: 58b739a1ca0bdf848a2cb9c76291dfd0, type: 3}
   modelSelected:
   - selectType: 1
     prefabs: {fileID: 5923298832287941037, guid: 3e441366c01fbd1459adc13fdcf0e080, type: 3}
@@ -1457,6 +1460,8 @@ MonoBehaviour:
     prefabs: {fileID: 5923298832287941037, guid: f25beabe53652d244b41bf4994b9e157, type: 3}
   - selectType: 4
     prefabs: {fileID: 5923298832287941037, guid: c8c5460478258c545bec1dda3fa6a969, type: 3}
+  - selectType: 5
+    prefabs: {fileID: 5923298832287941037, guid: 69864048f965f1a4492eb962ffe524dc, type: 3}
   playerModel: {fileID: 7698505076760131036, guid: 771eaa2e6a746c64c9302dbd6dea532e, type: 3}
   playerMoveTime: 0.8
 --- !u!1 &2005999894

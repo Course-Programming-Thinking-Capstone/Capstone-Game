@@ -64,6 +64,7 @@ namespace GameScene
                 view.SetParentSelector(obj.transform);
                 storeSelector.Add(obj.GetComponent<Selector>());
             }
+
             // Assign callback for selector
             foreach (var arrow in storeSelector)
             {
@@ -108,7 +109,7 @@ namespace GameScene
             {
                 if (!storeSelected.Contains(selectedObject))
                 {
-                    storeSelected.Insert( CalculatedCurrentPosition(Input.mousePosition), selectedObject);
+                    storeSelected.Insert(CalculatedCurrentPosition(Input.mousePosition), selectedObject);
                 }
 
                 view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
@@ -124,31 +125,34 @@ namespace GameScene
             isDelete = IsPointInRT(mousePos, deleteZone);
             // check to make space
             HandleDisplayCalculate(mousePos);
-
         }
 
         #region Calulate func
 
         private int CalculatedCurrentPosition(Vector2 mousePos)
         {
-            for (int i = 0; i < storedPosition.Count ; i++)
+            for (int i = 0; i < storedPosition.Count; i++)
             {
-                    if (i == 0 && storedPosition[i].y - offSet < mousePos.y) // first item
-                    {
-                        return 0;
-                    }
-                    if (i == storedPosition.Count - 1) // last item
-                    {
-                        return storedPosition.Count;
-                    }
-                    if (storedPosition[i].y + offSet > mousePos.y
-                        && storedPosition[i + 1].y - offSet < mousePos.y)
-                    {
-                        return i + 1;
-                    }
+                if (i == 0 && storedPosition[i].y - offSet < mousePos.y) // first item
+                {
+                    return 0;
+                }
+
+                if (i == storedPosition.Count - 1) // last item
+                {
+                    return storedPosition.Count;
+                }
+
+                if (storedPosition[i].y + offSet > mousePos.y
+                    && storedPosition[i + 1].y - offSet < mousePos.y)
+                {
+                    return i + 1;
+                }
             }
+
             return storedPosition.Count;
         }
+
         private void HandleDisplayCalculate(Vector2 mousePos)
         {
             if (IsPointInRT(mousePos, selectedZone))
@@ -161,6 +165,7 @@ namespace GameScene
                 view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
             }
         }
+
         private bool IsPointInRT(Vector2 point, RectTransform rt)
         {
             // Get the rectangular bounding box of your UI element
@@ -183,6 +188,7 @@ namespace GameScene
 
             return false;
         }
+
         private void StoreTempPosition()
         {
             storedPosition.Clear();
@@ -191,10 +197,8 @@ namespace GameScene
                 storedPosition.Add(item.RectTransform.position);
             }
         }
-        
+
         #endregion
-     
-    
 
         #region CALL BACK
 

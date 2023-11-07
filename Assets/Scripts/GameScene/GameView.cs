@@ -12,6 +12,7 @@ namespace GameScene
         [SerializeField] private RectTransform playZone;
         [SerializeField] private string idleAnimation;
         [SerializeField] private string moveAnimation;
+        [SerializeField] private string collectAnimation;
         private RectTransform playerRectTransform;
         private SkeletonGraphic playerSkeletonGraphic;
         private float cellXSize;
@@ -43,23 +44,30 @@ namespace GameScene
                     case SelectType.None:
                         break;
                     case SelectType.Up:
+                        playerSkeletonGraphic.AnimationState.SetAnimation(0, moveAnimation, true);
                         moveDirection = Vector2.up * cellYSize;
                         break;
                     case SelectType.Down:
+                        playerSkeletonGraphic.AnimationState.SetAnimation(0, moveAnimation, true);
                         moveDirection = Vector2.down * cellYSize;
                         break;
                     case SelectType.Left:
+                        playerSkeletonGraphic.AnimationState.SetAnimation(0, moveAnimation, true);
                         moveDirection = Vector2.left * cellXSize;
                         targetRotation = Quaternion.Euler(0, 0, 0);
                         break;
                     case SelectType.Right:
+                        playerSkeletonGraphic.AnimationState.SetAnimation(0, moveAnimation, true);
                         moveDirection = Vector2.right * cellXSize;
                         targetRotation = Quaternion.Euler(0, 180, 0);
+                        break;
+                    case SelectType.Collect:
+                        playerSkeletonGraphic.AnimationState.SetAnimation(0, collectAnimation, true);
+                        moveDirection = Vector2.zero; // not move
                         break;
                 }
 
                 Vector2 targetPosition = currentPosition + moveDirection;
-                playerSkeletonGraphic.AnimationState.SetAnimation(0, moveAnimation, true);
                 Sequence sequence = DOTween.Sequence();
                 sequence.Append(playerRectTransform.DOAnchorPos(targetPosition, moveTime));
                 sequence.Join(playerRectTransform.DORotateQuaternion(targetRotation, moveTime / 2));
