@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using GameScene.Component;
 using JetBrains.Annotations;
 using Services;
@@ -32,7 +33,8 @@ namespace GameScene
         private readonly List<Selector> storeSelected = new();
         private readonly List<Vector2> storedPosition = new();
         private bool isDelete;
-        private Transform playerTransform;
+        private GameObject player;
+        private Candy candy;
         private Vector2 playerPosition;
         private float offSet = 0.2f;
         [CanBeNull] private Selector selectedObject;
@@ -76,16 +78,18 @@ namespace GameScene
             // Play button
             playButton.onClick.AddListener(OnClickPlay);
 
-            // Init player
-            var player = Instantiate(model.PlayerModel);
-            playerPosition = startPosition;
-            view.InitPlayerPosition(player.GetComponent<RectTransform>(), boardSize, startPosition);
-          
+            // Init view
+            view.InitBoard(boardSize);
+
             // Init Candy
-            var candy = Instantiate(model.CandyModel).GetComponent<Candy>();
+            candy = Instantiate(model.CandyModel).GetComponent<Candy>();
             candy.Init(model.CandySprites[Random.Range(0, model.CandySprites.Count)]);
             view.InitCandyPosition(candy.GetComponent<RectTransform>(), targetPosition);
 
+            // Init player
+            player = Instantiate(model.PlayerModel);
+            playerPosition = startPosition;
+            view.InitPlayerPosition(player.GetComponent<RectTransform>(), startPosition);
         }
 
         #endregion
@@ -135,6 +139,22 @@ namespace GameScene
             HandleDisplayCalculate(mousePos);
         }
 
+        private void ResetGame()
+        {
+            // Clear all things
+            foreach (var selector in storeSelected)
+            {
+                SimplePool.Despawn(selector.gameObject);
+            }
+
+            playerPosition = startPosition;
+            storeSelected.Clear();
+
+            // Reset player position and candy
+            view.InitPlayerPosition(player.GetComponent<RectTransform>(), startPosition);
+            view.InitCandyPosition(candy.GetComponent<RectTransform>(), targetPosition);
+        }
+
         #region Calulate func
 
         private bool CheckWin()
@@ -160,9 +180,11 @@ namespace GameScene
                         {
                             return true;
                         }
+
                         break;
                 }
             }
+
             return false;
         }
 
@@ -262,19 +284,24 @@ namespace GameScene
         }
 
         // Start Moving
-        private void OnClickPlay()
+        private async void OnClickPlay()
         {
+            playButton.interactable = false;
             var isWin = CheckWin();
             view.MovePlayer(
                 storeSelected.Select(o => o.SelectType).ToList()
                 , model.PlayerMoveTime);
+
+            await Task.Delay((int)(model.PlayerMoveTime * storeSelected.Count * 1000));
             if (isWin)
             {
-                Debug.Log("PLAYER WIN");
+                candy.gameObject.SetActive(false);
             }
             else
             {
-                Debug.Log("Failed");
+                Debug.Log("FAIL");
+                ResetGame();
+                playButton.interactable = true;
             }
         }
 
