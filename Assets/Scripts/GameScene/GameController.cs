@@ -62,9 +62,8 @@ namespace GameScene
             {
                 var obj = Instantiate(model.GetSelector(o));
                 view.SetParentSelector(obj.transform);
-                storeSelected.Add(obj.GetComponent<Selector>());
+                storeSelector.Add(obj.GetComponent<Selector>());
             }
-
             // Assign callback for selector
             foreach (var arrow in storeSelector)
             {
@@ -101,9 +100,7 @@ namespace GameScene
         {
             if (isDelete) // in delete zone
             {
-                storeSelected.Remove((Arrow)selectedObject);
                 SimplePool.Despawn(selectedObject!.gameObject);
-                view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
                 selectedObject = null;
                 isDelete = false;
             }
@@ -111,7 +108,7 @@ namespace GameScene
             {
                 if (!storeSelected.Contains(selectedObject))
                 {
-                    storeSelected.Add(selectedObject);
+                    storeSelected.Insert( CalculatedCurrentPosition(Input.mousePosition), selectedObject);
                 }
 
                 view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
@@ -124,32 +121,46 @@ namespace GameScene
             Vector3 mousePos = Input.mousePosition;
             selectedObject!.RectTransform.position = mousePos;
             // handle if inside delete zone
-            if (IsPointInRT(mousePos, deleteZone))
-            {
-                isDelete = true;
-                return;
-            }
-
-            isDelete = false;
+            isDelete = IsPointInRT(mousePos, deleteZone);
             // check to make space
-            if (IsPointInRT(mousePos, selectedZone))
-            {
-                for (int i = 0; i < storedPosition.Count - 1; i++)
-                {
-                    if (i == 0 && storedPosition[i].y - offSet < mousePos.y)
-                    {
-                        view.MakeEmptySpace(storeSelected.Select(o => o.RectTransform).ToList(), i);
-                    }
+            HandleDisplayCalculate(mousePos);
 
+        }
+
+        #region Calulate func
+
+        private int CalculatedCurrentPosition(Vector2 mousePos)
+        {
+            for (int i = 0; i < storedPosition.Count ; i++)
+            {
+                    if (i == 0 && storedPosition[i].y - offSet < mousePos.y) // first item
+                    {
+                        return 0;
+                    }
+                    if (i == storedPosition.Count - 1) // last item
+                    {
+                        return storedPosition.Count;
+                    }
                     if (storedPosition[i].y + offSet > mousePos.y
                         && storedPosition[i + 1].y - offSet < mousePos.y)
                     {
-                        view.MakeEmptySpace(storeSelected.Select(o => o.RectTransform).ToList(), i);
+                        return i + 1;
                     }
-                }
+            }
+            return storedPosition.Count;
+        }
+        private void HandleDisplayCalculate(Vector2 mousePos)
+        {
+            if (IsPointInRT(mousePos, selectedZone))
+            {
+                view.MakeEmptySpace(storeSelected.Select(o => o.RectTransform).ToList(),
+                    CalculatedCurrentPosition(mousePos));
+            }
+            else
+            {
+                view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
             }
         }
-
         private bool IsPointInRT(Vector2 point, RectTransform rt)
         {
             // Get the rectangular bounding box of your UI element
@@ -172,8 +183,7 @@ namespace GameScene
 
             return false;
         }
-
-        public void StoreTempPosition()
+        private void StoreTempPosition()
         {
             storedPosition.Clear();
             foreach (var item in storeSelected)
@@ -181,6 +191,10 @@ namespace GameScene
                 storedPosition.Add(item.RectTransform.position);
             }
         }
+        
+        #endregion
+     
+    
 
         #region CALL BACK
 
@@ -191,7 +205,7 @@ namespace GameScene
             var obj = SimplePool.Spawn(model.GetSelected(selectedObj.SelectType));
             view.SetParentSelected(obj.transform);
             // Generate init selected
-            var arrow = obj.GetComponent<Arrow>();
+            var arrow = obj.GetComponent<Selector>();
             arrow.Init(OnClickedSelected);
             // assign to control
             selectedObject = arrow;
@@ -200,7 +214,10 @@ namespace GameScene
 
         private void OnClickedSelected(Selector selectedObj)
         {
+            storeSelected.Remove(selectedObj);
             selectedObject = selectedObj;
+            view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
+            StoreTempPosition();
         }
 
         // Start Moving

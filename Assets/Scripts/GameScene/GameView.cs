@@ -102,13 +102,15 @@ namespace GameScene
 
         public void MakeEmptySpace(List<RectTransform> items, int indexToMakeSpace)
         {
+            var itemIndex = 1;
             for (int i = 0; i < items.Count; i++)
             {
                 if (indexToMakeSpace == i)
                 {
-                    continue;
+                    itemIndex++;
                 }
-                SetPositionSelected(items[i], i + 1);
+                SetPositionSelected(items[i], itemIndex);
+                itemIndex++;
             }
         }
 

@@ -18,6 +18,7 @@ namespace GameScene.Component
         {
             rectTransform = GetComponent<RectTransform>();
             onClick = onClickParam;
+
         }
 
         /// <summary>
@@ -25,6 +26,7 @@ namespace GameScene.Component
         /// </summary>
         public void OnClickButton()
         {
+
             onClick?.Invoke(this);
         }
     }
