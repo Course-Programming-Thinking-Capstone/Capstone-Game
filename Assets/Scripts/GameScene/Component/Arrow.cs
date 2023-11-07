@@ -7,7 +7,6 @@ namespace GameScene.Component
     {
         public void OnPointerDown(PointerEventData eventData)
         {
-  
             OnClickButton();
         }
     }

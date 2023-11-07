@@ -17,6 +17,7 @@ namespace GameScene
         private SkeletonGraphic playerSkeletonGraphic;
         private float cellXSize;
         private float cellYSize;
+        private Vector2 lefBottomSize;
 
         public void MovePlayer(List<SelectType> selectTypes, float moveTime)
         {
@@ -117,24 +118,27 @@ namespace GameScene
                 {
                     itemIndex++;
                 }
+
                 SetPositionSelected(items[i], itemIndex);
                 itemIndex++;
             }
         }
 
-        public void InitPlayerPosition(RectTransform playerTransform, Vector2 map, Vector2 playerPos)
+        public void InitBoard(Vector2 map)
         {
-            playerRectTransform = playerTransform;
-            playerTransform.SetParent(playZone);
             // Get the rectangular bounding box of your UI element
             var rect = playZone.rect;
             var anchoredPosition = playZone.anchoredPosition;
-
+            lefBottomSize =
+                new Vector2(anchoredPosition.x - rect.width / 2f, anchoredPosition.y - rect.height / 2f);
             cellXSize = rect.width / map.x;
             cellYSize = rect.height / map.y;
+        }
 
-            var lefBottomSize =
-                new Vector2(anchoredPosition.x - rect.width / 2f, anchoredPosition.y - rect.height / 2f);
+        public void InitPlayerPosition(RectTransform playerTransform, Vector2 playerPos)
+        {
+            playerRectTransform = playerTransform;
+            playerTransform.SetParent(playZone);
 
             var playerPosToSet = lefBottomSize;
             playerPosToSet.x += cellXSize * (playerPos.x - 0.5f);
@@ -145,11 +149,7 @@ namespace GameScene
         public void InitCandyPosition(RectTransform candy, Vector2 playerPos)
         {
             candy.SetParent(playZone);
-            // Get the rectangular bounding box of your UI element
-            var rect = playZone.rect;
-            var anchoredPosition = playZone.anchoredPosition;
-            var lefBottomSize =
-                new Vector2(anchoredPosition.x - rect.width / 2f, anchoredPosition.y - rect.height / 2f);
+
             var playerPosToSet = lefBottomSize;
             playerPosToSet.x += cellXSize * (playerPos.x - 0.4f);
             playerPosToSet.y += cellYSize * (playerPos.y - 0.5f);

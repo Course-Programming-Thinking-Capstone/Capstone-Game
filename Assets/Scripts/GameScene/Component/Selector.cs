@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 namespace GameScene.Component
 {
-    public class Selector: MonoBehaviour
+    public class Selector : MonoBehaviour
     {
         [SerializeField] private SelectType selectType;
         [SerializeField] private RectTransform rectTransform;
@@ -18,7 +18,6 @@ namespace GameScene.Component
         {
             rectTransform = GetComponent<RectTransform>();
             onClick = onClickParam;
-
         }
 
         /// <summary>
@@ -26,7 +25,6 @@ namespace GameScene.Component
         /// </summary>
         public void OnClickButton()
         {
-
             onClick?.Invoke(this);
         }
     }

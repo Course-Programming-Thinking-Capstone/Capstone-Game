@@ -24,13 +24,12 @@ namespace GameScene
             var result = modelSelector.FirstOrDefault(o => o.SelectType == selectType);
             return result?.Prefabs;
         }
+
         public GameObject GetSelected(SelectType selectType)
         {
             var result = modelSelected.FirstOrDefault(o => o.SelectType == selectType);
             return result?.Prefabs;
         }
-        
-        
     }
 
     [Serializable]

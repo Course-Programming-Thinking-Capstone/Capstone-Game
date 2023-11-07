@@ -1,8 +1,7 @@
 namespace GameScene
 {
-  
     [System.Serializable]
-    public  enum SelectType
+    public enum SelectType
     {
         None = 0,
         Up = 1,
@@ -11,5 +10,4 @@ namespace GameScene
         Right = 4,
         Collect = 5,
     }
-
 }
