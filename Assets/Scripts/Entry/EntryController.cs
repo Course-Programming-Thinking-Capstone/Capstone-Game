@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,9 +8,10 @@ namespace Entry
 {
     public class EntryController : MonoBehaviour
     {
-        private const string soundObjectName = "Sound";
+        private const string SoundObjectName = "Sound";
         private const string UnUsed = "unused";
         [SerializeField] private EntryModel model;
+        [SerializeField] private EntryView view;
 
         [SerializeField] private List<Sound> sounds;
         [SerializeField] private Music music;
@@ -20,6 +20,7 @@ namespace Entry
         [Space(8.0f)]
         [SerializeField] private float loadingTime = 3f;
 
+        [SerializeField]
         private bool isReady = false;
         private GameServices gameServices = null;
 
@@ -36,7 +37,7 @@ namespace Entry
                 // Instantie Audio
                 DontDestroyOnLoad(musicObject);
 
-                GameObject soundObject = new(soundObjectName);
+                GameObject soundObject = new(SoundObjectName);
                 DontDestroyOnLoad(soundObject);
                 // Add Services
                 gameServices.AddService(new AudioService(music, sounds, soundObject));
@@ -96,26 +97,7 @@ namespace Entry
 
         private void Loading()
         {
-            StartCoroutine(Wait());
-        }
-
-        private IEnumerator Wait()
-        {
-            float timer = loadingTime * 0.1f;
-            while (timer < loadingTime * 1.1f)
-            {
-                timer += Time.deltaTime;
-                yield return null;
-            }
-
-            timer = 0;
-            while (!isReady && timer <= loadingTime)
-            {
-                yield return null;
-                timer += Time.deltaTime;
-            }
-
-            SceneManager.LoadScene(Constants.MainMenu);
+            view.PlayLoading(loadingTime, () => SceneManager.LoadScene(Constants.MainMenu));
         }
 
         private void OnFetchSuccess()
