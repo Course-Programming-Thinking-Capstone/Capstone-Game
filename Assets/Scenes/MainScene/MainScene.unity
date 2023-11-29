@@ -5776,6 +5776,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 337ab22fbe7ad2c4caff2cdf28f5bb91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  userCoin: {fileID: 0}
+  userDiamond: {fileID: 0}
+  userName: {fileID: 0}
+  userLevel: {fileID: 0}
+  userProcess: {fileID: 0}
+  userProcessSlider: {fileID: 0}
 --- !u!1 &406826120
 GameObject:
   m_ObjectHideFlags: 0
