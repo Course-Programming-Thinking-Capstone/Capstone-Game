@@ -1,5 +1,7 @@
+using MainScene.MainPopup;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace MainScene
@@ -13,6 +15,16 @@ namespace MainScene
         [SerializeField] private TextMeshProUGUI userLevel;
         [SerializeField] private TextMeshProUGUI userProcess;
         [SerializeField] private Slider userProcessSlider;
+        [Header("MainMenu Button")]
+        [SerializeField] private Button playButton;
+        [SerializeField] private Button shopButton;
+        [SerializeField] private Button inventoryButton;
+        [SerializeField] private Button settingButton;
+        [Header("Layout")]
+        [SerializeField] private StageSelect stagePopup;
+        [SerializeField] private LevelSelect levelPopup;
+
+        #region MAIN MENU
 
         public void SetDisplayUserCoin(int value)
         {
@@ -39,5 +51,57 @@ namespace MainScene
             userProcess.text = value;
             userProcessSlider.value = fillValue > 1 ? 1 : fillValue;
         }
+
+        #endregion
+
+        #region Init
+
+        public void InitializedMain(
+            UnityAction playCallBack,
+            UnityAction shopCallBack,
+            UnityAction inventCallBack,
+            UnityAction settingCallBack)
+        {
+            playButton.onClick.AddListener(playCallBack);
+            shopButton.onClick.AddListener(shopCallBack);
+            inventoryButton.onClick.AddListener(inventCallBack);
+            settingButton.onClick.AddListener(settingCallBack);
+        }
+
+        public void InitializeStage()
+        {
+            stagePopup.Initialized();
+        }
+
+        public void InitializeLevel()
+        {
+            levelPopup.Initialized();
+        }
+
+        #endregion
+
+        #region OPEN/CLOSE POPUP
+
+        public void CloseAllPopup()
+        {
+            stagePopup.gameObject.SetActive(false);
+            levelPopup.gameObject.SetActive(false);
+        }
+
+        public void OpenStage(int coin, int gem)
+        {
+            CloseAllPopup();
+            stagePopup.SetWallet(coin, gem);
+            stagePopup.gameObject.SetActive(true);
+        }
+
+        public void OpenLevel(int coin, int gem)
+        {
+            CloseAllPopup();
+            levelPopup.SetWallet(coin, gem);
+            levelPopup.gameObject.SetActive(true);
+        }
+
+        #endregion
     }
 }

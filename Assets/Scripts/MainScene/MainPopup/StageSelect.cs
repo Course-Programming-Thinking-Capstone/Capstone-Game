@@ -11,17 +11,17 @@ namespace MainScene.MainPopup
         [SerializeField] private Button backButton;
         [SerializeField] private TextMeshProUGUI coinTxt;
         [SerializeField] private TextMeshProUGUI diamondTxt;
-        [SerializeField] private GameObject modelGenerated;
 
-        
-        public void Initialized(List<Sprite> stageImages)
+        public void Initialized()
         {
             homeButton.onClick.AddListener(Close);
             backButton.onClick.AddListener(Close);
-            foreach (var item in stageImages)
-            {
-                
-            }
+        }
+
+        public void SetWallet(int coin, int diamond)
+        {
+            coinTxt.text = coin.ToString();
+            diamondTxt.text = diamond.ToString();
         }
     }
 }

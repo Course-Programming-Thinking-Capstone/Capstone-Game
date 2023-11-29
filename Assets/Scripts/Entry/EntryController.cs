@@ -71,15 +71,11 @@ namespace Entry
 
                 // --------------------------- Audio ---------------------------------
                 // Set Volume
-                playerService.OnMusicVolumeChange = audioService.SetMusicVolume;
-                playerService.OnSoundVolumeChange = audioService.SetSoundVolume;
+ 
 
-                playerService.OnVibrateChange = audioService.SetVibrate;
-
-                audioService.MusicVolume = playerService.GetMusicVolume();
-                audioService.SoundVolume = playerService.GetSoundVolume();
-
-                audioService.VibrateOn = playerService.GetVibrate();
+                audioService.MusicVolume = 1f;
+                audioService.SoundVolume = 1f;
+                audioService.VibrateOn = true;
 
                 audioService.MusicOn = true;
                 audioService.SoundOn = true;
