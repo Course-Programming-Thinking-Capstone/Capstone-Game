@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,7 +10,8 @@ namespace MainScene.MainPopup
         [SerializeField] private Button backButton;
         [SerializeField] private TextMeshProUGUI coinTxt;
         [SerializeField] private TextMeshProUGUI diamondTxt;
-        
+        [SerializeField] private Transform contentContainer;
+
         public void Initialized()
         {
             homeButton.onClick.AddListener(Close);
@@ -22,6 +22,10 @@ namespace MainScene.MainPopup
         {
             coinTxt.text = coin.ToString();
             diamondTxt.text = diamond.ToString();
+        }
+        public void AddElement(Transform element)
+        {
+            element.SetParent(contentContainer);
         }
     }
 }

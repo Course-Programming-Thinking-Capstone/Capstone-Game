@@ -29,7 +29,13 @@ namespace MainScene
             stagePopup.AddElement(itemTf);
             itemTf.localScale = Vector3.one;
         }
-        
+
+        public void AddLevelItem(Transform itemTf)
+        {
+            levelPopup.AddElement(itemTf);
+            itemTf.localScale = Vector3.one;
+        }
+
         #region MAIN MENU
 
         public void SetDisplayUserCoin(int value)
