@@ -24,6 +24,12 @@ namespace MainScene
         [SerializeField] private StageSelect stagePopup;
         [SerializeField] private LevelSelect levelPopup;
 
+        public void AddStageItem(Transform itemTf)
+        {
+            stagePopup.AddElement(itemTf);
+            itemTf.localScale = Vector3.one;
+        }
+        
         #region MAIN MENU
 
         public void SetDisplayUserCoin(int value)

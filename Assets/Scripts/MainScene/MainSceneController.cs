@@ -1,4 +1,5 @@
 using System;
+using MainScene.Element;
 using Services;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -30,17 +31,44 @@ namespace MainScene
         private void Start()
         {
             // main 
+            InitMain();
+
+            // popup
+            view.InitializeLevel();
+            view.InitializeStage();
+
+            // Create State
+            InitStageLevel();
+        }
+
+        #region Initialized
+
+        private void InitMain()
+        {
             view.InitializedMain(OnClickPlay, OnClickShop, OnClickInventory, OnClickSetting);
             view.SetDisplayUserCoin(playerService.UserCoin);
             view.SetDisplayUserDiamond(playerService.UserDiamond);
             view.SetDisplayUserName("Denk");
             view.SetDisplayUserProcess("50 / 100", 0.5f);
             view.SetDisplayUserLevel(68);
-
-            // popup
-            view.InitializeLevel();
-            view.InitializeStage();
         }
+
+        private void InitStageLevel()
+        {
+            var modelStateObj = model.StageData.ModelPrefab;
+            for (int i = 0; i < model.StageData.StageItemData.Count; i++)
+            {
+                var item = model.StageData.StageItemData[i];
+                var obj = Instantiate(modelStateObj);
+                var itemStage = obj.GetComponent<StageItem>();
+                itemStage.Initialized(item.render, item.detail, () => { OnClickStage(i); });
+                view.AddStageItem(obj.transform);
+            }
+        }
+
+        #endregion
+
+        #region CallBack
 
         private void OnClickSetting()
         {
@@ -61,5 +89,12 @@ namespace MainScene
         {
             view.OpenStage(playerService.UserCoin, playerService.UserDiamond);
         }
+
+        private void OnClickStage(int index)
+        {
+            Debug.Log("Stage: " + index);
+        }
+
+        #endregion
     }
 }

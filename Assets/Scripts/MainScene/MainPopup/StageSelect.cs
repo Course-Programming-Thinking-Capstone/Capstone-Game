@@ -11,6 +11,7 @@ namespace MainScene.MainPopup
         [SerializeField] private Button backButton;
         [SerializeField] private TextMeshProUGUI coinTxt;
         [SerializeField] private TextMeshProUGUI diamondTxt;
+        [SerializeField] private Transform contentContainer;
 
         public void Initialized()
         {
@@ -22,6 +23,11 @@ namespace MainScene.MainPopup
         {
             coinTxt.text = coin.ToString();
             diamondTxt.text = diamond.ToString();
+        }
+
+        public void AddElement(Transform element)
+        {
+            element.SetParent(contentContainer);
         }
     }
 }
