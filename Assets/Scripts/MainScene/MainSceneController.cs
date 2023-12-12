@@ -61,7 +61,8 @@ namespace MainScene
                 var item = model.StageData.StageItemData[i];
                 var obj = Instantiate(modelStateObj);
                 var itemStage = obj.GetComponent<StageItem>();
-                itemStage.Initialized(item.render, item.detail, () => { OnClickStage(i); });
+                var i1 = i;
+                itemStage.Initialized(item.render, item.detail, () => { OnClickStage(i1); });
                 view.AddStageItem(obj.transform);
             }
         }

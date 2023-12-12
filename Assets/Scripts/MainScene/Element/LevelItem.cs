@@ -1,4 +1,4 @@
-using JetBrains.Annotations;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -9,45 +9,73 @@ namespace MainScene.Element
     public class LevelItem : MonoBehaviour
     {
         [SerializeField] private GameObject[] path;
+        [SerializeField] private GameObject[] stars;
 
-        [SerializeField] private Image imageUp;
-        [SerializeField] private Image imageCenter;
-        [SerializeField] private Image imageDown;
+        [SerializeField] private GameObject unlockUp;
+        [SerializeField] private GameObject unlockCenter;
+        [SerializeField] private GameObject unlockDown;
+
+        [SerializeField] private GameObject lockedUp;
+        [SerializeField] private GameObject lockedCenter;
+        [SerializeField] private GameObject lockedDown;
+
+        [SerializeField] private List<TextMeshProUGUI> textLevel;
 
         [SerializeField] private Button btnUp;
         [SerializeField] private Button btnCenter;
         [SerializeField] private Button btnDown;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="callBackCenter"></param>
-        /// <param name="callBackUp"></param>
-        /// <param name="callBackDown"></param>
-        /// <param name="pathActive"> Left Right</param>
+        public void SetCenter(bool isLocked, int level)
+        {
+            lockedCenter.SetActive(isLocked);
+            unlockCenter.SetActive(!isLocked);
+            ChangeLevelText(level.ToString());
+        }
+
+        public void SetActiveTop(bool isLocked)
+        {
+            lockedUp.SetActive(isLocked);
+            unlockUp.SetActive(!isLocked);
+            path[0].SetActive(true);
+        }
+
+        public void SetActiveDown(bool isLocked)
+        {
+            lockedDown.SetActive(isLocked);
+            unlockDown.SetActive(!isLocked);
+            path[1].SetActive(true);
+        }
+
+        public void ChangeLevelText(string txt)
+        {
+            foreach (var item in textLevel)
+            {
+                item.text = txt;
+            }
+        }
+
         public void Initialized(
-            Sprite spriteCenter
-            , UnityAction callBackCenter, UnityAction callBackUp, UnityAction callBackDown
-            , bool[] pathActive
+            UnityAction callBackCenter, UnityAction callBackUp, UnityAction callBackDown,
+            int level,
+            bool isCenterLocker, bool isRight, bool isLeft, int star = 0
         )
         {
             btnUp.onClick.AddListener(callBackUp);
             btnCenter.onClick.AddListener(callBackCenter);
             btnDown.onClick.AddListener(callBackDown);
 
-            imageCenter.sprite = spriteCenter;
-            path[0].SetActive(pathActive[0]);
-            btnUp.gameObject.SetActive(pathActive[0]);
+            path[2].SetActive(!isLeft);
+            path[3].SetActive(!isRight);
 
-            path[1].SetActive(pathActive[1]);
-            btnDown.gameObject.SetActive(pathActive[1]);
-            
-            path[2].SetActive(pathActive[2]);
-            path[3].SetActive(pathActive[3]);
+            SetCenter(isCenterLocker, level);
 
-            imageUp.SetNativeSize();
-            imageCenter.SetNativeSize();
-            imageDown.SetNativeSize();
+            if (star != 0)
+            {
+                for (int i = 0; i < star; i++)
+                {
+                    stars[i].SetActive(true);
+                }
+            }
         }
     }
 }
