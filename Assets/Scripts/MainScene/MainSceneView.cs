@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using MainScene.MainPopup;
 using TMPro;
 using UnityEngine;
@@ -22,7 +23,10 @@ namespace MainScene
         [SerializeField] private Button settingButton;
         [Header("Layout")]
         [SerializeField] private StageSelect stagePopup;
-        [SerializeField] private LevelSelect levelPopup;
+        [SerializeField] private List<LevelSelect> levelPopup;
+
+        [SerializeField] private Transform popupContainer;
+        [SerializeField] private GameObject levelSelectPrefab;
 
         public void AddStageItem(Transform itemTf)
         {
@@ -30,9 +34,9 @@ namespace MainScene
             itemTf.localScale = Vector3.one;
         }
 
-        public void AddLevelItem(Transform itemTf)
+        public void AddLevelItem(Transform itemTf, int index)
         {
-            levelPopup.AddElement(itemTf);
+            levelPopup[index].AddElement(itemTf);
             itemTf.localScale = Vector3.one;
         }
 
@@ -80,14 +84,20 @@ namespace MainScene
             settingButton.onClick.AddListener(settingCallBack);
         }
 
-        public void InitializeStage()
+        public void InitializeStage(UnityAction closeAll)
         {
-            stagePopup.Initialized();
+            stagePopup.Initialized(closeAll);
         }
 
-        public void InitializeLevel()
+        public void InitializeLevel(int numberOfStage, UnityAction closeAll)
         {
-            levelPopup.Initialized();
+            for (int i = 0; i < numberOfStage; i++)
+            {
+                var objTf = Instantiate(levelSelectPrefab, popupContainer).transform;
+                var script = objTf.GetComponent<LevelSelect>();
+                script.Initialized(closeAll);
+                levelPopup.Add(script);
+            }
         }
 
         #endregion
@@ -97,21 +107,22 @@ namespace MainScene
         public void CloseAllPopup()
         {
             stagePopup.gameObject.SetActive(false);
-            levelPopup.gameObject.SetActive(false);
+            foreach (var item in levelPopup)
+            {
+                item.gameObject.SetActive(false);
+            }
         }
 
         public void OpenStage(int coin, int gem)
         {
-            CloseAllPopup();
             stagePopup.SetWallet(coin, gem);
             stagePopup.gameObject.SetActive(true);
         }
 
-        public void OpenLevel(int coin, int gem)
+        public void OpenLevel(int coin, int gem, int stage)
         {
-            CloseAllPopup();
-            levelPopup.SetWallet(coin, gem);
-            levelPopup.gameObject.SetActive(true);
+            levelPopup[stage].SetWallet(coin, gem);
+            levelPopup[stage].gameObject.SetActive(true);
         }
 
         #endregion

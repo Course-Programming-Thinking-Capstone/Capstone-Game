@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace MainScene.MainPopup
@@ -13,9 +14,9 @@ namespace MainScene.MainPopup
         [SerializeField] private TextMeshProUGUI diamondTxt;
         [SerializeField] private Transform contentContainer;
 
-        public void Initialized()
+        public void Initialized(UnityAction closeAll)
         {
-            homeButton.onClick.AddListener(Close);
+            homeButton.onClick.AddListener(closeAll);
             backButton.onClick.AddListener(Close);
         }
 

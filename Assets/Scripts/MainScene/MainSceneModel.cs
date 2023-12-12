@@ -7,6 +7,7 @@ namespace MainScene
     {
         [SerializeField] private StageData stageData;
 
+
         public StageData StageData => stageData;
     }
     

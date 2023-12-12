@@ -34,8 +34,8 @@ namespace MainScene
             InitMain();
 
             // popup
-            view.InitializeLevel();
-            view.InitializeStage();
+            view.InitializeLevel(model.StageData.StageItemData.Count, OnClickHome);
+            view.InitializeStage(OnClickHome);
 
             // Create State
             InitStageLevel();
@@ -71,6 +71,11 @@ namespace MainScene
 
         #region CallBack
 
+        private void OnClickHome()
+        {
+            view.CloseAllPopup();
+        }
+
         private void OnClickSetting()
         {
             Debug.Log("Setting");
@@ -93,7 +98,7 @@ namespace MainScene
 
         private void OnClickStage(int index)
         {
-            Debug.Log("Stage: " + index);
+            view.OpenLevel(playerService.UserCoin, playerService.UserDiamond, index);
         }
 
         #endregion
