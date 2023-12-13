@@ -15,4 +15,5 @@ MonoBehaviour:
   modelPrefab: {fileID: 7695556450326528243, guid: 64536b1dd9cbc3640b0feb12f0fe8156, type: 3}
   stageItemData:
   - render: {fileID: 21300000, guid: 487bc7e5b504e0d43b0ca82869f765cd, type: 3}
-    detail: Demo1
+    detail: TheMaze
+    dataLevel: {fileID: 11400000, guid: 6d77106916db9ff4385451f114692bc6, type: 2}

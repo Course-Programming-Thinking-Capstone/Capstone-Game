@@ -38,7 +38,7 @@ namespace MainScene
             view.InitializeStage(OnClickHome);
 
             // Create State
-            InitStageLevel();
+            InitStage();
         }
 
         #region Initialized
@@ -53,7 +53,7 @@ namespace MainScene
             view.SetDisplayUserLevel(68);
         }
 
-        private void InitStageLevel()
+        private void InitStage()
         {
             var modelStateObj = model.StageData.ModelPrefab;
             for (int i = 0; i < model.StageData.StageItemData.Count; i++)
@@ -62,14 +62,27 @@ namespace MainScene
                 var obj = Instantiate(modelStateObj);
                 var itemStage = obj.GetComponent<StageItem>();
                 var i1 = i;
-                itemStage.Initialized(item.render, item.detail, () => { OnClickStage(i1); });
+                itemStage.Initialized(item.Render, item.Detail, () => { OnClickStage(i1); });
                 view.AddStageItem(obj.transform);
+            }
+        }
+
+        private void InitLevel()
+        {
+            var modelStateObj = model.StageData.ModelPrefab;
+            for (int i = 0; i < model.StageData.StageItemData.Count; i++)
+            {
+                var item = model.StageData.StageItemData[i];
             }
         }
 
         #endregion
 
         #region CallBack
+
+        private void OnClickLevel(int stageIndex, int levelIndex)
+        {
+        }
 
         private void OnClickHome()
         {
