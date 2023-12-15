@@ -25,5 +25,8 @@ namespace MainScene.Data
         // setting level
         [SerializeField] private int goldBonus;
         [SerializeField] private int gemBonus;
+
+        public int GoldBonus => goldBonus;
+        public int GemBonus => gemBonus;
     }
 }

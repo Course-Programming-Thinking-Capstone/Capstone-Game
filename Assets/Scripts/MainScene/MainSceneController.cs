@@ -39,6 +39,7 @@ namespace MainScene
 
             // Create State
             InitStage();
+            InitLevel();
         }
 
         #region Initialized
@@ -69,10 +70,30 @@ namespace MainScene
 
         private void InitLevel()
         {
-            var modelStateObj = model.StageData.ModelPrefab;
+            view.InitializeLevel(model.StageData.StageItemData.Count, OnClickHome);
             for (int i = 0; i < model.StageData.StageItemData.Count; i++)
             {
-                var item = model.StageData.StageItemData[i];
+                var listlevel = model.StageData.StageItemData[i].DataLevel;
+                for (int j = 0; j < listlevel.LevelItemData.Count; j++)
+                {
+                    var modelStateObj = listlevel.ModelPrefab;
+                    var obj = Instantiate(modelStateObj);
+                    var itemStage = obj.GetComponent<LevelItem>();
+                    var i1 = i;
+                    itemStage.Initialized(null, null, null,
+                        j, true, j == listlevel.LevelItemData.Count - 1, j == 0);
+                    if (listlevel.LevelItemData[j].GemBonus != 0)
+                    {
+                        itemStage.SetActiveTop(true);
+                    }
+
+                    if (listlevel.LevelItemData[j].GoldBonus != 0)
+                    {
+                        itemStage.SetActiveTop(true);
+                    }
+
+                    view.AddLevelItem(obj.transform, j);
+                }
             }
         }
 
