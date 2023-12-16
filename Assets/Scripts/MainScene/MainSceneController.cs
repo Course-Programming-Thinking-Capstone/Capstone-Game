@@ -70,7 +70,6 @@ namespace MainScene
 
         private void InitLevel()
         {
-            view.InitializeLevel(model.StageData.StageItemData.Count, OnClickHome);
             for (int i = 0; i < model.StageData.StageItemData.Count; i++)
             {
                 var listlevel = model.StageData.StageItemData[i].DataLevel;
@@ -79,12 +78,11 @@ namespace MainScene
                     var modelStateObj = listlevel.ModelPrefab;
                     var obj = Instantiate(modelStateObj);
                     var itemStage = obj.GetComponent<LevelItem>();
-                    var i1 = i;
                     itemStage.Initialized(null, null, null,
                         j, true, j == listlevel.LevelItemData.Count - 1, j == 0);
                     if (listlevel.LevelItemData[j].GemBonus != 0)
                     {
-                        itemStage.SetActiveTop(true);
+                        itemStage.SetActiveDown(true);
                     }
 
                     if (listlevel.LevelItemData[j].GoldBonus != 0)
@@ -92,7 +90,7 @@ namespace MainScene
                         itemStage.SetActiveTop(true);
                     }
 
-                    view.AddLevelItem(obj.transform, j);
+                    view.AddLevelItem(obj.transform, i);
                 }
             }
         }
