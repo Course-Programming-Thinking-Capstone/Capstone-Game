@@ -3,6 +3,7 @@ using MainScene.Element;
 using Services;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Utilities;
 
 namespace MainScene
 {
@@ -79,7 +80,7 @@ namespace MainScene
                     var obj = Instantiate(modelStateObj);
                     var itemStage = obj.GetComponent<LevelItem>();
                     itemStage.Initialized(null, null, null,
-                        j+1, true, j == listlevel.LevelItemData.Count - 1, j == 0);
+                        j + 1, true, j == listlevel.LevelItemData.Count - 1, j == 0);
                     if (listlevel.LevelItemData[j].GemBonus != 0)
                     {
                         itemStage.SetActiveDown(true);
@@ -110,17 +111,26 @@ namespace MainScene
 
         private void OnClickSetting()
         {
-            Debug.Log("Setting");
+            var newParam = PopupHelpers.PassParamPopup();
+            newParam.SaveObject<string>("Title", "Error: Setting not implement");
+            newParam.SaveObject<string>("Detail", "Chức năng này chưa được hiện thực");
+            PopupHelpers.Show(Constants.ErrorPopup);
         }
 
         private void OnClickInventory()
         {
-            Debug.Log("Invent");
+            var newParam = PopupHelpers.PassParamPopup();
+            newParam.SaveObject<string>("Title", "Error: Inventory not implement");
+            newParam.SaveObject<string>("Detail", "Chức năng này chưa được hiện thực");
+            PopupHelpers.Show(Constants.ErrorPopup);
         }
 
         private void OnClickShop()
         {
-            Debug.Log("Shop");
+            var newParam = PopupHelpers.PassParamPopup();
+            newParam.SaveObject<string>("Title", "Error: Shop not implement");
+            newParam.SaveObject<string>("Detail", "Chức năng này chưa được hiện thực");
+            PopupHelpers.Show(Constants.ErrorPopup);
         }
 
         private void OnClickPlay()

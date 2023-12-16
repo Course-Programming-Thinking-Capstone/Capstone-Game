@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Entry.unity
     guid: f4a3b086e4ec793429fe80c610604ad0
+  - enabled: 1
+    path: Assets/Scenes/GenericPopups/ErrorPopup.unity
+    guid: 7bcd90b947c4abc48ac3ac4cfd91478c
   m_configObjects: {}

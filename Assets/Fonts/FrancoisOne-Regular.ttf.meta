@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 7eaa878944139ec44b4988d1e0e79b73
+guid: 576a963b6478dd245a094b3d681f470a
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Rowdies
+  - Francois One
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
