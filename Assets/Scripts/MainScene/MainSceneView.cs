@@ -36,8 +36,6 @@ namespace MainScene
 
         public void AddLevelItem(Transform itemTf, int index)
         {
-            Debug.Log(index);
-            Debug.Log(levelPopup.Count);
             levelPopup[index].AddElement(itemTf);
             itemTf.localScale = Vector3.one;
         }

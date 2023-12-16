@@ -79,7 +79,7 @@ namespace MainScene
                     var obj = Instantiate(modelStateObj);
                     var itemStage = obj.GetComponent<LevelItem>();
                     itemStage.Initialized(null, null, null,
-                        j, true, j == listlevel.LevelItemData.Count - 1, j == 0);
+                        j+1, true, j == listlevel.LevelItemData.Count - 1, j == 0);
                     if (listlevel.LevelItemData[j].GemBonus != 0)
                     {
                         itemStage.SetActiveDown(true);
