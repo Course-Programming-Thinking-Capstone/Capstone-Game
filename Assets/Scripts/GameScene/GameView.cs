@@ -7,6 +7,28 @@ namespace GameScene
 {
     public class GameView : MonoBehaviour
     {
+        [Header("Ground generation")]
+        [SerializeField] private Transform startGroundPosition;
+        [SerializeField] private Transform blockContainer;
+
+        public void InitGroundBoard(List<Transform> groundItems, Vector2 board, float offSet)
+        {
+            var sizeY =(int) board.y;
+            var sizeX = (int)board.x;
+            for (int i = 0; i < sizeY; i++) // vertical
+            {
+                for (int j = 0; j < sizeX; j++) // horizontal
+                {
+                    var positionNew = startGroundPosition.position;
+                    positionNew.x += offSet * j;
+                    positionNew.y += offSet * i;
+                    groundItems[i * sizeX + j].position = positionNew;
+                    groundItems[i * sizeX + j].SetParent(blockContainer);
+                }
+            }
+        }
+
+        [Header("Game references")]
         [SerializeField] private Transform selectorContainer;
         [SerializeField] private Transform selectedContainer;
         [SerializeField] private RectTransform playZone;

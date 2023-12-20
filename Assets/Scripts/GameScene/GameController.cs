@@ -80,7 +80,13 @@ namespace GameScene
 
             // Init view
             view.InitBoard(boardSize);
+            var listBoard = new List<Transform>();
+            for (int i = 0; i < boardSize.x * boardSize.y; i++)
+            {
+                listBoard.Add(Instantiate(model.CellModel).transform);
+            }
 
+            view.InitGroundBoard(listBoard, boardSize, model.BlockOffset);
             // Init Candy
             candy = Instantiate(model.CandyModel).GetComponent<Candy>();
             candy.Init(model.CandySprites[Random.Range(0, model.CandySprites.Count)]);

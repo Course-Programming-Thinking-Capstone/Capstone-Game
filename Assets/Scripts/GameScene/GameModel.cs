@@ -12,12 +12,16 @@ namespace GameScene
         [SerializeField] private List<Sprite> candySprites;
         [SerializeField] private GameObject playerModel;
         [SerializeField] private GameObject candyModel;
+        [SerializeField] private GameObject cellModel;
         [SerializeField] private float playerMoveTime;
+        [SerializeField] private float blockOffset;
 
         public GameObject PlayerModel => playerModel;
         public float PlayerMoveTime => playerMoveTime;
+        public float BlockOffset => blockOffset;
         public List<Sprite> CandySprites => candySprites;
         public GameObject CandyModel => candyModel;
+        public GameObject CellModel => cellModel;
 
         public GameObject GetSelector(SelectType selectType)
         {
