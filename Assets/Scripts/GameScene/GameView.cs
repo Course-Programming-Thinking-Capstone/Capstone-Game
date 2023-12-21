@@ -37,16 +37,13 @@ namespace GameScene
             playerRectTransform = playerTransform;
             playerBasePosition = playerPos;
             playerTransform.SetParent(container);
+            playerTransform.rotation = Quaternion.Euler(0, 180, 0);
             playerTransform.position = GetPositionFromBoard(playerPos);
         }
 
         public void InitTargetPosition(Transform target, Vector2 objPosition)
         {
             target.SetParent(container);
-
-            // var playerPosToSet = lefBottomSize;
-            // playerPosToSet.x += cellXSize * (playerPos.x - 0.4f);
-            // playerPosToSet.y += cellYSize * (playerPos.y - 0.5f);
             target.position = GetPositionFromBoard(objPosition);
         }
 
@@ -120,18 +117,18 @@ namespace GameScene
 
         public void MovePlayer(List<SelectType> selectTypes, float moveTime, UnityAction onFail)
         {
-            int currentStep = 0;
+            var currentStep = 0;
             if (!playerSkeleton)
             {
                 playerSkeleton = playerRectTransform.GetComponent<SkeletonAnimation>();
             }
 
-            MoveToNextStep(selectTypes, playerBasePosition, playerRectTransform.rotation, currentStep, moveTime);
+            MoveToNextStep(selectTypes, playerBasePosition, playerRectTransform.rotation, currentStep, moveTime,
+                onFail);
         }
 
         private void MoveToNextStep(List<SelectType> selectTypes, Vector2 currentPosition, Quaternion currentRotation,
-            int currentStep,
-            float moveTime)
+            int currentStep, float moveTime, UnityAction onFail)
         {
             if (currentStep < selectTypes.Count)
             {
@@ -166,14 +163,24 @@ namespace GameScene
                 }
 
                 var nextPosition = currentPosition + moveDirection;
+                if (nextPosition.x > boardSize.x || nextPosition.y > boardSize.y)
+                {
+                    onFail.Invoke();
+                }
+
                 Vector2 targetPosition = GetPositionFromBoard(nextPosition);
 
                 Sequence sequence = DOTween.Sequence();
+
                 sequence.Append(playerRectTransform.DOMove(targetPosition, moveTime));
-                sequence.Join(playerRectTransform.DORotateQuaternion(targetRotation, moveTime / 2));
+                if (currentRotation != targetRotation)
+                {
+                    sequence.Join(playerRectTransform.DORotateQuaternion(targetRotation, moveTime / 2));
+                }
+
                 sequence.OnComplete(() =>
                 {
-                    MoveToNextStep(selectTypes, nextPosition, targetRotation, currentStep + 1, moveTime);
+                    MoveToNextStep(selectTypes, nextPosition, targetRotation, currentStep + 1, moveTime, onFail);
                 });
             }
             else
@@ -181,57 +188,6 @@ namespace GameScene
                 playerSkeleton.AnimationState.SetAnimation(0, idleAnimation, true);
             }
         }
-
-        // private void MoveToNextStep(List<SelectType> selectTypes, Vector2 currentPosition, Quaternion currentRotation,
-        //     int currentStep, float moveTime)
-        // {
-        //     if (currentStep < selectTypes.Count)
-        //     {
-        //         Vector2 moveDirection = Vector2.zero;
-        //         Quaternion targetRotation = currentRotation;
-        //
-        //         switch (selectTypes[currentStep])
-        //         {
-        //             case SelectType.None:
-        //                 break;
-        //             case SelectType.Up:
-        //                 playerSkeleton.AnimationState.SetAnimation(0, moveAnimation, true);
-        //                 moveDirection = Vector2.up * cellYSize;
-        //                 break;
-        //             case SelectType.Down:
-        //                 playerSkeleton.AnimationState.SetAnimation(0, moveAnimation, true);
-        //                 moveDirection = Vector2.down * cellYSize;
-        //                 break;
-        //             case SelectType.Left:
-        //                 playerSkeleton.AnimationState.SetAnimation(0, moveAnimation, true);
-        //                 moveDirection = Vector2.left * cellXSize;
-        //                 targetRotation = Quaternion.Euler(0, 0, 0);
-        //                 break;
-        //             case SelectType.Right:
-        //                 playerSkeleton.AnimationState.SetAnimation(0, moveAnimation, true);
-        //                 moveDirection = Vector2.right * cellXSize;
-        //                 targetRotation = Quaternion.Euler(0, 180, 0);
-        //                 break;
-        //             case SelectType.Collect:
-        //                 playerSkeleton.AnimationState.SetAnimation(0, collectAnimation, true);
-        //                 moveDirection = Vector2.zero; // not move
-        //                 break;
-        //         }
-        //
-        //         Vector2 targetPosition = currentPosition + moveDirection;
-        //         Sequence sequence = DOTween.Sequence();
-        //         sequence.Append(playerRectTransform.DOMove(targetPosition, moveTime));
-        //         sequence.Join(playerRectTransform.DORotateQuaternion(targetRotation, moveTime / 2));
-        //         sequence.OnComplete(() =>
-        //         {
-        //             MoveToNextStep(selectTypes, targetPosition, targetRotation, currentStep + 1, moveTime);
-        //         });
-        //     }
-        //     else
-        //     {
-        //         playerSkeleton.AnimationState.SetAnimation(0, idleAnimation, true);
-        //     }
-        // }
 
         private Vector2 GetPositionFromBoard(Vector2 position)
         {
