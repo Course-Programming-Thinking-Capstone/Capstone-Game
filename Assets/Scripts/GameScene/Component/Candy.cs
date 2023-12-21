@@ -7,7 +7,7 @@ namespace GameScene.Component
     {
         public void Init(Sprite candySprite)
         {
-            GetComponent<Image>().sprite = candySprite;
+            GetComponent<SpriteRenderer>().sprite = candySprite;
         }
     }
 }

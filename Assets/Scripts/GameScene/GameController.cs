@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,8 +5,8 @@ using GameScene.Component;
 using JetBrains.Annotations;
 using Services;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
-using Random = UnityEngine.Random;
 
 namespace GameScene
 {
@@ -79,7 +78,7 @@ namespace GameScene
             playButton.onClick.AddListener(OnClickPlay);
 
             // Init view
-            view.InitBoard(boardSize);
+
             var listBoard = new List<Transform>();
             for (int i = 0; i < boardSize.x * boardSize.y; i++)
             {
@@ -90,12 +89,12 @@ namespace GameScene
             // Init Candy
             candy = Instantiate(model.CandyModel).GetComponent<Candy>();
             candy.Init(model.CandySprites[Random.Range(0, model.CandySprites.Count)]);
-            view.InitCandyPosition(candy.GetComponent<RectTransform>(), targetPosition);
+            view.InitTargetPosition(candy.GetComponent<Transform>(), targetPosition);
 
             // Init player
             player = Instantiate(model.PlayerModel);
             playerPosition = startPosition;
-            view.InitPlayerPosition(player.GetComponent<RectTransform>(), startPosition);
+            view.InitPlayerPosition(player.GetComponent<Transform>(), startPosition);
         }
 
         #endregion
@@ -157,8 +156,8 @@ namespace GameScene
             storeSelected.Clear();
 
             // Reset player position and candy
-            view.InitPlayerPosition(player.GetComponent<RectTransform>(), startPosition);
-            view.InitCandyPosition(candy.GetComponent<RectTransform>(), targetPosition);
+            view.InitPlayerPosition(player.GetComponent<Transform>(), startPosition);
+            view.InitTargetPosition(candy.GetComponent<Transform>(), targetPosition);
         }
 
         #region Calulate func
@@ -296,7 +295,7 @@ namespace GameScene
             var isWin = CheckWin();
             view.MovePlayer(
                 storeSelected.Select(o => o.SelectType).ToList()
-                , model.PlayerMoveTime);
+                , model.PlayerMoveTime, OnMoveFail);
 
             await Task.Delay((int)(model.PlayerMoveTime * storeSelected.Count * 1000));
             if (isWin)
@@ -305,12 +304,16 @@ namespace GameScene
             }
             else
             {
-                Debug.Log("FAIL");
                 ResetGame();
                 playButton.interactable = true;
             }
         }
 
+
+        private void OnMoveFail()
+        {
+            
+        }
         #endregion
     }
 }
