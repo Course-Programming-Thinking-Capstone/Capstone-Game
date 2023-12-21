@@ -309,11 +309,10 @@ namespace GameScene
             }
         }
 
-
         private void OnMoveFail()
         {
-            
         }
+
         #endregion
     }
 }

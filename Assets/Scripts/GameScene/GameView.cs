@@ -133,7 +133,7 @@ namespace GameScene
             if (currentStep < selectTypes.Count)
             {
                 var moveDirection = Vector2.zero;
-                var targetRotation = Quaternion.identity;
+                var targetRotation = currentRotation;
                 switch (selectTypes[currentStep])
                 {
                     case SelectType.None:
