@@ -7,6 +7,7 @@ namespace Utilities
     public enum ActionType
     {
         YesOption,
+        AdsOption,
         NoOption,
         QuitOption,
         InfoOption,

@@ -6,7 +6,9 @@ using JetBrains.Annotations;
 using Services;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Utilities;
 
 namespace GameScene
 {
@@ -301,6 +303,7 @@ namespace GameScene
             if (isWin)
             {
                 candy.gameObject.SetActive(false);
+                ShowWinPopup(3, 100, 100);
             }
             else
             {
@@ -313,6 +316,30 @@ namespace GameScene
         {
         }
 
+        private void OnClickClaim()
+        {
+        }
+
+        private void OnClickClaimAds()
+        {
+        }
+
+        private void OnClickExit()
+        {
+            SceneManager.LoadScene(Constants.MainMenu);
+        }
+
         #endregion
+
+        public void ShowWinPopup(int numOfStar, int coinReward, int gemReward)
+        {
+            var param = PopupHelpers.PassParamPopup();
+            param.SaveObject("Coin", coinReward);
+            param.SaveObject("Gem", gemReward);
+            param.AddAction(ActionType.YesOption, OnClickClaim);
+            param.AddAction(ActionType.AdsOption, OnClickClaimAds);
+            param.AddAction(ActionType.QuitOption, OnClickExit);
+            PopupHelpers.Show(Constants.WinPopup);
+        }
     }
 }
