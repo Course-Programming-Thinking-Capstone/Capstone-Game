@@ -25,8 +25,15 @@ namespace MainScene.Data
         // setting level
         [SerializeField] private int goldBonus;
         [SerializeField] private int gemBonus;
-
+        [SerializeField] private List<LevelReward> levelReward;
         public int GoldBonus => goldBonus;
         public int GemBonus => gemBonus;
+    }
+
+    [Serializable]
+    public class LevelReward
+    {
+        [SerializeField] private Enums.RewardType rewardType;
+        [SerializeField] private int value;
     }
 }

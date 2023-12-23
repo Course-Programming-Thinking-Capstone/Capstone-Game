@@ -16,13 +16,43 @@ MonoBehaviour:
   levelItemData:
   - goldBonus: 0
     gemBonus: 0
+    levelReward:
+    - rewardType: 0
+      value: 10
+    - rewardType: 1
+      value: 10
   - goldBonus: 100
     gemBonus: 0
+    levelReward:
+    - rewardType: 0
+      value: 15
+    - rewardType: 1
+      value: 15
   - goldBonus: 0
     gemBonus: 100
+    levelReward:
+    - rewardType: 0
+      value: 20
+    - rewardType: 1
+      value: 20
   - goldBonus: 100
     gemBonus: 100
+    levelReward:
+    - rewardType: 0
+      value: 25
+    - rewardType: 1
+      value: 25
   - goldBonus: 0
     gemBonus: 0
+    levelReward:
+    - rewardType: 0
+      value: 30
+    - rewardType: 1
+      value: 30
   - goldBonus: 0
     gemBonus: 100
+    levelReward:
+    - rewardType: 0
+      value: 50
+    - rewardType: 0
+      value: 50
