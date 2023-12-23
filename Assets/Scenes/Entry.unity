@@ -658,6 +658,7 @@ MonoBehaviour:
   tosURL: https://abigames.com.vn/ct-terms-of-service/
   privacyURL: https://abigames.com.vn/policy/
   rateURL: https://play.google.com/store/apps/details?id=game.onechain.galaxystacky
+  stageData: {fileID: 11400000, guid: 5abd8b63fa0d757459e99c26df1b65ae, type: 2}
   interstitialIdAndroid: ca-app-pub-3940256099942544/1033173712
   bannerIdAndroid: ca-app-pub-3940256099942544/6300978111
   rewardedIdAndroid: ca-app-pub-9592829727324480/8592851719

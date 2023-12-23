@@ -76,6 +76,13 @@ namespace MainScene.Element
                     stars[i].SetActive(true);
                 }
             }
+            else
+            {
+                foreach (var item in stars)
+                {
+                    item.SetActive(false);
+                }
+            }
         }
     }
 }

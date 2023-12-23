@@ -9,20 +9,49 @@ namespace Services
         private const char Break = '~';
         private const string UserCoinKey = "uck";
         private const string UserDiamondKey = "udk";
+        private const string UserCurrentLevelKey = "uclk";
+        private const string HistoryStarKey = "hsk";
 
         public int UserCoin { get; set; }
         public int UserDiamond { get; set; }
+        public List<int> CurrentLevel { get; set; }
+
+        public List<int> GetHistoryStar(int stateIndex)
+        {
+            return GetList(HistoryStarKey + stateIndex, new List<int>());
+        }
+
+        public void SaveHistoryStar(int stateIndex, List<int> newData)
+        {
+            SaveList(HistoryStarKey + stateIndex, newData);
+        }
+
+        public void SaveHistoryStar(int stateIndex, int saveIndex, int newData)
+        {
+            var current = GetHistoryStar(stateIndex);
+            current[saveIndex] = newData;
+            SaveList(HistoryStarKey + stateIndex, current);
+        }
+
+        public void AddHistoryStar(int stateIndex, int newData)
+        {
+            var current = GetHistoryStar(stateIndex);
+            current.Add(newData);
+            SaveList(HistoryStarKey + stateIndex, current);
+        }
 
         public void LoadData()
         {
             UserCoin = PlayerPrefs.GetInt(UserCoinKey, 0);
             UserDiamond = PlayerPrefs.GetInt(UserDiamondKey, 0);
+            CurrentLevel = GetList(UserCurrentLevelKey, new List<int>());
         }
 
         public void SaveData()
         {
             PlayerPrefs.SetInt(UserCoinKey, UserCoin);
             PlayerPrefs.SetInt(UserDiamondKey, UserDiamond);
+            SaveList(UserCurrentLevelKey, CurrentLevel);
         }
 
         //       // All keys for save data in PlayerPrefs

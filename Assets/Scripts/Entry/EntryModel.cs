@@ -1,3 +1,4 @@
+using MainScene.Data;
 using UnityEngine;
 
 namespace Entry
@@ -13,7 +14,8 @@ namespace Entry
         [SerializeField] private string tosURL = "url";
         [SerializeField] private string privacyURL = "url";
         [SerializeField] private string rateURL = "url";
-
+        [SerializeField] private StageData stageData;
+        
         [Header("Android")]
         [SerializeField] private string interstitialIdAndroid = "";
         [SerializeField] private string bannerIdAndroid = "";
@@ -29,7 +31,9 @@ namespace Entry
         [SerializeField] private string rewardedInterstitialIdIOS = "";
         [SerializeField] private string mrecIdIos = "";
         [SerializeField] private string appOpenAdsIdIos = "";
-
+        
+ 
+        public StageData StageData => stageData;
         public string AppsFlyerDevKey => appsFlyerDevKey;
         public string AppsFlyerAppIdIos => appsFlyerAppIdIos;
         public string AppFlyerAppIdAndroid => appsFlyerAppIdAndroid;

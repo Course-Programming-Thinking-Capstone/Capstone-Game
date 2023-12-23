@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using MainScene.Element;
 using Services;
 using UnityEngine;
@@ -16,6 +17,8 @@ namespace MainScene
         [Header("SYSTEM")]
         private PlayerService playerService;
 
+        private List<int> currentLevel;
+
         private void Awake()
         {
             var objectService = GameObject.FindWithTag(Constants.ServicesTag);
@@ -27,6 +30,7 @@ namespace MainScene
 
             var gameServices = objectService.GetComponent<GameServices>();
             playerService = gameServices.GetService<PlayerService>();
+            currentLevel = playerService.CurrentLevel;
         }
 
         private void Start()
@@ -73,14 +77,18 @@ namespace MainScene
         {
             for (int i = 0; i < model.StageData.StageItemData.Count; i++)
             {
+                var historyLevel = playerService.GetHistoryStar(i);
                 var listlevel = model.StageData.StageItemData[i].DataLevel;
                 for (int j = 0; j < listlevel.LevelItemData.Count; j++)
                 {
                     var modelStateObj = listlevel.ModelPrefab;
                     var obj = Instantiate(modelStateObj);
                     var itemStage = obj.GetComponent<LevelItem>();
+
                     itemStage.Initialized(null, null, null,
-                        j + 1, true, j == listlevel.LevelItemData.Count - 1, j == 0);
+                        j + 1, j > currentLevel[i], j == listlevel.LevelItemData.Count - 1, j == 0,
+                        historyLevel[j]
+                    );
                     if (listlevel.LevelItemData[j].GemBonus != 0)
                     {
                         itemStage.SetActiveDown(true);
@@ -112,24 +120,24 @@ namespace MainScene
         private void OnClickSetting()
         {
             var newParam = PopupHelpers.PassParamPopup();
-            newParam.SaveObject<string>("Title", "Error: Setting not implement");
-            newParam.SaveObject<string>("Detail", "Chức năng này chưa được hiện thực");
+            newParam.SaveObject("Title", "Error: Setting not implement");
+            newParam.SaveObject("Detail", "Chức năng này chưa được hiện thực");
             PopupHelpers.Show(Constants.ErrorPopup);
         }
 
         private void OnClickInventory()
         {
             var newParam = PopupHelpers.PassParamPopup();
-            newParam.SaveObject<string>("Title", "Error: Inventory not implement");
-            newParam.SaveObject<string>("Detail", "Chức năng này chưa được hiện thực");
+            newParam.SaveObject("Title", "Error: Inventory not implement");
+            newParam.SaveObject("Detail", "Chức năng này chưa được hiện thực");
             PopupHelpers.Show(Constants.ErrorPopup);
         }
 
         private void OnClickShop()
         {
             var newParam = PopupHelpers.PassParamPopup();
-            newParam.SaveObject<string>("Title", "Error: Shop not implement");
-            newParam.SaveObject<string>("Detail", "Chức năng này chưa được hiện thực");
+            newParam.SaveObject("Title", "Error: Shop not implement");
+            newParam.SaveObject("Detail", "Chức năng này chưa được hiện thực");
             PopupHelpers.Show(Constants.ErrorPopup);
         }
 

@@ -71,7 +71,6 @@ namespace Entry
 
                 // --------------------------- Audio ---------------------------------
                 // Set Volume
- 
 
                 audioService.MusicVolume = 1f;
                 audioService.SoundVolume = 1f;
@@ -82,6 +81,23 @@ namespace Entry
 
                 audioService.StopMusic();
                 playerService.LoadData();
+     
+                if (playerService.CurrentLevel.Count == 0)
+                {
+                    var data = model.StageData.StageItemData;
+                    foreach (var item in data)
+                    {
+                        playerService.CurrentLevel.Add(0);
+                        var starList = new List<int>();
+                        foreach (var levelItem in item.DataLevel.LevelItemData)
+                        {
+                            starList.Add(0);
+                        }
+                        playerService.SaveHistoryStar(data.IndexOf(item), starList);
+                    }
+                }
+                
+                playerService.SaveData();
                 // ------------------------------------------------------------------
             }
         }
