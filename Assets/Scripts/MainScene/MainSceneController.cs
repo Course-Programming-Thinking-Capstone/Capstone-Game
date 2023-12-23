@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using MainScene.Element;
 using Services;
 using UnityEngine;
@@ -110,6 +111,15 @@ namespace MainScene
 
         private void OnClickLevel(int stageIndex, int levelIndex)
         {
+            // load game
+            var param = PopupHelpers.PassParamPopup();
+            var data = model.StageData.StageItemData[stageIndex].DataLevel.LevelItemData[levelIndex];
+
+            param.SaveObject("GoldReward", data.LevelReward.Where(o => o.RewardType == Enums.RewardType.Coin));
+            param.SaveObject("GemReward", data.LevelReward.Where(o => o.RewardType == Enums.RewardType.Gem));
+            param.SaveObject("PlayerPosition", 0);
+            param.SaveObject("TargetPosition", 0);
+            param.SaveObject("MapSize", 0);
         }
 
         private void OnClickHome()

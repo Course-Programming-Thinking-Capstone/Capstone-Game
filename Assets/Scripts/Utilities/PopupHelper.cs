@@ -18,18 +18,18 @@ namespace Utilities
 
     public static class PopupHelpers
     {
-        public static PopupParameter PassParamPopup()
+        public static Parameter PassParamPopup()
         {
             GameObject go = GameObject.FindGameObjectWithTag(Constants.ParamsTag);
             if (GameObject.FindGameObjectWithTag(Constants.ParamsTag) == null)
             {
-                GameObject paramObject = new GameObject(nameof(PopupParameter));
+                GameObject paramObject = new GameObject(nameof(Parameter));
                 paramObject.tag = Constants.ParamsTag;
-                PopupParameter popUpParameter = paramObject.AddComponent<PopupParameter>();
+                Parameter popUpParameter = paramObject.AddComponent<Parameter>();
                 return popUpParameter;
             }
 
-            return go.GetComponent<PopupParameter>();
+            return go.GetComponent<Parameter>();
         }
 
         public static void Show(string name)

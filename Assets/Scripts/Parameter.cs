@@ -7,12 +7,12 @@ public class ObjectToSave<T>
 {
     public T @object;
 }
-public class PopupParameter : MonoBehaviour
+public class Parameter : MonoBehaviour
 {
     private readonly Dictionary<ActionType, UnityAction> actionDic = new();
     private readonly Dictionary<string, string> storage = new();
     
-    public PopupParameter AddAction(ActionType type, UnityAction action, string text = null)
+    public Parameter AddAction(ActionType type, UnityAction action, string text = null)
     {
         SaveObject<string>(type.ToString(), text);
         if (!actionDic.ContainsKey(type)) actionDic.Add(type, action);
