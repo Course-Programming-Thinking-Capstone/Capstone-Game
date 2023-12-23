@@ -26,6 +26,8 @@ namespace GenericPopup
         [SerializeField] private Transform button2;
         [SerializeField] private Transform reward;
 
+        [SerializeField] private float timeAppear = 1f;
+
         private void AppearAnimation()
         {
             // header
@@ -33,7 +35,7 @@ namespace GenericPopup
             var originPos = position;
             position += Vector3.up * 100f;
             headTf.position = position;
-            headTf.DOMove(originPos, 0.5f);
+            headTf.DOMove(originPos, timeAppear);
 
             // Exit
             position = exit.position;
@@ -41,7 +43,7 @@ namespace GenericPopup
             position += Vector3.right * 100f;
 
             exit.position = position;
-            exit.DOMove(originPos, 0.5f);
+            exit.DOMove(originPos, timeAppear);
 
             // buttons
 
@@ -50,18 +52,18 @@ namespace GenericPopup
             position += Vector3.down * 100f;
 
             button1.position = position;
-            button1.DOMove(originPos, 0.5f);
+            button1.DOMove(originPos, timeAppear);
 
             position = button2.position;
             originPos = position;
             position += Vector3.down * 100f;
 
             button2.position = position;
-            button2.DOMove(originPos, 0.5f);
+            button2.DOMove(originPos, timeAppear);
 
             // Reward
             reward.localScale = Vector3.zero;
-            reward.DOScale(Vector3.one, 0.5f);
+            reward.DOScale(Vector3.one, timeAppear);
         }
 
         private void Start()
@@ -82,12 +84,11 @@ namespace GenericPopup
             exitBtn.onClick.AddListener(PopupHelpers.Close);
 
             header.text = parameter.GetObject<string>("Title");
-
             var numOfStar = parameter.GetObject<int>("NumberOfStars");
             var numOfCoin = parameter.GetObject<int>("Coin");
             var numOfGem = parameter.GetObject<int>("Gem");
 
-            if ( numOfCoin == 0)
+            if (numOfCoin == 0)
             {
                 rewardCoin.gameObject.SetActive(false);
             }
@@ -98,7 +99,7 @@ namespace GenericPopup
 
             if (numOfGem == 0)
             {
-                rewardCoin.gameObject.SetActive(false);
+                rewardGem.gameObject.SetActive(false);
             }
             else
             {

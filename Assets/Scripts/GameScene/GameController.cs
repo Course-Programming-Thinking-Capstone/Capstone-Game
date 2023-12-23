@@ -5,7 +5,6 @@ using GameScene.Component;
 using JetBrains.Annotations;
 using Services;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Utilities;
@@ -316,10 +315,17 @@ namespace GameScene
         {
         }
 
+        /// <summary>
+        /// Win popup
+        /// </summary>
         private void OnClickClaim()
         {
         }
 
+        
+        /// <summary>
+        /// Win popups
+        /// </summary>
         private void OnClickClaimAds()
         {
         }
@@ -331,11 +337,13 @@ namespace GameScene
 
         #endregion
 
-        public void ShowWinPopup(int numOfStar, int coinReward, int gemReward)
+        private void ShowWinPopup(int numOfStar, int coinReward, int gemReward)
         {
             var param = PopupHelpers.PassParamPopup();
             param.SaveObject("Coin", coinReward);
             param.SaveObject("Gem", gemReward);
+            param.SaveObject("NumberOfStars", numOfStar);
+            param.SaveObject("Title", "Stage clear!");
             param.AddAction(ActionType.YesOption, OnClickClaim);
             param.AddAction(ActionType.AdsOption, OnClickClaimAds);
             param.AddAction(ActionType.QuitOption, OnClickExit);
