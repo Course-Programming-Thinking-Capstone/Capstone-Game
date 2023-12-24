@@ -25,8 +25,14 @@ namespace MainScene.Data
         // setting level
         [SerializeField] private int goldBonus;
         [SerializeField] private int gemBonus;
+        [SerializeField] private Vector2 boardSize;
+        [SerializeField] private Vector2 playerPosition;
+        [SerializeField] private Vector2 targetPosition;
         [SerializeField] private List<LevelReward> levelReward;
         public List<LevelReward> LevelReward => levelReward;
+        public Vector2 BoardSize => boardSize;
+        public Vector2 PlayerPosition => playerPosition;
+        public Vector2 TargetPosition => targetPosition;
         public int GoldBonus => goldBonus;
         public int GemBonus => gemBonus;
     }
@@ -36,9 +42,7 @@ namespace MainScene.Data
     {
         [SerializeField] private Enums.RewardType rewardType;
         [SerializeField] private int value;
-        [SerializeField] private Vector3 boardSize;
-        [SerializeField] private Vector3 playerPosition;
-        [SerializeField] private Vector3 targetPosition;
+    
 
         public Enums.RewardType RewardType => rewardType;
         public int Value => value;

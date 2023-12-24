@@ -86,7 +86,9 @@ namespace MainScene
                     var obj = Instantiate(modelStateObj);
                     var itemStage = obj.GetComponent<LevelItem>();
 
-                    itemStage.Initialized(null, null, null,
+                    var j1 = j;
+                    var i1 = i;
+                    itemStage.Initialized(() => { OnClickLevel(i1, j1); }, null, null,
                         j + 1, j > currentLevel[i], j == listlevel.LevelItemData.Count - 1, j == 0,
                         historyLevel[j]
                     );
@@ -114,12 +116,8 @@ namespace MainScene
             // load game
             var param = PopupHelpers.PassParamPopup();
             var data = model.StageData.StageItemData[stageIndex].DataLevel.LevelItemData[levelIndex];
-
-            param.SaveObject("GoldReward", data.LevelReward.Where(o => o.RewardType == Enums.RewardType.Coin));
-            param.SaveObject("GemReward", data.LevelReward.Where(o => o.RewardType == Enums.RewardType.Gem));
-            param.SaveObject("PlayerPosition", 0);
-            param.SaveObject("TargetPosition", 0);
-            param.SaveObject("MapSize", 0);
+            param.SaveObject(ParamType.LevelData, data);
+            SceneManager.LoadScene(Constants.GamePlay);
         }
 
         private void OnClickHome()

@@ -3,21 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Utilities;
+
 public class ObjectToSave<T>
 {
     public T @object;
 }
+
+public enum ParamType
+{
+    LevelData
+}
+
 public class Parameter : MonoBehaviour
 {
     private readonly Dictionary<ActionType, UnityAction> actionDic = new();
     private readonly Dictionary<string, string> storage = new();
-    
-    public Parameter AddAction(ActionType type, UnityAction action, string text = null)
+
+    public void AddAction(ActionType type, UnityAction action, string text = null)
     {
-        SaveObject<string>(type.ToString(), text);
+        SaveObject(type.ToString(), text);
         if (!actionDic.ContainsKey(type)) actionDic.Add(type, action);
         else actionDic[type] = action;
-        return this;
     }
 
     public UnityAction GetAction(ActionType type)
@@ -25,11 +31,28 @@ public class Parameter : MonoBehaviour
         return actionDic.ContainsKey(type) ? actionDic[type] : null;
     }
 
+    public void SaveObject<T>(ParamType key, T obj)
+    {
+        var saveObject = new ObjectToSave<T>();
+        saveObject.@object = obj;
+        var jsonString = JsonUtility.ToJson(saveObject);
+        if (!storage.ContainsKey(key.ToString())) storage.Add(key.ToString(), jsonString);
+        else storage[key.ToString()] = jsonString;
+    }
+
+    public T GetObject<T>(ParamType key)
+    {
+        if (!storage.ContainsKey(key.ToString())) return default(T);
+        var jsonString = storage[key.ToString()];
+        var saveObject = JsonUtility.FromJson<ObjectToSave<T>>(jsonString);
+        return saveObject.@object;
+    }
+
     public void SaveObject<T>(string key, T obj)
     {
-        ObjectToSave<T> saveObject = new ObjectToSave<T>();
+        var saveObject = new ObjectToSave<T>();
         saveObject.@object = obj;
-        string jsonString = JsonUtility.ToJson(saveObject);
+        var jsonString = JsonUtility.ToJson(saveObject);
         if (!storage.ContainsKey(key)) storage.Add(key, jsonString);
         else storage[key] = jsonString;
     }
@@ -37,8 +60,8 @@ public class Parameter : MonoBehaviour
     public T GetObject<T>(String key)
     {
         if (!storage.ContainsKey(key)) return default(T);
-        string jsonString = storage[key];
-        ObjectToSave<T> saveObject = JsonUtility.FromJson<ObjectToSave<T>>(jsonString);
+        var jsonString = storage[key];
+        var saveObject = JsonUtility.FromJson<ObjectToSave<T>>(jsonString);
         return saveObject.@object;
     }
 

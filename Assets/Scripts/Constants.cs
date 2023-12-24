@@ -11,7 +11,7 @@ public static class Constants
     // Scenes
     public const string EntryScene = "Scenes/Entry";
     public const string MainMenu = "Scenes/MainScene/MainScene";
-    public const string GamePlay = "Scenes/GamePlay/GamePlay";
+    public const string GamePlay = "Scenes/GameScene/GameScene";
 
     // Popups
     public const string ErrorPopup = "Scenes/GenericPopups/ErrorPopup";

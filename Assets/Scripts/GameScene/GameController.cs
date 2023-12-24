@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GameScene.Component;
 using JetBrains.Annotations;
+using MainScene.Data;
 using Services;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -24,9 +25,6 @@ namespace GameScene
 
         [Header("Testing only")]
         [SerializeField] private List<SelectType> generateList;
-        [SerializeField] private Vector2 startPosition;
-        [SerializeField] private Vector2 targetPosition;
-        [SerializeField] private Vector2 boardSize;
 
         // SYSTEM
         private readonly List<Selector> storeSelector = new();
@@ -34,10 +32,14 @@ namespace GameScene
         private readonly List<Vector2> storedPosition = new();
         private bool isDelete;
         private GameObject player;
+        private LevelItemData levelData;
         private Candy candy;
         private Vector2 playerPosition;
         private float offSet = 0.2f;
         [CanBeNull] private Selector selectedObject;
+        private Vector2 targetPosition;
+        private Vector2 startPosition;
+        private Vector2 boardSize;
 
         #region INITIALIZE
 
@@ -56,6 +58,12 @@ namespace GameScene
 
         private void Start()
         {
+            var param = PopupHelpers.PassParamPopup();
+            levelData = param.GetObject<LevelItemData>(ParamType.LevelData);
+            boardSize = levelData.BoardSize;
+            targetPosition = levelData.TargetPosition;
+            startPosition = levelData.PlayerPosition;
+            
             InitScene();
         }
 
@@ -78,9 +86,13 @@ namespace GameScene
             // Play button
             playButton.onClick.AddListener(OnClickPlay);
 
+            // param
+            
+
             // Init view
 
             var listBoard = new List<Transform>();
+
             for (int i = 0; i < boardSize.x * boardSize.y; i++)
             {
                 listBoard.Add(Instantiate(model.CellModel).transform);
@@ -322,7 +334,6 @@ namespace GameScene
         {
         }
 
-        
         /// <summary>
         /// Win popups
         /// </summary>
