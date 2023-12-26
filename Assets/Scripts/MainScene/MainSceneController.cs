@@ -20,7 +20,7 @@ namespace MainScene
 
         private List<int> currentLevel;
         private int stageIndex = -1;
-        private bool openPopup ;
+        private bool openPopup;
 
         private void Awake()
         {
@@ -58,7 +58,6 @@ namespace MainScene
         }
 
         #region Initialized
-
 
         private void LoadParam()
         {
@@ -175,7 +174,8 @@ namespace MainScene
 
         private void OnClickStage(int index)
         {
-            view.OpenLevel(playerService.UserCoin, playerService.UserDiamond, index);
+            view.OpenLevel(model.StageData.StageItemData[index].Detail, playerService.UserCoin,
+                playerService.UserDiamond, index);
         }
 
         #endregion

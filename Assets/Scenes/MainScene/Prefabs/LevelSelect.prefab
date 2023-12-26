@@ -6067,7 +6067,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4037094048132156101}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -6097,6 +6097,7 @@ MonoBehaviour:
   backButton: {fileID: 8867613140405511107}
   coinTxt: {fileID: 3033936025620029032}
   diamondTxt: {fileID: 5175346116266198585}
+  nameStage: {fileID: 5607925549834605168}
   contentContainer: {fileID: 4007373229122272450}
 --- !u!1 &4606644953755734439
 GameObject:

@@ -119,8 +119,9 @@ namespace MainScene
             stagePopup.gameObject.SetActive(true);
         }
 
-        public void OpenLevel(int coin, int gem, int stage)
+        public void OpenLevel(string nameStage, int coin, int gem, int stage)
         {
+            levelPopup[stage].SetName(nameStage);
             levelPopup[stage].SetWallet(coin, gem);
             levelPopup[stage].gameObject.SetActive(true);
         }

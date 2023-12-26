@@ -11,6 +11,7 @@ namespace MainScene.MainPopup
         [SerializeField] private Button backButton;
         [SerializeField] private TextMeshProUGUI coinTxt;
         [SerializeField] private TextMeshProUGUI diamondTxt;
+        [SerializeField] private TextMeshProUGUI nameStage;
         [SerializeField] private Transform contentContainer;
 
         public void Initialized(UnityAction closeAll)
@@ -18,6 +19,11 @@ namespace MainScene.MainPopup
             homeButton.onClick.AddListener(closeAll);
             backButton.onClick.AddListener(Close);
       
+        }
+
+        public void SetName(string nameParam)
+        {
+            nameStage.text = nameParam;
         }
         public void SetWallet(int coin, int diamond)
         {
