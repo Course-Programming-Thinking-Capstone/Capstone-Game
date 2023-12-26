@@ -26,17 +26,23 @@ namespace GameScene
         [Header("Testing only")]
         [SerializeField] private List<SelectType> generateList;
 
-        // SYSTEM
+        // SERVICES
+        private PlayerService playerService;
+        // FOR CONTROL SELECTOR
         private readonly List<Selector> storeSelector = new();
         private readonly List<Selector> storeSelected = new();
         private readonly List<Vector2> storedPosition = new();
         private bool isDelete;
-        private GameObject player;
-        private LevelItemData levelData;
-        private Candy candy;
-        private Vector2 playerPosition;
         private float offSet = 0.2f;
         [CanBeNull] private Selector selectedObject;
+
+        // PLAY GROUND
+        private GameObject player;
+        private Candy candy;
+
+        // GAME DATA
+        private LevelItemData levelData;
+        private Vector2 playerPosition;
         private Vector2 targetPosition;
         private Vector2 startPosition;
         private Vector2 boardSize;
@@ -51,10 +57,11 @@ namespace GameScene
             if (GameObject.FindGameObjectWithTag(Constants.ServicesTag) != null)
             {
                 var services = GameObject.FindGameObjectWithTag(Constants.ServicesTag).GetComponent<GameServices>();
+                playerService = services.GetService<PlayerService>();
             }
             else
             {
-                //  SceneManager.LoadScene(Constants.EntryScene);
+                SceneManager.LoadScene(Constants.EntryScene);
             }
         }
 
@@ -64,6 +71,7 @@ namespace GameScene
             levelData = param.GetObject<LevelItemData>(ParamType.LevelData);
             stageIndex = param.GetObject<int>(ParamType.StageIndex);
             levelIndex = param.GetObject<int>(ParamType.LevelIndex);
+
             boardSize = levelData.BoardSize;
             targetPosition = levelData.TargetPosition;
             startPosition = levelData.PlayerPosition;
@@ -319,7 +327,16 @@ namespace GameScene
                 candy.gameObject.SetActive(false);
                 var coinWin = levelData.LevelReward.FirstOrDefault(o => o.RewardType == Enums.RewardType.Coin);
                 var gemWin = levelData.LevelReward.FirstOrDefault(o => o.RewardType == Enums.RewardType.Coin);
-                ShowWinPopup(3, coinWin?.Value ?? 0, gemWin?.Value ?? 0);
+                var starWin = 3;
+                // Save data
+                playerService.SaveHistoryStar(stageIndex, levelIndex, starWin);
+                if (playerService.CurrentLevel[stageIndex] == levelIndex)
+                {
+                    playerService.CurrentLevel[stageIndex]++;
+                    playerService.SaveData();
+                }
+                // Show popup
+                ShowWinPopup(starWin, coinWin?.Value ?? 0, gemWin?.Value ?? 0);
             }
             else
             {

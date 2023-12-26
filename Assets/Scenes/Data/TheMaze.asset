@@ -18,7 +18,7 @@ MonoBehaviour:
     gemBonus: 0
     boardSize: {x: 8, y: 6}
     playerPosition: {x: 2, y: 2}
-    targetPosition: {x: 4, y: 4}
+    targetPosition: {x: 3, y: 3}
     levelReward:
     - rewardType: 0
       value: 10
@@ -28,7 +28,7 @@ MonoBehaviour:
     gemBonus: 0
     boardSize: {x: 8, y: 6}
     playerPosition: {x: 2, y: 2}
-    targetPosition: {x: 5, y: 5}
+    targetPosition: {x: 4, y: 4}
     levelReward:
     - rewardType: 0
       value: 15
@@ -36,9 +36,9 @@ MonoBehaviour:
       value: 15
   - goldBonus: 0
     gemBonus: 100
-    boardSize: {x: 0, y: 0}
-    playerPosition: {x: 0, y: 0}
-    targetPosition: {x: 0, y: 0}
+    boardSize: {x: 8, y: 6}
+    playerPosition: {x: 2, y: 2}
+    targetPosition: {x: 3, y: 5}
     levelReward:
     - rewardType: 0
       value: 20
@@ -46,9 +46,9 @@ MonoBehaviour:
       value: 20
   - goldBonus: 100
     gemBonus: 100
-    boardSize: {x: 0, y: 0}
-    playerPosition: {x: 0, y: 0}
-    targetPosition: {x: 0, y: 0}
+    boardSize: {x: 8, y: 6}
+    playerPosition: {x: 2, y: 2}
+    targetPosition: {x: 5, y: 3}
     levelReward:
     - rewardType: 0
       value: 25
@@ -56,9 +56,9 @@ MonoBehaviour:
       value: 25
   - goldBonus: 0
     gemBonus: 0
-    boardSize: {x: 0, y: 0}
-    playerPosition: {x: 0, y: 0}
-    targetPosition: {x: 0, y: 0}
+    boardSize: {x: 8, y: 6}
+    playerPosition: {x: 2, y: 2}
+    targetPosition: {x: 6, y: 6}
     levelReward:
     - rewardType: 0
       value: 30
@@ -66,9 +66,9 @@ MonoBehaviour:
       value: 30
   - goldBonus: 0
     gemBonus: 100
-    boardSize: {x: 0, y: 0}
-    playerPosition: {x: 0, y: 0}
-    targetPosition: {x: 0, y: 0}
+    boardSize: {x: 8, y: 6}
+    playerPosition: {x: 1, y: 1}
+    targetPosition: {x: 5, y: 5}
     levelReward:
     - rewardType: 0
       value: 50
