@@ -14,6 +14,7 @@ public enum ParamType
     LevelData,
     StageIndex,
     LevelIndex,
+    PreviousLevel,
 }
 
 public class Parameter : MonoBehaviour

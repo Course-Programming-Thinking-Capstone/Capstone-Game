@@ -135,6 +135,7 @@ namespace MainScene
             param.SaveObject(ParamType.LevelData, data);
             param.SaveObject(ParamType.StageIndex, stageIndex);
             param.SaveObject(ParamType.LevelIndex, levelIndex);
+            param.SaveObject(ParamType.PreviousLevel, levelIndex != playerService.CurrentLevel[stageIndex]);
             SceneManager.LoadScene(Constants.GamePlay);
         }
 

@@ -48,6 +48,9 @@ namespace GameScene
         private Vector2 boardSize;
         private int stageIndex;
         private int levelIndex;
+        private int coinWin;
+        private int gemWin;
+        private bool isPrevious;
 
         #region INITIALIZE
 
@@ -71,6 +74,18 @@ namespace GameScene
             levelData = param.GetObject<LevelItemData>(ParamType.LevelData);
             stageIndex = param.GetObject<int>(ParamType.StageIndex);
             levelIndex = param.GetObject<int>(ParamType.LevelIndex);
+            if (isPrevious)
+            {
+                coinWin = 0;
+                gemWin = 0;
+            }
+            else
+            {
+                var reward1 = levelData.LevelReward.FirstOrDefault(o => o.RewardType == Enums.RewardType.Coin);
+                var reward2 = levelData.LevelReward.FirstOrDefault(o => o.RewardType == Enums.RewardType.Coin);
+                coinWin = reward1?.Value ?? 0;
+                gemWin = reward2?.Value ?? 0;
+            }
 
             boardSize = levelData.BoardSize;
             targetPosition = levelData.TargetPosition;
@@ -325,8 +340,6 @@ namespace GameScene
             if (isWin)
             {
                 candy.gameObject.SetActive(false);
-                var coinWin = levelData.LevelReward.FirstOrDefault(o => o.RewardType == Enums.RewardType.Coin);
-                var gemWin = levelData.LevelReward.FirstOrDefault(o => o.RewardType == Enums.RewardType.Coin);
                 var starWin = 3;
                 // Save data
                 playerService.SaveHistoryStar(stageIndex, levelIndex, starWin);
@@ -335,8 +348,9 @@ namespace GameScene
                     playerService.CurrentLevel[stageIndex]++;
                     playerService.SaveData();
                 }
+
                 // Show popup
-                ShowWinPopup(starWin, coinWin?.Value ?? 0, gemWin?.Value ?? 0);
+                ShowWinPopup(starWin, coinWin, gemWin);
             }
             else
             {
@@ -354,7 +368,12 @@ namespace GameScene
         /// </summary>
         private void OnClickClaim()
         {
+            // Save data
+            playerService.UserCoin += coinWin;
+            playerService.UserDiamond += gemWin;
+            playerService.SaveData();
             // Load level
+
             var param = PopupHelpers.PassParamPopup();
             param.SaveObject(ParamType.StageIndex, stageIndex);
             param.SaveObject("OpenPopup", true);
