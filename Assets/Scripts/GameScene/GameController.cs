@@ -40,6 +40,8 @@ namespace GameScene
         private Vector2 targetPosition;
         private Vector2 startPosition;
         private Vector2 boardSize;
+        private int stageIndex;
+        private int levelIndex;
 
         #region INITIALIZE
 
@@ -60,10 +62,12 @@ namespace GameScene
         {
             var param = PopupHelpers.PassParamPopup();
             levelData = param.GetObject<LevelItemData>(ParamType.LevelData);
+            stageIndex = param.GetObject<int>(ParamType.StageIndex);
+            levelIndex = param.GetObject<int>(ParamType.LevelIndex);
             boardSize = levelData.BoardSize;
             targetPosition = levelData.TargetPosition;
             startPosition = levelData.PlayerPosition;
-            
+
             InitScene();
         }
 
@@ -87,7 +91,6 @@ namespace GameScene
             playButton.onClick.AddListener(OnClickPlay);
 
             // param
-            
 
             // Init view
 
@@ -314,7 +317,9 @@ namespace GameScene
             if (isWin)
             {
                 candy.gameObject.SetActive(false);
-                ShowWinPopup(3, 100, 100);
+                var coinWin = levelData.LevelReward.FirstOrDefault(o => o.RewardType == Enums.RewardType.Coin);
+                var gemWin = levelData.LevelReward.FirstOrDefault(o => o.RewardType == Enums.RewardType.Coin);
+                ShowWinPopup(3, coinWin?.Value ?? 0, gemWin?.Value ?? 0);
             }
             else
             {
@@ -332,6 +337,11 @@ namespace GameScene
         /// </summary>
         private void OnClickClaim()
         {
+            // Load level
+            var param = PopupHelpers.PassParamPopup();
+            param.SaveObject(ParamType.StageIndex, stageIndex);
+            param.SaveObject("OpenPopup", true);
+            SceneManager.LoadScene(Constants.MainMenu);
         }
 
         /// <summary>
@@ -339,6 +349,10 @@ namespace GameScene
         /// </summary>
         private void OnClickClaimAds()
         {
+            // Load level
+            var param = PopupHelpers.PassParamPopup();
+            param.SaveObject(ParamType.StageIndex, stageIndex);
+            SceneManager.LoadScene(Constants.MainMenu);
         }
 
         private void OnClickExit()

@@ -19,6 +19,8 @@ namespace MainScene
         private PlayerService playerService;
 
         private List<int> currentLevel;
+        private int stageIndex = -1;
+        private bool openPopup ;
 
         private void Awake()
         {
@@ -37,6 +39,7 @@ namespace MainScene
         private void Start()
         {
             // main 
+            LoadParam();
             InitMain();
 
             // popup
@@ -46,9 +49,23 @@ namespace MainScene
             // Create State
             InitStage();
             InitLevel();
+
+            //
+            if (openPopup)
+            {
+                OnClickStage(stageIndex);
+            }
         }
 
         #region Initialized
+
+
+        private void LoadParam()
+        {
+            var param = PopupHelpers.PassParamPopup();
+            stageIndex = param.GetObject<int>(ParamType.StageIndex);
+            openPopup = param.GetObject<bool>("OpenPopup");
+        }
 
         private void InitMain()
         {
@@ -117,6 +134,8 @@ namespace MainScene
             var param = PopupHelpers.PassParamPopup();
             var data = model.StageData.StageItemData[stageIndex].DataLevel.LevelItemData[levelIndex];
             param.SaveObject(ParamType.LevelData, data);
+            param.SaveObject(ParamType.StageIndex, stageIndex);
+            param.SaveObject(ParamType.LevelIndex, levelIndex);
             SceneManager.LoadScene(Constants.GamePlay);
         }
 

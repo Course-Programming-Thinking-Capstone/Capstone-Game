@@ -11,7 +11,9 @@ public class ObjectToSave<T>
 
 public enum ParamType
 {
-    LevelData
+    LevelData,
+    StageIndex,
+    LevelIndex,
 }
 
 public class Parameter : MonoBehaviour
