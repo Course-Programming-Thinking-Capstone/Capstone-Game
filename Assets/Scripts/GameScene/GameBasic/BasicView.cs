@@ -8,14 +8,15 @@ namespace GameScene.GameBasic
         // 2D
         [SerializeField] private Transform startGroundPosition;
         [SerializeField] private Transform blockContainer;
-        
+
         // Canvas
         [SerializeField] private Transform container1;
         [SerializeField] private Transform container2;
         [SerializeField] private Transform movingContainer;
         private int countLeft;
         private int countRight;
-
+        private Vector2 boardSize;
+        private List<Vector2> positions = new List<Vector2>();
         public void AddRoadToContainer(Transform newObjectRoad)
         {
             if (countLeft <= countRight)
@@ -40,11 +41,13 @@ namespace GameScene.GameBasic
             {
                 countRight--;
             }
+
             objectClicked.SetParent(movingContainer);
         }
-        
-        public void InitGroundBoard(List<Transform> groundItems, Vector2 board, float offSet)
+
+        public void InitGroundBoardFakePosition(Vector2 board, float offSet)
         {
+            boardSize = board;
             var sizeY = (int)board.y;
             var sizeX = (int)board.x;
             for (int i = 0; i < sizeY; i++) // vertical
@@ -54,10 +57,22 @@ namespace GameScene.GameBasic
                     var positionNew = startGroundPosition.position;
                     positionNew.x += offSet * j;
                     positionNew.y += offSet * i;
-                    groundItems[i * sizeX + j].position = positionNew;
-                    groundItems[i * sizeX + j].SetParent(blockContainer);
+                    positions.Add(positionNew);
                 }
             }
         }
+
+        public void PlaceGround(Transform groundItem, Vector2 position)
+        {
+            groundItem.position = GetPositionFromBoard(position);
+            groundItem.SetParent(blockContainer);
+        }
+        
+        private Vector2 GetPositionFromBoard(Vector2 position)
+        {
+            int index = (int)((position.y - 1) * boardSize.x + (position.x - 1));
+            return positions[index];
+        }
+
     }
 }

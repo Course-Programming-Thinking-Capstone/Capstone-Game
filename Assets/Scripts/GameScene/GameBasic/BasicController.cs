@@ -14,7 +14,8 @@ namespace GameScene.GameBasic
         [SerializeField] private BasicModel model;
         // System
         private List<Transform> listBoard = new List<Transform>();
-        // Demo
+        private Vector2 boardSize = new Vector2(8,6);
+        // Demo, parameter need
         private List<SelectType> original = new List<SelectType>()
         {
             SelectType.RoadHorizontal,
@@ -26,14 +27,15 @@ namespace GameScene.GameBasic
             SelectType.RoadTurn4,
         };
 
-        [SerializeField] Vector2 boardSize = Vector2.one;
+        [SerializeField][Tooltip("Max 8x6")] private List<Vector2> roadPartPositions;
 
         private void Start()
         {
-            InitScene();
+            GenerateGround();
+            GenerateSelector();
         }
 
-        private void InitScene()
+        private void GenerateSelector()
         {
             // Selector
             foreach (var item in original)
@@ -44,14 +46,17 @@ namespace GameScene.GameBasic
                 scriptControl.Init(OnClickRoad);
                 scriptControl.ChangeRender(model.GetSprite(item));
             }
-
+        }
+        private void GenerateGround()
+        {
             // Ground
-            for (int i = 0; i < boardSize.x * boardSize.y; i++)
+            view.InitGroundBoardFakePosition(boardSize, model.GetBlockOffset());
+            foreach (var positionRoad in roadPartPositions)
             {
-                listBoard.Add(Instantiate(model.RoadGroundPrefab).transform);
+                var newRoad = Instantiate(model.RoadGroundPrefab);
+                listBoard.Add(newRoad.transform);
+                view.PlaceGround(newRoad.transform, positionRoad);
             }
-
-            view.InitGroundBoard(listBoard, boardSize, model.GetBlockOffset());
         }
 
         private void OnClickRoad(Selector road)

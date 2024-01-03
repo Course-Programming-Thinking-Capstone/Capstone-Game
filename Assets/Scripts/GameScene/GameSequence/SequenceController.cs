@@ -41,8 +41,6 @@ namespace GameScene.GameSequence
 
         // GAME DATA
         private LevelItemData levelData;
-        private Vector2 playerPosition;
-        private Vector2 targetPosition;
         private Vector2 startPosition;
         private Vector2 boardSize;
         private int stageIndex;
