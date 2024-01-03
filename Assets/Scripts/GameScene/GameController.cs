@@ -10,8 +10,8 @@ namespace GameScene
         [SerializeField] private bool isTesting;
         protected PlayerService playerService;
         // Param
-        protected Vector2 playerPosition;
-        protected Vector2 targetPosition;
+        [SerializeField] protected Vector2 playerPosition;
+        [SerializeField] protected Vector2 targetPosition;
 
         private void Awake()
         {

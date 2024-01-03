@@ -51,6 +51,10 @@ namespace GameScene.GameBasic
         {
             // Ground
             view.InitGroundBoardFakePosition(boardSize, model.GetBlockOffset());
+            
+            view.PlaceGround(Instantiate(model.RoadGroundPrefab).transform, playerPosition);
+            view.PlaceGround(Instantiate(model.RoadGroundPrefab).transform, targetPosition);
+            
             foreach (var positionRoad in roadPartPositions)
             {
                 var newRoad = Instantiate(model.RoadGroundPrefab);
