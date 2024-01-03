@@ -8,7 +8,7 @@ namespace GameScene.GameSequence
     public class SequenceModel : GameModel
     {
         [SerializeField] private List<ModelSelector> modelSelector;
-        [SerializeField] private List<ModelSelected> modelSelected;
+
         [SerializeField] private List<Sprite> candySprites;
         [SerializeField] private GameObject playerModel;
         [SerializeField] private GameObject candyModel;
@@ -28,12 +28,7 @@ namespace GameScene.GameSequence
             var result = modelSelector.FirstOrDefault(o => o.SelectType == selectType);
             return result?.Prefabs;
         }
-
-        public GameObject GetSelected(SelectType selectType)
-        {
-            var result = modelSelected.FirstOrDefault(o => o.SelectType == selectType);
-            return result?.Prefabs;
-        }
+      
     }
 
    

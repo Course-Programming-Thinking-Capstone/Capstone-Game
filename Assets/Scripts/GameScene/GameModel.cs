@@ -1,11 +1,18 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace GameScene
 {
     public class GameModel : MonoBehaviour
     {
-        
+        [SerializeField] private List<ModelSelected> modelSelected;
+        public GameObject GetSelected(SelectType selectType)
+        {
+            var result = modelSelected.FirstOrDefault(o => o.SelectType == selectType);
+            return result?.Prefabs;
+        }
     }
     
     [Serializable]

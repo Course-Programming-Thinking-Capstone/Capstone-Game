@@ -26,8 +26,7 @@ namespace GameScene.GameSequence
         [Header("Testing only")]
         [SerializeField] private List<SelectType> generateList;
 
-        // SERVICES
-        private PlayerService playerService;
+   
         // FOR CONTROL SELECTOR
         private readonly List<Selector> storeSelector = new();
         private readonly List<Selector> storeSelected = new();
@@ -54,20 +53,7 @@ namespace GameScene.GameSequence
 
         #region INITIALIZE
 
-        private void Awake()
-        {
-            // Load services
-            if (GameObject.FindGameObjectWithTag(Constants.ServicesTag) != null)
-            {
-                var services = GameObject.FindGameObjectWithTag(Constants.ServicesTag).GetComponent<GameServices>();
-                playerService = services.GetService<PlayerService>();
-            }
-            else
-            {
-                SceneManager.LoadScene(Constants.EntryScene);
-            }
-        }
-
+      
         private void Start()
         {
             var param = PopupHelpers.PassParamPopup();
