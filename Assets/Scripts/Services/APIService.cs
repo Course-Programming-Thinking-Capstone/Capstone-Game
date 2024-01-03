@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
-using Unity.Plastic.Newtonsoft.Json;
+using Newtonsoft.Json;
 using UnityEngine.Networking;
 
 namespace Services

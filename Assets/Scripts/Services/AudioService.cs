@@ -146,7 +146,7 @@ namespace Services
         {
             if (vibrateOn == true)
             {
-                Handheld.Vibrate();
+                //Handheld.Vibrate();
             }
         }
 
