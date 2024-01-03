@@ -110,7 +110,7 @@ namespace GameScene.GameSequence
                 listBoard.Add(Instantiate(model.CellModel).transform);
             }
 
-            view.InitGroundBoard(listBoard, boardSize, model.BlockOffset);
+            view.InitGroundBoard(listBoard, boardSize, model.GetBlockOffset());
             // Init Candy
             candy = Instantiate(model.CandyModel).GetComponent<Candy>();
             candy.Init(model.CandySprites[Random.Range(0, model.CandySprites.Count)]);

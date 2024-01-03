@@ -8,9 +8,12 @@ namespace GameScene.Component
     {
         [SerializeField] private SelectType selectType;
         [SerializeField] private RectTransform rectTransform;
-        [SerializeField] private ChangeImage changeImage;
+        [SerializeField] private Image renderer;
 
-        public ChangeImage ChangeImage => changeImage;
+        public void ChangeRender(Sprite newRender)
+        {
+            renderer.sprite = newRender;
+        }
 
         public SelectType SelectType => selectType;
         public RectTransform RectTransform => rectTransform;
@@ -22,11 +25,10 @@ namespace GameScene.Component
         public void Init(UnityAction<Selector> onClickParam)
         {
             rectTransform = GetComponent<RectTransform>();
-            if (changeImage == null)
+            if (renderer == null)
             {
-                changeImage = GetComponent<ChangeImage>();
+                renderer = gameObject.GetComponent<Image>();
             }
-
             onClick = onClickParam;
         }
 

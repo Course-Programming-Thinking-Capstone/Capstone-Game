@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace GameScene.GameBasic
@@ -6,6 +5,7 @@ namespace GameScene.GameBasic
     public class BasicModel : GameModel
     {
         [SerializeField] private GameObject roadToSelect;
+        [SerializeField] private GameObject roadGroundPrefab;
         [SerializeField] private Sprite horizontalSprite;
         [SerializeField] private Sprite verticalSprite;
         [SerializeField] private Sprite turn1Sprite;
@@ -13,6 +13,20 @@ namespace GameScene.GameBasic
         [SerializeField] private Sprite turn3Sprite;
         [SerializeField] private Sprite turn4Sprite;
         public GameObject RoadToSelect => roadToSelect;
+        public GameObject RoadGroundPrefab => roadGroundPrefab;
+
+        // private float blockOffset;
+        //
+        // public override float GetBlockOffset()
+        // {
+        //     if (blockOffset == 0)
+        //     {
+        //         blockOffset = roadGroundPrefab.GetComponent<SpriteRenderer>().size.x *
+        //                       roadGroundPrefab.transform.localScale.x;
+        //     }
+        //
+        //     return blockOffset;
+        // }
 
         public Sprite GetSprite(SelectType roadType)
         {
