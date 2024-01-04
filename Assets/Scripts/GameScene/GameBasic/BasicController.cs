@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using GameScene.Component;
 using GameScene.Component.GameBasic;
-using GameScene.GameSequence;
 using UnityEngine;
 
 namespace GameScene.GameBasic
@@ -13,8 +11,9 @@ namespace GameScene.GameBasic
         [SerializeField] private BasicView view;
         [SerializeField] private BasicModel model;
         // System
+        private GameObject player;
         private List<Transform> listBoard = new List<Transform>();
-        private Vector2 boardSize = new Vector2(8,6);
+        private Vector2 boardSize = new Vector2(8, 6);
         // Demo, parameter need
         private List<SelectType> original = new List<SelectType>()
         {
@@ -27,12 +26,13 @@ namespace GameScene.GameBasic
             SelectType.RoadTurn4,
         };
 
-        [SerializeField][Tooltip("Max 8x6")] private List<Vector2> roadPartPositions;
+        [SerializeField] [Tooltip("Max 8x6")] private List<Vector2> roadPartPositions;
 
         private void Start()
         {
             GenerateGround();
             GenerateSelector();
+            GeneratePlayer();
         }
 
         private void GenerateSelector()
@@ -47,20 +47,28 @@ namespace GameScene.GameBasic
                 scriptControl.ChangeRender(model.GetSprite(item));
             }
         }
+
         private void GenerateGround()
         {
             // Ground
             view.InitGroundBoardFakePosition(boardSize, model.GetBlockOffset());
-            
+
             view.PlaceGround(Instantiate(model.RoadGroundPrefab).transform, playerPosition);
             view.PlaceGround(Instantiate(model.RoadGroundPrefab).transform, targetPosition);
-            
+
             foreach (var positionRoad in roadPartPositions)
             {
                 var newRoad = Instantiate(model.RoadGroundPrefab);
                 listBoard.Add(newRoad.transform);
                 view.PlaceGround(newRoad.transform, positionRoad);
             }
+        }
+
+        private void GeneratePlayer()
+        {
+            // Init player
+            player = Instantiate(model.PlayerModel);
+            view.PlacePlayer(player.GetComponent<Transform>(), playerPosition);
         }
 
         private void OnClickRoad(Selector road)

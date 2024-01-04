@@ -9,19 +9,21 @@ namespace GameScene
     {
         [SerializeField] private List<ModelSelected> modelSelected;
         [SerializeField] private float blockOffset = 1.3f;
+        [SerializeField] private GameObject playerModel;
+        public GameObject PlayerModel => playerModel;
 
-        
         public virtual float GetBlockOffset()
         {
             return blockOffset;
         }
+
         public GameObject GetSelected(SelectType selectType)
         {
             var result = modelSelected.FirstOrDefault(o => o.SelectType == selectType);
             return result?.Prefabs;
         }
     }
-    
+
     [Serializable]
     public class ModelSelector
     {

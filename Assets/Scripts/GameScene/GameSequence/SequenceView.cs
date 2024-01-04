@@ -17,10 +17,6 @@ namespace GameScene.GameSequence
         [SerializeField] private Transform selectorContainer;
         [SerializeField] private Transform selectedContainer;
 
-        [SerializeField] private string idleAnimation;
-        [SerializeField] private string moveAnimation;
-        [SerializeField] private string collectAnimation;
-
         [Header("Cache")]
         private List<Transform> groundPosition;
         private Transform playerRectTransform;
@@ -139,25 +135,25 @@ namespace GameScene.GameSequence
                     case SelectType.None:
                         break;
                     case SelectType.Up:
-                        playerSkeleton.AnimationState.SetAnimation(0, moveAnimation, true);
+                       // playerSkeleton.AnimationState.SetAnimation(0, moveAnimation, true);
                         moveDirection = Vector2.up;
                         break;
                     case SelectType.Down:
-                        playerSkeleton.AnimationState.SetAnimation(0, moveAnimation, true);
+                      //  playerSkeleton.AnimationState.SetAnimation(0, moveAnimation, true);
                         moveDirection = Vector2.down;
                         break;
                     case SelectType.Left:
-                        playerSkeleton.AnimationState.SetAnimation(0, moveAnimation, true);
+                     //   playerSkeleton.AnimationState.SetAnimation(0, moveAnimation, true);
                         moveDirection = Vector2.left;
                         targetRotation = Quaternion.Euler(0, 0, 0);
                         break;
                     case SelectType.Right:
-                        playerSkeleton.AnimationState.SetAnimation(0, moveAnimation, true);
+                      //  playerSkeleton.AnimationState.SetAnimation(0, moveAnimation, true);
                         moveDirection = Vector2.right;
                         targetRotation = Quaternion.Euler(0, 180, 0);
                         break;
                     case SelectType.Collect:
-                        playerSkeleton.AnimationState.SetAnimation(0, collectAnimation, true);
+                   //     playerSkeleton.AnimationState.SetAnimation(0, collectAnimation, true);
                         moveDirection = Vector2.zero; // not move
                         break;
                 }
@@ -185,7 +181,7 @@ namespace GameScene.GameSequence
             }
             else
             {
-                playerSkeleton.AnimationState.SetAnimation(0, idleAnimation, true);
+                //playerSkeleton.AnimationState.SetAnimation(0, idleAnimation, true);
             }
         }
 

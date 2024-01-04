@@ -67,7 +67,10 @@ namespace GameScene.GameBasic
             groundItem.position = GetPositionFromBoard(position);
             groundItem.SetParent(blockContainer);
         }
-        
+        public void PlacePlayer(Transform playerTransform, Vector2 position)
+        {
+            playerTransform.position = GetPositionFromBoard(position);
+        }
         private Vector2 GetPositionFromBoard(Vector2 position)
         {
             int index = (int)((position.y - 1) * boardSize.x + (position.x - 1));

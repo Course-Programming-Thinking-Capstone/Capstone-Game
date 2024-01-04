@@ -1,3 +1,4 @@
+using GameScene.Component;
 using Services;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,6 +10,7 @@ namespace GameScene
         // SERVICES
         [SerializeField] private bool isTesting;
         protected PlayerService playerService;
+        protected Player playerControl;
         // Param
         [SerializeField] protected Vector2 playerPosition;
         [SerializeField] protected Vector2 targetPosition;

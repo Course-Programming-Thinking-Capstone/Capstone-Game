@@ -9,12 +9,11 @@ namespace GameScene.GameSequence
     {
         [SerializeField] private List<ModelSelector> modelSelector;
         [SerializeField] private List<Sprite> candySprites;
-        [SerializeField] private GameObject playerModel;
+  
         [SerializeField] private GameObject candyModel;
         [SerializeField] private GameObject cellModel;
         [SerializeField] private float playerMoveTime;
-    
-        public GameObject PlayerModel => playerModel;
+       
         public float PlayerMoveTime => playerMoveTime;
         public List<Sprite> CandySprites => candySprites;
         public GameObject CandyModel => candyModel;
