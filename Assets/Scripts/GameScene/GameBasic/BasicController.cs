@@ -12,10 +12,11 @@ namespace GameScene.GameBasic
         [SerializeField] private BasicModel model;
         // System
         private GameObject player;
-        private List<Transform> listBoard = new List<Transform>();
-        private Vector2 boardSize = new Vector2(8, 6);
+        [SerializeField]
+        private List<Transform> listBoard = new();
+        private readonly Vector2 boardSize = new(8, 6);
         // Demo, parameter need
-        private List<SelectType> original = new List<SelectType>()
+        private readonly List<SelectType> original = new()
         {
             SelectType.RoadHorizontal,
             SelectType.RoadHorizontal,
