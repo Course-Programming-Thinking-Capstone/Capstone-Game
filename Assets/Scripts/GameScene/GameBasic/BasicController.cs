@@ -15,6 +15,8 @@ namespace GameScene.GameBasic
         [SerializeField]
         private List<Transform> listBoard = new();
         private readonly Vector2 boardSize = new(8, 6);
+        private Selector selectedObject;
+        [Header("Demo param")]
         // Demo, parameter need
         private readonly List<SelectType> original = new()
         {
@@ -34,6 +36,33 @@ namespace GameScene.GameBasic
             GenerateGround();
             GenerateSelector();
             GeneratePlayer();
+        }
+
+        private void Update()
+        {
+            if (selectedObject)
+            {
+                if (Input.GetMouseButtonUp(0))
+                {
+                    HandleMouseUp();
+                }
+                else
+                {
+                    HandleMouseMoveSelected();
+                }
+            }
+        }
+
+        private void HandleMouseUp()
+        {
+            view.AddRoadToContainer(selectedObject.transform);
+            selectedObject = null;
+        }
+
+        private void HandleMouseMoveSelected()
+        {
+            Vector3 mousePos = Input.mousePosition;
+            selectedObject.RectTransform.position = mousePos;
         }
 
         private void GenerateSelector()
@@ -74,6 +103,8 @@ namespace GameScene.GameBasic
 
         private void OnClickRoad(Selector road)
         {
+            selectedObject = road;
+            view.GetRoadToMove(selectedObject.transform);
         }
     }
 }
