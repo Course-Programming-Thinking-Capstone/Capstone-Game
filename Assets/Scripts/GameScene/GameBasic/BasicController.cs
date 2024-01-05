@@ -92,7 +92,6 @@ namespace GameScene.GameBasic
                 var scriptControl = newObj.GetComponent<Road>();
                 scriptControl.Init(OnClickSelector);
                 scriptControl.SelectType = item;
-                Debug.Log("Create: " + item);
                 scriptControl.ChangeRender(model.GetSprite(item));
             }
         }
@@ -221,7 +220,6 @@ namespace GameScene.GameBasic
             {
                 Vector2 currentNode = queue.Dequeue();
                 var calcPart = CalcPartType(currentNode, allPart);
-                Debug.Log("Check for: " + currentNode + "| Get: " + calcPart);
 
                 if (calcPart != SelectType.None)
                 {
