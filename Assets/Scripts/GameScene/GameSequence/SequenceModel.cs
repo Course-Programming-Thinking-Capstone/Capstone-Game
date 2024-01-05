@@ -12,9 +12,7 @@ namespace GameScene.GameSequence
   
         [SerializeField] private GameObject candyModel;
         [SerializeField] private GameObject cellModel;
-        [SerializeField] private float playerMoveTime;
        
-        public float PlayerMoveTime => playerMoveTime;
         public List<Sprite> CandySprites => candySprites;
         public GameObject CandyModel => candyModel;
         public GameObject CellModel => cellModel;

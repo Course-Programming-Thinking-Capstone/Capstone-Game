@@ -10,6 +10,9 @@ namespace GameScene
         [SerializeField] private List<ModelSelected> modelSelected;
         [SerializeField] private float blockOffset = 1.3f;
         [SerializeField] private GameObject playerModel;
+        [SerializeField] private float playerMoveTime;
+       
+        public float PlayerMoveTime => playerMoveTime;
         public GameObject PlayerModel => playerModel;
 
         public virtual float GetBlockOffset()

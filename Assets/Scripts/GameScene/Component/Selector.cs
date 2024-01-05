@@ -15,7 +15,11 @@ namespace GameScene.Component
             renderer.sprite = newRender;
         }
 
-        public SelectType SelectType { get; set; }
+        public SelectType SelectType
+        {
+            get => selectType;
+            set => selectType = value;
+        }
         public RectTransform RectTransform => rectTransform;
         private UnityAction<Selector> onClick;
 

@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using GameScene.Component;
 using GameScene.Component.GameBasic;
 using UnityEngine;
@@ -15,7 +17,10 @@ namespace GameScene.GameBasic
         private GameObject player;
         private readonly List<GroundRoad> listBoard = new();
         private readonly Vector2 boardSize = new(8, 6);
+        private Vector2 startPosGame;
+        private Vector2 endPosGame;
         private Selector selectedObject;
+        private int playChecker = 0;
         [Header("Demo param")]
         // Demo, parameter need
         private List<SelectType> original = new();
@@ -64,20 +69,52 @@ namespace GameScene.GameBasic
                 {
                     hitObj.ChangeRender(model.GetSprite(selectedObject.SelectType), selectedObject);
                     selectedObject.gameObject.SetActive(false);
+                    playChecker--;
                 }
             }
             else // Drag not valis
             {
                 view.AddRoadToContainer(selectedObject.transform);
+                playChecker++;
             }
 
             selectedObject = null;
+
+            // Checking for play
+
+            if (playChecker == 0) // any active 
+            {
+                StartCoroutine(StartPlayerMove());
+            }
         }
 
         private void HandleMouseMoveSelected()
         {
             Vector3 mousePos = Input.mousePosition;
             selectedObject.RectTransform.position = mousePos;
+        }
+
+        private IEnumerator StartPlayerMove()
+        {
+            for (int i = 0; i < original.Count; i++)
+            {
+                if (original[i] == listBoard[i].CurrentDisplay.SelectType)
+                {
+                    // Create a promise for the current animation
+                    var movePromise = player.transform.DOMove(listBoard[i].transform.position, model.PlayerMoveTime);
+
+                    yield return movePromise.WaitForCompletion();
+                }
+                else
+                {
+                    // Handle the case when types are not equal
+                    yield break;
+                }
+            }
+
+            var lastMove = player.transform.DOMove(endPosGame, model.PlayerMoveTime);
+
+            yield return lastMove.WaitForCompletion();
         }
 
         #region INITIALIZE
@@ -101,8 +138,8 @@ namespace GameScene.GameBasic
             // Ground
             view.InitGroundBoardFakePosition(boardSize, model.GetBlockOffset());
 
-            view.PlaceGround(Instantiate(model.RoadGroundPrefab).transform, playerPosition);
-            view.PlaceGround(Instantiate(model.RoadGroundPrefab).transform, targetPosition);
+            startPosGame = view.PlaceGround(Instantiate(model.RoadGroundPrefab).transform, playerPosition);
+            endPosGame = view.PlaceGround(Instantiate(model.RoadGroundPrefab).transform, targetPosition);
 
             foreach (var positionRoad in roadPartPositions)
             {
@@ -112,6 +149,7 @@ namespace GameScene.GameBasic
                 scriptControl.ChangeRender(model.GetSprite(SelectType.None), null);
                 listBoard.Add(scriptControl);
                 view.PlaceGround(newRoad.transform, positionRoad);
+                playChecker++;
             }
         }
 
@@ -157,19 +195,56 @@ namespace GameScene.GameBasic
                 return false;
             }
 
-            if (!IsConnected())
+            var sortedPath = SortRoadPartPositions();
+            if (sortedPath == null)
             {
                 Debug.LogError("Not Connect!");
                 return false;
             }
 
+            sortedPath.Remove(targetPosition);
+            roadPartPositions = sortedPath;
+
             return true;
         }
 
-        private bool IsConnected()
+        // private bool IsConnected()
+        // {
+        //     HashSet<Vector2> visitedNodes = new HashSet<Vector2>();
+        //     Queue<Vector2> queue = new Queue<Vector2>();
+        //
+        //     queue.Enqueue(playerPosition);
+        //
+        //     while (queue.Count > 0)
+        //     {
+        //         Vector2 currentNode = queue.Dequeue();
+        //
+        //         if (currentNode == targetPosition)
+        //         {
+        //             return true;
+        //         }
+        //
+        //         visitedNodes.Add(currentNode);
+        //
+        //         List<Vector2> neighbors = GetNeighbors(currentNode);
+        //
+        //         foreach (Vector2 neighbor in neighbors)
+        //         {
+        //             if (!visitedNodes.Contains(neighbor) && !queue.Contains(neighbor))
+        //             {
+        //                 queue.Enqueue(neighbor);
+        //             }
+        //         }
+        //     }
+        //
+        //     return false;
+        // }
+
+        private List<Vector2> SortRoadPartPositions()
         {
             HashSet<Vector2> visitedNodes = new HashSet<Vector2>();
             Queue<Vector2> queue = new Queue<Vector2>();
+            Dictionary<Vector2, Vector2> previousNodes = new Dictionary<Vector2, Vector2>();
 
             queue.Enqueue(playerPosition);
 
@@ -179,7 +254,17 @@ namespace GameScene.GameBasic
 
                 if (currentNode == targetPosition)
                 {
-                    return true;
+                    // Reconstruct the path
+                    List<Vector2> path = new List<Vector2>();
+                    Vector2 current = currentNode;
+                    while (current != playerPosition)
+                    {
+                        path.Add(current);
+                        current = previousNodes[current];
+                    }
+
+                    path.Reverse(); // Reverse to get the correct order
+                    return path;
                 }
 
                 visitedNodes.Add(currentNode);
@@ -191,11 +276,12 @@ namespace GameScene.GameBasic
                     if (!visitedNodes.Contains(neighbor) && !queue.Contains(neighbor))
                     {
                         queue.Enqueue(neighbor);
+                        previousNodes[neighbor] = currentNode;
                     }
                 }
             }
 
-            return false;
+            return null; // No path found
         }
 
         private void CalcSolution()

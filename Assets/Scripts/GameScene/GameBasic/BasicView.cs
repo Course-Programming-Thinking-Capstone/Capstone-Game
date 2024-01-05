@@ -17,6 +17,7 @@ namespace GameScene.GameBasic
         private int countRight;
         private Vector2 boardSize;
         private List<Vector2> positions = new List<Vector2>();
+
         public void AddRoadToContainer(Transform newObjectRoad)
         {
             if (countLeft <= countRight)
@@ -62,20 +63,22 @@ namespace GameScene.GameBasic
             }
         }
 
-        public void PlaceGround(Transform groundItem, Vector2 position)
+        public Vector2 PlaceGround(Transform groundItem, Vector2 position)
         {
             groundItem.position = GetPositionFromBoard(position);
             groundItem.SetParent(blockContainer);
+            return groundItem.position;
         }
+
         public void PlacePlayer(Transform playerTransform, Vector2 position)
         {
             playerTransform.position = GetPositionFromBoard(position);
         }
+
         private Vector2 GetPositionFromBoard(Vector2 position)
         {
             int index = (int)((position.y - 1) * boardSize.x + (position.x - 1));
             return positions[index];
         }
-
     }
 }
