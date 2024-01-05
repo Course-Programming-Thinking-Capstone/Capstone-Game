@@ -303,6 +303,11 @@ namespace GameScene.GameBasic
                 }
             }
 
+            if (roadPartPositions.Contains(targetPosition))
+            {
+                neighbors.Add(targetPosition);
+            }
+
             return neighbors;
         }
 
