@@ -1,3 +1,4 @@
+using System;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Events;
@@ -21,9 +22,12 @@ namespace GameScene.Component.GameBasic
             CurrentDisplay = type;
         }
 
-        public void OnClick()
+        private void OnMouseDown()
         {
-            callBack.Invoke(this);
+            if (CurrentDisplay)
+            {
+                callBack.Invoke(this);
+            }
         }
     }
 }

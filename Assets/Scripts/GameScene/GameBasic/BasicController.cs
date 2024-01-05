@@ -116,6 +116,7 @@ namespace GameScene.GameBasic
                 var newRoad = Instantiate(model.RoadGroundPrefab);
                 var scriptControl = newRoad.GetComponent<GroundRoad>();
                 scriptControl.Initialized(OnClickRoad);
+                scriptControl.ChangeRender(model.GetSprite(SelectType.None), null);
                 listBoard.Add(scriptControl);
                 view.PlaceGround(newRoad.transform, positionRoad);
             }
@@ -132,8 +133,17 @@ namespace GameScene.GameBasic
 
         #region CALL BACK
 
+        /// <summary>
+        /// Clicked Road in game
+        /// </summary>
+        /// <param name="arg0"></param>
         private void OnClickRoad(GroundRoad arg0)
         {
+            var oldPart = arg0.CurrentDisplay;
+            arg0.ChangeRender(model.GetSprite(SelectType.None), null);
+            oldPart.gameObject.SetActive(true);
+            selectedObject = oldPart;
+            view.GetRoadToMove(oldPart.transform);
         }
 
         private void OnClickSelector(Selector road)

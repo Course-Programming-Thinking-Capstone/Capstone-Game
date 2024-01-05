@@ -102,7 +102,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rendererGround: {fileID: 8259842929994013719}
-  selectType: 0
 --- !u!65 &8145292675188430002
 BoxCollider:
   m_ObjectHideFlags: 0

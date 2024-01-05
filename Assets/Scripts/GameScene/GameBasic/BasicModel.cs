@@ -6,6 +6,7 @@ namespace GameScene.GameBasic
     {
         [SerializeField] private GameObject roadToSelect;
         [SerializeField] private GameObject roadGroundPrefab;
+        [SerializeField] private Sprite noneSprite;
         [SerializeField] private Sprite horizontalSprite;
         [SerializeField] private Sprite verticalSprite;
         [SerializeField] private Sprite turn1Sprite;
@@ -44,6 +45,8 @@ namespace GameScene.GameBasic
                     return turn3Sprite;
                 case SelectType.RoadTurn4:
                     return turn4Sprite;
+                case SelectType.None:
+                    return noneSprite;
             }
 
             return null;
