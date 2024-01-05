@@ -19,16 +19,7 @@ namespace GameScene.GameBasic
         private Selector selectedObject;
         [Header("Demo param")]
         // Demo, parameter need
-        private readonly List<SelectType> original = new()
-        {
-            SelectType.RoadHorizontal,
-            SelectType.RoadHorizontal,
-            SelectType.RoadVertical,
-            SelectType.RoadTurn1,
-            SelectType.RoadTurn2,
-            SelectType.RoadTurn3,
-            SelectType.RoadTurn4,
-        };
+        private List<SelectType> original = new();
 
         [SerializeField] [Tooltip("Max 8x6")]
         private List<Vector2> roadPartPositions;
@@ -36,10 +27,10 @@ namespace GameScene.GameBasic
         private void Start()
         {
             Validation();
+            CalcSolution();
             GenerateGround();
             GenerateSelector();
             GeneratePlayer();
-            
         }
 
         private void Update()
@@ -102,6 +93,7 @@ namespace GameScene.GameBasic
                 var scriptControl = newObj.GetComponent<Road>();
                 scriptControl.Init(OnClickSelector);
                 scriptControl.SelectType = item;
+                Debug.Log("Create: " + item);
                 scriptControl.ChangeRender(model.GetSprite(item));
             }
         }
@@ -166,14 +158,16 @@ namespace GameScene.GameBasic
                 Debug.LogError("Duplicate values found in roadPartPositions!");
                 return false;
             }
+
             if (!IsConnected())
             {
                 Debug.LogError("Not Connect!");
                 return false;
             }
+
             return true;
         }
-      
+
         private bool IsConnected()
         {
             HashSet<Vector2> visitedNodes = new HashSet<Vector2>();
@@ -205,7 +199,92 @@ namespace GameScene.GameBasic
 
             return false;
         }
-        
+
+        private void CalcSolution()
+        {
+            Queue<Vector2> queue = new Queue<Vector2>();
+            var result = new List<SelectType>();
+            var allPart = new List<Vector2>();
+            foreach (var roadPart in roadPartPositions)
+            {
+                queue.Enqueue(roadPart);
+            }
+            foreach (var roadPart in roadPartPositions)
+            {
+                allPart.Add(roadPart);
+            }
+
+            allPart.Add(playerPosition);
+            allPart.Add(targetPosition);
+
+            while (queue.Count > 0)
+            {
+                Vector2 currentNode = queue.Dequeue();
+                var calcPart = CalcPartType(currentNode, allPart);
+                Debug.Log("Check for: " + currentNode + "| Get: " + calcPart );
+          
+                if (calcPart != SelectType.None)
+                {
+                    result.Add(calcPart);
+                }
+            }
+            original = result;
+        }
+
+        private SelectType CalcPartType(Vector2 node, List<Vector2> roadPartPositions)
+        {
+
+            if (roadPartPositions.Contains(new Vector2(node.x - 1, node.y)) &&
+                roadPartPositions.Contains(new Vector2(node.x + 1, node.y)))
+            {
+                return SelectType.RoadHorizontal;
+            }
+
+            if (roadPartPositions.Contains(new Vector2(node.x, node.y - 1)) &&
+                roadPartPositions.Contains(new Vector2(node.x, node.y + 1)))
+            {
+                return SelectType.RoadVertical;
+            }
+
+            if (roadPartPositions.Contains(new Vector2(node.x - 1, node.y)) &&
+                roadPartPositions.Contains(new Vector2(node.x, node.y + 1)))
+            {
+                return SelectType.RoadTurn3;
+            }
+
+            if (roadPartPositions.Contains(new Vector2(node.x , node.y + 1)) &&
+                roadPartPositions.Contains(new Vector2(node.x + 1, node.y)))
+            {
+                return SelectType.RoadTurn4;
+            }
+
+            if (roadPartPositions.Contains(new Vector2(node.x + 1, node.y)) &&
+                roadPartPositions.Contains(new Vector2(node.x, node.y - 1)))
+            {
+                return SelectType.RoadTurn1;
+            }
+
+            if (roadPartPositions.Contains(new Vector2(node.x, node.y - 1)) &&
+                roadPartPositions.Contains(new Vector2(node.x - 1, node.y)))
+            {
+                return SelectType.RoadTurn2;
+            }
+
+            if (roadPartPositions.Contains(new Vector2(node.x - 1, node.y)) ||
+                roadPartPositions.Contains(new Vector2(node.x + 1, node.y)))
+            {
+                return SelectType.RoadHorizontal;
+            }
+
+            if (roadPartPositions.Contains(new Vector2(node.x, node.y - 1)) ||
+                roadPartPositions.Contains(new Vector2(node.x, node.y + 1)))
+            {
+                return SelectType.RoadVertical;
+            }
+
+            return SelectType.None;
+        }
+
         private List<Vector2> GetNeighbors(Vector2 node)
         {
             List<Vector2> neighbors = new List<Vector2>();
@@ -227,16 +306,6 @@ namespace GameScene.GameBasic
             }
 
             return neighbors;
-        }
-
-        protected Vector2 FindNearestPosition()
-        {
-            Vector2 validNearestPositionA = playerPosition;
-            Vector2 validNearestPositionB = playerPosition;
-            validNearestPositionA.x++;
-            validNearestPositionB.y++;
-
-            return Vector2.down;
         }
 
         private GroundRoad CheckValidPosition()
