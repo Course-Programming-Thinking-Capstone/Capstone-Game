@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using GameScene.Component;
@@ -14,7 +13,7 @@ namespace GameScene.GameBasic
         [SerializeField] private BasicModel model;
         // System
         private GameObject player;
-        private List<GroundRoad> listBoard = new();
+        private readonly List<GroundRoad> listBoard = new();
         private readonly Vector2 boardSize = new(8, 6);
         private Selector selectedObject;
         [Header("Demo param")]
@@ -209,6 +208,7 @@ namespace GameScene.GameBasic
             {
                 queue.Enqueue(roadPart);
             }
+
             foreach (var roadPart in roadPartPositions)
             {
                 allPart.Add(roadPart);
@@ -221,63 +221,63 @@ namespace GameScene.GameBasic
             {
                 Vector2 currentNode = queue.Dequeue();
                 var calcPart = CalcPartType(currentNode, allPart);
-                Debug.Log("Check for: " + currentNode + "| Get: " + calcPart );
-          
+                Debug.Log("Check for: " + currentNode + "| Get: " + calcPart);
+
                 if (calcPart != SelectType.None)
                 {
                     result.Add(calcPart);
                 }
             }
+
             original = result;
         }
 
-        private SelectType CalcPartType(Vector2 node, List<Vector2> roadPartPositions)
+        private SelectType CalcPartType(Vector2 node, List<Vector2> roadToCheck)
         {
-
-            if (roadPartPositions.Contains(new Vector2(node.x - 1, node.y)) &&
-                roadPartPositions.Contains(new Vector2(node.x + 1, node.y)))
+            if (roadToCheck.Contains(new Vector2(node.x - 1, node.y)) &&
+                roadToCheck.Contains(new Vector2(node.x + 1, node.y)))
             {
                 return SelectType.RoadHorizontal;
             }
 
-            if (roadPartPositions.Contains(new Vector2(node.x, node.y - 1)) &&
-                roadPartPositions.Contains(new Vector2(node.x, node.y + 1)))
+            if (roadToCheck.Contains(new Vector2(node.x, node.y - 1)) &&
+                roadToCheck.Contains(new Vector2(node.x, node.y + 1)))
             {
                 return SelectType.RoadVertical;
             }
 
-            if (roadPartPositions.Contains(new Vector2(node.x - 1, node.y)) &&
-                roadPartPositions.Contains(new Vector2(node.x, node.y + 1)))
+            if (roadToCheck.Contains(new Vector2(node.x - 1, node.y)) &&
+                roadToCheck.Contains(new Vector2(node.x, node.y + 1)))
             {
                 return SelectType.RoadTurn3;
             }
 
-            if (roadPartPositions.Contains(new Vector2(node.x , node.y + 1)) &&
-                roadPartPositions.Contains(new Vector2(node.x + 1, node.y)))
+            if (roadToCheck.Contains(new Vector2(node.x, node.y + 1)) &&
+                roadToCheck.Contains(new Vector2(node.x + 1, node.y)))
             {
                 return SelectType.RoadTurn4;
             }
 
-            if (roadPartPositions.Contains(new Vector2(node.x + 1, node.y)) &&
-                roadPartPositions.Contains(new Vector2(node.x, node.y - 1)))
+            if (roadToCheck.Contains(new Vector2(node.x + 1, node.y)) &&
+                roadToCheck.Contains(new Vector2(node.x, node.y - 1)))
             {
                 return SelectType.RoadTurn1;
             }
 
-            if (roadPartPositions.Contains(new Vector2(node.x, node.y - 1)) &&
-                roadPartPositions.Contains(new Vector2(node.x - 1, node.y)))
+            if (roadToCheck.Contains(new Vector2(node.x, node.y - 1)) &&
+                roadToCheck.Contains(new Vector2(node.x - 1, node.y)))
             {
                 return SelectType.RoadTurn2;
             }
 
-            if (roadPartPositions.Contains(new Vector2(node.x - 1, node.y)) ||
-                roadPartPositions.Contains(new Vector2(node.x + 1, node.y)))
+            if (roadToCheck.Contains(new Vector2(node.x - 1, node.y)) ||
+                roadToCheck.Contains(new Vector2(node.x + 1, node.y)))
             {
                 return SelectType.RoadHorizontal;
             }
 
-            if (roadPartPositions.Contains(new Vector2(node.x, node.y - 1)) ||
-                roadPartPositions.Contains(new Vector2(node.x, node.y + 1)))
+            if (roadToCheck.Contains(new Vector2(node.x, node.y - 1)) ||
+                roadToCheck.Contains(new Vector2(node.x, node.y + 1)))
             {
                 return SelectType.RoadVertical;
             }
@@ -310,10 +310,9 @@ namespace GameScene.GameBasic
 
         private GroundRoad CheckValidPosition()
         {
-            var startPosition = Camera.main.ScreenToWorldPoint(selectedObject.transform.position);
+            var startPosition = Camera.main!.ScreenToWorldPoint(selectedObject.transform.position);
             Ray ray = new Ray(startPosition, Vector3.forward);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out var hit))
             {
                 Transform hitTransform = hit.transform;
                 return listBoard.FirstOrDefault(o => o.transform == hitTransform);
