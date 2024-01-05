@@ -57,12 +57,23 @@ namespace GameScene.GameBasic
         private void HandleMouseUp()
         {
             var hitObj = CheckValidPosition();
-            if (hitObj)
+            if (hitObj) // Drag valid
             {
-                hitObj.ChangeRender(model.GetSprite(selectedObject.SelectType), selectedObject);
-                selectedObject.gameObject.SetActive(false);
+                if (hitObj.CurrentDisplay != null) // SWAP
+                {
+                    var oldPart = hitObj.CurrentDisplay;
+                    hitObj.ChangeRender(model.GetSprite(selectedObject.SelectType), selectedObject);
+                    oldPart.gameObject.SetActive(true);
+                    selectedObject.gameObject.SetActive(false);
+                    view.AddRoadToContainer(oldPart.transform);
+                }
+                else // Null -> Add new
+                {
+                    hitObj.ChangeRender(model.GetSprite(selectedObject.SelectType), selectedObject);
+                    selectedObject.gameObject.SetActive(false);
+                }
             }
-            else
+            else // Drag not valis
             {
                 view.AddRoadToContainer(selectedObject.transform);
             }
