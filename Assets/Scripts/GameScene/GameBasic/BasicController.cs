@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using GameScene.Component;
@@ -34,9 +35,11 @@ namespace GameScene.GameBasic
 
         private void Start()
         {
+            Validation();
             GenerateGround();
             GenerateSelector();
             GeneratePlayer();
+            
         }
 
         private void Update()
@@ -154,6 +157,88 @@ namespace GameScene.GameBasic
 
         #endregion
 
+        #region Calculate code
+
+        private bool Validation()
+        {
+            if (roadPartPositions.Count != roadPartPositions.Distinct().Count())
+            {
+                Debug.LogError("Duplicate values found in roadPartPositions!");
+                return false;
+            }
+            if (!IsConnected())
+            {
+                Debug.LogError("Not Connect!");
+                return false;
+            }
+            return true;
+        }
+      
+        private bool IsConnected()
+        {
+            HashSet<Vector2> visitedNodes = new HashSet<Vector2>();
+            Queue<Vector2> queue = new Queue<Vector2>();
+
+            queue.Enqueue(playerPosition);
+
+            while (queue.Count > 0)
+            {
+                Vector2 currentNode = queue.Dequeue();
+
+                if (currentNode == targetPosition)
+                {
+                    return true;
+                }
+
+                visitedNodes.Add(currentNode);
+
+                List<Vector2> neighbors = GetNeighbors(currentNode);
+
+                foreach (Vector2 neighbor in neighbors)
+                {
+                    if (!visitedNodes.Contains(neighbor) && !queue.Contains(neighbor))
+                    {
+                        queue.Enqueue(neighbor);
+                    }
+                }
+            }
+
+            return false;
+        }
+        
+        private List<Vector2> GetNeighbors(Vector2 node)
+        {
+            List<Vector2> neighbors = new List<Vector2>();
+
+            Vector2[] neighborCoordinates =
+            {
+                new(node.x + 1, node.y),
+                new(node.x - 1, node.y),
+                new(node.x, node.y + 1),
+                new(node.x, node.y - 1)
+            };
+
+            foreach (Vector2 neighborCoord in neighborCoordinates)
+            {
+                if (roadPartPositions.Contains(neighborCoord))
+                {
+                    neighbors.Add(neighborCoord);
+                }
+            }
+
+            return neighbors;
+        }
+
+        protected Vector2 FindNearestPosition()
+        {
+            Vector2 validNearestPositionA = playerPosition;
+            Vector2 validNearestPositionB = playerPosition;
+            validNearestPositionA.x++;
+            validNearestPositionB.y++;
+
+            return Vector2.down;
+        }
+
         private GroundRoad CheckValidPosition()
         {
             var startPosition = Camera.main.ScreenToWorldPoint(selectedObject.transform.position);
@@ -167,5 +252,7 @@ namespace GameScene.GameBasic
 
             return null;
         }
+
+        #endregion
     }
 }
