@@ -15,7 +15,7 @@ namespace GameScene.Component
             renderer.sprite = newRender;
         }
 
-        public SelectType SelectType => selectType;
+        public SelectType SelectType { get; set; }
         public RectTransform RectTransform => rectTransform;
         private UnityAction<Selector> onClick;
 
@@ -29,6 +29,7 @@ namespace GameScene.Component
             {
                 renderer = gameObject.GetComponent<Image>();
             }
+
             onClick = onClickParam;
         }
 

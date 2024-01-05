@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using GameScene.Component;
 using GameScene.Component.GameBasic;
 using UnityEngine;
@@ -12,8 +13,7 @@ namespace GameScene.GameBasic
         [SerializeField] private BasicModel model;
         // System
         private GameObject player;
-        [SerializeField]
-        private List<Transform> listBoard = new();
+        private List<GroundRoad> listBoard = new();
         private readonly Vector2 boardSize = new(8, 6);
         private Selector selectedObject;
         [Header("Demo param")]
@@ -29,7 +29,8 @@ namespace GameScene.GameBasic
             SelectType.RoadTurn4,
         };
 
-        [SerializeField] [Tooltip("Max 8x6")] private List<Vector2> roadPartPositions;
+        [SerializeField] [Tooltip("Max 8x6")]
+        private List<Vector2> roadPartPositions;
 
         private void Start()
         {
@@ -56,6 +57,16 @@ namespace GameScene.GameBasic
         private void HandleMouseUp()
         {
             view.AddRoadToContainer(selectedObject.transform);
+            var hitObj = CheckValidPosition();
+            if (hitObj)
+            {
+                hitObj.ChangeRender(model.GetSprite(selectedObject.SelectType), selectedObject.SelectType);
+            }
+            else
+            {
+                // do smt
+            }
+
             selectedObject = null;
         }
 
@@ -74,6 +85,7 @@ namespace GameScene.GameBasic
                 view.AddRoadToContainer(newObj.transform);
                 var scriptControl = newObj.GetComponent<Road>();
                 scriptControl.Init(OnClickRoad);
+                scriptControl.SelectType = item;
                 scriptControl.ChangeRender(model.GetSprite(item));
             }
         }
@@ -89,7 +101,7 @@ namespace GameScene.GameBasic
             foreach (var positionRoad in roadPartPositions)
             {
                 var newRoad = Instantiate(model.RoadGroundPrefab);
-                listBoard.Add(newRoad.transform);
+                listBoard.Add(newRoad.GetComponent<GroundRoad>());
                 view.PlaceGround(newRoad.transform, positionRoad);
             }
         }
@@ -105,6 +117,20 @@ namespace GameScene.GameBasic
         {
             selectedObject = road;
             view.GetRoadToMove(selectedObject.transform);
+        }
+
+        private GroundRoad CheckValidPosition()
+        {
+            var startPosition = Camera.main.ScreenToWorldPoint(selectedObject.transform.position);
+            Ray ray = new Ray(startPosition, Vector3.forward);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+                Transform hitTransform = hit.transform;
+                return listBoard.FirstOrDefault(o => o.transform == hitTransform);
+            }
+
+            return null;
         }
     }
 }
