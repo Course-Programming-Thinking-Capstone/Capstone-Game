@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -6,18 +7,23 @@ namespace GameScene.Component.GameBasic
     public class GroundRoad : MonoBehaviour
     {
         [SerializeField] private SpriteRenderer rendererGround;
-        [SerializeField] private SelectType selectType = SelectType.None;
-         private UnityAction<SelectType> callBack;
+        private UnityAction<GroundRoad> callBack;
+        public Selector CurrentDisplay { get; set; }
 
-        public void ChangeRender(Sprite newSprite, SelectType type)
+        public void Initialized(UnityAction<GroundRoad> callBackController)
+        {
+            callBack = callBackController;
+        }
+
+        public void ChangeRender(Sprite newSprite, [CanBeNull] Selector type)
         {
             rendererGround.sprite = newSprite;
-            selectType = type;
+            CurrentDisplay = type;
         }
 
         public void OnClick()
         {
-            callBack.Invoke(selectType);
+            callBack.Invoke(this);
         }
     }
 }

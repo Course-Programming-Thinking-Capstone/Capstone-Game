@@ -56,15 +56,15 @@ namespace GameScene.GameBasic
 
         private void HandleMouseUp()
         {
-            view.AddRoadToContainer(selectedObject.transform);
             var hitObj = CheckValidPosition();
             if (hitObj)
             {
-                hitObj.ChangeRender(model.GetSprite(selectedObject.SelectType), selectedObject.SelectType);
+                hitObj.ChangeRender(model.GetSprite(selectedObject.SelectType), selectedObject);
+                selectedObject.gameObject.SetActive(false);
             }
             else
             {
-                // do smt
+                view.AddRoadToContainer(selectedObject.transform);
             }
 
             selectedObject = null;
@@ -76,6 +76,8 @@ namespace GameScene.GameBasic
             selectedObject.RectTransform.position = mousePos;
         }
 
+        #region INITIALIZE
+
         private void GenerateSelector()
         {
             // Selector
@@ -84,7 +86,7 @@ namespace GameScene.GameBasic
                 var newObj = Instantiate(model.RoadToSelect);
                 view.AddRoadToContainer(newObj.transform);
                 var scriptControl = newObj.GetComponent<Road>();
-                scriptControl.Init(OnClickRoad);
+                scriptControl.Init(OnClickSelector);
                 scriptControl.SelectType = item;
                 scriptControl.ChangeRender(model.GetSprite(item));
             }
@@ -101,7 +103,9 @@ namespace GameScene.GameBasic
             foreach (var positionRoad in roadPartPositions)
             {
                 var newRoad = Instantiate(model.RoadGroundPrefab);
-                listBoard.Add(newRoad.GetComponent<GroundRoad>());
+                var scriptControl = newRoad.GetComponent<GroundRoad>();
+                scriptControl.Initialized(OnClickRoad);
+                listBoard.Add(scriptControl);
                 view.PlaceGround(newRoad.transform, positionRoad);
             }
         }
@@ -113,11 +117,21 @@ namespace GameScene.GameBasic
             view.PlacePlayer(player.GetComponent<Transform>(), playerPosition);
         }
 
-        private void OnClickRoad(Selector road)
+        #endregion
+
+        #region CALL BACK
+
+        private void OnClickRoad(GroundRoad arg0)
+        {
+        }
+
+        private void OnClickSelector(Selector road)
         {
             selectedObject = road;
             view.GetRoadToMove(selectedObject.transform);
         }
+
+        #endregion
 
         private GroundRoad CheckValidPosition()
         {
