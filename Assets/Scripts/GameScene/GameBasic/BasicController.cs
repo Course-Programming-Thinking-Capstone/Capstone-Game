@@ -303,7 +303,7 @@ namespace GameScene.GameBasic
                 }
             }
 
-            if (roadPartPositions.Contains(targetPosition))
+            if (neighborCoordinates.Contains(targetPosition))
             {
                 neighbors.Add(targetPosition);
             }
