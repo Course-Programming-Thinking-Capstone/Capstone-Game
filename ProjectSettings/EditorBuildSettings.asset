@@ -21,6 +21,6 @@ EditorBuildSettings:
     path: Assets/Scenes/GenericPopups/LosePopup.unity
     guid: 68271700c27fc6943ac100bbade78970
   - enabled: 1
-    path: Assets/Scenes/GameScene/GameScene.unity
+    path: Assets/Scenes/GameScene/SequenceGame.unity
     guid: 88952bbca418f384ba66e6cbd51553cd
   m_configObjects: {}

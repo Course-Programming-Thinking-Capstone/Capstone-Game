@@ -26,7 +26,6 @@ namespace GameScene.GameSequence
         [Header("Testing only")]
         [SerializeField] private List<SelectType> generateList;
 
-   
         // FOR CONTROL SELECTOR
         private readonly List<Selector> storeSelector = new();
         private readonly List<Selector> storeSelected = new();
@@ -51,8 +50,15 @@ namespace GameScene.GameSequence
 
         #region INITIALIZE
 
-      
         private void Start()
+        {
+            // LoadData();
+            GenerateSelector();
+            CreatePlayer();
+            InitView();
+        }
+
+        private void LoadData()
         {
             var param = PopupHelpers.PassParamPopup();
             levelData = param.GetObject<LevelItemData>(ParamType.LevelData);
@@ -74,11 +80,9 @@ namespace GameScene.GameSequence
             boardSize = levelData.BoardSize;
             targetPosition = levelData.TargetPosition;
             startPosition = levelData.PlayerPosition;
-
-            InitScene();
         }
 
-        private void InitScene()
+        private void GenerateSelector()
         {
             // Generate objects selector
             foreach (var o in generateList)
@@ -93,11 +97,28 @@ namespace GameScene.GameSequence
             {
                 arrow.Init(OnClickedSelector);
             }
+        }
 
+        private void CreatePlayer()
+        {
+            // Init player
+            player = Instantiate(model.PlayerModel);
+            playerPosition = startPosition;
+            view.InitPlayerPosition(player.GetComponent<Transform>(), startPosition);
+        }
+
+        private void CreateTarget()
+        {
+            // Init Candy
+            candy = Instantiate(model.CandyModel).GetComponent<Candy>();
+            candy.Init(model.CandySprites[Random.Range(0, model.CandySprites.Count)]);
+            view.InitTargetPosition(candy.GetComponent<Transform>(), targetPosition);
+        }
+
+        private void InitView()
+        {
             // Play button
             playButton.onClick.AddListener(OnClickPlay);
-
-            // param
 
             // Init view
 
@@ -109,15 +130,6 @@ namespace GameScene.GameSequence
             }
 
             view.InitGroundBoard(listBoard, boardSize, model.GetBlockOffset());
-            // Init Candy
-            candy = Instantiate(model.CandyModel).GetComponent<Candy>();
-            candy.Init(model.CandySprites[Random.Range(0, model.CandySprites.Count)]);
-            view.InitTargetPosition(candy.GetComponent<Transform>(), targetPosition);
-
-            // Init player
-            player = Instantiate(model.PlayerModel);
-            playerPosition = startPosition;
-            view.InitPlayerPosition(player.GetComponent<Transform>(), startPosition);
         }
 
         #endregion
