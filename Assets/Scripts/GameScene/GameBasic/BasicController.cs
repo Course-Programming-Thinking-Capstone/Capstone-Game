@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using DG.Tweening;
 using GameScene.Component;
 using GameScene.Component.GameBasic;
 using UnityEngine;
@@ -107,18 +106,7 @@ namespace GameScene.GameBasic
                 {
                     // Create a promise for the current animation
                     var targetMove = listBoard[i].transform.position;
-                    if (targetMove.x < player.transform.position.x)
-                    {
-                        playerControl.RotatePlayer(false, model.PlayerMoveTime);
-                    }
-                    else
-                    {
-                        playerControl.RotatePlayer(true, model.PlayerMoveTime);
-                    }
-
-                    var movePromise = player.transform.DOMove(listBoard[i].transform.position, model.PlayerMoveTime);
-                    playerControl.PlayAnimationMove();
-                    yield return movePromise.WaitForCompletion();
+                    yield return MovePlayer(targetMove, model.PlayerMoveTime);
                 }
                 else
                 {
@@ -129,9 +117,7 @@ namespace GameScene.GameBasic
                 }
             }
 
-            var lastMove = player.transform.DOMove(endPosGame, model.PlayerMoveTime);
-            playerControl.PlayAnimationMove();
-            yield return lastMove.WaitForCompletion();
+            yield return MovePlayer(endPosGame, model.PlayerMoveTime);
             playerControl.PlayAnimationEat();
             view.ActiveSavePanel(false);
         }
@@ -139,9 +125,10 @@ namespace GameScene.GameBasic
         private void ResetGame()
         {
             // player position
-            view.PlacePlayer(player.transform, playerPosition);
+            playerControl.transform.position = startPosGame;
             playerControl.PlayAnimationIdle();
             playerControl.RotatePlayer(true, 0.1f);
+
             // board
             foreach (var item in listBoard)
             {
@@ -249,38 +236,6 @@ namespace GameScene.GameBasic
 
             return true;
         }
-
-        // private bool IsConnected()
-        // {
-        //     HashSet<Vector2> visitedNodes = new HashSet<Vector2>();
-        //     Queue<Vector2> queue = new Queue<Vector2>();
-        //
-        //     queue.Enqueue(playerPosition);
-        //
-        //     while (queue.Count > 0)
-        //     {
-        //         Vector2 currentNode = queue.Dequeue();
-        //
-        //         if (currentNode == targetPosition)
-        //         {
-        //             return true;
-        //         }
-        //
-        //         visitedNodes.Add(currentNode);
-        //
-        //         List<Vector2> neighbors = GetNeighbors(currentNode);
-        //
-        //         foreach (Vector2 neighbor in neighbors)
-        //         {
-        //             if (!visitedNodes.Contains(neighbor) && !queue.Contains(neighbor))
-        //             {
-        //                 queue.Enqueue(neighbor);
-        //             }
-        //         }
-        //     }
-        //
-        //     return false;
-        // }
 
         private List<Vector2> SortRoadPartPositions()
         {

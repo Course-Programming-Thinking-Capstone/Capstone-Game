@@ -1,3 +1,4 @@
+using System.Collections;
 using DG.Tweening;
 using GameScene.Component;
 using Services;
@@ -16,7 +17,21 @@ namespace GameScene
         [SerializeField] protected Vector2 playerPosition;
         [SerializeField] protected Vector2 targetPosition;
 
+        protected IEnumerator MovePlayer(Vector2 targetMove, float moveTime)
+        {
+            if (targetMove.x < playerControl.transform.position.x)
+            {
+                playerControl.RotatePlayer(false, moveTime);
+            }
+            else if (targetMove.x > playerControl.transform.position.x)
+            {
+                playerControl.RotatePlayer(true, moveTime);
+            }
 
+            var movePromise = playerControl.transform.DOMove(targetMove, moveTime);
+            playerControl.PlayAnimationMove();
+            yield return movePromise.WaitForCompletion();
+        }
 
         private void Awake()
         {
