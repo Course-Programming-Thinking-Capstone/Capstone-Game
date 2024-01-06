@@ -8,8 +8,8 @@ namespace GameScene.GameBasic
         // 2D
         [SerializeField] private Transform startGroundPosition;
         [SerializeField] private Transform blockContainer;
-
         // Canvas
+
         [SerializeField] private Transform container1;
         [SerializeField] private Transform container2;
         [SerializeField] private Transform movingContainer;
@@ -17,7 +17,8 @@ namespace GameScene.GameBasic
         private int countRight;
         private Vector2 boardSize;
         private List<Vector2> positions = new List<Vector2>();
-
+    
+        
         public void AddRoadToContainer(Transform newObjectRoad)
         {
             if (countLeft <= countRight)

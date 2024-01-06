@@ -16,6 +16,7 @@ namespace GameScene.GameBasic
         // System
         private GameObject player;
         private readonly List<GroundRoad> listBoard = new();
+        private readonly List<Selector> listSelector = new();
         private readonly Vector2 boardSize = new(8, 6);
         private Vector2 startPosGame;
         private Vector2 endPosGame;
@@ -23,7 +24,7 @@ namespace GameScene.GameBasic
         private int playChecker = 0;
         [Header("Demo param")]
         // Demo, parameter need
-        private List<SelectType> original = new();
+        private List<SelectType> answer = new();
 
         [SerializeField] [Tooltip("Max 8x6")]
         private List<Vector2> roadPartPositions;
@@ -96,9 +97,11 @@ namespace GameScene.GameBasic
 
         private IEnumerator StartPlayerMove()
         {
-            for (int i = 0; i < original.Count; i++)
+            view.ActiveSavePanel();
+
+            for (int i = 0; i < answer.Count; i++)
             {
-                if (original[i] == listBoard[i].CurrentDisplay.SelectType)
+                if (answer[i] == listBoard[i].CurrentDisplay.SelectType)
                 {
                     // Create a promise for the current animation
                     var movePromise = player.transform.DOMove(listBoard[i].transform.position, model.PlayerMoveTime);
@@ -107,14 +110,34 @@ namespace GameScene.GameBasic
                 }
                 else
                 {
-                    // Handle the case when types are not equal
+                    yield return new WaitForSeconds(1);
+                    view.ActiveSavePanel(false);
+                    ResetGame();
                     yield break;
                 }
             }
 
             var lastMove = player.transform.DOMove(endPosGame, model.PlayerMoveTime);
-
             yield return lastMove.WaitForCompletion();
+            view.ActiveSavePanel(false);
+        }
+
+        private void ResetGame()
+        {
+            // player position
+            view.PlacePlayer(player.transform, playerPosition);
+
+            // board
+            foreach (var item in listBoard)
+            {
+                item.ChangeRender(model.GetSprite(SelectType.None), null);
+            }
+
+            // Selector
+            foreach (var item in listSelector)
+            {
+                view.AddRoadToContainer(item.transform);
+            }
         }
 
         #region INITIALIZE
@@ -122,13 +145,14 @@ namespace GameScene.GameBasic
         private void GenerateSelector()
         {
             // Selector
-            foreach (var item in original)
+            foreach (var item in answer)
             {
                 var newObj = Instantiate(model.RoadToSelect);
                 view.AddRoadToContainer(newObj.transform);
                 var scriptControl = newObj.GetComponent<Road>();
                 scriptControl.Init(OnClickSelector);
                 scriptControl.SelectType = item;
+                listSelector.Add(scriptControl);
                 scriptControl.ChangeRender(model.GetSprite(item));
             }
         }
@@ -313,7 +337,7 @@ namespace GameScene.GameBasic
                 }
             }
 
-            original = result;
+            answer = result;
         }
 
         private SelectType CalcPartType(Vector2 node, List<Vector2> roadToCheck)
