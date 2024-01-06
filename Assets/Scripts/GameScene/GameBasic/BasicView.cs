@@ -13,23 +13,22 @@ namespace GameScene.GameBasic
         [SerializeField] private Transform container1;
         [SerializeField] private Transform container2;
         [SerializeField] private Transform movingContainer;
-        private int countLeft;
-        private int countRight;
+        public int CountLeft { get; set; }
+        public int CountRight { get; set; }
         private Vector2 boardSize;
         private List<Vector2> positions = new List<Vector2>();
-    
-        
+
         public void AddRoadToContainer(Transform newObjectRoad)
         {
-            if (countLeft <= countRight)
+            if (CountLeft <= CountRight)
             {
                 newObjectRoad.SetParent(container1);
-                countLeft++;
+                CountLeft++;
             }
             else
             {
                 newObjectRoad.SetParent(container2);
-                countRight++;
+                CountRight++;
             }
         }
 
@@ -37,11 +36,11 @@ namespace GameScene.GameBasic
         {
             if (objectClicked.parent == container1)
             {
-                countLeft--;
+                CountLeft--;
             }
             else
             {
-                countRight--;
+                CountRight--;
             }
 
             objectClicked.SetParent(movingContainer);

@@ -21,7 +21,6 @@ namespace GameScene.GameBasic
         private Vector2 startPosGame;
         private Vector2 endPosGame;
         private Selector selectedObject;
-        private int playChecker = 0;
         [Header("Demo param")]
         // Demo, parameter need
         private List<SelectType> answer = new();
@@ -70,23 +69,26 @@ namespace GameScene.GameBasic
                 {
                     hitObj.ChangeRender(model.GetSprite(selectedObject.SelectType), selectedObject);
                     selectedObject.gameObject.SetActive(false);
-                    playChecker--;
                 }
             }
-            else // Drag not valis
+            else // Drag not valid
             {
                 view.AddRoadToContainer(selectedObject.transform);
-                playChecker++;
             }
 
             selectedObject = null;
 
             // Checking for play
 
-            if (playChecker == 0) // any active 
+            foreach (var item in listBoard)
             {
-                StartCoroutine(StartPlayerMove());
+                if (item.CurrentDisplay == null)
+                {
+                    return;
+                }
             }
+
+            StartCoroutine(StartPlayerMove());
         }
 
         private void HandleMouseMoveSelected()
@@ -107,11 +109,11 @@ namespace GameScene.GameBasic
                     var targetMove = listBoard[i].transform.position;
                     if (targetMove.x < player.transform.position.x)
                     {
-                        RotatePlayer(false, model.PlayerMoveTime);
+                        playerControl.RotatePlayer(false, model.PlayerMoveTime);
                     }
                     else
                     {
-                        RotatePlayer(true, model.PlayerMoveTime);
+                        playerControl.RotatePlayer(true, model.PlayerMoveTime);
                     }
 
                     var movePromise = player.transform.DOMove(listBoard[i].transform.position, model.PlayerMoveTime);
@@ -138,7 +140,8 @@ namespace GameScene.GameBasic
         {
             // player position
             view.PlacePlayer(player.transform, playerPosition);
-
+            playerControl.PlayAnimationIdle();
+            playerControl.RotatePlayer(true, 0.1f);
             // board
             foreach (var item in listBoard)
             {
@@ -146,9 +149,12 @@ namespace GameScene.GameBasic
             }
 
             // Selector
+            view.CountLeft = 0;
+            view.CountRight = 0;
             foreach (var item in listSelector)
             {
                 view.AddRoadToContainer(item.transform);
+                item.gameObject.SetActive(true);
             }
         }
 
@@ -185,7 +191,6 @@ namespace GameScene.GameBasic
                 scriptControl.ChangeRender(model.GetSprite(SelectType.None), null);
                 listBoard.Add(scriptControl);
                 view.PlaceGround(newRoad.transform, positionRoad);
-                playChecker++;
             }
         }
 
@@ -194,7 +199,7 @@ namespace GameScene.GameBasic
             // Init player
             player = Instantiate(model.PlayerModel);
             playerControl = player.GetComponent<Player>();
-            view.PlacePlayer(player.GetComponent<Transform>(), playerPosition);
+            view.PlacePlayer(player.transform, playerPosition);
         }
 
         #endregion

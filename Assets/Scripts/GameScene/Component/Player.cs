@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Spine.Unity;
 using UnityEngine;
 
@@ -23,6 +24,11 @@ namespace GameScene.Component
         public void PlayAnimationEat()
         {
             skeletonAnimation.AnimationState.SetAnimation(0, collectAnimation, true);
+        }
+        public void RotatePlayer(bool isRight, float timeToRotate)
+        {
+            var targetRotate = isRight ? new Vector3(0, 180, 0) : new Vector3(0, 0, 0);
+            transform.DORotate(targetRotate, timeToRotate);
         }
     }
 }
