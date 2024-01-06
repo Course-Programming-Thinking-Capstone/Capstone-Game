@@ -1,3 +1,4 @@
+using DG.Tweening;
 using GameScene.Component;
 using Services;
 using UnityEngine;
@@ -14,6 +15,12 @@ namespace GameScene
         // Param
         [SerializeField] protected Vector2 playerPosition;
         [SerializeField] protected Vector2 targetPosition;
+
+        protected void RotatePlayer(bool isRight, float timeToRotate)
+        {
+            var targetRotate = isRight ? new Vector3(0, 180, 0) : new Vector3(0, 0, 0);
+            playerControl.transform.DORotate(targetRotate, timeToRotate);
+        }
 
         private void Awake()
         {

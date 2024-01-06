@@ -166,7 +166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 096bb8d88aeebc74c8bddaac55ec890b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skeletonAnimation: {fileID: 0}
-  idleAnimation: 
-  moveAnimation: 
-  collectAnimation: 
+  skeletonAnimation: {fileID: 6890684932404960608}
+  idleAnimation: action/idle/normal
+  moveAnimation: action/move-forward
+  collectAnimation: activity/eat-bite

@@ -104,8 +104,18 @@ namespace GameScene.GameBasic
                 if (answer[i] == listBoard[i].CurrentDisplay.SelectType)
                 {
                     // Create a promise for the current animation
-                    var movePromise = player.transform.DOMove(listBoard[i].transform.position, model.PlayerMoveTime);
+                    var targetMove = listBoard[i].transform.position;
+                    if (targetMove.x < player.transform.position.x)
+                    {
+                        RotatePlayer(false, model.PlayerMoveTime);
+                    }
+                    else
+                    {
+                        RotatePlayer(true, model.PlayerMoveTime);
+                    }
 
+                    var movePromise = player.transform.DOMove(listBoard[i].transform.position, model.PlayerMoveTime);
+                    playerControl.PlayAnimationMove();
                     yield return movePromise.WaitForCompletion();
                 }
                 else
@@ -118,7 +128,9 @@ namespace GameScene.GameBasic
             }
 
             var lastMove = player.transform.DOMove(endPosGame, model.PlayerMoveTime);
+            playerControl.PlayAnimationMove();
             yield return lastMove.WaitForCompletion();
+            playerControl.PlayAnimationEat();
             view.ActiveSavePanel(false);
         }
 
@@ -181,6 +193,7 @@ namespace GameScene.GameBasic
         {
             // Init player
             player = Instantiate(model.PlayerModel);
+            playerControl = player.GetComponent<Player>();
             view.PlacePlayer(player.GetComponent<Transform>(), playerPosition);
         }
 
