@@ -13,17 +13,14 @@ namespace GameScene.GameBasic
         [SerializeField] private BasicView view;
         [SerializeField] private BasicModel model;
         // System
-        private GameObject player;
         private readonly List<GroundRoad> listBoard = new();
         private readonly List<Selector> listSelector = new();
         private readonly Vector2 boardSize = new(8, 6);
         private Vector2 startPosGame;
         private Vector2 endPosGame;
         private Selector selectedObject;
-        [Header("Demo param")]
-        // Demo, parameter need
         private List<SelectType> answer = new();
-
+        [Header("Demo param")]
         [SerializeField] [Tooltip("Max 8x6")]
         private List<Vector2> roadPartPositions;
 
@@ -184,9 +181,8 @@ namespace GameScene.GameBasic
         private void GeneratePlayer()
         {
             // Init player
-            player = Instantiate(model.PlayerModel);
-            playerControl = player.GetComponent<Player>();
-            view.PlacePlayer(player.transform, playerPosition);
+            playerControl = Instantiate(model.PlayerModel).GetComponent<Player>();
+            view.PlacePlayer(playerControl.transform, playerPosition);
         }
 
         #endregion
