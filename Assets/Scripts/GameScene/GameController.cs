@@ -13,10 +13,11 @@ namespace GameScene
         [SerializeField] private bool isTesting;
         protected PlayerService playerService;
         protected Player playerControl;
+
         // Param
         [SerializeField] protected Vector2 playerPosition;
         [SerializeField] protected Vector2 targetPosition;
-
+        [SerializeField] protected Vector2 boardSize;
         protected IEnumerator MovePlayer(Vector2 targetMove, float moveTime)
         {
             if (targetMove.x < playerControl.transform.position.x)

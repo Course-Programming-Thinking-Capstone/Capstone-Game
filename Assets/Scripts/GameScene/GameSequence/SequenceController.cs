@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using GameScene.Component;
 using JetBrains.Annotations;
 using MainScene.Data;
-using Services;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -41,7 +40,7 @@ namespace GameScene.GameSequence
         // GAME DATA
         private LevelItemData levelData;
         private Vector2 startPosition;
-        private Vector2 boardSize;
+
         private int stageIndex;
         private int levelIndex;
         private int coinWin;
@@ -53,7 +52,9 @@ namespace GameScene.GameSequence
         private void Start()
         {
             // LoadData();
-            GenerateSelector();
+            CreateSelector();
+            CreateBoard();
+            CreateTarget();
             CreatePlayer();
             InitView();
         }
@@ -82,7 +83,19 @@ namespace GameScene.GameSequence
             startPosition = levelData.PlayerPosition;
         }
 
-        private void GenerateSelector()
+        private void CreateBoard()
+        {
+            var listBoard = new List<Transform>();
+
+            for (int i = 0; i < boardSize.x * boardSize.y; i++)
+            {
+                listBoard.Add(Instantiate(model.CellModel).transform);
+            }
+
+            view.InitGroundBoard(listBoard, boardSize, model.GetBlockOffset());
+        }
+
+        private void CreateSelector()
         {
             // Generate objects selector
             foreach (var o in generateList)
@@ -103,8 +116,7 @@ namespace GameScene.GameSequence
         {
             // Init player
             player = Instantiate(model.PlayerModel);
-            playerPosition = startPosition;
-            view.InitPlayerPosition(player.GetComponent<Transform>(), startPosition);
+            view.InitPlayerPosition(player.transform, playerPosition);
         }
 
         private void CreateTarget()
@@ -119,17 +131,6 @@ namespace GameScene.GameSequence
         {
             // Play button
             playButton.onClick.AddListener(OnClickPlay);
-
-            // Init view
-
-            var listBoard = new List<Transform>();
-
-            for (int i = 0; i < boardSize.x * boardSize.y; i++)
-            {
-                listBoard.Add(Instantiate(model.CellModel).transform);
-            }
-
-            view.InitGroundBoard(listBoard, boardSize, model.GetBlockOffset());
         }
 
         #endregion
@@ -328,9 +329,9 @@ namespace GameScene.GameSequence
         {
             playButton.interactable = false;
             var isWin = CheckWin();
-            view.MovePlayer(
-                storeSelected.Select(o => o.SelectType).ToList()
-                , model.PlayerMoveTime, OnMoveFail);
+            // view.MovePlayer(
+            //     storeSelected.Select(o => o.SelectType).ToList()
+            //     , model.PlayerMoveTime, OnMoveFail);
 
             await Task.Delay((int)(model.PlayerMoveTime * storeSelected.Count * 1000));
             if (isWin)

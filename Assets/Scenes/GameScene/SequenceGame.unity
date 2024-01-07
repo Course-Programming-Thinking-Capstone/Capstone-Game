@@ -242,14 +242,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f88d3f4bbe9145898b33bd7748199444, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  savePanel: {fileID: 0}
   container: {fileID: 716583636}
   startGroundPosition: {fileID: 933883831}
   blockContainer: {fileID: 1154784788}
   selectorContainer: {fileID: 1328973360}
   selectedContainer: {fileID: 1249297808}
-  idleAnimation: action/idle/normal
-  moveAnimation: action/move-forward
-  collectAnimation: activity/eat-chew
 --- !u!1 &454645804
 GameObject:
   m_ObjectHideFlags: 0
@@ -1323,15 +1321,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 589decc54ea94fb4bb1082dbc8e48ffd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTesting: 1
+  playerPosition: {x: 1, y: 1}
+  targetPosition: {x: 5, y: 5}
+  boardSize: {x: 8, y: 6}
   view: {fileID: 372901246}
   model: {fileID: 1966046701}
   deleteZone: {fileID: 2084806566}
   selectedZone: {fileID: 1249297808}
   playButton: {fileID: 1035767137}
   generateList: 0100000002000000030000000400000005000000
-  startPosition: {x: 2, y: 2}
-  targetPosition: {x: 5, y: 5}
-  boardSize: {x: 8, y: 6}
 --- !u!114 &1365533568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1527,7 +1526,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -10
-  m_Sprite: {fileID: 21300000, guid: 522a22e2885834a40b0c850036bb89f5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ce2b98f058c5bad469e4bc946bb2a273, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2112,17 +2111,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97fac5e07b2242c5bfd1dd32fe85d53e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  modelSelector:
-  - selectType: 1
-    prefabs: {fileID: 4224047065698184668, guid: f9b1aefff01d64641a5a146f2896d1b9, type: 3}
-  - selectType: 2
-    prefabs: {fileID: 4224047065698184668, guid: 418f91e9da981b54f9d9654c28c61aed, type: 3}
-  - selectType: 3
-    prefabs: {fileID: 4224047065698184668, guid: 879a53c6870614d4cb6672e910f4230d, type: 3}
-  - selectType: 4
-    prefabs: {fileID: 4224047065698184668, guid: 12fc539f5272da14eb23bea3c955ab6c, type: 3}
-  - selectType: 5
-    prefabs: {fileID: 4224047065698184668, guid: 58b739a1ca0bdf848a2cb9c76291dfd0, type: 3}
   modelSelected:
   - selectType: 1
     prefabs: {fileID: 5923298832287941037, guid: 3e441366c01fbd1459adc13fdcf0e080, type: 3}
@@ -2134,6 +2122,20 @@ MonoBehaviour:
     prefabs: {fileID: 5923298832287941037, guid: c8c5460478258c545bec1dda3fa6a969, type: 3}
   - selectType: 5
     prefabs: {fileID: 5923298832287941037, guid: 69864048f965f1a4492eb962ffe524dc, type: 3}
+  blockOffset: 1.3
+  playerModel: {fileID: 7691891174158779115, guid: 77697015dbe12b441afab207db53932a, type: 3}
+  playerMoveTime: 0.8
+  modelSelector:
+  - selectType: 1
+    prefabs: {fileID: 4224047065698184668, guid: f9b1aefff01d64641a5a146f2896d1b9, type: 3}
+  - selectType: 2
+    prefabs: {fileID: 4224047065698184668, guid: 418f91e9da981b54f9d9654c28c61aed, type: 3}
+  - selectType: 3
+    prefabs: {fileID: 4224047065698184668, guid: 879a53c6870614d4cb6672e910f4230d, type: 3}
+  - selectType: 4
+    prefabs: {fileID: 4224047065698184668, guid: 12fc539f5272da14eb23bea3c955ab6c, type: 3}
+  - selectType: 5
+    prefabs: {fileID: 4224047065698184668, guid: 58b739a1ca0bdf848a2cb9c76291dfd0, type: 3}
   candySprites:
   - {fileID: 21300000, guid: 799f5875c25094d8dba44a9851499e1a, type: 3}
   - {fileID: 21300000, guid: 0790d5714b5544c6fa8276d009a959b9, type: 3}
@@ -2160,11 +2162,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: edf8e8f16fef9444bb94de066813ddca, type: 3}
   - {fileID: 21300000, guid: cf935d01586a84459a5e1c5a30b1563c, type: 3}
   - {fileID: 21300000, guid: 9d50539b58fb64602b795d40aaf51368, type: 3}
-  playerModel: {fileID: 7691891174158779115, guid: 77697015dbe12b441afab207db53932a, type: 3}
   candyModel: {fileID: 802349416297577777, guid: b9df67cdd2479614f9efbba43c5772be, type: 3}
   cellModel: {fileID: 8313896542140405589, guid: ba55010254c6eb64696f2c69bf1da902, type: 3}
-  playerMoveTime: 0.8
-  blockOffset: 1.3
 --- !u!1 &2005999894
 GameObject:
   m_ObjectHideFlags: 0
