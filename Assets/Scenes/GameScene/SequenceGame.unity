@@ -242,12 +242,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f88d3f4bbe9145898b33bd7748199444, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  savePanel: {fileID: 0}
+  savePanel: {fileID: 718398932}
   container: {fileID: 716583636}
   startGroundPosition: {fileID: 933883831}
   blockContainer: {fileID: 1154784788}
   selectorContainer: {fileID: 1328973360}
   selectedContainer: {fileID: 1249297808}
+  movingContainer: {fileID: 1808259130}
 --- !u!1 &454645804
 GameObject:
   m_ObjectHideFlags: 0
@@ -589,6 +590,81 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &718398932
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 718398933}
+  - component: {fileID: 718398935}
+  - component: {fileID: 718398934}
+  m_Layer: 5
+  m_Name: SavePanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &718398933
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 718398932}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1961906771}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &718398934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 718398932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &718398935
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 718398932}
+  m_CullTransparentMesh: 1
 --- !u!1 &913332391
 GameObject:
   m_ObjectHideFlags: 0
@@ -2060,6 +2136,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 454645805}
+  - {fileID: 718398933}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2111,31 +2188,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97fac5e07b2242c5bfd1dd32fe85d53e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blockOffset: 1.3
+  playerMoveTime: 0.8
+  playerModel: {fileID: 7691891174158779115, guid: 77697015dbe12b441afab207db53932a, type: 3}
   modelSelected:
   - selectType: 1
-    prefabs: {fileID: 5923298832287941037, guid: 3e441366c01fbd1459adc13fdcf0e080, type: 3}
+    renderSprite: {fileID: 21300000, guid: dd42d5923581a6a488bae80605495224, type: 3}
   - selectType: 2
-    prefabs: {fileID: 5923298832287941037, guid: dce785b0a25936246a347e3867be6f26, type: 3}
+    renderSprite: {fileID: 21300000, guid: b229b04320ba90340892b1d3fae353cc, type: 3}
   - selectType: 3
-    prefabs: {fileID: 5923298832287941037, guid: f25beabe53652d244b41bf4994b9e157, type: 3}
+    renderSprite: {fileID: 21300000, guid: ff465af64c6af4a4793bbd4733ce6cf4, type: 3}
   - selectType: 4
-    prefabs: {fileID: 5923298832287941037, guid: c8c5460478258c545bec1dda3fa6a969, type: 3}
+    renderSprite: {fileID: 21300000, guid: f6daaeaf4e4e6e84d82b78a1c1f6568e, type: 3}
   - selectType: 5
-    prefabs: {fileID: 5923298832287941037, guid: 69864048f965f1a4492eb962ffe524dc, type: 3}
-  blockOffset: 1.3
-  playerModel: {fileID: 7691891174158779115, guid: 77697015dbe12b441afab207db53932a, type: 3}
-  playerMoveTime: 0.8
+    renderSprite: {fileID: 21300000, guid: e62f21787936c654a97885b672eab284, type: 3}
   modelSelector:
   - selectType: 1
-    prefabs: {fileID: 4224047065698184668, guid: f9b1aefff01d64641a5a146f2896d1b9, type: 3}
+    renderSprite: {fileID: 21300000, guid: d07bff4e34796a540b6571f8bccf125d, type: 3}
   - selectType: 2
-    prefabs: {fileID: 4224047065698184668, guid: 418f91e9da981b54f9d9654c28c61aed, type: 3}
+    renderSprite: {fileID: 21300000, guid: 33d289fae53b348479450da350f38942, type: 3}
   - selectType: 3
-    prefabs: {fileID: 4224047065698184668, guid: 879a53c6870614d4cb6672e910f4230d, type: 3}
+    renderSprite: {fileID: 21300000, guid: a93ab5bc5ddc92c4ca7b8e07d1cb7f3e, type: 3}
   - selectType: 4
-    prefabs: {fileID: 4224047065698184668, guid: 12fc539f5272da14eb23bea3c955ab6c, type: 3}
+    renderSprite: {fileID: 21300000, guid: fe6a6d4086a110842b448e0c9478dd82, type: 3}
   - selectType: 5
-    prefabs: {fileID: 4224047065698184668, guid: 58b739a1ca0bdf848a2cb9c76291dfd0, type: 3}
+    renderSprite: {fileID: 21300000, guid: 0946204cce3955c499a18037dc619f38, type: 3}
+  selectorPrefab: {fileID: 5241791683117841287, guid: 34b628f1adf0989468cc4c22a153ba14, type: 3}
+  selectedPrefab: {fileID: 5923298832287941037, guid: 69864048f965f1a4492eb962ffe524dc, type: 3}
+  targetPrefab: {fileID: 802349416297577777, guid: b9df67cdd2479614f9efbba43c5772be, type: 3}
+  cellBoardPrefab: {fileID: 8313896542140405589, guid: ba55010254c6eb64696f2c69bf1da902, type: 3}
   candySprites:
   - {fileID: 21300000, guid: 799f5875c25094d8dba44a9851499e1a, type: 3}
   - {fileID: 21300000, guid: 0790d5714b5544c6fa8276d009a959b9, type: 3}
@@ -2162,8 +2243,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: edf8e8f16fef9444bb94de066813ddca, type: 3}
   - {fileID: 21300000, guid: cf935d01586a84459a5e1c5a30b1563c, type: 3}
   - {fileID: 21300000, guid: 9d50539b58fb64602b795d40aaf51368, type: 3}
-  candyModel: {fileID: 802349416297577777, guid: b9df67cdd2479614f9efbba43c5772be, type: 3}
-  cellModel: {fileID: 8313896542140405589, guid: ba55010254c6eb64696f2c69bf1da902, type: 3}
 --- !u!1 &2005999894
 GameObject:
   m_ObjectHideFlags: 0

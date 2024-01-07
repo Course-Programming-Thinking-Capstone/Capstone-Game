@@ -7,11 +7,25 @@ namespace GameScene
 {
     public class GameModel : MonoBehaviour
     {
-        [SerializeField] private List<ModelSelected> modelSelected;
+        [Header("Overall setting")]
         [SerializeField] private float blockOffset = 1.3f;
-        [SerializeField] private GameObject playerModel;
         [SerializeField] private float playerMoveTime;
-       
+        [SerializeField] private GameObject playerModel;
+
+        [Header("Not basic mode")]
+        [SerializeField] private List<ModelSelected> modelSelected;
+        [SerializeField] private List<ModelSelector> modelSelector;
+        [SerializeField] private GameObject selectorPrefab;
+        [SerializeField] private GameObject selectedPrefab;
+        [SerializeField] private GameObject targetPrefab;
+        [SerializeField] private GameObject cellBoardPrefab;
+
+        #region Getter / Setter
+
+        public GameObject SelectorPrefab => selectorPrefab;
+        public GameObject SelectedPrefab => selectedPrefab;
+        public GameObject TargetPrefab => targetPrefab;
+        public GameObject CellBoardPrefab => cellBoardPrefab;
         public float PlayerMoveTime => playerMoveTime;
         public GameObject PlayerModel => playerModel;
 
@@ -20,30 +34,36 @@ namespace GameScene
             return blockOffset;
         }
 
-        public GameObject GetSelected(SelectType selectType)
+        public Sprite GetSelected(SelectType selectType)
         {
             var result = modelSelected.FirstOrDefault(o => o.SelectType == selectType);
-            return result?.Prefabs;
+            return result?.RenderSprite;
         }
+
+        public Sprite GetSelector(SelectType selectType)
+        {
+            var result = modelSelector.FirstOrDefault(o => o.SelectType == selectType);
+            return result?.RenderSprite;
+        }
+
+        #endregion
     }
 
     [Serializable]
     public class ModelSelector
     {
         [SerializeField] private SelectType selectType;
-        [SerializeField] private GameObject prefabs;
-
+        [SerializeField] private Sprite renderSprite;
         public SelectType SelectType => selectType;
-
-        public GameObject Prefabs => prefabs;
+        public Sprite RenderSprite => renderSprite;
     }
 
     [Serializable]
     public class ModelSelected
     {
         [SerializeField] private SelectType selectType;
-        [SerializeField] private GameObject prefabs;
+        [SerializeField] private Sprite renderSprite;
         public SelectType SelectType => selectType;
-        public GameObject Prefabs => prefabs;
+        public Sprite RenderSprite => renderSprite;
     }
 }

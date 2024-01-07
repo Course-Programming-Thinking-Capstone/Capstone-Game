@@ -5,6 +5,7 @@ using GameScene.Component;
 using GameScene.Component.GameBasic;
 using UnityEngine;
 
+
 namespace GameScene.GameBasic
 {
     public class BasicGameController : GameController
@@ -46,8 +47,11 @@ namespace GameScene.GameBasic
                     HandleMouseMoveSelected();
                 }
             }
+
+         
         }
 
+        
         private void HandleMouseUp()
         {
             var hitObj = CheckValidPosition();

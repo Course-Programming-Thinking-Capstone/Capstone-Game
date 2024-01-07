@@ -13,29 +13,13 @@ namespace GameScene.GameSequence
         [Header("Canvas references")]
         [SerializeField] private Transform selectorContainer;
         [SerializeField] private Transform selectedContainer;
+        [SerializeField] private Transform movingContainer;
 
         [Header("Cache")]
         private readonly List<Vector2> positions = new();
-        // private Transform playerRectTransform;
-        // private SkeletonAnimation playerSkeleton;
-        // private float cellXSize;
-        // private float cellYSize;
         private Vector2 boardSize;
-        //private Vector2 playerBasePosition;
 
         #region Initialize
-
-        public void InitPlayerPosition(Transform playerTransform, Vector2 playerPos)
-        {
-            playerTransform.SetParent(container);
-            playerTransform.position = GetPositionFromBoard(playerPos);
-        }
-
-        public void InitTargetPosition(Transform target, Vector2 objPosition)
-        {
-            target.SetParent(container);
-            target.position = GetPositionFromBoard(objPosition);
-        }
 
         public void InitGroundBoard(List<Transform> groundItems, Vector2 board, float offSet)
         {
@@ -55,7 +39,19 @@ namespace GameScene.GameSequence
                 }
             }
         }
+
         #endregion
+
+        /// <summary>
+        /// Place any object to board position
+        /// </summary>
+        /// <param name="objectToSet"></param>
+        /// <param name="playerPos"></param>
+        public void PlaceObjectToBoard(Transform objectToSet, Vector2 playerPos)
+        {
+            objectToSet.SetParent(container);
+            objectToSet.position = GetPositionFromBoard(playerPos);
+        }
 
         #region Canvas
 
@@ -71,12 +67,25 @@ namespace GameScene.GameSequence
             child.localScale = Vector3.one;
         }
 
-        private void SetPositionSelected(RectTransform item, int index)
+        public void SetParentSelectedToMove(Transform child)
         {
-            var yPosition = -item!.sizeDelta.y * (index - 0.5f);
-            item!.anchoredPosition = new Vector3(0f, yPosition, 0f);
+            child.SetParent(movingContainer);
+            child.localScale = Vector3.one;
         }
 
+        /// <summary>
+        /// Add and object to selected list with index
+        /// </summary>
+        private void SetPositionSelected(RectTransform item, int index)
+        {
+            var yPosition = -item.sizeDelta.y * (index - 0.5f);
+            item.anchoredPosition = new Vector3(0f, yPosition, 0f);
+        }
+
+        /// <summary>
+        /// Sorted all selected object to its position
+        /// </summary>
+        /// <param name="items"></param>
         public void ReSortItemsSelected(List<RectTransform> items)
         {
             for (int i = 0; i < items.Count; i++)
@@ -104,85 +113,13 @@ namespace GameScene.GameSequence
 
         #region 2D
 
-        // public void MovePlayer(List<SelectType> selectTypes, float moveTime, UnityAction onFail)
-        // {
-        //     var currentStep = 0;
-        //     if (!playerSkeleton)
-        //     {
-        //         playerSkeleton = playerRectTransform.GetComponent<SkeletonAnimation>();
-        //     }
-        //
-        //     MoveToNextStep(selectTypes, playerBasePosition, playerRectTransform.rotation, currentStep, moveTime,
-        //         onFail);
-        // }
-        //
-        // private void MoveToNextStep(List<SelectType> selectTypes, Vector2 currentPosition, Quaternion currentRotation,
-        //     int currentStep, float moveTime, UnityAction onFail)
-        // {
-        //     if (currentStep < selectTypes.Count)
-        //     {
-        //         var moveDirection = Vector2.zero;
-        //         var targetRotation = currentRotation;
-        //         switch (selectTypes[currentStep])
-        //         {
-        //             case SelectType.None:
-        //                 break;
-        //             case SelectType.Up:
-        //                 // playerSkeleton.AnimationState.SetAnimation(0, moveAnimation, true);
-        //                 moveDirection = Vector2.up;
-        //                 break;
-        //             case SelectType.Down:
-        //                 //  playerSkeleton.AnimationState.SetAnimation(0, moveAnimation, true);
-        //                 moveDirection = Vector2.down;
-        //                 break;
-        //             case SelectType.Left:
-        //                 //   playerSkeleton.AnimationState.SetAnimation(0, moveAnimation, true);
-        //                 moveDirection = Vector2.left;
-        //                 targetRotation = Quaternion.Euler(0, 0, 0);
-        //                 break;
-        //             case SelectType.Right:
-        //                 //  playerSkeleton.AnimationState.SetAnimation(0, moveAnimation, true);
-        //                 moveDirection = Vector2.right;
-        //                 targetRotation = Quaternion.Euler(0, 180, 0);
-        //                 break;
-        //             case SelectType.Collect:
-        //                 //     playerSkeleton.AnimationState.SetAnimation(0, collectAnimation, true);
-        //                 moveDirection = Vector2.zero; // not move
-        //                 break;
-        //         }
-        //
-        //         var nextPosition = currentPosition + moveDirection;
-        //         if (nextPosition.x > boardSize.x || nextPosition.y > boardSize.y)
-        //         {
-        //             onFail.Invoke();
-        //         }
-        //
-        //         Vector2 targetPosition = GetPositionFromBoard(nextPosition);
-        //
-        //         Sequence sequence = DOTween.Sequence();
-        //
-        //         sequence.Append(playerRectTransform.DOMove(targetPosition, moveTime));
-        //         if (currentRotation != targetRotation)
-        //         {
-        //             sequence.Join(playerRectTransform.DORotateQuaternion(targetRotation, moveTime / 2));
-        //         }
-        //
-        //         sequence.OnComplete(() =>
-        //         {
-        //             MoveToNextStep(selectTypes, nextPosition, targetRotation, currentStep + 1, moveTime, onFail);
-        //         });
-        //     }
-        //     else
-        //     {
-        //         //playerSkeleton.AnimationState.SetAnimation(0, idleAnimation, true);
-        //     }
-        // }
-
-        private Vector2 GetPositionFromBoard(Vector2 position)
+        public Vector2 GetPositionFromBoard(Vector2 position)
         {
-            int index = (int)((position.y - 1) * boardSize.x + (position.x - 1));
+            var index = (int)((position.y - 1) * boardSize.x + (position.x - 1));
+       
             return positions[index];
         }
+
         #endregion
     }
 }

@@ -1,6 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using GameScene.Component;
 using JetBrains.Annotations;
 using MainScene.Data;
@@ -30,17 +30,15 @@ namespace GameScene.GameSequence
         private readonly List<Selector> storeSelected = new();
         private readonly List<Vector2> storedPosition = new();
         private bool isDelete;
-        private float offSet = 0.2f;
+        private readonly float offSet = 0.2f;
         [CanBeNull] private Selector selectedObject;
 
         // PLAY GROUND
-        private GameObject player;
         private Candy candy;
 
         // GAME DATA
         private LevelItemData levelData;
-        private Vector2 startPosition;
-
+        private Vector2 currentPlayerPosition;
         private int stageIndex;
         private int levelIndex;
         private int coinWin;
@@ -80,7 +78,6 @@ namespace GameScene.GameSequence
 
             boardSize = levelData.BoardSize;
             targetPosition = levelData.TargetPosition;
-            startPosition = levelData.PlayerPosition;
         }
 
         private void CreateBoard()
@@ -89,7 +86,7 @@ namespace GameScene.GameSequence
 
             for (int i = 0; i < boardSize.x * boardSize.y; i++)
             {
-                listBoard.Add(Instantiate(model.CellModel).transform);
+                listBoard.Add(Instantiate(model.CellBoardPrefab).transform);
             }
 
             view.InitGroundBoard(listBoard, boardSize, model.GetBlockOffset());
@@ -100,31 +97,31 @@ namespace GameScene.GameSequence
             // Generate objects selector
             foreach (var o in generateList)
             {
-                var obj = Instantiate(model.GetSelector(o));
+                var obj = Instantiate(model.SelectorPrefab);
                 view.SetParentSelector(obj.transform);
-                storeSelector.Add(obj.GetComponent<Selector>());
-            }
+                var scriptControl = obj.AddComponent<Arrow>();
+                scriptControl.Init(OnClickedSelector);
+                scriptControl.SelectType = o;
+                scriptControl.ChangeRender(model.GetSelector(o));
 
-            // Assign callback for selector
-            foreach (var arrow in storeSelector)
-            {
-                arrow.Init(OnClickedSelector);
+                storeSelector.Add(scriptControl);
             }
         }
 
         private void CreatePlayer()
         {
             // Init player
-            player = Instantiate(model.PlayerModel);
-            view.InitPlayerPosition(player.transform, playerPosition);
+            playerControl = Instantiate(model.PlayerModel).GetComponent<Player>();
+            currentPlayerPosition = playerPosition;
+            view.PlaceObjectToBoard(playerControl.transform, playerPosition);
         }
 
         private void CreateTarget()
         {
             // Init Candy
-            candy = Instantiate(model.CandyModel).GetComponent<Candy>();
+            candy = Instantiate(model.TargetPrefab).GetComponent<Candy>();
             candy.Init(model.CandySprites[Random.Range(0, model.CandySprites.Count)]);
-            view.InitTargetPosition(candy.GetComponent<Transform>(), targetPosition);
+            view.PlaceObjectToBoard(candy.GetComponent<Transform>(), targetPosition);
         }
 
         private void InitView()
@@ -165,6 +162,7 @@ namespace GameScene.GameSequence
                     storeSelected.Insert(CalculatedCurrentPosition(Input.mousePosition), selectedObject);
                 }
 
+                view.SetParentSelected(selectedObject!.transform);
                 view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
                 selectedObject = null;
             }
@@ -180,54 +178,77 @@ namespace GameScene.GameSequence
             HandleDisplayCalculate(mousePos);
         }
 
+        private IEnumerator StartPlayerMove()
+        {
+            view.ActiveSavePanel();
+            for (int i = 0; i < storeSelected.Count; i++)
+            {
+                var actionType = storeSelected[i].SelectType;
+                yield return HandleAction(actionType);
+            }
+
+            view.ActiveSavePanel(false);
+        }
+
+        private IEnumerator HandleAction(SelectType direction)
+        {
+            var isMove = true;
+            var targetMove = currentPlayerPosition;
+
+            Debug.Log(targetMove);
+            Debug.Log(direction);
+            switch (direction)
+            {
+                case SelectType.Up:
+                    targetMove += Vector2.up;
+                    break;
+                case SelectType.Down:
+                    targetMove += Vector2.down;
+                    break;
+                case SelectType.Left:
+                    targetMove += Vector2.left;
+                    break;
+                case SelectType.Right:
+                    targetMove += Vector2.right;
+                    break;
+                case SelectType.Collect:
+                    isMove = false;
+                    break;
+            }
+
+            if (isMove)
+            {
+                currentPlayerPosition = targetMove;
+                targetMove = view.GetPositionFromBoard(targetMove);
+                if (targetMove.x > boardSize.x || targetMove.y > boardSize.y)
+                {
+                    // Reset game cuz it fail
+                    yield break;
+                }
+
+                yield return MovePlayer(targetMove, model.PlayerMoveTime);
+            }
+            else
+            {
+                playerControl.PlayAnimationEat();
+            }
+        }
+
         private void ResetGame()
         {
-            // Clear all things
+            // Clear all things selected
             foreach (var selector in storeSelected)
             {
                 SimplePool.Despawn(selector.gameObject);
             }
 
-            playerPosition = startPosition;
             storeSelected.Clear();
 
             // Reset player position and candy
-            view.InitPlayerPosition(player.GetComponent<Transform>(), startPosition);
-            view.InitTargetPosition(candy.GetComponent<Transform>(), targetPosition);
+            view.PlaceObjectToBoard(playerControl.transform, playerPosition);
         }
 
         #region Calulate func
-
-        private bool CheckWin()
-        {
-            foreach (var item in storeSelected)
-            {
-                switch (item.SelectType)
-                {
-                    case SelectType.Up:
-                        playerPosition += Vector2.up;
-                        break;
-                    case SelectType.Down:
-                        playerPosition += Vector2.down;
-                        break;
-                    case SelectType.Left:
-                        playerPosition += Vector2.left;
-                        break;
-                    case SelectType.Right:
-                        playerPosition += Vector2.right;
-                        break;
-                    case SelectType.Collect:
-                        if (playerPosition == targetPosition)
-                        {
-                            return true;
-                        }
-
-                        break;
-                }
-            }
-
-            return false;
-        }
 
         private int CalculatedCurrentPosition(Vector2 mousePos)
         {
@@ -306,58 +327,35 @@ namespace GameScene.GameSequence
         private void OnClickedSelector(Selector selectedObj)
         {
             // Generate new selected
-            var obj = SimplePool.Spawn(model.GetSelected(selectedObj.SelectType));
-            view.SetParentSelected(obj.transform);
+            var obj = SimplePool.Spawn(model.SelectedPrefab);
+
             // Generate init selected
-            var arrow = obj.GetComponent<Selector>();
+            var arrow = obj.GetComponent<Arrow>();
             arrow.Init(OnClickedSelected);
+            arrow.ChangeRender(model.GetSelected(selectedObj.SelectType));
+            arrow.SelectType = selectedObj.SelectType;
+
             // assign to control
             selectedObject = arrow;
+            view.SetParentSelectedToMove(selectedObject.transform);
             StoreTempPosition();
         }
 
         private void OnClickedSelected(Selector selectedObj)
         {
+            // Get object to move
             storeSelected.Remove(selectedObj);
             selectedObject = selectedObj;
+            view.SetParentSelectedToMove(selectedObject!.transform);
             view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
+
             StoreTempPosition();
         }
 
         // Start Moving
-        private async void OnClickPlay()
+        private void OnClickPlay()
         {
-            playButton.interactable = false;
-            var isWin = CheckWin();
-            // view.MovePlayer(
-            //     storeSelected.Select(o => o.SelectType).ToList()
-            //     , model.PlayerMoveTime, OnMoveFail);
-
-            await Task.Delay((int)(model.PlayerMoveTime * storeSelected.Count * 1000));
-            if (isWin)
-            {
-                candy.gameObject.SetActive(false);
-                var starWin = 3;
-                // Save data
-                playerService.SaveHistoryStar(stageIndex, levelIndex, starWin);
-                if (playerService.CurrentLevel[stageIndex] == levelIndex)
-                {
-                    playerService.CurrentLevel[stageIndex]++;
-                    playerService.SaveData();
-                }
-
-                // Show popup
-                ShowWinPopup(starWin, coinWin, gemWin);
-            }
-            else
-            {
-                ResetGame();
-                playButton.interactable = true;
-            }
-        }
-
-        private void OnMoveFail()
-        {
+            StartCoroutine(StartPlayerMove());
         }
 
         /// <summary>
