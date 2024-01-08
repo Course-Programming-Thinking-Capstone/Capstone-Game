@@ -194,9 +194,6 @@ namespace GameScene.GameSequence
         {
             var isMove = true;
             var targetMove = currentPlayerPosition;
-
-            Debug.Log(targetMove);
-            Debug.Log(direction);
             switch (direction)
             {
                 case SelectType.Up:
@@ -219,13 +216,15 @@ namespace GameScene.GameSequence
             if (isMove)
             {
                 currentPlayerPosition = targetMove;
-                targetMove = view.GetPositionFromBoard(targetMove);
-                if (targetMove.x > boardSize.x || targetMove.y > boardSize.y)
+
+                if (IsOutsideBoard(targetMove))
                 {
                     // Reset game cuz it fail
+                    ResetGame();
                     yield break;
                 }
 
+                targetMove = view.GetPositionFromBoard(targetMove);
                 yield return MovePlayer(targetMove, model.PlayerMoveTime);
             }
             else
@@ -245,6 +244,11 @@ namespace GameScene.GameSequence
             storeSelected.Clear();
 
             // Reset player position and candy
+            currentPlayerPosition = playerPosition;
+            playerControl.RotatePlayer(
+                targetPosition.x >= playerPosition.x
+                , 0.1f);
+            playerControl.PlayAnimationIdle();
             view.PlaceObjectToBoard(playerControl.transform, playerPosition);
         }
 
@@ -317,6 +321,12 @@ namespace GameScene.GameSequence
             {
                 storedPosition.Add(item.RectTransform.position);
             }
+        }
+
+        private bool IsOutsideBoard(Vector2 checkPosition)
+        {
+            return checkPosition.x > boardSize.x || checkPosition.y > boardSize.y ||
+                   checkPosition.x <= 0 || checkPosition.y <= 0;
         }
 
         #endregion
