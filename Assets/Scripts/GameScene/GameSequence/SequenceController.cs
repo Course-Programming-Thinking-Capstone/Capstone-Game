@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GameScene.Component;
 using JetBrains.Annotations;
-using MainScene.Data;
+using Spine.Unity;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -33,17 +33,11 @@ namespace GameScene.GameSequence
         private readonly float offSet = 0.2f;
         [CanBeNull] private Selector selectedObject;
 
-        // PLAY GROUND
+        // System
         private Candy candy;
-
-        // GAME DATA
-        private LevelItemData levelData;
         private Vector2 currentPlayerPosition;
-        private int stageIndex;
-        private int levelIndex;
-        private int coinWin;
-        private int gemWin;
-        private bool isPrevious;
+        private readonly Dictionary<Vector2, bool> targetChecker = new();
+        private readonly Dictionary<Vector2, Transform> targetReferences = new();
 
         #region INITIALIZE
 
@@ -57,28 +51,27 @@ namespace GameScene.GameSequence
             InitView();
         }
 
-        private void LoadData()
-        {
-            var param = PopupHelpers.PassParamPopup();
-            levelData = param.GetObject<LevelItemData>(ParamType.LevelData);
-            stageIndex = param.GetObject<int>(ParamType.StageIndex);
-            levelIndex = param.GetObject<int>(ParamType.LevelIndex);
-            if (isPrevious)
-            {
-                coinWin = 0;
-                gemWin = 0;
-            }
-            else
-            {
-                var reward1 = levelData.LevelReward.FirstOrDefault(o => o.RewardType == Enums.RewardType.Coin);
-                var reward2 = levelData.LevelReward.FirstOrDefault(o => o.RewardType == Enums.RewardType.Coin);
-                coinWin = reward1?.Value ?? 0;
-                gemWin = reward2?.Value ?? 0;
-            }
-
-            boardSize = levelData.BoardSize;
-            targetPosition = levelData.TargetPosition;
-        }
+        // private void LoadData()
+        // {
+        //     var param = PopupHelpers.PassParamPopup();
+        //     levelData = param.GetObject<LevelItemData>(ParamType.LevelData);
+        //     stageIndex = param.GetObject<int>(ParamType.StageIndex);
+        //     levelIndex = param.GetObject<int>(ParamType.LevelIndex);
+        //     if (isPrevious)
+        //     {
+        //         coinWin = 0;
+        //         gemWin = 0;
+        //     }
+        //     else
+        //     {
+        //         var reward1 = levelData.LevelReward.FirstOrDefault(o => o.RewardType == Enums.RewardType.Coin);
+        //         var reward2 = levelData.LevelReward.FirstOrDefault(o => o.RewardType == Enums.RewardType.Coin);
+        //         coinWin = reward1?.Value ?? 0;
+        //         gemWin = reward2?.Value ?? 0;
+        //     }
+        //
+        //     boardSize = levelData.BoardSize;
+        // }
 
         private void CreateBoard()
         {
@@ -119,9 +112,14 @@ namespace GameScene.GameSequence
         private void CreateTarget()
         {
             // Init Candy
-            candy = Instantiate(model.TargetPrefab).GetComponent<Candy>();
-            candy.Init(model.CandySprites[Random.Range(0, model.CandySprites.Count)]);
-            view.PlaceObjectToBoard(candy.GetComponent<Transform>(), targetPosition);
+            foreach (var position in targetPosition)
+            {
+                candy = Instantiate(model.TargetPrefab).GetComponent<Candy>();
+                candy.Init(model.CandySprites[Random.Range(0, model.CandySprites.Count)]);
+                view.PlaceObjectToBoard(candy.GetComponent<Transform>(), position);
+                targetChecker.Add(position, false);
+                targetReferences.Add(position, candy.transform);
+            }
         }
 
         private void InitView()
@@ -188,6 +186,15 @@ namespace GameScene.GameSequence
             }
 
             view.ActiveSavePanel(false);
+            if (WinChecker())
+            {
+                Debug.Log("You win");
+                // win
+            }
+            else
+            {
+                ResetGame();
+            }
         }
 
         private IEnumerator HandleAction(SelectType direction)
@@ -220,6 +227,8 @@ namespace GameScene.GameSequence
                 if (IsOutsideBoard(targetMove))
                 {
                     // Reset game cuz it fail
+                    playerControl.PlayAnimationIdle();
+                    yield return new WaitForSeconds(1f);
                     ResetGame();
                     yield break;
                 }
@@ -229,7 +238,16 @@ namespace GameScene.GameSequence
             }
             else
             {
-                playerControl.PlayAnimationEat();
+                var tracker = playerControl.PlayAnimationEat();
+
+                if (targetChecker.ContainsKey(currentPlayerPosition))
+                {
+                    targetChecker[currentPlayerPosition] = true;
+                    targetReferences[currentPlayerPosition].gameObject.SetActive(false);
+                }
+
+                yield return new WaitForSpineAnimationComplete(tracker);
+                playerControl.PlayAnimationIdle();
             }
         }
 
@@ -243,13 +261,33 @@ namespace GameScene.GameSequence
 
             storeSelected.Clear();
 
-            // Reset player position and candy
+            // Clear win condition
+            foreach (var position in targetReferences.Keys)
+            {
+                targetReferences[position].gameObject.SetActive(true);
+                targetChecker[position] = false;
+            }
+
+            // Reset player position
             currentPlayerPosition = playerPosition;
             playerControl.RotatePlayer(
-                targetPosition.x >= playerPosition.x
+                targetPosition[0].x >= playerPosition.x
                 , 0.1f);
             playerControl.PlayAnimationIdle();
             view.PlaceObjectToBoard(playerControl.transform, playerPosition);
+        }
+
+        private bool WinChecker()
+        {
+            foreach (var value in targetChecker.Values)
+            {
+                if (!value) // any not get
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         #region Calulate func
@@ -374,13 +412,13 @@ namespace GameScene.GameSequence
         private void OnClickClaim()
         {
             // Save data
-            playerService.UserCoin += coinWin;
-            playerService.UserDiamond += gemWin;
+            // playerService.UserCoin += coinWin;
+            // playerService.UserDiamond += gemWin;
             playerService.SaveData();
             // Load level
 
             var param = PopupHelpers.PassParamPopup();
-            param.SaveObject(ParamType.StageIndex, stageIndex);
+            // param.SaveObject(ParamType.StageIndex, stageIndex);
             param.SaveObject("OpenPopup", true);
             SceneManager.LoadScene(Constants.MainMenu);
         }
@@ -392,7 +430,7 @@ namespace GameScene.GameSequence
         {
             // Load level
             var param = PopupHelpers.PassParamPopup();
-            param.SaveObject(ParamType.StageIndex, stageIndex);
+            // param.SaveObject(ParamType.StageIndex, stageIndex);
             SceneManager.LoadScene(Constants.MainMenu);
         }
 

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;
 using GameScene.Component;
 using Services;
@@ -16,8 +17,9 @@ namespace GameScene
 
         // Param
         [SerializeField] protected Vector2 playerPosition;
-        [SerializeField] protected Vector2 targetPosition;
+        [SerializeField] protected List<Vector2> targetPosition;
         [SerializeField] protected Vector2 boardSize;
+
         protected IEnumerator MovePlayer(Vector2 targetMove, float moveTime)
         {
             if (targetMove.x < playerControl.transform.position.x)

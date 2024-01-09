@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Spine;
 using Spine.Unity;
 using UnityEngine;
 
@@ -12,19 +13,21 @@ namespace GameScene.Component
         [SerializeField] private string moveAnimation;
         [SerializeField] private string collectAnimation;
 
-        public void PlayAnimationMove()
+        public TrackEntry PlayAnimationMove()
         {
-            skeletonAnimation.AnimationState.SetAnimation(0, moveAnimation, true);
+          return  skeletonAnimation.AnimationState.SetAnimation(0, moveAnimation, true);
         }
-        public void PlayAnimationIdle()
+
+        public TrackEntry PlayAnimationIdle()
         {
-            skeletonAnimation.AnimationState.SetAnimation(0, idleAnimation, true);
+            return skeletonAnimation.AnimationState.SetAnimation(0, idleAnimation, false);
         }
-        
-        public void PlayAnimationEat()
+
+        public TrackEntry PlayAnimationEat()
         {
-            skeletonAnimation.AnimationState.SetAnimation(0, collectAnimation, true);
+            return skeletonAnimation.AnimationState.SetAnimation(0, collectAnimation, true);
         }
+
         public void RotatePlayer(bool isRight, float timeToRotate)
         {
             var targetRotate = isRight ? new Vector3(0, 180, 0) : new Vector3(0, 0, 0);

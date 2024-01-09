@@ -169,7 +169,7 @@ namespace GameScene.GameBasic
             view.InitGroundBoardFakePosition(boardSize, model.GetBlockOffset());
 
             startPosGame = view.PlaceGround(Instantiate(model.RoadGroundPrefab).transform, playerPosition);
-            endPosGame = view.PlaceGround(Instantiate(model.RoadGroundPrefab).transform, targetPosition);
+            endPosGame = view.PlaceGround(Instantiate(model.RoadGroundPrefab).transform, targetPosition[0]);
 
             foreach (var positionRoad in roadPartPositions)
             {
@@ -231,7 +231,7 @@ namespace GameScene.GameBasic
                 return false;
             }
 
-            sortedPath.Remove(targetPosition);
+            sortedPath.Remove(targetPosition[0]);
             roadPartPositions = sortedPath;
 
             return true;
@@ -249,7 +249,7 @@ namespace GameScene.GameBasic
             {
                 Vector2 currentNode = queue.Dequeue();
 
-                if (currentNode == targetPosition)
+                if (currentNode == targetPosition[0])
                 {
                     // Reconstruct the path
                     List<Vector2> path = new List<Vector2>();
@@ -297,7 +297,7 @@ namespace GameScene.GameBasic
             }
 
             allPart.Add(playerPosition);
-            allPart.Add(targetPosition);
+            allPart.Add(targetPosition[0]);
 
             while (queue.Count > 0)
             {
@@ -386,9 +386,9 @@ namespace GameScene.GameBasic
                 }
             }
 
-            if (neighborCoordinates.Contains(targetPosition))
+            if (neighborCoordinates.Contains(targetPosition[0]))
             {
-                neighbors.Add(targetPosition);
+                neighbors.Add(targetPosition[0]);
             }
 
             return neighbors;
