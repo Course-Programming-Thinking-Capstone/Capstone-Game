@@ -9,6 +9,7 @@ namespace GameScene
         Left = 3,
         Right = 4,
         Collect = 5,
+        Loop = 6,
         RoadHorizontal,
         RoadVertical,
         RoadTurn1,

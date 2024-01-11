@@ -6,7 +6,6 @@ using JetBrains.Annotations;
 using Spine.Unity;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using Utilities;
 
 namespace GameScene.GameSequence
