@@ -28,7 +28,7 @@ namespace GameScene.GameBasic
         private void Start()
         {
             Validation();
-            CalcSolution();
+            CalcSolution(); 
             GenerateGround();
             GenerateSelector();
             GeneratePlayer();

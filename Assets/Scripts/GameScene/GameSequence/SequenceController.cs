@@ -17,14 +17,8 @@ namespace GameScene.GameSequence
         [SerializeField] private SequenceView view;
         [SerializeField] private SequenceModel model;
 
-        [Header("Reference object game")]
-        [SerializeField] private RectTransform deleteZone;
-        [SerializeField] private RectTransform selectedZone;
-        [SerializeField] private Button playButton;
-
         [Header("Testing only")]
-        [SerializeField] private List<SelectType> generateList;
-
+        
         // FOR CONTROL SELECTOR
         private readonly List<Selector> storeSelector = new();
         private readonly List<Selector> storeSelected = new();

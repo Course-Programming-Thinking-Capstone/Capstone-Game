@@ -1,22 +1,15 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameScene.GameBasic
 {
     public class BasicView : GameView
     {
-        // 2D
-        [SerializeField] private Transform startGroundPosition;
-        [SerializeField] private Transform blockContainer;
-        // Canvas
-
+        
         [SerializeField] private Transform container1;
         [SerializeField] private Transform container2;
         [SerializeField] private Transform movingContainer;
         public int CountLeft { get; set; }
         public int CountRight { get; set; }
-        private Vector2 boardSize;
-        private List<Vector2> positions = new List<Vector2>();
 
         public void AddRoadToContainer(Transform newObjectRoad)
         {

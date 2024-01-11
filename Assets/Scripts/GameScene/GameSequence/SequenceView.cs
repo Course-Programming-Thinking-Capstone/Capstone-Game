@@ -5,54 +5,11 @@ namespace GameScene.GameSequence
 {
     public class SequenceView : GameView
     {
-        [Header("2D references")]
-        [SerializeField] private Transform container;
-        [SerializeField] private Transform startGroundPosition;
-        [SerializeField] private Transform blockContainer;
-
         [Header("Canvas references")]
         [SerializeField] private Transform selectorContainer;
         [SerializeField] private Transform selectedContainer;
         [SerializeField] private Transform movingContainer;
-
-        [Header("Cache")]
-        private readonly List<Vector2> positions = new();
-        private Vector2 boardSize;
-
-        #region Initialize
-
-        public void InitGroundBoard(List<Transform> groundItems, Vector2 board, float offSet)
-        {
-            boardSize = board;
-            var sizeY = (int)board.y;
-            var sizeX = (int)board.x;
-            for (int i = 0; i < sizeY; i++) // vertical
-            {
-                for (int j = 0; j < sizeX; j++) // horizontal
-                {
-                    var positionNew = startGroundPosition.position;
-                    positionNew.x += offSet * j;
-                    positionNew.y += offSet * i;
-                    groundItems[i * sizeX + j].position = positionNew;
-                    positions.Add(positionNew);
-                    groundItems[i * sizeX + j].SetParent(blockContainer);
-                }
-            }
-        }
-
-        #endregion
-
-        /// <summary>
-        /// Place any object to board position
-        /// </summary>
-        /// <param name="objectToSet"></param>
-        /// <param name="playerPos"></param>
-        public void PlaceObjectToBoard(Transform objectToSet, Vector2 playerPos)
-        {
-            objectToSet.SetParent(container);
-            objectToSet.position = GetPositionFromBoard(playerPos);
-        }
-
+        
         #region Canvas
 
         public void SetParentSelector(Transform child)
@@ -111,15 +68,5 @@ namespace GameScene.GameSequence
 
         #endregion
 
-        #region 2D
-
-        public Vector2 GetPositionFromBoard(Vector2 position)
-        {
-            var index = (int)((position.y - 1) * boardSize.x + (position.x - 1));
-       
-            return positions[index];
-        }
-
-        #endregion
     }
 }

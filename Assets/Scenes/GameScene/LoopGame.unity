@@ -1407,10 +1407,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc2f60c8456941e29fd3618320a8e1f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isTesting: 0
-  playerPosition: {x: 0, y: 0}
-  targetPosition: []
-  boardSize: {x: 0, y: 0}
+  isTesting: 1
+  playerPosition: {x: 1, y: 1}
+  targetPosition:
+  - {x: 2, y: 2}
+  boardSize: {x: 8, y: 3}
 --- !u!1 &1398959422
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,12 +5,14 @@ using GameScene.Component;
 using Services;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace GameScene
 {
     public class GameController : MonoBehaviour
     {
         // SERVICES
+        [Header("All Mode")]
         [SerializeField] private bool isTesting;
         protected PlayerService playerService;
         protected Player playerControl;
@@ -20,6 +22,13 @@ namespace GameScene
         [SerializeField] protected List<Vector2> targetPosition;
         [SerializeField] protected Vector2 boardSize;
 
+        [Header("Drag mode")]
+        [Header("Reference object game")]
+        [SerializeField] protected RectTransform deleteZone;
+        [SerializeField] protected RectTransform selectedZone;
+        [SerializeField] protected Button playButton;
+        [SerializeField] protected List<SelectType> generateList;
+        
         protected IEnumerator MovePlayer(Vector2 targetMove, float moveTime)
         {
             if (targetMove.x < playerControl.transform.position.x)
