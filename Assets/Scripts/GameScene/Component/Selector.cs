@@ -30,7 +30,7 @@ namespace GameScene.Component
         /// <summary>
         /// Call Init when instantiate object 
         /// </summary>
-        public void Init(UnityAction<Selector> onClickParam)
+        public virtual void Init(UnityAction<Selector> onClickParam)
         {
             rectTransform = GetComponent<RectTransform>();
             if (renderer == null)
