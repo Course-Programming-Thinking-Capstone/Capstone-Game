@@ -82,6 +82,13 @@ namespace GameScene.GameLoop
             selectedObject!.RectTransform.position = mousePos;
             // handle if inside delete zone
             isDelete = IsPointInRT(mousePos, deleteZone);
+
+            if (CheckInsideLoop())
+            {
+                view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
+                return;
+            }
+
             // check to make space
             HandleDisplayCalculate(mousePos);
         }
@@ -304,6 +311,25 @@ namespace GameScene.GameLoop
             {
                 view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
             }
+        }
+
+        private bool CheckInsideLoop()
+        {
+            if (selectedObject.SelectType == SelectType.Loop)
+            {
+                return false;
+            }
+
+            var startPosition = (selectedObject.transform.position);
+            startPosition.z = -5;
+            Ray ray = new Ray(startPosition, Vector3.forward * 100);
+            if (Physics.Raycast(ray, out var hit))
+            {
+                Debug.Log(hit);
+                return hit.transform.TryGetComponent(typeof(Loop), out _);
+            }
+
+            return false;
         }
 
         private bool IsPointInRT(Vector2 point, RectTransform rt)
