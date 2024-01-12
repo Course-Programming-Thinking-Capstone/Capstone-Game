@@ -6,11 +6,15 @@ namespace GameScene.Component
 {
     public class Selector : MonoBehaviour
     {
-        [SerializeField] private SelectType selectType;
-        [SerializeField] private RectTransform rectTransform;
-        [SerializeField] private Image renderer;
+        [SerializeField] protected SelectType selectType;
+        [SerializeField] protected RectTransform rectTransform;
+        [SerializeField] protected Image renderer;
 
-        public void ChangeRender(Sprite newRender)
+        public float GetHeight()
+        {
+            return rectTransform.sizeDelta.y;
+        }
+        public virtual void ChangeRender(Sprite newRender)
         {
             renderer.sprite = newRender;
         }

@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using GameScene.Component;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace GameScene.GameLoop
 {
@@ -216,18 +218,31 @@ namespace GameScene.GameLoop
         private void OnClickedSelector(Selector selectedObj)
         {
             // Generate new selected
-            var obj = SimplePool.Spawn(model.SelectedPrefab);
 
-            // Generate init selected
-            var arrow = obj.GetComponent<Arrow>();
-            arrow.Init(OnClickedSelected);
-            arrow.ChangeRender(model.GetSelected(selectedObj.SelectType));
-            arrow.SelectType = selectedObj.SelectType;
+            if (selectedObj.SelectType == SelectType.Loop)
+            {
+                var objLoop = SimplePool.Spawn(model.LoopPrefab);
+                Loop selectedScript = objLoop.GetComponent<Loop>();
+                selectedScript.Init(OnClickedSelected);
+                selectedScript.SelectType = selectedObj.SelectType;
+                // Moving handler
+                selectedObject = selectedScript;
+                view.SetParentSelectedToMove(selectedObject.transform);
+                StoreTempPosition();
+            }
+            else
+            {
+                var obj = SimplePool.Spawn(model.SelectedPrefab);
+                Arrow selectedScript = obj.GetComponent<Arrow>();
+                selectedScript.Init(OnClickedSelected);
+                selectedScript.ChangeRender(model.GetSelected(selectedObj.SelectType));
+                selectedScript.SelectType = selectedObj.SelectType;
 
-            // assign to control
-            selectedObject = arrow;
-            view.SetParentSelectedToMove(selectedObject.transform);
-            StoreTempPosition();
+                // Moving handler
+                selectedObject = selectedScript;
+                view.SetParentSelectedToMove(selectedObject.transform);
+                StoreTempPosition();
+            }
         }
 
         private void OnClickedSelected(Selector selectedObj)
@@ -279,8 +294,11 @@ namespace GameScene.GameLoop
         {
             if (IsPointInRT(mousePos, selectedZone))
             {
-                view.MakeEmptySpace(storeSelected.Select(o => o.RectTransform).ToList(),
-                    CalculatedCurrentPosition(mousePos));
+                view.MakeEmptySpace(
+                    storeSelected.Select(o => o.RectTransform).ToList(),
+                    CalculatedCurrentPosition(mousePos),
+                    selectedObject.RectTransform.sizeDelta.y
+                );
             }
             else
             {

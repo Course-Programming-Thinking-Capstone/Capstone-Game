@@ -33,9 +33,8 @@ namespace GameScene.GameLoop
         /// <summary>
         /// Add and object to selected list with index
         /// </summary>
-        private void SetPositionSelected(RectTransform item, int index)
+        private void SetPositionSelected(RectTransform item, float yPosition)
         {
-            var yPosition = -item.sizeDelta.y * (index - 0.5f);
             item.anchoredPosition = new Vector3(0f, yPosition, 0f);
         }
 
@@ -45,24 +44,28 @@ namespace GameScene.GameLoop
         /// <param name="items"></param>
         public void ReSortItemsSelected(List<RectTransform> items)
         {
+            var yPosition = 0f;
             for (int i = 0; i < items.Count; i++)
             {
-                SetPositionSelected(items[i], i + 1);
+                yPosition += -items[i].sizeDelta.y / 2;
+                SetPositionSelected(items[i], yPosition);
+                yPosition += -items[i].sizeDelta.y / 2;
             }
         }
 
-        public void MakeEmptySpace(List<RectTransform> items, int indexToMakeSpace)
+        public void MakeEmptySpace(List<RectTransform> items, int indexToMakeSpace, float sizeSpace)
         {
-            var itemIndex = 1;
+            var yPosition = 0f;
             for (int i = 0; i < items.Count; i++)
             {
+                yPosition += -items[i].sizeDelta.y / 2;
                 if (indexToMakeSpace == i)
                 {
-                    itemIndex++;
+                    yPosition += -sizeSpace;
                 }
 
-                SetPositionSelected(items[i], itemIndex);
-                itemIndex++;
+                SetPositionSelected(items[i], yPosition);
+                yPosition += -items[i].sizeDelta.y / 2;
             }
         }
 
