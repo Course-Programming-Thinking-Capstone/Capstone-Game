@@ -171,7 +171,7 @@ namespace GameScene.GameLoop
             foreach (var o in generateList)
             {
                 var obj = Instantiate(model.SelectorPrefab);
-                // view.SetParentSelector(obj.transform);
+                view.SetParentSelector(obj.transform);
                 var scriptControl = obj.AddComponent<Arrow>();
                 scriptControl.Init(OnClickedSelector);
                 scriptControl.SelectType = o;
