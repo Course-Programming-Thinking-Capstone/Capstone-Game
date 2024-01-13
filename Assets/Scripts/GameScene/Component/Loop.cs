@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -13,20 +14,104 @@ namespace GameScene.Component
         public int LoopCount { get; set; } = 2;
         [Header("Loop behavior")]
         [SerializeField] private RectTransform container;
+        [SerializeField] private BoxCollider boxCollider;
+        [SerializeField] private float offSetHeight;
         private readonly List<Selector> storeSelected = new();
         private readonly List<RectTransform> storeRect = new();
+        private readonly List<Vector2> storedPosition = new();
 
+        private float baseHeight = 0f;
+
+        public override void Init(UnityAction<Selector> onClickParam)
+        {
+            base.Init(onClickParam);
+            LoopCount = 2;
+            loopTxt.text = LoopCount.ToString();
+            if (baseHeight == 0f)
+            {
+                baseHeight = rectTransform.sizeDelta.y;
+            }
+
+            foreach (var item in storeSelected)
+            {
+                SimplePool.Despawn(item.gameObject);
+            }
+            storeSelected.Clear();
+            storeRect.Clear();
+            ReSortItemsSelected(storeRect);
+            FixHeightLooper(Vector2.zero);
+            FixBoxCollider();
+            StoreTempPosition();
+        }
+        
         // Control
+
+        private void FixBoxCollider()
+        {
+            boxCollider.size = rectTransform.sizeDelta;
+        }
 
         #region Control inside
 
         public void AddItem(Selector selectorItem)
         {
-            selectorItem.transform.SetParent(container);
-            storeSelected.Add(selectorItem);
-            storeRect.Add(selectorItem.RectTransform);
+            if (!storeSelected.Contains(selectorItem))
+            {
+                selectorItem.transform.SetParent(container);
+                var position = selectorItem.RectTransform.position;
+                storeRect.Insert(
+                    CalculatedCurrentPosition(position)
+                    , selectorItem.RectTransform);
+                storeSelected.Insert(
+                    CalculatedCurrentPosition(position)
+                    , selectorItem);
+            }
+
             ReSortItemsSelected(storeRect);
+            FixHeightLooper(selectorItem.RectTransform.sizeDelta);
+            FixBoxCollider();
             StoreTempPosition();
+        }
+
+        public void RemoveItem(Selector selectorItem)
+        {
+            storeSelected.Remove(selectorItem);
+            storeRect.Remove(selectorItem.RectTransform);
+            ReSortItemsSelected(storeRect);
+            FixHeightLooper(selectorItem.RectTransform.sizeDelta);
+            FixBoxCollider();
+            StoreTempPosition();
+        }
+
+        public void FixHeightLooper(Vector2 itemSize, bool makeSpace = false)
+        {
+            var temp = rectTransform.sizeDelta;
+            temp.y = baseHeight;
+            for (int i = 0; i < storeSelected.Count; i++)
+            {
+                if (i == 0)
+                {
+                    temp.y = baseHeight + (storeSelected[i].RectTransform.sizeDelta.y - offSetHeight);
+                }
+                else
+                {
+                    temp.y += storeSelected[i].RectTransform.sizeDelta.y;
+                }
+            }
+
+            if (makeSpace) // add fake size
+            {
+                if (storeSelected.Count == 0)
+                {
+                    temp.y = baseHeight + (itemSize.y - offSetHeight);
+                }
+                else
+                {
+                    temp.y += (itemSize.y);
+                }
+            }
+
+            rectTransform.sizeDelta = temp;
         }
 
         public void ReSortItemsSelected(List<RectTransform> items)
@@ -40,8 +125,6 @@ namespace GameScene.Component
             }
         }
 
-        private readonly List<Vector2> storedPosition = new();
-
         public void MakeEmptySpace(RectTransform itemSpace)
         {
             var yPosition = 0f;
@@ -54,9 +137,25 @@ namespace GameScene.Component
                 {
                     yPosition += -itemSpace.sizeDelta.y;
                 }
+
                 SetPositionSelected(storeRect[i], yPosition);
                 yPosition += -storeRect[i].sizeDelta.y / 2;
             }
+        }
+
+        public void ClearEmptySpace()
+        {
+            var yPosition = 0f;
+
+            for (int i = 0; i < storeRect.Count; i++)
+            {
+                yPosition += -storeRect[i].sizeDelta.y / 2;
+
+                SetPositionSelected(storeRect[i], yPosition);
+                yPosition += -storeRect[i].sizeDelta.y / 2;
+            }
+
+            StoreTempPosition();
         }
 
         private readonly float offSet = 0.2f;
@@ -87,10 +186,10 @@ namespace GameScene.Component
 
         private void SetPositionSelected(RectTransform item, float yPosition)
         {
-            item.anchoredPosition = new Vector3(0f, yPosition, 0f);
+            item.anchoredPosition = new Vector3(container.anchoredPosition.x, yPosition, 0f);
         }
 
-        private void StoreTempPosition()
+        public void StoreTempPosition()
         {
             storedPosition.Clear();
             foreach (var item in storeSelected)
@@ -101,12 +200,6 @@ namespace GameScene.Component
 
         #endregion
 
-        public override void Init(UnityAction<Selector> onClickParam)
-        {
-            base.Init(onClickParam);
-            LoopCount = 2;
-            loopTxt.text = LoopCount.ToString();
-        }
 
         public void OnPointerDown(PointerEventData eventData)
         {

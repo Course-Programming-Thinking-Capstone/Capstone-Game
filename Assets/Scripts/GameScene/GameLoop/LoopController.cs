@@ -1,10 +1,9 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using GameScene.Component;
+using JetBrains.Annotations;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace GameScene.GameLoop
 {
@@ -60,10 +59,19 @@ namespace GameScene.GameLoop
             if (isDelete) // in delete zone
             {
                 SimplePool.Despawn(selectedObject!.gameObject);
-                selectedObject = null;
                 isDelete = false;
+                selectedObject = null;
+                return;
             }
-            else // Valid pos
+
+            // If looper, only detect if holding a part which is not a loop
+            var looper = CheckInsideLoop();
+            if (looper)
+            {
+                looper.AddItem(selectedObject);
+                view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
+            }
+            else
             {
                 if (!storeSelected.Contains(selectedObject))
                 {
@@ -71,9 +79,10 @@ namespace GameScene.GameLoop
                 }
 
                 view.SetParentSelected(selectedObject!.transform);
-                view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
-                selectedObject = null;
             }
+
+            FixHeightSelected();
+            selectedObject = null;
         }
 
         private void HandleMouseMoveSelected()
@@ -83,10 +92,23 @@ namespace GameScene.GameLoop
             // handle if inside delete zone
             isDelete = IsPointInRT(mousePos, deleteZone);
 
-            if (CheckInsideLoop())
+            var looper = CheckInsideLoop();
+            if (looper)
             {
+                looper.MakeEmptySpace(selectedObject.RectTransform);
+                looper.FixHeightLooper(selectedObject.RectTransform.sizeDelta, true);
                 view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
                 return;
+            }
+
+            foreach (var selector in storeSelected)
+            {
+                if (selector.SelectType == SelectType.Loop)
+                {
+                    var xSelector = (Loop)selector;
+                    xSelector.FixHeightLooper(Vector2.zero);
+                    xSelector.ClearEmptySpace();
+                }
             }
 
             // check to make space
@@ -156,6 +178,20 @@ namespace GameScene.GameLoop
             }
 
             return true;
+        }
+
+        private void FixHeightSelected()
+        {
+            foreach (var selector in storeSelected)
+            {
+                if (selector.SelectType == SelectType.Loop)
+                {
+                    var xSelector = (Loop)selector;
+                    xSelector.FixHeightLooper(Vector2.zero);
+                }
+            }
+
+            view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
         }
 
         #endregion
@@ -255,11 +291,20 @@ namespace GameScene.GameLoop
         private void OnClickedSelected(Selector selectedObj)
         {
             // Get object to move
+            // not have?
             storeSelected.Remove(selectedObj);
+            foreach (var selector in storeSelected)
+            {
+                if (selector.SelectType == SelectType.Loop)
+                {
+                    var looper = (Loop)selector;
+                    looper.RemoveItem(selectedObj);
+                }
+            }
+
             selectedObject = selectedObj;
             view.SetParentSelectedToMove(selectedObject!.transform);
             view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
-
             StoreTempPosition();
         }
 
@@ -313,11 +358,12 @@ namespace GameScene.GameLoop
             }
         }
 
-        private bool CheckInsideLoop()
+        [CanBeNull]
+        private Loop CheckInsideLoop()
         {
             if (selectedObject.SelectType == SelectType.Loop)
             {
-                return false;
+                return null;
             }
 
             var startPosition = (selectedObject.transform.position);
@@ -325,11 +371,11 @@ namespace GameScene.GameLoop
             Ray ray = new Ray(startPosition, Vector3.forward * 100);
             if (Physics.Raycast(ray, out var hit))
             {
-                Debug.Log(hit);
-                return hit.transform.TryGetComponent(typeof(Loop), out _);
+                var result = hit.transform.GetComponent<Loop>();
+                return result;
             }
 
-            return false;
+            return null;
         }
 
         private bool IsPointInRT(Vector2 point, RectTransform rt)
