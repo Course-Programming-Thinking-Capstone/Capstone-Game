@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -19,8 +18,8 @@ namespace GameScene.Component
         private readonly List<Selector> storeSelected = new();
         private readonly List<RectTransform> storeRect = new();
         private readonly List<Vector2> storedPosition = new();
-
-        private float baseHeight = 0f;
+        private readonly float offSet = 0.2f;
+        private float baseHeight;
 
         public override void Init(UnityAction<Selector> onClickParam)
         {
@@ -36,6 +35,7 @@ namespace GameScene.Component
             {
                 SimplePool.Despawn(item.gameObject);
             }
+
             storeSelected.Clear();
             storeRect.Clear();
             ReSortItemsSelected(storeRect);
@@ -43,44 +43,52 @@ namespace GameScene.Component
             FixBoxCollider();
             StoreTempPosition();
         }
-        
+
         // Control
+
+        #region UI Control
+
+        private int CalculatedCurrentPosition(Vector2 mousePos)
+        {
+            for (int i = 0; i < storedPosition.Count; i++)
+            {
+                if (i == 0 && storedPosition[i].y - offSet < mousePos.y) // first item
+                {
+                    return 0;
+                }
+
+                if (i == storedPosition.Count - 1) // last item
+                {
+                    return storedPosition.Count;
+                }
+
+                if (storedPosition[i].y + offSet > mousePos.y
+                    && storedPosition[i + 1].y - offSet < mousePos.y)
+                {
+                    return i + 1;
+                }
+            }
+
+            return storedPosition.Count;
+        }
+
+        private void SetPositionSelected(RectTransform item, float yPosition)
+        {
+            item.anchoredPosition = new Vector3(container.anchoredPosition.x, yPosition, 0f);
+        }
+
+        private void StoreTempPosition()
+        {
+            storedPosition.Clear();
+            foreach (var item in storeSelected)
+            {
+                storedPosition.Add(item.RectTransform.position);
+            }
+        }
 
         private void FixBoxCollider()
         {
             boxCollider.size = rectTransform.sizeDelta;
-        }
-
-        #region Control inside
-
-        public void AddItem(Selector selectorItem)
-        {
-            if (!storeSelected.Contains(selectorItem))
-            {
-                selectorItem.transform.SetParent(container);
-                var position = selectorItem.RectTransform.position;
-                storeRect.Insert(
-                    CalculatedCurrentPosition(position)
-                    , selectorItem.RectTransform);
-                storeSelected.Insert(
-                    CalculatedCurrentPosition(position)
-                    , selectorItem);
-            }
-
-            ReSortItemsSelected(storeRect);
-            FixHeightLooper(selectorItem.RectTransform.sizeDelta);
-            FixBoxCollider();
-            StoreTempPosition();
-        }
-
-        public void RemoveItem(Selector selectorItem)
-        {
-            storeSelected.Remove(selectorItem);
-            storeRect.Remove(selectorItem.RectTransform);
-            ReSortItemsSelected(storeRect);
-            FixHeightLooper(selectorItem.RectTransform.sizeDelta);
-            FixBoxCollider();
-            StoreTempPosition();
         }
 
         public void FixHeightLooper(Vector2 itemSize, bool makeSpace = false)
@@ -114,14 +122,14 @@ namespace GameScene.Component
             rectTransform.sizeDelta = temp;
         }
 
-        public void ReSortItemsSelected(List<RectTransform> items)
+        private void ReSortItemsSelected(IReadOnlyList<RectTransform> items)
         {
             var yPosition = 0f;
-            for (int i = 0; i < items.Count; i++)
+            foreach (var rectItem in items)
             {
-                yPosition += -items[i].sizeDelta.y / 2;
-                SetPositionSelected(items[i], yPosition);
-                yPosition += -items[i].sizeDelta.y / 2;
+                yPosition += -rectItem.sizeDelta.y / 2;
+                SetPositionSelected(rectItem, yPosition);
+                yPosition += -rectItem.sizeDelta.y / 2;
             }
         }
 
@@ -146,70 +154,61 @@ namespace GameScene.Component
         public void ClearEmptySpace()
         {
             var yPosition = 0f;
-
-            for (int i = 0; i < storeRect.Count; i++)
+            foreach (var rectItem in storeRect)
             {
-                yPosition += -storeRect[i].sizeDelta.y / 2;
-
-                SetPositionSelected(storeRect[i], yPosition);
-                yPosition += -storeRect[i].sizeDelta.y / 2;
+                yPosition += -rectItem.sizeDelta.y / 2;
+                SetPositionSelected(rectItem, yPosition);
+                yPosition += -rectItem.sizeDelta.y / 2;
             }
 
             StoreTempPosition();
         }
 
-        private readonly float offSet = 0.2f;
-
-        private int CalculatedCurrentPosition(Vector2 mousePos)
-        {
-            for (int i = 0; i < storedPosition.Count; i++)
-            {
-                if (i == 0 && storedPosition[i].y - offSet < mousePos.y) // first item
-                {
-                    return 0;
-                }
-
-                if (i == storedPosition.Count - 1) // last item
-                {
-                    return storedPosition.Count;
-                }
-
-                if (storedPosition[i].y + offSet > mousePos.y
-                    && storedPosition[i + 1].y - offSet < mousePos.y)
-                {
-                    return i + 1;
-                }
-            }
-
-            return storedPosition.Count;
-        }
-
-        private void SetPositionSelected(RectTransform item, float yPosition)
-        {
-            item.anchoredPosition = new Vector3(container.anchoredPosition.x, yPosition, 0f);
-        }
-
-        public void StoreTempPosition()
-        {
-            storedPosition.Clear();
-            foreach (var item in storeSelected)
-            {
-                storedPosition.Add(item.RectTransform.position);
-            }
-        }
-
         #endregion
 
+        #region Controller
 
-        public void OnPointerDown(PointerEventData eventData)
+        public void AddItem(Selector selectorItem)
         {
-            OnClickButton();
+            if (!storeSelected.Contains(selectorItem))
+            {
+                selectorItem.transform.SetParent(container);
+                var position = selectorItem.RectTransform.position;
+                storeRect.Insert(
+                    CalculatedCurrentPosition(position)
+                    , selectorItem.RectTransform);
+                storeSelected.Insert(
+                    CalculatedCurrentPosition(position)
+                    , selectorItem);
+            }
+
+            ReSortItemsSelected(storeRect);
+            FixHeightLooper(selectorItem.RectTransform.sizeDelta);
+            FixBoxCollider();
+            StoreTempPosition();
+        }
+
+        public void RemoveItem(Selector selectorItem)
+        {
+            storeSelected.Remove(selectorItem);
+            storeRect.Remove(selectorItem.RectTransform);
+            ReSortItemsSelected(storeRect);
+            FixHeightLooper(selectorItem.RectTransform.sizeDelta);
+            FixBoxCollider();
+            StoreTempPosition();
         }
 
         public override void ChangeRender(Sprite newRender)
         {
             base.ChangeRender(newRender);
             renderer.SetNativeSize();
+        }
+
+        #endregion
+
+        public void OnPointerDown(PointerEventData eventData)
+        {
+            OnClickButton();
         }
 
         public void OnClickLoop()

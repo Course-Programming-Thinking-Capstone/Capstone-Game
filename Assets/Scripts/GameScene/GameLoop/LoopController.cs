@@ -14,11 +14,10 @@ namespace GameScene.GameLoop
         [SerializeField] private LoopModel model;
 
         // FOR CONTROL SELECTOR
-        private readonly List<Selector> storeSelector = new();
         private readonly List<Selector> storeSelected = new();
         private readonly List<Vector2> storedPosition = new();
         private bool isDelete;
-        private readonly float offSet = 0.2f;
+        private const float OffSet = 0.2f;
         private Selector selectedObject;
 
         // System
@@ -118,10 +117,9 @@ namespace GameScene.GameLoop
         private IEnumerator StartPlayerMove()
         {
             view.ActiveSavePanel();
-            for (int i = 0; i < storeSelected.Count; i++)
+            foreach (var action in storeSelected)
             {
-                var actionType = storeSelected[i].SelectType;
-                yield return HandleAction(actionType);
+                yield return HandleAction(action);
             }
 
             view.ActiveSavePanel(false);
@@ -136,7 +134,7 @@ namespace GameScene.GameLoop
             }
         }
 
-        private IEnumerator HandleAction(SelectType actionType)
+        private IEnumerator HandleAction(Selector action)
         {
             return null;
         }
@@ -176,7 +174,6 @@ namespace GameScene.GameLoop
                     return false;
                 }
             }
-
             return true;
         }
 
@@ -222,7 +219,6 @@ namespace GameScene.GameLoop
                 scriptControl.SelectType = o;
                 scriptControl.ChangeRender(model.GetSelector(o));
 
-                storeSelector.Add(scriptControl);
             }
         }
 
@@ -322,7 +318,7 @@ namespace GameScene.GameLoop
         {
             for (int i = 0; i < storedPosition.Count; i++)
             {
-                if (i == 0 && storedPosition[i].y - offSet < mousePos.y) // first item
+                if (i == 0 && storedPosition[i].y - OffSet < mousePos.y) // first item
                 {
                     return 0;
                 }
@@ -332,8 +328,8 @@ namespace GameScene.GameLoop
                     return storedPosition.Count;
                 }
 
-                if (storedPosition[i].y + offSet > mousePos.y
-                    && storedPosition[i + 1].y - offSet < mousePos.y)
+                if (storedPosition[i].y + OffSet > mousePos.y
+                    && storedPosition[i + 1].y - OffSet < mousePos.y)
                 {
                     return i + 1;
                 }
