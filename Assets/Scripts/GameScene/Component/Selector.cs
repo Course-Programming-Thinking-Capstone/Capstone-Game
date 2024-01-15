@@ -9,11 +9,13 @@ namespace GameScene.Component
         [SerializeField] protected SelectType selectType;
         [SerializeField] protected RectTransform rectTransform;
         [SerializeField] protected Image renderer;
+        [SerializeField] protected GameObject effectRender;
 
         public float GetHeight()
         {
             return rectTransform.sizeDelta.y;
         }
+
         public virtual void ChangeRender(Sprite newRender)
         {
             renderer.sprite = newRender;
@@ -39,6 +41,11 @@ namespace GameScene.Component
             }
 
             onClick = onClickParam;
+        }
+
+        public virtual void ActiveEffect(bool isActive = true)
+        {
+            effectRender.SetActive(isActive);
         }
 
         /// <summary>

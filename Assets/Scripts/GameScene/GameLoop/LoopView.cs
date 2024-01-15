@@ -68,7 +68,22 @@ namespace GameScene.GameLoop
                 yPosition += -items[i].sizeDelta.y / 2;
             }
         }
-
+        public void InitGroundBoardFakePosition(Vector2 board, float offSet)
+        {
+            boardSize = board;
+            var sizeY = (int)board.y;
+            var sizeX = (int)board.x;
+            for (int i = 0; i < sizeY; i++) // vertical
+            {
+                for (int j = 0; j < sizeX; j++) // horizontal
+                {
+                    var positionNew = startGroundPosition.position;
+                    positionNew.x += offSet * j;
+                    positionNew.y += offSet * i;
+                    positions.Add(positionNew);
+                }
+            }
+        }
         #endregion
     }
 }

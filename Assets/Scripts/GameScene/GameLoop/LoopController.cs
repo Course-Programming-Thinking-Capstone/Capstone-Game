@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using GameScene.Component;
+using GameScene.Component.SelectControl;
 using JetBrains.Annotations;
+using Spine.Unity;
 using UnityEngine;
 
 namespace GameScene.GameLoop
@@ -12,6 +14,9 @@ namespace GameScene.GameLoop
         [Header("Reference model")]
         [SerializeField] private LoopView view;
         [SerializeField] private LoopModel model;
+        [Header("Demo param")]
+        [SerializeField]
+        private List<Vector2> boardMap;
 
         // FOR CONTROL SELECTOR
         private readonly List<Selector> storeSelected = new();
@@ -117,7 +122,8 @@ namespace GameScene.GameLoop
         private IEnumerator StartPlayerMove()
         {
             view.ActiveSavePanel();
-            foreach (var action in storeSelected)
+            var actionList = ConvertToAction();
+            foreach (var action in actionList)
             {
                 yield return HandleAction(action);
             }
@@ -136,7 +142,56 @@ namespace GameScene.GameLoop
 
         private IEnumerator HandleAction(Selector action)
         {
-            return null;
+            
+            var isMove = true;
+            var targetMove = currentPlayerPosition;
+            switch (action.SelectType)
+            {
+                case SelectType.Up:
+                    targetMove += Vector2.up;
+                    break;
+                case SelectType.Down:
+                    targetMove += Vector2.down;
+                    break;
+                case SelectType.Left:
+                    targetMove += Vector2.left;
+                    break;
+                case SelectType.Right:
+                    targetMove += Vector2.right;
+                    break;
+                case SelectType.Collect:
+                    isMove = false;
+                    break;
+            }
+
+            if (isMove)
+            {
+                currentPlayerPosition = targetMove;
+
+                if (IsOutsideBoard(targetMove))
+                {
+                    // Reset game cuz it fail
+                    playerControl.PlayAnimationIdle();
+                    yield return new WaitForSeconds(1f);
+                    ResetGame();
+                    yield break;
+                }
+
+                targetMove = view.GetPositionFromBoard(targetMove);
+                yield return MovePlayer(targetMove, model.PlayerMoveTime);
+            }
+            else
+            {
+                var tracker = playerControl.PlayAnimationEat();
+                if (targetChecker.ContainsKey(currentPlayerPosition))
+                {
+                    targetChecker[currentPlayerPosition] = true;
+                    targetReferences[currentPlayerPosition].gameObject.SetActive(false);
+                }
+
+                yield return new WaitForSpineAnimationComplete(tracker);
+                playerControl.PlayAnimationIdle();
+            }
         }
 
         private void ResetGame()
@@ -174,6 +229,7 @@ namespace GameScene.GameLoop
                     return false;
                 }
             }
+
             return true;
         }
 
@@ -191,20 +247,47 @@ namespace GameScene.GameLoop
             view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
         }
 
+        private List<Selector> ConvertToAction()
+        {
+            var result = new List<Selector>();
+            foreach (var item in storeSelected)
+            {
+                if (item.SelectType == SelectType.Loop)
+                {
+                    var looper = (Loop)item;
+                    for (int i = 0; i < looper.LoopCount; i++)
+                    {
+                        foreach (var itemLooped in looper.StoreSelected)
+                        {
+                            result.Add(itemLooped);
+                        }
+                    }
+                }
+
+                result.Add(item);
+            }
+
+            return result;
+        }
+
         #endregion
 
         #region Initialized
 
         private void CreateBoard()
         {
-            var listBoard = new List<Transform>();
-
-            for (int i = 0; i < boardSize.x * boardSize.y; i++)
+            view.InitGroundBoardFakePosition(boardSize, model.GetBlockOffset());
+            view.PlaceObjectToBoard(Instantiate(model.CellBoardPrefab).transform, playerPosition);
+            foreach (var target in targetPosition)
             {
-                listBoard.Add(Instantiate(model.CellBoardPrefab).transform);
+                view.PlaceObjectToBoard(Instantiate(model.CellBoardPrefab).transform, target);
             }
 
-            view.InitGroundBoard(listBoard, boardSize, model.GetBlockOffset());
+            foreach (var positionRoad in boardMap)
+            {
+                var newRoad = Instantiate(model.CellBoardPrefab);
+                view.PlaceObjectToBoard(newRoad.transform, positionRoad);
+            }
         }
 
         private void CreateSelector()
@@ -218,7 +301,6 @@ namespace GameScene.GameLoop
                 scriptControl.Init(OnClickedSelector);
                 scriptControl.SelectType = o;
                 scriptControl.ChangeRender(model.GetSelector(o));
-
             }
         }
 
