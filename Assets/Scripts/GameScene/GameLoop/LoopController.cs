@@ -142,7 +142,6 @@ namespace GameScene.GameLoop
 
         private IEnumerator HandleAction(Selector action)
         {
-            
             var isMove = true;
             var targetMove = currentPlayerPosition;
             switch (action.SelectType)
@@ -490,8 +489,22 @@ namespace GameScene.GameLoop
 
         private bool IsOutsideBoard(Vector2 checkPosition)
         {
-            return checkPosition.x > boardSize.x || checkPosition.y > boardSize.y ||
-                   checkPosition.x <= 0 || checkPosition.y <= 0;
+            if (boardMap.Contains(checkPosition))
+            {
+                return false;
+            }
+
+            if (targetPosition.Contains(checkPosition))
+            {
+                return false;
+            }
+
+            if (playerPosition == checkPosition)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         #endregion
