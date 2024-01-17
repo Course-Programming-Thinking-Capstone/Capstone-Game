@@ -13,8 +13,7 @@ namespace GameScene
         [SerializeField] private GameObject playerModel;
 
         [Header("Not basic mode")]
-        [SerializeField] private List<ModelSelected> modelSelected;
-        [SerializeField] private List<ModelSelector> modelSelector;
+        [SerializeField] private List<ModelSelect> modelSelect;
         [SerializeField] private GameObject selectorPrefab;
         [SerializeField] private GameObject selectedPrefab;
         [SerializeField] private GameObject targetPrefab;
@@ -36,34 +35,27 @@ namespace GameScene
 
         public Sprite GetSelected(SelectType selectType)
         {
-            var result = modelSelected.FirstOrDefault(o => o.SelectType == selectType);
-            return result?.RenderSprite;
+            var result = modelSelect.FirstOrDefault(o => o.SelectType == selectType);
+            return result?.RenderSpriteSelected;
         }
 
         public Sprite GetSelector(SelectType selectType)
         {
-            var result = modelSelector.FirstOrDefault(o => o.SelectType == selectType);
-            return result?.RenderSprite;
+            var result = modelSelect.FirstOrDefault(o => o.SelectType == selectType);
+            return result?.RenderSpriteSelector;
         }
 
         #endregion
     }
 
     [Serializable]
-    public class ModelSelector
+    public class ModelSelect
     {
         [SerializeField] private SelectType selectType;
-        [SerializeField] private Sprite renderSprite;
+        [SerializeField] private Sprite renderSpriteSelector;
+        [SerializeField] private Sprite renderSpriteSelected;
         public SelectType SelectType => selectType;
-        public Sprite RenderSprite => renderSprite;
-    }
-
-    [Serializable]
-    public class ModelSelected
-    {
-        [SerializeField] private SelectType selectType;
-        [SerializeField] private Sprite renderSprite;
-        public SelectType SelectType => selectType;
-        public Sprite RenderSprite => renderSprite;
+        public Sprite RenderSpriteSelector => renderSpriteSelector;
+        public Sprite RenderSpriteSelected => renderSpriteSelected;
     }
 }

@@ -455,29 +455,7 @@ namespace GameScene.GameLoop
             return null;
         }
 
-        private bool IsPointInRT(Vector2 point, RectTransform rt)
-        {
-            // Get the rectangular bounding box of your UI element
-            var rect = rt.rect;
-            var anchoredPosition = rt.position;
-            // Get the left, right, top, and bottom boundaries of the rect
-            float leftSide = anchoredPosition.x - rect.width / 2f;
-            float rightSide = anchoredPosition.x + rect.width / 2f;
-            float topSide = anchoredPosition.y + rect.height / 2f;
-            float bottomSide = anchoredPosition.y - rect.height / 2f;
-
-            // Check to see if the point is in the calculated bounds
-            if (point.x >= leftSide &&
-                point.x <= rightSide &&
-                point.y >= bottomSide &&
-                point.y <= topSide)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
+      
         private void StoreTempPosition()
         {
             storedPosition.Clear();

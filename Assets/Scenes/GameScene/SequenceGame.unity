@@ -239,13 +239,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 372901244}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01364a296d9c4ee8801aa1be9bd4d5db, type: 3}
+  m_Script: {fileID: 11500000, guid: f88d3f4bbe9145898b33bd7748199444, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  savePanel: {fileID: 0}
-  startGroundPosition: {fileID: 0}
-  container: {fileID: 0}
-  blockContainer: {fileID: 0}
+  savePanel: {fileID: 718398932}
+  startGroundPosition: {fileID: 933883831}
+  container: {fileID: 716583636}
+  blockContainer: {fileID: 1154784788}
+  selectorContainer: {fileID: 1328973360}
+  selectedContainer: {fileID: 1249297808}
+  movingContainer: {fileID: 1961906771}
 --- !u!1 &454645804
 GameObject:
   m_ObjectHideFlags: 0
@@ -1407,17 +1410,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 1365533565}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52c1a0b7a2644c599c5199b930d84969, type: 3}
+  m_Script: {fileID: 11500000, guid: 589decc54ea94fb4bb1082dbc8e48ffd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isTesting: 0
-  playerPosition: {x: 0, y: 0}
-  targetPosition: []
-  boardSize: {x: 0, y: 0}
-  deleteZone: {fileID: 0}
-  selectedZone: {fileID: 0}
-  playButton: {fileID: 0}
-  generateList: 
+  isTesting: 1
+  playerPosition: {x: 2, y: 2}
+  targetPosition:
+  - {x: 3, y: 3}
+  - {x: 5, y: 5}
+  boardSize: {x: 8, y: 6}
+  deleteZone: {fileID: 2084806566}
+  selectedZone: {fileID: 633439132}
+  playButton: {fileID: 1035767137}
+  generateList: 0100000002000000030000000400000005000000
+  view: {fileID: 372901246}
+  model: {fileID: 1966046701}
 --- !u!1 &1398959422
 GameObject:
   m_ObjectHideFlags: 0
@@ -2180,18 +2187,36 @@ MonoBehaviour:
   m_GameObject: {fileID: 1966046699}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a6ecb098aac424b817618d4f24b7712, type: 3}
+  m_Script: {fileID: 11500000, guid: 97fac5e07b2242c5bfd1dd32fe85d53e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   blockOffset: 1.3
-  playerMoveTime: 0
-  playerModel: {fileID: 0}
-  modelSelected: []
-  modelSelector: []
-  selectorPrefab: {fileID: 0}
-  selectedPrefab: {fileID: 0}
-  targetPrefab: {fileID: 0}
-  cellBoardPrefab: {fileID: 0}
+  playerMoveTime: 0.75
+  playerModel: {fileID: 7691891174158779115, guid: 77697015dbe12b441afab207db53932a, type: 3}
+  modelSelect:
+  - selectType: 1
+    renderSpriteSelector: {fileID: 21300000, guid: d07bff4e34796a540b6571f8bccf125d, type: 3}
+    renderSpriteSelected: {fileID: 21300000, guid: dd42d5923581a6a488bae80605495224, type: 3}
+  - selectType: 2
+    renderSpriteSelector: {fileID: 21300000, guid: 33d289fae53b348479450da350f38942, type: 3}
+    renderSpriteSelected: {fileID: 21300000, guid: b229b04320ba90340892b1d3fae353cc, type: 3}
+  - selectType: 3
+    renderSpriteSelector: {fileID: 21300000, guid: a93ab5bc5ddc92c4ca7b8e07d1cb7f3e, type: 3}
+    renderSpriteSelected: {fileID: 21300000, guid: ff465af64c6af4a4793bbd4733ce6cf4, type: 3}
+  - selectType: 4
+    renderSpriteSelector: {fileID: 21300000, guid: fe6a6d4086a110842b448e0c9478dd82, type: 3}
+    renderSpriteSelected: {fileID: 21300000, guid: f6daaeaf4e4e6e84d82b78a1c1f6568e, type: 3}
+  - selectType: 5
+    renderSpriteSelector: {fileID: 21300000, guid: 0946204cce3955c499a18037dc619f38, type: 3}
+    renderSpriteSelected: {fileID: 21300000, guid: e62f21787936c654a97885b672eab284, type: 3}
+  selectorPrefab: {fileID: 5241791683117841287, guid: 34b628f1adf0989468cc4c22a153ba14, type: 3}
+  selectedPrefab: {fileID: 5923298832287941037, guid: 69864048f965f1a4492eb962ffe524dc, type: 3}
+  targetPrefab: {fileID: 802349416297577777, guid: b9df67cdd2479614f9efbba43c5772be, type: 3}
+  cellBoardPrefab: {fileID: 8313896542140405589, guid: ba55010254c6eb64696f2c69bf1da902, type: 3}
+  candySprites:
+  - {fileID: 21300000, guid: 8f9335cddb67b400cbb29a1d8dc11a04, type: 3}
+  - {fileID: 21300000, guid: 1290ebdb32ab2475aa759c206aadbb89, type: 3}
+  - {fileID: 21300000, guid: 86fe3cabe72b14bf1b9092f7821222ed, type: 3}
 --- !u!1 &2005999894
 GameObject:
   m_ObjectHideFlags: 0
