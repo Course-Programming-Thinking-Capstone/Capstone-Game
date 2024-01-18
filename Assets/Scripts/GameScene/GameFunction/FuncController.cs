@@ -135,16 +135,23 @@ namespace GameScene.GameFunction
             {
                 if (!storeFuncSelected.Contains(selectedObject))
                 {
-                    storeFuncSelected.Insert(CalculatedCurrentPosition(Input.mousePosition, storedFuncPosition), selectedObject);
+                    storeFuncSelected.Insert(CalculatedCurrentPosition(Input.mousePosition, storedFuncPosition),
+                        selectedObject);
                 }
 
                 view.SetParentFuncSelected(selectedObject!.transform);
             }
             else
             {
+                if (storeSelected.Count == 10)
+                {
+                    return;
+                }
+
                 if (!storeSelected.Contains(selectedObject))
                 {
-                    storeSelected.Insert(CalculatedCurrentPosition(Input.mousePosition, storedPosition), selectedObject);
+                    storeSelected.Insert(CalculatedCurrentPosition(Input.mousePosition, storedPosition),
+                        selectedObject);
                 }
 
                 view.SetParentSelected(selectedObject!.transform);
@@ -159,6 +166,7 @@ namespace GameScene.GameFunction
         {
             var mousePos = Input.mousePosition;
             isDelete = IsPointInRT(mousePos, deleteZone);
+
             var func = CheckInsideFunc();
             if (func)
             {
@@ -167,9 +175,17 @@ namespace GameScene.GameFunction
                 HandleFuncDisplayCalculate(mousePos);
                 return;
             }
-            view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
+
             selectedObject!.RectTransform.position = mousePos;
             // check to make space
+
+            if (storeSelected.Count == 10)
+            {
+                isDelete = true;
+                return;
+            }
+
+            view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
             HandleDisplayCalculate(mousePos);
         }
 
@@ -335,6 +351,7 @@ namespace GameScene.GameFunction
 
             return storedList.Count;
         }
+
         private void HandleFuncDisplayCalculate(Vector2 mousePos)
         {
             if (IsPointInRT(mousePos, selectedZone))
@@ -350,6 +367,7 @@ namespace GameScene.GameFunction
                 view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
             }
         }
+
         private void HandleDisplayCalculate(Vector2 mousePos)
         {
             if (IsPointInRT(mousePos, selectedZone))
@@ -411,7 +429,7 @@ namespace GameScene.GameFunction
             // Get object to move
             storeSelected.Remove(selectedObj);
             storeFuncSelected.Remove(selectedObj);
-            
+
             selectedObject = selectedObj;
             view.SetParentSelectedToMove(selectedObject!.transform);
             view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
