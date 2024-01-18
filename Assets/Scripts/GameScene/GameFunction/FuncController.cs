@@ -162,12 +162,12 @@ namespace GameScene.GameFunction
             var func = CheckInsideFunc();
             if (func)
             {
-                view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
+                view.ReSortItemsSelected(storeFuncSelected.Select(o => o.RectTransform).ToList());
                 selectedObject!.RectTransform.position = mousePos;
                 HandleFuncDisplayCalculate(mousePos);
                 return;
             }
-
+            view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
             selectedObject!.RectTransform.position = mousePos;
             // check to make space
             HandleDisplayCalculate(mousePos);
@@ -176,6 +176,11 @@ namespace GameScene.GameFunction
         private bool CheckInsideFunc()
         {
             if (selectedObject.SelectType == SelectType.Func)
+            {
+                return false;
+            }
+
+            if (storeFuncSelected.Count == 5)
             {
                 return false;
             }
@@ -405,9 +410,12 @@ namespace GameScene.GameFunction
         {
             // Get object to move
             storeSelected.Remove(selectedObj);
+            storeFuncSelected.Remove(selectedObj);
+            
             selectedObject = selectedObj;
             view.SetParentSelectedToMove(selectedObject!.transform);
             view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
+            view.ReSortItemsSelected(storeFuncSelected.Select(o => o.RectTransform).ToList());
 
             StoreTempPosition();
         }
