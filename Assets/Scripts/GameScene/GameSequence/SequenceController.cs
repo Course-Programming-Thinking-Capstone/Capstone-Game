@@ -141,6 +141,11 @@ namespace GameScene.GameSequence
 
         private void HandleMouseUp()
         {
+            if (storeSelected.Count == 15)
+            {
+                isDelete = true;
+            }
+            
             if (isDelete) // in delete zone
             {
                 SimplePool.Despawn(selectedObject!.gameObject);
@@ -149,6 +154,8 @@ namespace GameScene.GameSequence
             }
             else // Valid pos
             {
+               
+                
                 if (!storeSelected.Contains(selectedObject))
                 {
                     storeSelected.Insert(CalculatedCurrentPosition(Input.mousePosition), selectedObject);
@@ -166,6 +173,11 @@ namespace GameScene.GameSequence
             selectedObject!.RectTransform.position = mousePos;
             // handle if inside delete zone
             isDelete = IsPointInRT(mousePos, deleteZone);
+            if (storeSelected.Count == 15)
+            {
+                isDelete = true;
+                return;
+            }
             // check to make space
             HandleDisplayCalculate(mousePos);
         }
