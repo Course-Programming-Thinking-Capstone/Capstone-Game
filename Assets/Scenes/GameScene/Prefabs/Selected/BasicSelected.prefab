@@ -101,7 +101,15 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4951812813123179619, guid: 3eccd3df6a1ff30468d254197283e79c, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4951812813123179619, guid: 3eccd3df6a1ff30468d254197283e79c, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6044047562236876219, guid: 3eccd3df6a1ff30468d254197283e79c, type: 3}
+      propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8715701157524185155, guid: 3eccd3df6a1ff30468d254197283e79c, type: 3}
@@ -157,6 +165,7 @@ MonoBehaviour:
   selectType: 0
   rectTransform: {fileID: 2815317097651647877}
   renderer: {fileID: 6131245635029400405}
+  effectRender: {fileID: 7591579036657684341}
 --- !u!114 &6131245635029400405 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8715701157524185155, guid: 3eccd3df6a1ff30468d254197283e79c, type: 3}
@@ -168,3 +177,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &7591579036657684341 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4951812813123179619, guid: 3eccd3df6a1ff30468d254197283e79c, type: 3}
+  m_PrefabInstance: {fileID: 3306463934057798422}
+  m_PrefabAsset: {fileID: 0}

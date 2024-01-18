@@ -18,7 +18,7 @@ namespace GameScene.GameSequence
         [SerializeField] private SequenceModel model;
 
         [Header("Testing only")]
-        
+
         // FOR CONTROL SELECTOR
         private readonly List<Selector> storeSelector = new();
         private readonly List<Selector> storeSelected = new();
@@ -145,7 +145,7 @@ namespace GameScene.GameSequence
             {
                 isDelete = true;
             }
-            
+
             if (isDelete) // in delete zone
             {
                 SimplePool.Despawn(selectedObject!.gameObject);
@@ -154,8 +154,6 @@ namespace GameScene.GameSequence
             }
             else // Valid pos
             {
-               
-                
                 if (!storeSelected.Contains(selectedObject))
                 {
                     storeSelected.Insert(CalculatedCurrentPosition(Input.mousePosition), selectedObject);
@@ -178,6 +176,7 @@ namespace GameScene.GameSequence
                 isDelete = true;
                 return;
             }
+
             // check to make space
             HandleDisplayCalculate(mousePos);
         }
@@ -187,8 +186,12 @@ namespace GameScene.GameSequence
             view.ActiveSavePanel();
             for (int i = 0; i < storeSelected.Count; i++)
             {
-                var actionType = storeSelected[i].SelectType;
-                yield return HandleAction(actionType);
+                var item = storeSelected[i];
+                view.SetParentSelectedToMove(item.transform);
+                item.ActiveEffect();
+                yield return HandleAction(item);
+                item.ActiveEffect(false);
+                view.SetParentSelected(item.transform);
             }
 
             view.ActiveSavePanel(false);
@@ -203,11 +206,11 @@ namespace GameScene.GameSequence
             }
         }
 
-        private IEnumerator HandleAction(SelectType direction)
+        private IEnumerator HandleAction(Selector direction)
         {
             var isMove = true;
             var targetMove = currentPlayerPosition;
-            switch (direction)
+            switch (direction.SelectType)
             {
                 case SelectType.Up:
                     targetMove += Vector2.up;
