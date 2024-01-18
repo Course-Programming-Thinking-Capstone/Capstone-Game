@@ -8,6 +8,7 @@ namespace GameScene.GameFunction
         [Header("Canvas references")]
         [SerializeField] private Transform selectorContainer;
         [SerializeField] private Transform selectedContainer;
+        [SerializeField] private Transform funcContainer;
         [SerializeField] private Transform movingContainer;
 
         #region Canvas
@@ -23,7 +24,11 @@ namespace GameScene.GameFunction
             child.SetParent(selectedContainer);
             child.localScale = Vector3.one;
         }
-
+        public void SetParentFuncSelected(Transform child)
+        {
+            child.SetParent(funcContainer);
+            child.localScale = Vector3.one;
+        }
         public void SetParentSelectedToMove(Transform child)
         {
             child.SetParent(movingContainer);
