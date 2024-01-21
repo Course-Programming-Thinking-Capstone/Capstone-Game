@@ -125,7 +125,12 @@ namespace GameScene.GameLoop
             var actionList = ConvertToAction();
             foreach (var action in actionList)
             {
-                yield return HandleAction(action);
+                var item = action;
+                view.SetParentSelectedToMove(item.transform);
+                item.ActiveEffect();
+                yield return HandleAction(item);
+                item.ActiveEffect(false);
+                view.SetParentSelected(item.transform);
             }
 
             view.ActiveSavePanel(false);
@@ -455,7 +460,6 @@ namespace GameScene.GameLoop
             return null;
         }
 
-      
         private void StoreTempPosition()
         {
             storedPosition.Clear();

@@ -215,6 +215,7 @@ namespace GameScene.GameFunction
         private IEnumerator StartPlayerMove()
         {
             view.ActiveSavePanel();
+            var actionList = ConvertToAction();
             for (int i = 0; i < storeSelected.Count; i++)
             {
                 var actionType = storeSelected[i].SelectType;
@@ -401,8 +402,22 @@ namespace GameScene.GameFunction
 
         private bool IsOutsideBoard(Vector2 checkPosition)
         {
-            return checkPosition.x > boardSize.x || checkPosition.y > boardSize.y ||
-                   checkPosition.x <= 0 || checkPosition.y <= 0;
+            if (boardMap.Contains(checkPosition))
+            {
+                return false;
+            }
+
+            if (targetPosition.Contains(checkPosition))
+            {
+                return false;
+            }
+
+            if (playerPosition == checkPosition)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         #endregion
@@ -442,6 +457,29 @@ namespace GameScene.GameFunction
         private void OnClickPlay()
         {
             StartCoroutine(StartPlayerMove());
+        }
+
+        private List<Selector> ConvertToAction()
+        {
+            var result = new List<Selector>();
+            foreach (var item in storeSelected)
+            {
+                if (item.SelectType == SelectType.Loop)
+                {
+                    var looper = (Loop)item;
+                    for (int i = 0; i < looper.LoopCount; i++)
+                    {
+                        foreach (var itemLooped in looper.StoreSelected)
+                        {
+                            result.Add(itemLooped);
+                        }
+                    }
+                }
+
+                result.Add(item);
+            }
+
+            return result;
         }
     }
 }
