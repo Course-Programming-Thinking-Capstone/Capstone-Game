@@ -164,7 +164,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectType: 0
   rectTransform: {fileID: 2815317097651647877}
-  renderer: {fileID: 6131245635029400405}
+  rendererImg: {fileID: 6131245635029400405}
   effectRender: {fileID: 7591579036657684341}
 --- !u!114 &6131245635029400405 stripped
 MonoBehaviour:

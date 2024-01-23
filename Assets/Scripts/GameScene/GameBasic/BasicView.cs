@@ -68,10 +68,6 @@ namespace GameScene.GameBasic
             playerTransform.position = GetPositionFromBoard(position);
         }
 
-        private Vector2 GetPositionFromBoard(Vector2 position)
-        {
-            int index = (int)((position.y - 1) * boardSize.x + (position.x - 1));
-            return positions[index];
-        }
+    
     }
 }

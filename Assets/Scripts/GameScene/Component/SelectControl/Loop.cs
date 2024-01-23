@@ -202,7 +202,7 @@ namespace GameScene.Component.SelectControl
         public override void ChangeRender(Sprite newRender)
         {
             base.ChangeRender(newRender);
-            renderer.SetNativeSize();
+            rendererImg.SetNativeSize();
         }
 
         #endregion

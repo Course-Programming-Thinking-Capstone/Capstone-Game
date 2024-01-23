@@ -20,8 +20,6 @@ namespace Entry
         [Space(8.0f)]
         [SerializeField] private float loadingTime = 3f;
 
-        [SerializeField]
-        private bool isReady = false;
         private GameServices gameServices = null;
 
         void Awake()
@@ -54,8 +52,8 @@ namespace Entry
 				gameServices.AddService(new AdsService(model.BannerIdIOS,model.IntersIdIOS,model.RewardedIdIOS,model.RewardedInterstitialIdIOS,model.AOAIdIOS));
 				gameServices.AddService(new AppsFlyerService(model.AppsFlyerDevKey, model.AppsFlyerAppIdIos));
 #else
-			//	gameServices.AddService(new AdsService(UnUsed,UnUsed,UnUsed,UnUsed,UnUsed));
-			//	gameServices.AddService(new AppsFlyerService(model.AppsFlyerDevKey, UnUsed));
+                //	gameServices.AddService(new AdsService(UnUsed,UnUsed,UnUsed,UnUsed,UnUsed));
+                //	gameServices.AddService(new AppsFlyerService(model.AppsFlyerDevKey, UnUsed));
 #endif
 
                 // Get services
@@ -81,7 +79,7 @@ namespace Entry
 
                 audioService.StopMusic();
                 playerService.LoadData();
-     
+
                 if (playerService.CurrentLevel.Count == 0)
                 {
                     var data = model.StageData.StageItemData;
@@ -93,10 +91,11 @@ namespace Entry
                         {
                             starList.Add(0);
                         }
+
                         playerService.SaveHistoryStar(data.IndexOf(item), starList);
                     }
                 }
-                
+
                 playerService.SaveData();
                 // ------------------------------------------------------------------
             }
@@ -116,7 +115,7 @@ namespace Entry
         {
             Time.timeScale = 1.0f;
             //gameServices.GetService<AdsService>().LoadAppOpenAd();
-            isReady = true;
+            // isReady = true;
         }
     }
 }

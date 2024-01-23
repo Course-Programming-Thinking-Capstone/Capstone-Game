@@ -551,7 +551,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectType: 6
   rectTransform: {fileID: 3674782321805652703}
-  renderer: {fileID: 4682617288213871631}
+  rendererImg: {fileID: 4682617288213871631}
+  effectRender: {fileID: 8986867222585067567}
   maxLoop: 8
   loopTxt: {fileID: 3067422075479288180}
   container: {fileID: 5291385527099945510}
@@ -578,3 +579,8 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 220, y: 180, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &8986867222585067567 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4951812813123179619, guid: 3eccd3df6a1ff30468d254197283e79c, type: 3}
+  m_PrefabInstance: {fileID: 4039618482233908300}
+  m_PrefabAsset: {fileID: 0}

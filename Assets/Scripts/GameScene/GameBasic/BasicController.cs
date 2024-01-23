@@ -5,7 +5,6 @@ using GameScene.Component;
 using GameScene.Component.GameBasic;
 using UnityEngine;
 
-
 namespace GameScene.GameBasic
 {
     public class BasicGameController : GameController
@@ -16,7 +15,7 @@ namespace GameScene.GameBasic
         // System
         private readonly List<GroundRoad> listBoard = new();
         private readonly List<Selector> listSelector = new();
-        private readonly Vector2 boardSize = new(8, 6);
+        private new readonly Vector2 boardSize = new(8, 6);
         private Vector2 startPosGame;
         private Vector2 endPosGame;
         private Selector selectedObject;
@@ -28,7 +27,7 @@ namespace GameScene.GameBasic
         private void Start()
         {
             Validation();
-            CalcSolution(); 
+            CalcSolution();
             GenerateGround();
             GenerateSelector();
             GeneratePlayer();
@@ -47,11 +46,8 @@ namespace GameScene.GameBasic
                     HandleMouseMoveSelected();
                 }
             }
-
-         
         }
 
-        
         private void HandleMouseUp()
         {
             var hitObj = CheckValidPosition();

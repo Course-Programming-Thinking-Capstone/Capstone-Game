@@ -8,7 +8,7 @@ namespace GameScene.Component
     {
         [SerializeField] protected SelectType selectType;
         [SerializeField] protected RectTransform rectTransform;
-        [SerializeField] protected Image renderer;
+        [SerializeField] protected Image rendererImg;
         [SerializeField] protected GameObject effectRender;
 
         public float GetHeight()
@@ -18,7 +18,7 @@ namespace GameScene.Component
 
         public virtual void ChangeRender(Sprite newRender)
         {
-            renderer.sprite = newRender;
+            rendererImg.sprite = newRender;
         }
 
         public SelectType SelectType
@@ -35,9 +35,9 @@ namespace GameScene.Component
         public virtual void Init(UnityAction<Selector> onClickParam)
         {
             rectTransform = GetComponent<RectTransform>();
-            if (renderer == null)
+            if (rendererImg == null)
             {
-                renderer = gameObject.GetComponent<Image>();
+                rendererImg = gameObject.GetComponent<Image>();
             }
 
             onClick = onClickParam;
