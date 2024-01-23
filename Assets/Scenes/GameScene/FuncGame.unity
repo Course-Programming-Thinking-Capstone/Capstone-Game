@@ -1590,8 +1590,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isTesting: 1
   playerPosition: {x: 1, y: 1}
-  targetPosition: []
-  boardSize: {x: 3, y: 3}
+  targetPosition:
+  - {x: 2, y: 2}
+  - {x: 3, y: 3}
+  boardSize: {x: 8, y: 6}
   deleteZone: {fileID: 2084806566}
   selectedZone: {fileID: 633439132}
   playButton: {fileID: 1035767137}
@@ -1603,6 +1605,10 @@ MonoBehaviour:
   - {x: 1, y: 2}
   - {x: 2, y: 2}
   - {x: 2, y: 3}
+  - {x: 4, y: 3}
+  - {x: 4, y: 4}
+  - {x: 5, y: 4}
+  - {x: 5, y: 5}
 --- !u!1 &1398959422
 GameObject:
   m_ObjectHideFlags: 0

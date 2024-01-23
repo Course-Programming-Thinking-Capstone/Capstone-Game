@@ -45,28 +45,6 @@ namespace GameScene.GameSequence
             InitView();
         }
 
-        // private void LoadData()
-        // {
-        //     var param = PopupHelpers.PassParamPopup();
-        //     levelData = param.GetObject<LevelItemData>(ParamType.LevelData);
-        //     stageIndex = param.GetObject<int>(ParamType.StageIndex);
-        //     levelIndex = param.GetObject<int>(ParamType.LevelIndex);
-        //     if (isPrevious)
-        //     {
-        //         coinWin = 0;
-        //         gemWin = 0;
-        //     }
-        //     else
-        //     {
-        //         var reward1 = levelData.LevelReward.FirstOrDefault(o => o.RewardType == Enums.RewardType.Coin);
-        //         var reward2 = levelData.LevelReward.FirstOrDefault(o => o.RewardType == Enums.RewardType.Coin);
-        //         coinWin = reward1?.Value ?? 0;
-        //         gemWin = reward2?.Value ?? 0;
-        //     }
-        //
-        //     boardSize = levelData.BoardSize;
-        // }
-
         private void CreateBoard()
         {
             var listBoard = new List<Transform>();
@@ -139,6 +117,8 @@ namespace GameScene.GameSequence
             }
         }
 
+        #region Perform action
+
         private void HandleMouseUp()
         {
             if (storeSelected.Count == 15)
@@ -208,7 +188,8 @@ namespace GameScene.GameSequence
 
         private IEnumerator HandleAction(Selector direction)
         {
-            var isMove = true;
+            var isEat = false;
+            var isBreak = false;
             var targetMove = currentPlayerPosition;
             switch (direction.SelectType)
             {
@@ -225,11 +206,14 @@ namespace GameScene.GameSequence
                     targetMove += Vector2.right;
                     break;
                 case SelectType.Collect:
-                    isMove = false;
+                    isEat = true;
+                    break;
+                default:
+                    isBreak = true;
                     break;
             }
 
-            if (isMove)
+            if (targetMove != currentPlayerPosition)
             {
                 currentPlayerPosition = targetMove;
 
@@ -245,7 +229,8 @@ namespace GameScene.GameSequence
                 targetMove = view.GetPositionFromBoard(targetMove);
                 yield return MovePlayer(targetMove, model.PlayerMoveTime);
             }
-            else
+
+            if (isEat)
             {
                 var tracker = playerControl.PlayAnimationEat();
 
@@ -257,6 +242,12 @@ namespace GameScene.GameSequence
 
                 yield return new WaitForSpineAnimationComplete(tracker);
                 playerControl.PlayAnimationIdle();
+            }
+
+            if (isBreak)
+            {
+                playerControl.PlayAnimationIdle();
+                yield return new WaitForSeconds(1f);
             }
         }
 
@@ -298,6 +289,8 @@ namespace GameScene.GameSequence
 
             return true;
         }
+
+        #endregion
 
         #region Calulate func
 

@@ -55,8 +55,7 @@ namespace GameScene.GameFunction
 
             foreach (var positionRoad in boardMap)
             {
-                var newRoad = Instantiate(model.CellBoardPrefab);
-                view.PlaceObjectToBoard(newRoad.transform, positionRoad);
+                view.PlaceObjectToBoard(Instantiate(model.CellBoardPrefab).transform, positionRoad);
             }
         }
 
@@ -216,17 +215,20 @@ namespace GameScene.GameFunction
         {
             view.ActiveSavePanel();
             var actionList = ConvertToAction();
-            for (int i = 0; i < storeSelected.Count; i++)
+            for (int i = 0; i < actionList.Count; i++)
             {
-                var actionType = storeSelected[i].SelectType;
-                yield return HandleAction(actionType);
+                var actionItem = actionList[i];
+                view.SetParentSelectedToMove(actionItem.transform);
+                actionItem.ActiveEffect();
+                yield return HandleAction(actionItem);
+                actionItem.ActiveEffect(false);
+                view.SetParentSelected(actionItem.transform);
             }
 
             view.ActiveSavePanel(false);
             if (WinChecker())
             {
                 Debug.Log("You win");
-                // win
             }
             else
             {
@@ -234,11 +236,12 @@ namespace GameScene.GameFunction
             }
         }
 
-        private IEnumerator HandleAction(SelectType direction)
+        private IEnumerator HandleAction(Selector direction)
         {
-            var isMove = true;
+            var isEat = false;
+            var isBreak = false;
             var targetMove = currentPlayerPosition;
-            switch (direction)
+            switch (direction.SelectType)
             {
                 case SelectType.Up:
                     targetMove += Vector2.up;
@@ -253,11 +256,14 @@ namespace GameScene.GameFunction
                     targetMove += Vector2.right;
                     break;
                 case SelectType.Collect:
-                    isMove = false;
+                    isEat = true;
+                    break;
+                default:
+                    isBreak = true;
                     break;
             }
 
-            if (isMove)
+            if (targetMove != currentPlayerPosition)
             {
                 currentPlayerPosition = targetMove;
 
@@ -273,7 +279,8 @@ namespace GameScene.GameFunction
                 targetMove = view.GetPositionFromBoard(targetMove);
                 yield return MovePlayer(targetMove, model.PlayerMoveTime);
             }
-            else
+
+            if (isEat)
             {
                 var tracker = playerControl.PlayAnimationEat();
 
@@ -285,6 +292,12 @@ namespace GameScene.GameFunction
 
                 yield return new WaitForSpineAnimationComplete(tracker);
                 playerControl.PlayAnimationIdle();
+            }
+
+            if (isBreak)
+            {
+                playerControl.PlayAnimationIdle();
+                yield return new WaitForSeconds(1f);
             }
         }
 
@@ -464,19 +477,14 @@ namespace GameScene.GameFunction
             var result = new List<Selector>();
             foreach (var item in storeSelected)
             {
-                if (item.SelectType == SelectType.Loop)
+                result.Add(item);
+                if (item.SelectType == SelectType.Func)
                 {
-                    var looper = (Loop)item;
-                    for (int i = 0; i < looper.LoopCount; i++)
+                    foreach (var itemInFunc in storeFuncSelected)
                     {
-                        foreach (var itemLooped in looper.StoreSelected)
-                        {
-                            result.Add(itemLooped);
-                        }
+                        result.Add(itemInFunc);
                     }
                 }
-
-                result.Add(item);
             }
 
             return result;
