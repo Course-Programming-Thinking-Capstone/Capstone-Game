@@ -104,7 +104,7 @@ namespace GameScene
         /// Sorted all selected object to its position
         /// </summary>
         /// <param name="items"></param>
-        public void ReSortItemsSelected(List<RectTransform> items)
+        public virtual void ReSortItemsSelected(List<RectTransform> items)
         {
             for (int i = 0; i < items.Count; i++)
             {
