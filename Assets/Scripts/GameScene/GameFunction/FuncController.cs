@@ -8,30 +8,16 @@ using UnityEngine;
 
 namespace GameScene.GameFunction
 {
-    public class FuncController : GameController
+    public class FuncController : ClickDragController
     {
         [Header("Reference model")]
         [SerializeField] private FuncView view;
         [SerializeField] private FuncModel model;
         [SerializeField] private Transform funcTransform;
-        [Header("Demo param")]
-        [SerializeField]
-        private List<Vector2> boardMap;
-
         // FOR CONTROL SELECTOR
-        private readonly List<Selector> storeSelected = new();
         private readonly List<Selector> storeFuncSelected = new();
-        private readonly List<Vector2> storedPosition = new();
         private readonly List<Vector2> storedFuncPosition = new();
-        private bool isDelete;
-        private const float OffSet = 0.2f;
-        private Selector selectedObject;
-
-        // System
-        private Candy candy;
-        private Vector2 currentPlayerPosition;
-        private readonly Dictionary<Vector2, bool> targetChecker = new();
-        private readonly Dictionary<Vector2, Transform> targetReferences = new();
+        
 
         #region INITIALIZE
 

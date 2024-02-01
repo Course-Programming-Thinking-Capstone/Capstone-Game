@@ -11,27 +11,13 @@ using Utilities;
 
 namespace GameScene.GameSequence
 {
-    public class SequenceController : GameController
+    public class SequenceController : ClickDragController
     {
         [Header("Reference model")]
         [SerializeField] private SequenceView view;
         [SerializeField] private SequenceModel model;
 
-        [Header("Testing only")]
 
-        // FOR CONTROL SELECTOR
-        private readonly List<Selector> storeSelector = new();
-        private readonly List<Selector> storeSelected = new();
-        private readonly List<Vector2> storedPosition = new();
-        private bool isDelete;
-        private readonly float offSet = 0.2f;
-        [CanBeNull] private Selector selectedObject;
-
-        // System
-        private Candy candy;
-        private Vector2 currentPlayerPosition;
-        private readonly Dictionary<Vector2, bool> targetChecker = new();
-        private readonly Dictionary<Vector2, Transform> targetReferences = new();
 
         #region INITIALIZE
 
@@ -44,7 +30,20 @@ namespace GameScene.GameSequence
             CreatePlayer();
             InitView();
         }
-
+        private void Update()
+        {
+            if (selectedObject)
+            {
+                if (Input.GetMouseButtonUp(0))
+                {
+                    HandleMouseUp();
+                }
+                else
+                {
+                    HandleMouseMoveSelected();
+                }
+            }
+        }
         private void CreateBoard()
         {
             var listBoard = new List<Transform>();
@@ -102,20 +101,7 @@ namespace GameScene.GameSequence
 
         #endregion
 
-        private void Update()
-        {
-            if (selectedObject)
-            {
-                if (Input.GetMouseButtonUp(0))
-                {
-                    HandleMouseUp();
-                }
-                else
-                {
-                    HandleMouseMoveSelected();
-                }
-            }
-        }
+ 
 
         #region Perform action
 
@@ -298,7 +284,7 @@ namespace GameScene.GameSequence
         {
             for (int i = 0; i < storedPosition.Count; i++)
             {
-                if (i == 0 && storedPosition[i].y - offSet < mousePos.y) // first item
+                if (i == 0 && storedPosition[i].y - OffSet < mousePos.y) // first item
                 {
                     return 0;
                 }
@@ -308,8 +294,8 @@ namespace GameScene.GameSequence
                     return storedPosition.Count;
                 }
 
-                if (storedPosition[i].y + offSet > mousePos.y
-                    && storedPosition[i + 1].y - offSet < mousePos.y)
+                if (storedPosition[i].y + OffSet > mousePos.y
+                    && storedPosition[i + 1].y - OffSet < mousePos.y)
                 {
                     return i + 1;
                 }

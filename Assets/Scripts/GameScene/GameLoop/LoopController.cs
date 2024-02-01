@@ -9,27 +9,12 @@ using UnityEngine;
 
 namespace GameScene.GameLoop
 {
-    public class LoopController : GameController
+    public class LoopController : ClickDragController
     {
         [Header("Reference model")]
         [SerializeField] private LoopView view;
         [SerializeField] private LoopModel model;
-        [Header("Demo param")]
-        [SerializeField]
-        private List<Vector2> boardMap;
-
-        // FOR CONTROL SELECTOR
-        private readonly List<Selector> storeSelected = new();
-        private readonly List<Vector2> storedPosition = new();
-        private bool isDelete;
-        private const float OffSet = 0.2f;
-        private Selector selectedObject;
-
-        // System
-        private Candy candy;
-        private Vector2 currentPlayerPosition;
-        private readonly Dictionary<Vector2, bool> targetChecker = new();
-        private readonly Dictionary<Vector2, Transform> targetReferences = new();
+    
 
         private void Start()
         {

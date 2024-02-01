@@ -11,6 +11,11 @@ namespace GameScene
         [SerializeField] protected Transform container;
         [SerializeField] protected Transform blockContainer;
         
+        [Header("ClickAndDrag")]
+        [SerializeField] protected Transform selectorContainer;
+        [SerializeField] protected Transform selectedContainer;
+        [SerializeField] protected Transform movingContainer;
+
         [Header("Cache")]
         protected readonly List<Vector2> positions = new();
         protected Vector2 boardSize;
@@ -65,5 +70,80 @@ namespace GameScene
         }
 
         #endregion
+        
+        #region Canvas
+
+        public void SetParentSelector(Transform child)
+        {
+            child.SetParent(selectorContainer);
+            child.localScale = Vector3.one;
+        }
+
+        public void SetParentSelected(Transform child)
+        {
+            child.SetParent(selectedContainer);
+            child.localScale = Vector3.one;
+        }
+
+        public void SetParentSelectedToMove(Transform child)
+        {
+            child.SetParent(movingContainer);
+            child.localScale = Vector3.one;
+        }
+
+        /// <summary>
+        /// Add and object to selected list with index
+        /// </summary>
+        public void SetPositionSelected(RectTransform item, int index)
+        {
+            var yPosition = -item.sizeDelta.y * (index - 0.5f);
+            item.anchoredPosition = new Vector3(0f, yPosition, 0f);
+        }
+
+        /// <summary>
+        /// Sorted all selected object to its position
+        /// </summary>
+        /// <param name="items"></param>
+        public void ReSortItemsSelected(List<RectTransform> items)
+        {
+            for (int i = 0; i < items.Count; i++)
+            {
+                SetPositionSelected(items[i], i + 1);
+            }
+        }
+
+        public void MakeEmptySpace(List<RectTransform> items, int indexToMakeSpace)
+        {
+            var itemIndex = 1;
+            for (int i = 0; i < items.Count; i++)
+            {
+                if (indexToMakeSpace == i)
+                {
+                    itemIndex++;
+                }
+
+                SetPositionSelected(items[i], itemIndex);
+                itemIndex++;
+            }
+        }
+        public void InitGroundBoardFakePosition(Vector2 board, float offSet)
+        {
+            boardSize = board;
+            var sizeY = (int)board.y;
+            var sizeX = (int)board.x;
+            for (int i = 0; i < sizeY; i++) // vertical
+            {
+                for (int j = 0; j < sizeX; j++) // horizontal
+                {
+                    var positionNew = startGroundPosition.position;
+                    positionNew.x += offSet * j;
+                    positionNew.y += offSet * i;
+                    positions.Add(positionNew);
+                }
+            }
+        }
+
+        #endregion
+
     }
 }

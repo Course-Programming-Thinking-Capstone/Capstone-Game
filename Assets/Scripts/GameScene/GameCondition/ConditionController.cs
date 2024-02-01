@@ -1,6 +1,6 @@
 namespace GameScene.GameCondition
 {
-    public class ConditionController  : GameController
+    public class ConditionController  : ClickDragController
     {
    
     }
