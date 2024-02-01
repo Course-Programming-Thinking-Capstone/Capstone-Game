@@ -20,7 +20,7 @@ namespace GameScene
         // Param
         [SerializeField] protected Vector2 playerPosition;
         [SerializeField] protected List<Vector2> targetPosition;
-        [SerializeField] protected Vector2 boardSize;
+        [SerializeField] protected Vector2 boardSize = new(8, 6);
 
         [Header("Drag mode")]
         [Header("Reference object game")]

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameScene
-{
+{   
     public class GameView : MonoBehaviour
     {
         [Header("2D references")]
@@ -140,7 +140,7 @@ namespace GameScene
                     positionNew.y += offSet * i;
                     positions.Add(positionNew);
                 }
-            }
+            }   
         }
 
         #endregion

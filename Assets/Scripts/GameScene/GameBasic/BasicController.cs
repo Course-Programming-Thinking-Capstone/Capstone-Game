@@ -15,7 +15,6 @@ namespace GameScene.GameBasic
         // System
         private readonly List<GroundRoad> listBoard = new();
         private readonly List<Selector> listSelector = new();
-        private new readonly Vector2 boardSize = new(8, 6);
         private Vector2 startPosGame;
         private Vector2 endPosGame;
         private Selector selectedObject;
