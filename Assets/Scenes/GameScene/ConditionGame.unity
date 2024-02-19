@@ -2210,7 +2210,7 @@ MonoBehaviour:
     renderSpriteSelector: {fileID: 21300000, guid: 0946204cce3955c499a18037dc619f38, type: 3}
     renderSpriteSelected: {fileID: 21300000, guid: e62f21787936c654a97885b672eab284, type: 3}
   - selectType: 8
-    renderSpriteSelector: {fileID: 21300000, guid: 444cb0b5f0e3eed449db08fbd3e96908, type: 3}
+    renderSpriteSelector: {fileID: 21300000, guid: bd38600f9f20e7c4b8c4732edc681301, type: 3}
     renderSpriteSelected: {fileID: 21300000, guid: dc1b981ecb16b4e4186c280de6d84e27, type: 3}
   selectorPrefab: {fileID: 5241791683117841287, guid: 34b628f1adf0989468cc4c22a153ba14, type: 3}
   selectedPrefab: {fileID: 5923298832287941037, guid: 69864048f965f1a4492eb962ffe524dc, type: 3}

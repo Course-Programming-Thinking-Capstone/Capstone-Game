@@ -242,12 +242,11 @@ namespace GameScene.GameCondition
                 if (item.SelectType == SelectType.Condition)
                 {
                     var looper = (Condition)item;
-                    
-                        foreach (var itemLooped in looper.StoreSelected)
-                        {
-                            result.Add(itemLooped);
-                        }
-                    
+
+                    foreach (var itemLooped in looper.StoreSelected)
+                    {
+                        result.Add(itemLooped);
+                    }
                 }
 
                 result.Add(item);
@@ -264,16 +263,15 @@ namespace GameScene.GameCondition
         {
             view.InitGroundBoardFakePosition(boardSize, model.GetBlockOffset());
             view.PlaceObjectToBoard(Instantiate(model.CellBoardPrefab).transform, playerPosition);
-            foreach (var target in targetPosition)
+
+            var listBoard = new List<Transform>();
+
+            for (int i = 0; i < boardSize.x * boardSize.y; i++)
             {
-                view.PlaceObjectToBoard(Instantiate(model.CellBoardPrefab).transform, target);
+                listBoard.Add(Instantiate(model.CellBoardPrefab).transform);
             }
 
-            foreach (var positionRoad in boardMap)
-            {
-                var newRoad = Instantiate(model.CellBoardPrefab);
-                view.PlaceObjectToBoard(newRoad.transform, positionRoad);
-            }
+            view.InitGroundBoard(listBoard, boardSize, model.GetBlockOffset());
         }
 
         private void CreateSelector()
@@ -421,10 +419,10 @@ namespace GameScene.GameCondition
                 view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
             }
         }
-        
+
         private Condition CheckInsideLoop()
         {
-            if (selectedObject.SelectType == SelectType.Condition)
+            if (selectedObject.SelectType != SelectType.Collect)
             {
                 return null;
             }
