@@ -125,7 +125,7 @@ namespace MainScene
         }
         private void OnClickPlay()
         {
-            PopupHelpers.ShowError("Chức năng này chưa được hiện thực");
+            PopupHelpers.Show(Constants.GameModePopup);
         }
         
         private void OnClickSetting()

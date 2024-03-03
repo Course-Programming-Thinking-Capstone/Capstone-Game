@@ -42,33 +42,13 @@ namespace Utilities
         public static void Show(string name)
         {
             int index = SceneManager.sceneCount;
-            var scene = SceneManager.GetActiveScene();
-            SetEventSystem(scene, false);
+
             SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive).completed += delegate(AsyncOperation op)
             {
                 SetSceneActive(SceneManager.GetSceneAt(index));
             };
         }
 
-        public static void Close()
-        {
-            var scene = SceneManager.GetActiveScene();
-            SetEventSystem(scene, false);
-            SceneManager.UnloadSceneAsync(scene).completed += delegate(AsyncOperation operation)
-            {
-                SetSceneActive(SceneManager.GetActiveScene());
-            };
-        }
-
-        public static void Close(string name)
-        {
-            var scene = SceneManager.GetSceneByName(name);
-            SetEventSystem(scene, false);
-            SceneManager.UnloadSceneAsync(scene).completed += delegate(AsyncOperation operation)
-            {
-                SetSceneActive(SceneManager.GetActiveScene());
-            };
-        }
 
         /// <summary>
         /// New close with special sence

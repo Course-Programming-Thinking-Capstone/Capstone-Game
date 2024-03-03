@@ -79,9 +79,9 @@ namespace GenericPopup.SimplePopup
             claimDoubleBtn.onClick.AddListener(callBack);
             exitBtn.onClick.AddListener(callBackQuit);
 
-            claimBtn.onClick.AddListener(PopupHelpers.Close);
-            claimDoubleBtn.onClick.AddListener(PopupHelpers.Close);
-            exitBtn.onClick.AddListener(PopupHelpers.Close);
+            claimBtn.onClick.AddListener(ClosePopup);
+            claimDoubleBtn.onClick.AddListener(ClosePopup);
+            exitBtn.onClick.AddListener(ClosePopup);
 
             header.text = parameter.GetObject<string>("Title");
             var numOfStar = parameter.GetObject<int>("NumberOfStars");

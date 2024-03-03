@@ -7,6 +7,8 @@ namespace Services
     public class APIService
     {
         public string Jwt { get; set; }
+        public int Coin { get; set; }
+        public int CurrentEnergy { get; set; }
         /// <summary>
         /// Get an api
         /// </summary>

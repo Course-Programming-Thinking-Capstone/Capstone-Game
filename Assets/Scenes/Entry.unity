@@ -621,8 +621,7 @@ MonoBehaviour:
   sounds: []
   music: {fileID: 745272479}
   musicObject: {fileID: 745272477}
-  loadingTime: 5
-  isReady: 0
+  loadingTime: 0.5
 --- !u!1 &1582869041
 GameObject:
   m_ObjectHideFlags: 0
@@ -652,25 +651,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b4f635bd2b8d344295bfcd1399ca6bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  appsFlyerDevKey: G3MBmMRHTuEpXbqyqSWGeK
-  appsFlyerAppIdIos: 
-  appsFlyerAppIdAndroid: 
   tosURL: https://abigames.com.vn/ct-terms-of-service/
   privacyURL: https://abigames.com.vn/policy/
   rateURL: https://play.google.com/store/apps/details?id=game.onechain.galaxystacky
-  stageData: {fileID: 11400000, guid: 5abd8b63fa0d757459e99c26df1b65ae, type: 2}
-  interstitialIdAndroid: ca-app-pub-3940256099942544/1033173712
-  bannerIdAndroid: ca-app-pub-3940256099942544/6300978111
-  rewardedIdAndroid: ca-app-pub-9592829727324480/8592851719
-  rewardedInterstitialIdAndroid: ca-app-pub-3940256099942544/5354046379
-  mrecIdAndroid: ca-app-pub-3940256099942544/6300978111
-  appOpenAdsIdAndroid: ca-app-pub-3940256099942544/3419835294
-  interstitialIdIOS: ca-app-pub-3940256099942544/4411468910
-  bannerIdIOS: ca-app-pub-3940256099942544/2934735716
-  rewardedIdIOS: ca-app-pub-3940256099942544/1712485313
-  rewardedInterstitialIdIOS: ca-app-pub-3940256099942544/6978759866
-  mrecIdIos: ca-app-pub-3940256099942544/2934735716
-  appOpenAdsIdIos: ca-app-pub-3940256099942544/5662855259
 --- !u!4 &1582869043
 Transform:
   m_ObjectHideFlags: 0

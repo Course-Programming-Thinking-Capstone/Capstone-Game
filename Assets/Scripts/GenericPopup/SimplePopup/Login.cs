@@ -20,7 +20,7 @@ namespace GenericPopup.SimplePopup
 
             if (parameter == null)
             {
-                PopupHelpers.Close();
+                ClosePopup();
             }
 
             login.onClick.AddListener(OnClickLogin);

@@ -6,8 +6,10 @@ namespace GenericPopup
 {
     public class PopupAdditive : MonoBehaviour
     {
-        [SerializeField]
-        private Animator animator;
+        [SerializeField] private Animator animator;
+        [SerializeField] protected GameObject loading;
+        
+        
         private readonly int exit = Animator.StringToHash("Exit");
 
         protected void ClosePopup()
