@@ -1,87 +1,57 @@
+
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace MainScene.Element
+namespace GenericPopup.GameLevelSelect
 {
     public class LevelItem : MonoBehaviour
     {
-        [SerializeField] private GameObject[] path;
-        [SerializeField] private GameObject[] stars;
-
-        [SerializeField] private GameObject unlockUp;
-        [SerializeField] private GameObject unlockCenter;
-        [SerializeField] private GameObject unlockDown;
-
-        [SerializeField] private GameObject lockedUp;
-        [SerializeField] private GameObject lockedCenter;
-        [SerializeField] private GameObject lockedDown;
+        [SerializeField] private GameObject lockItem;
+        [SerializeField] private GameObject unlockItem;
+        [SerializeField] private GameObject playedItem;
+        [SerializeField] private GameObject pathLeft;
+        [SerializeField] private GameObject pathRight;
 
         [SerializeField] private List<TextMeshProUGUI> textLevel;
 
-        [SerializeField] private Button btnUp;
-        [SerializeField] private Button btnCenter;
-        [SerializeField] private Button btnDown;
+        [SerializeField] private List<Button> btnCenter;
 
-        public void SetCenter(bool isLocked, int level)
-        {
-            lockedCenter.SetActive(isLocked);
-            unlockCenter.SetActive(!isLocked);
-            ChangeLevelText(level.ToString());
-        }
-
-        public void SetActiveTop(bool isLocked)
-        {
-            lockedUp.SetActive(isLocked);
-            unlockUp.SetActive(!isLocked);
-            path[0].SetActive(true);
-        }
-
-        public void SetActiveDown(bool isLocked)
-        {
-            lockedDown.SetActive(isLocked);
-            unlockDown.SetActive(!isLocked);
-            path[1].SetActive(true);
-        }
-
-        public void ChangeLevelText(string txt)
-        {
-            foreach (var item in textLevel)
-            {
-                item.text = txt;
-            }
-        }
-
-        public void Initialized(
-            UnityAction callBackCenter, UnityAction callBackUp, UnityAction callBackDown,
-            int level,
-            bool isCenterLocker, bool isRight, bool isLeft, int star = 0
+        public void Initialized(int level, bool isPlayed, bool isLocked, UnityAction callBack,
+            bool isLast = false
         )
         {
-            btnUp.onClick.AddListener(callBackUp);
-            btnCenter.onClick.AddListener(callBackCenter);
-            btnDown.onClick.AddListener(callBackDown);
-
-            path[2].SetActive(!isLeft);
-            path[3].SetActive(!isRight);
-
-            SetCenter(isCenterLocker, level);
-
-            if (star != 0)
+            foreach (var btn in btnCenter)
             {
-                for (int i = 0; i < star; i++)
-                {
-                    stars[i].SetActive(true);
-                }
+                btn.onClick.AddListener(callBack);
+            }
+            // text display
+            foreach (var txt in textLevel)
+            {
+                txt.text = (level+1).ToString();
+            }
+
+            // Path line
+            if (level == 0)
+            {
+                pathLeft.SetActive(false);
+            }
+            pathRight.SetActive(!isLast);
+            
+            // Level item
+            lockItem.SetActive(false);
+            unlockItem.SetActive(false);
+            playedItem.SetActive(false);
+            if (isLocked)
+            {
+                lockItem.SetActive(true);
             }
             else
             {
-                foreach (var item in stars)
-                {
-                    item.SetActive(false);
-                }
+                unlockItem.SetActive(!isPlayed);
+                playedItem.SetActive(isPlayed);
             }
         }
     }

@@ -1,9 +1,9 @@
 using GenericPopup.GameModeSelect;
-using MainScene.Element;
 using Services;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Utilities;
 
 namespace GenericPopup.SimplePopup
 {
@@ -43,7 +43,9 @@ namespace GenericPopup.SimplePopup
 
         private void OnClickStage(GameMode mode)
         {
-            Debug.Log(mode);
+            var param = PopupHelpers.PassParamPopup();
+            param.SaveObject(ParamType.ModeGame, mode);
+            PopupHelpers.Show(Constants.LevelPopup);
         }
     }
 }

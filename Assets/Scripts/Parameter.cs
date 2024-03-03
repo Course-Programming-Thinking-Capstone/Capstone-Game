@@ -12,7 +12,7 @@ public class ObjectToSave<T>
 public enum ParamType
 {
     LevelData,
-    StageIndex,
+    ModeGame,
     LevelIndex,
     PreviousLevel,
 }

@@ -229,11 +229,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1202199865995265405, guid: 1cf053ed88090434e96111dcbd076307, type: 3}
   m_PrefabInstance: {fileID: 666637080}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &666637082 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7770424306699680635, guid: 1cf053ed88090434e96111dcbd076307, type: 3}
-  m_PrefabInstance: {fileID: 666637080}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &678230472
 GameObject:
   m_ObjectHideFlags: 0
@@ -376,13 +371,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f9ceaffb93fcc94a85e0393acd1acee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  loading: {fileID: 666637082}
+  animator: {fileID: 678230476}
+  loading: {fileID: 644936967196208084, guid: 76373c3702ef00c4d976380de632675b, type: 3}
   backButton: {fileID: 3285295786087350538}
   coinTxt: {fileID: 4035021341720416689}
   energyTxt: {fileID: 5611452559997704917}
   modeName: {fileID: 2250590765608810165}
   contentContainer: {fileID: 9186006588972115249}
+  levelItem: {fileID: 644936967196208084, guid: 76373c3702ef00c4d976380de632675b, type: 3}
 --- !u!1 &1490208604
 GameObject:
   m_ObjectHideFlags: 0
@@ -463,7 +459,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: -1
+  m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!224 &1490208608
 RectTransform:
@@ -718,10 +714,10 @@ MonoBehaviour:
   m_Padding:
     m_Left: 150
     m_Right: 150
-    m_Top: -60
+    m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 3
-  m_Spacing: 176
+  m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
@@ -11810,7 +11806,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -960, y: 0}
+  m_AnchoredPosition: {x: -960, y: 53}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!1660057539 &9223372036854775807

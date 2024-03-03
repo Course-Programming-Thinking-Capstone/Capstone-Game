@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using GenericPopup.GameModeSelect;
-using MainScene.Element;
 using Services;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -76,54 +75,12 @@ namespace MainScene
             }
         }
 
-        private void InitLevel()
-        {
-            for (int i = 0; i < model.StageData.StageItemData.Count; i++)
-            {
-                var historyLevel = playerService.GetHistoryStar(i);
-                var listlevel = model.StageData.StageItemData[i].DataLevel;
-                for (int j = 0; j < listlevel.LevelItemData.Count; j++)
-                {
-                    var modelStateObj = listlevel.ModelPrefab;
-                    var obj = Instantiate(modelStateObj);
-                    var itemStage = obj.GetComponent<LevelItem>();
-
-                    var j1 = j;
-                    var i1 = i;
-                    itemStage.Initialized(() => { OnClickLevel(i1, j1); }, null, null,
-                        j + 1, j > currentLevel[i], j == listlevel.LevelItemData.Count - 1, j == 0,
-                        historyLevel[j]
-                    );
-                    if (listlevel.LevelItemData[j].GemBonus != 0)
-                    {
-                        itemStage.SetActiveDown(true);
-                    }
-
-                    if (listlevel.LevelItemData[j].GoldBonus != 0)
-                    {
-                        itemStage.SetActiveTop(true);
-                    }
-
-            //        view.AddLevelItem(obj.transform, i);
-                }
-            }
-        }
-
+    
         #endregion
 
         #region CallBack
 
-        private void OnClickLevel(int stageIndex, int levelIndex)
-        {
-            // load game
-            var param = PopupHelpers.PassParamPopup();
-            var data = model.StageData.StageItemData[stageIndex].DataLevel.LevelItemData[levelIndex];
-            param.SaveObject(ParamType.LevelData, data);
-            param.SaveObject(ParamType.StageIndex, stageIndex);
-            param.SaveObject(ParamType.LevelIndex, levelIndex);
-          //  param.SaveObject(ParamType.PreviousLevel, levelIndex != playerService.CurrentLevel[stageIndex]);
-            SceneManager.LoadScene(Constants.GamePlay);
-        }
+      
         private void OnClickPlay()
         {
             PopupHelpers.Show(Constants.GameModePopup);
