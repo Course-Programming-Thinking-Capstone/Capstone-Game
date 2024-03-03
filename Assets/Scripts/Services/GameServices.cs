@@ -1,25 +1,16 @@
-using System;
+ using System;
 using UnityEngine;
+using Utility.Singleton;
 
 namespace Services
 {
-	public class GameServices : MonoBehaviour
-	{
-		public event Action OnDestroyAction;
+    public class GameServices : PersistentMonoSingleton<GameServices>
+    {
 
-		private GameServiceContainer gameServiceContainer = new GameServiceContainer();
+        private readonly GameServiceContainer gameServiceContainer = new GameServiceContainer();
+        
 
-		void Start()
-		{
-			DontDestroyOnLoad(gameObject);
-		}
-
-		private void OnDestroy()
-		{
-			OnDestroyAction?.Invoke();
-		}
-
-		public void AddService<T>(T provider) where T : class => gameServiceContainer.AddService(provider);
-		public T GetService<T>() where T : class => gameServiceContainer.GetService<T>();
-	}
+        public void AddService<T>(T provider) where T : class => gameServiceContainer.AddService(provider);
+        public T GetService<T>() where T : class => gameServiceContainer.GetService<T>();
+    }
 }

@@ -41,63 +41,8 @@ namespace Entry
                 gameServices.AddService(new AudioService(music, sounds, soundObject));
                 gameServices.AddService(new APIService());
                 gameServices.AddService(new DisplayService());
-                gameServices.AddService(new InputService());
                 gameServices.AddService(new PlayerService());
                 gameServices.AddService(new GameService(model.TOSURL, model.PrivacyURL, model.RateURL));
-                //			gameServices.AddService(new FirebaseService(OnFetchSuccess));
-#if UNITY_ANDROID
-                //		gameServices.AddService(new AdsService(model.BannerIdAndroid, model.IntersIdAndroid, model.RewardedIdAndroid, model.RewardedInterstitialIdAndroid, model.AOAIdAndroid));
-                //	gameServices.AddService(new AppsFlyerService(model.AppsFlyerDevKey, model.AppFlyerAppIdAndroid));
-#elif UNITY_IPHONE || UNITY_IOS
-				gameServices.AddService(new AdsService(model.BannerIdIOS,model.IntersIdIOS,model.RewardedIdIOS,model.RewardedInterstitialIdIOS,model.AOAIdIOS));
-				gameServices.AddService(new AppsFlyerService(model.AppsFlyerDevKey, model.AppsFlyerAppIdIos));
-#else
-                //	gameServices.AddService(new AdsService(UnUsed,UnUsed,UnUsed,UnUsed,UnUsed));
-                //	gameServices.AddService(new AppsFlyerService(model.AppsFlyerDevKey, UnUsed));
-#endif
-
-                // Get services
-                var displayService = gameServices.GetService<DisplayService>();
-                var audioService = gameServices.GetService<AudioService>();
-                var playerService = gameServices.GetService<PlayerService>();
-
-                // --------------------------- Ads ---------------------------------
-                // Setting ads from firebase
-                //firebaseServices.OnLimitTimeAdsChanged = adsServices.SetLimitTimeShowAds;
-                //firebaseServices.OnShowAppOpenAdChange = adsServices.OnShowAppOpenAdChange;
-                // ------------------------------------------------------------------
-
-                // --------------------------- Audio ---------------------------------
-                // Set Volume
-
-                audioService.MusicVolume = 1f;
-                audioService.SoundVolume = 1f;
-                audioService.VibrateOn = true;
-
-                audioService.MusicOn = true;
-                audioService.SoundOn = true;
-
-                audioService.StopMusic();
-                playerService.LoadData();
-
-                if (playerService.CurrentLevel.Count == 0)
-                {
-                    var data = model.StageData.StageItemData;
-                    foreach (var item in data)
-                    {
-                        playerService.CurrentLevel.Add(0);
-                        var starList = new List<int>();
-                        foreach (var levelItem in item.DataLevel.LevelItemData)
-                        {
-                            starList.Add(0);
-                        }
-
-                        playerService.SaveHistoryStar(data.IndexOf(item), starList);
-                    }
-                }
-
-                playerService.SaveData();
-                // ------------------------------------------------------------------
             }
         }
 
@@ -109,13 +54,6 @@ namespace Entry
         private void Loading()
         {
             view.PlayLoading(loadingTime, () => SceneManager.LoadScene(Constants.MainMenu));
-        }
-
-        private void OnFetchSuccess()
-        {
-            Time.timeScale = 1.0f;
-            //gameServices.GetService<AdsService>().LoadAppOpenAd();
-            // isReady = true;
         }
     }
 }
