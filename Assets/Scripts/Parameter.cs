@@ -19,17 +19,17 @@ public enum ParamType
 
 public class Parameter : MonoBehaviour
 {
-    private readonly Dictionary<ActionType, UnityAction> actionDic = new();
+    private readonly Dictionary<PopupKey, UnityAction> actionDic = new();
     private readonly Dictionary<string, string> storage = new();
 
-    public void AddAction(ActionType type, UnityAction action, string text = null)
+    public void AddAction(PopupKey type, UnityAction action, string text = null)
     {
         SaveObject(type.ToString(), text);
         if (!actionDic.ContainsKey(type)) actionDic.Add(type, action);
         else actionDic[type] = action;
     }
 
-    public UnityAction GetAction(ActionType type)
+    public UnityAction GetAction(PopupKey type)
     {
         return actionDic.ContainsKey(type) ? actionDic[type] : null;
     }

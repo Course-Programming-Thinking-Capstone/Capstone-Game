@@ -413,9 +413,9 @@ namespace GameScene.GameSequence
             param.SaveObject("Gem", gemReward);
             param.SaveObject("NumberOfStars", numOfStar);
             param.SaveObject("Title", "Stage clear!");
-            param.AddAction(ActionType.YesOption, OnClickClaim);
-            param.AddAction(ActionType.AdsOption, OnClickClaimAds);
-            param.AddAction(ActionType.QuitOption, OnClickExit);
+            param.AddAction(PopupKey.YesOption, OnClickClaim);
+            param.AddAction(PopupKey.AdsOption, OnClickClaimAds);
+            param.AddAction(PopupKey.QuitOption, OnClickExit);
             PopupHelpers.Show(Constants.WinPopup);
         }
     }

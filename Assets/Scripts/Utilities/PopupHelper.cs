@@ -4,16 +4,13 @@ using UnityEngine.SceneManagement;
 
 namespace Utilities
 {
-    public enum ActionType
+    public enum PopupKey
     {
         YesOption,
         AdsOption,
-        NoOption,
         QuitOption,
-        InfoOption,
-        BuyOption,
-        MessageOption,
-        TransitionOption
+        DescriptionKey,
+        IsErrorKey
     }
 
     public static class PopupHelpers
@@ -30,6 +27,16 @@ namespace Utilities
             }
 
             return go.GetComponent<Parameter>();
+        }
+
+        public static void ShowError(string errorDetail = "", string header = "Error")
+        {
+            var param = PassParamPopup();
+            param.SaveObject(PopupKey.DescriptionKey.ToString(), errorDetail);
+            param.SaveObject(PopupKey.IsErrorKey.ToString(), header);
+            int index = SceneManager.sceneCount;
+            SceneManager.LoadSceneAsync(Constants.ErrorPopup, LoadSceneMode.Additive).completed +=
+                delegate(AsyncOperation op) { SetSceneActive(SceneManager.GetSceneAt(index)); };
         }
 
         public static void Show(string name)

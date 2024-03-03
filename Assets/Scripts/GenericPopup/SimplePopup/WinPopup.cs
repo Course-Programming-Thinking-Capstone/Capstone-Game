@@ -5,9 +5,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using Utilities;
 
-namespace GenericPopup
+namespace GenericPopup.SimplePopup
 {
-    public class WinPopup : MonoBehaviour
+    public class WinPopup : PopupAdditive
     {
         [SerializeField] private TextMeshProUGUI header;
         [SerializeField] private TextMeshProUGUI coinTxt;
@@ -71,9 +71,9 @@ namespace GenericPopup
             var parameter = PopupHelpers.PassParamPopup();
 
             AppearAnimation();
-            var callBack = parameter.GetAction(ActionType.YesOption);
-            var callBackDouble = parameter.GetAction(ActionType.AdsOption);
-            var callBackQuit = parameter.GetAction(ActionType.QuitOption);
+            var callBack = parameter.GetAction(PopupKey.YesOption);
+            var callBackDouble = parameter.GetAction(PopupKey.AdsOption);
+            var callBackQuit = parameter.GetAction(PopupKey.QuitOption);
 
             claimBtn.onClick.AddListener(callBack);
             claimDoubleBtn.onClick.AddListener(callBack);
