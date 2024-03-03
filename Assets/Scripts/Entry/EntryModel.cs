@@ -1,4 +1,3 @@
-using MainScene.Data;
 using UnityEngine;
 
 namespace Entry

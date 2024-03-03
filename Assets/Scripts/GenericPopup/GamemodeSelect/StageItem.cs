@@ -11,7 +11,6 @@ namespace GenericPopup.GameModeSelect
         [SerializeField] private Button button;
         [SerializeField] private Image render;
         [SerializeField] private TextMeshProUGUI label;
-    
 
         public void Initialized([CanBeNull] Sprite displayImage, string detail, UnityAction callBack)
         {
@@ -19,7 +18,7 @@ namespace GenericPopup.GameModeSelect
             {
                 render.sprite = displayImage;
             }
-        
+
             label.text = detail;
             button.onClick.AddListener(callBack);
             render.SetNativeSize();

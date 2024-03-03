@@ -25,7 +25,5 @@ namespace GenericPopup.SimplePopup
             header.text = parameter.GetObject<string>(PopupKey.DescriptionKey.ToString());
             detail.text = parameter.GetObject<string>(PopupKey.DescriptionKey.ToString());
         }
-        
-        
     }
 }

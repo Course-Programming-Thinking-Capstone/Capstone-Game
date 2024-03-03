@@ -9,7 +9,6 @@ namespace Entry
     public class EntryController : MonoBehaviour
     {
         private const string SoundObjectName = "Sound";
-        private const string UnUsed = "unused";
         [SerializeField] private EntryModel model;
         [SerializeField] private EntryView view;
 

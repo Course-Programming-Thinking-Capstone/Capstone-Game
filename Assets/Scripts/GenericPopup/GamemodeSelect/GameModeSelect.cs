@@ -1,11 +1,10 @@
-using GenericPopup.GameModeSelect;
 using Services;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Utilities;
 
-namespace GenericPopup.SimplePopup
+namespace GenericPopup.GameModeSelect
 {
     public class GameModeSelect : PopupAdditive
     {

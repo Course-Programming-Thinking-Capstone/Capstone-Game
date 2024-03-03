@@ -1,4 +1,3 @@
-
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -27,10 +26,11 @@ namespace GenericPopup.GameLevelSelect
             {
                 btn.onClick.AddListener(callBack);
             }
+
             // text display
             foreach (var txt in textLevel)
             {
-                txt.text = (level+1).ToString();
+                txt.text = (level + 1).ToString();
             }
 
             // Path line
@@ -38,8 +38,9 @@ namespace GenericPopup.GameLevelSelect
             {
                 pathLeft.SetActive(false);
             }
+
             pathRight.SetActive(!isLast);
-            
+
             // Level item
             lockItem.SetActive(false);
             unlockItem.SetActive(false);
