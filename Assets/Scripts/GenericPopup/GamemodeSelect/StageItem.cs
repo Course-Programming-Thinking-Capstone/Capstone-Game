@@ -1,9 +1,10 @@
+using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace MainScene.Element
+namespace GenericPopup.GameModeSelect
 {
     public class StageItem : MonoBehaviour
     {
@@ -12,9 +13,13 @@ namespace MainScene.Element
         [SerializeField] private TextMeshProUGUI label;
     
 
-        public void Initialized(Sprite displayImage, string detail, UnityAction callBack)
+        public void Initialized([CanBeNull] Sprite displayImage, string detail, UnityAction callBack)
         {
-            render.sprite = displayImage;
+            if (displayImage != null)
+            {
+                render.sprite = displayImage;
+            }
+        
             label.text = detail;
             button.onClick.AddListener(callBack);
             render.SetNativeSize();
