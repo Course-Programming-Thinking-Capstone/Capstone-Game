@@ -12,15 +12,15 @@ EditorBuildSettings:
     path: Assets/Scenes/MainScene/MainScene.unity
     guid: fe5bb56b758cd82469df24b5567037d0
   - enabled: 1
-    path: Assets/Scenes/Popups/ErrorPopup.unity
+    path: Assets/Scenes/Popups/Error.unity
     guid: 7bcd90b947c4abc48ac3ac4cfd91478c
   - enabled: 1
-    path: Assets/Scenes/Popups/WinPopup.unity
+    path: Assets/Scenes/Popups/Win.unity
     guid: ca41e72483529004cbef5bcc87a36531
-  - enabled: 1
-    path: Assets/Scenes/Popups/LosePopup.unity
-    guid: 68271700c27fc6943ac100bbade78970
   - enabled: 1
     path: Assets/Scenes/GameScene/SequenceGame.unity
     guid: 88952bbca418f384ba66e6cbd51553cd
+  - enabled: 1
+    path: Assets/Scenes/Popups/Login.unity
+    guid: 04b52e8d659b0b04cbc9346a9dc3e5fd
   m_configObjects: {}
