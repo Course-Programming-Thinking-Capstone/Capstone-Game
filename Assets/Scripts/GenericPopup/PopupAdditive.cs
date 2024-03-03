@@ -19,8 +19,12 @@ namespace GenericPopup
                 animator.SetBool(exit, true);
                 StartCoroutine(CloseDelay(0.5f));
             }
+            else
+            {
+                PopupHelpers.Close(gameObject.scene);
+            }
 
-            PopupHelpers.Close(gameObject.scene);
+        
         }
 
         private IEnumerator CloseDelay(float delayTime)

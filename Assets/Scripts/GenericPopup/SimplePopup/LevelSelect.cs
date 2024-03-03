@@ -1,17 +1,18 @@
 using Services;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace GenericPopup.SimplePopup
 {
-    public class GameModeSelect : PopupAdditive
+    public class LevelSelect : PopupAdditive
     {
         [SerializeField] private Button backButton;
         [SerializeField] private TextMeshProUGUI coinTxt;
         [SerializeField] private TextMeshProUGUI energyTxt;
+        [SerializeField] private TextMeshProUGUI modeName;
         [SerializeField] private Transform contentContainer;
-        [SerializeField] private Image modeBg;
 
         private APIService apiService;
 
@@ -21,7 +22,7 @@ namespace GenericPopup.SimplePopup
             backButton.onClick.AddListener(ClosePopup);
             coinTxt.text = apiService.Coin.ToString();
             energyTxt.text = "60 / 60";
-            
+            modeName.text = "Mode name here";
         }
 
         public void AddElement(Transform element)
