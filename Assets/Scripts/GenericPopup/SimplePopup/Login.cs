@@ -5,7 +5,7 @@ using Utilities;
 
 namespace GenericPopup.SimplePopup
 {
-    public class LoginPopup : PopupAdditive
+    public class Login : PopupAdditive
     {
         [SerializeField] private TMP_InputField user;
         [SerializeField] private TMP_InputField password;

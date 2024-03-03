@@ -1,24 +1,21 @@
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace MainScene.MainPopup
+namespace GenericPopup.SimplePopup
 {
-    public class StageSelect : MainScenePopup
+    public class StageSelect : PopupAdditive
     {
-        [SerializeField] private Button homeButton;
         [SerializeField] private Button backButton;
         [SerializeField] private TextMeshProUGUI coinTxt;
         [SerializeField] private TextMeshProUGUI diamondTxt;
         [SerializeField] private Transform contentContainer;
 
-        public void Initialized(UnityAction closeAll)
+        private void Start()
         {
-            homeButton.onClick.AddListener(closeAll);
-            backButton.onClick.AddListener(Close);
+            backButton.onClick.AddListener(ClosePopup);
         }
+
 
         public void SetWallet(int coin, int diamond)
         {

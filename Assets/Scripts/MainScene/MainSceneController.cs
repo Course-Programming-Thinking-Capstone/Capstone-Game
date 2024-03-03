@@ -127,8 +127,7 @@ namespace MainScene
         {
             PopupHelpers.ShowError("Chức năng này chưa được hiện thực");
         }
-
-
+        
         private void OnClickSetting()
         {
             PopupHelpers.ShowError("Chức năng này chưa được hiện thực");

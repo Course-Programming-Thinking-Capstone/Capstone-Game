@@ -5,7 +5,7 @@ using Utilities;
 
 namespace GenericPopup.SimplePopup
 {
-    public class ErrorPopup : PopupAdditive
+    public class Error : PopupAdditive
     {
         [SerializeField] private TextMeshProUGUI header;
         [SerializeField] private TextMeshProUGUI detail;
