@@ -14,6 +14,7 @@ public static class Constants
     public const string GamePlay = "Scenes/GameScene/GameScene";
 
     // Popups
-    public const string ErrorPopup = "Scenes/GenericPopups/ErrorPopup";
-    public const string WinPopup = "Scenes/GenericPopups/WinPopup";
+    public const string ErrorPopup = "Scenes/Popups/Error";
+    public const string WinPopup = "Scenes/Popups/Win";
+    public const string LoginPopup = "Scenes/Popups/Login";
 }

@@ -14,7 +14,7 @@ namespace Services
 
         public int UserCoin { get; set; }
         public int UserDiamond { get; set; }
-        public List<int> CurrentLevel { get; set; }
+
 
         public PlayerService()
         {
@@ -49,14 +49,13 @@ namespace Services
         {
             UserCoin = PlayerPrefs.GetInt(UserCoinKey, 0);
             UserDiamond = PlayerPrefs.GetInt(UserDiamondKey, 0);
-            CurrentLevel = GetList(UserCurrentLevelKey, new List<int>());
+
         }
 
         public void SaveData()
         {
             PlayerPrefs.SetInt(UserCoinKey, UserCoin);
             PlayerPrefs.SetInt(UserDiamondKey, UserDiamond);
-            SaveList(UserCurrentLevelKey, CurrentLevel);
         }
 
         #region Ultils method

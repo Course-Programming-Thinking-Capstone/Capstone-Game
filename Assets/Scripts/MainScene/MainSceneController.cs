@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using MainScene.Element;
 using Services;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using Utilities;
 
 namespace MainScene
@@ -14,9 +13,16 @@ namespace MainScene
         [Header("MVC")]
         [SerializeField] private MainSceneModel model;
         [SerializeField] private MainSceneView view;
-
+        [Header("MainMenu Button")]
+        [SerializeField] private Button playButton;
+        [SerializeField] private Button shopButton;
+        [SerializeField] private Button inventoryButton;
+        [SerializeField] private Button userButton;
+        [SerializeField] private Button settingButton;
         [Header("SYSTEM")]
         private PlayerService playerService;
+        private APIService apiService;
+        private AudioService audioService;
 
         private List<int> currentLevel;
         private int stageIndex = -1;
@@ -26,47 +32,33 @@ namespace MainScene
         {
             var gameServices = GameServices.Instance;
             playerService = gameServices.GetService<PlayerService>();
-            currentLevel = playerService.CurrentLevel;
+            apiService = gameServices.GetService<APIService>();
         }
 
         private void Start()
         {
             // main 
-            LoadParam();
             InitMain();
-
-            // popup
-            view.InitializeLevel(model.StageData.StageItemData.Count, OnClickHome);
-            view.InitializeStage(OnClickHome);
-
-            // Create State
-            InitStage();
-            InitLevel();
-
-            //
-            if (openPopup)
-            {
-                OnClickStage(stageIndex);
-            }
+            AssignButton();
+            
         }
 
         #region Initialized
 
-        private void LoadParam()
+        private void AssignButton()
         {
-            var param = PopupHelpers.PassParamPopup();
-            stageIndex = param.GetObject<int>(ParamType.StageIndex);
-            openPopup = param.GetObject<bool>("OpenPopup");
+            userButton.onClick.AddListener(OnClickUser);
+            shopButton.onClick.AddListener(OnClickShop);
+            settingButton.onClick.AddListener(OnClickSetting);
+            inventoryButton.onClick.AddListener(OnClickInventory);
+            playButton.onClick.AddListener(OnClickPlay);
         }
 
         private void InitMain()
         {
-            view.InitializedMain(OnClickPlay, OnClickShop, OnClickInventory, OnClickSetting);
             view.SetDisplayUserCoin(playerService.UserCoin);
-            view.SetDisplayUserDiamond(playerService.UserDiamond);
-            view.SetDisplayUserName("Denk");
-            view.SetDisplayUserProcess("50 / 100", 0.5f);
-            view.SetDisplayUserLevel(68);
+            view.SetDisplayUserName("Guest");
+            view.SetDisplayUserEnergy(60, 60);
         }
 
         private void InitStage()
@@ -78,8 +70,8 @@ namespace MainScene
                 var obj = Instantiate(modelStateObj);
                 var itemStage = obj.GetComponent<StageItem>();
                 var i1 = i;
-                itemStage.Initialized(item.Render, item.Detail, () => { OnClickStage(i1); });
-                view.AddStageItem(obj.transform);
+           //     itemStage.Initialized(item.Render, item.Detail, () => { OnClickStage(i1); });
+              //  view.AddStageItem(obj.transform);
             }
         }
 
@@ -111,7 +103,7 @@ namespace MainScene
                         itemStage.SetActiveTop(true);
                     }
 
-                    view.AddLevelItem(obj.transform, i);
+            //        view.AddLevelItem(obj.transform, i);
                 }
             }
         }
@@ -128,49 +120,42 @@ namespace MainScene
             param.SaveObject(ParamType.LevelData, data);
             param.SaveObject(ParamType.StageIndex, stageIndex);
             param.SaveObject(ParamType.LevelIndex, levelIndex);
-            param.SaveObject(ParamType.PreviousLevel, levelIndex != playerService.CurrentLevel[stageIndex]);
+          //  param.SaveObject(ParamType.PreviousLevel, levelIndex != playerService.CurrentLevel[stageIndex]);
             SceneManager.LoadScene(Constants.GamePlay);
         }
-
-        private void OnClickHome()
+        private void OnClickPlay()
         {
-            view.CloseAllPopup();
+            PopupHelpers.ShowError("Chức năng này chưa được hiện thực");
         }
+
 
         private void OnClickSetting()
         {
-            var newParam = PopupHelpers.PassParamPopup();
-            newParam.SaveObject("Title", "Error: Setting not implement");
-            newParam.SaveObject("Detail", "Chức năng này chưa được hiện thực");
-            PopupHelpers.Show(Constants.ErrorPopup);
+            PopupHelpers.ShowError("Chức năng này chưa được hiện thực");
         }
 
         private void OnClickInventory()
         {
-            var newParam = PopupHelpers.PassParamPopup();
-            newParam.SaveObject("Title", "Error: Inventory not implement");
-            newParam.SaveObject("Detail", "Chức năng này chưa được hiện thực");
-            PopupHelpers.Show(Constants.ErrorPopup);
+            PopupHelpers.ShowError("Chức năng này chưa được hiện thực");
         }
 
         private void OnClickShop()
         {
-            var newParam = PopupHelpers.PassParamPopup();
-            newParam.SaveObject("Title", "Error: Shop not implement");
-            newParam.SaveObject("Detail", "Chức năng này chưa được hiện thực");
-            PopupHelpers.Show(Constants.ErrorPopup);
+            PopupHelpers.ShowError("Chức năng này chưa được hiện thực");
         }
 
-        private void OnClickPlay()
+        private void OnClickUser()
         {
-            view.OpenStage(playerService.UserCoin, playerService.UserDiamond);
+            if (string.IsNullOrEmpty(apiService.Jwt))
+            {
+                PopupHelpers.Show(Constants.LoginPopup);
+            }
+            else
+            {
+                PopupHelpers.ShowError("Chức năng này chưa được hiện thực");
+            }
         }
-
-        private void OnClickStage(int index)
-        {
-            view.OpenLevel(model.StageData.StageItemData[index].Detail, playerService.UserCoin,
-                playerService.UserDiamond, index);
-        }
+        
 
         #endregion
     }

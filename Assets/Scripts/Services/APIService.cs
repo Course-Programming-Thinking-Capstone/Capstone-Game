@@ -6,6 +6,7 @@ namespace Services
 {
     public class APIService
     {
+        public string Jwt { get; set; }
         /// <summary>
         /// Get an api
         /// </summary>

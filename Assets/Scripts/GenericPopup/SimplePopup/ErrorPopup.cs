@@ -10,7 +10,6 @@ namespace GenericPopup.SimplePopup
         [SerializeField] private TextMeshProUGUI header;
         [SerializeField] private TextMeshProUGUI detail;
         [SerializeField] private Button okButton;
-        [SerializeField] private Button closeButton;
 
         private void Start()
         {
@@ -22,7 +21,6 @@ namespace GenericPopup.SimplePopup
             }
 
             okButton.onClick.AddListener(ClosePopup);
-            closeButton.onClick.AddListener(ClosePopup);
 
             header.text = parameter.GetObject<string>(PopupKey.DescriptionKey.ToString());
             detail.text = parameter.GetObject<string>(PopupKey.DescriptionKey.ToString());
