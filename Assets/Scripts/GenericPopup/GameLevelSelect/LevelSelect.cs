@@ -1,3 +1,4 @@
+using System;
 using Services;
 using TMPro;
 using UnityEngine;
@@ -27,6 +28,7 @@ namespace GenericPopup.GameLevelSelect
         {
             var param = PopupHelpers.PassParamPopup();
             gameMode = param.GetObject<GameMode>(ParamType.ModeGame);
+            Destroy(param.gameObject);
         }
 
         private void Start()
@@ -61,6 +63,21 @@ namespace GenericPopup.GameLevelSelect
 
         private void OnClickLevel(int index)
         {
+            var param = PopupHelpers.PassParamPopup();
+            param.SaveObject(ParamType.LevelIndex, index);
+            switch (gameMode)
+            {
+                case GameMode.Basic:
+                    break;
+                case GameMode.Sequence:
+                    break;
+                case GameMode.Loop:
+                    break;
+                case GameMode.Function:
+                    break;
+                case GameMode.Condition:
+                    break;
+            }
             Debug.Log(gameMode);
             Debug.Log(index);
         }
