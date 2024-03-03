@@ -13,13 +13,13 @@ namespace GenericPopup.SimplePopup
         [SerializeField] private Transform contentContainer;
         [SerializeField] private Image modeBg;
 
-        private APIService apiService;
+        private ServerSideService serverSideService;
 
         private void Start()
         {
-            apiService = GameServices.Instance.GetService<APIService>();
+            serverSideService = GameServices.Instance.GetService<ServerSideService>();
             backButton.onClick.AddListener(ClosePopup);
-            coinTxt.text = apiService.Coin.ToString();
+            coinTxt.text = serverSideService.Coin.ToString();
             energyTxt.text = "60 / 60";
             
         }

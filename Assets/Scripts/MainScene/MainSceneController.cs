@@ -21,7 +21,7 @@ namespace MainScene
         [SerializeField] private Button settingButton;
         [Header("SYSTEM")]
         private PlayerService playerService;
-        private APIService apiService;
+        private ServerSideService serverSideService;
         private AudioService audioService;
 
         private List<int> currentLevel;
@@ -32,7 +32,7 @@ namespace MainScene
         {
             var gameServices = GameServices.Instance;
             playerService = gameServices.GetService<PlayerService>();
-            apiService = gameServices.GetService<APIService>();
+            serverSideService = gameServices.GetService<ServerSideService>();
         }
 
         private void Start()
@@ -145,7 +145,7 @@ namespace MainScene
 
         private void OnClickUser()
         {
-            if (string.IsNullOrEmpty(apiService.Jwt))
+            if (string.IsNullOrEmpty(serverSideService.Jwt))
             {
                 PopupHelpers.Show(Constants.LoginPopup);
             }

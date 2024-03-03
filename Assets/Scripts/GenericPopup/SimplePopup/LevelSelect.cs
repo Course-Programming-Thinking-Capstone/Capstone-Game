@@ -14,13 +14,13 @@ namespace GenericPopup.SimplePopup
         [SerializeField] private TextMeshProUGUI modeName;
         [SerializeField] private Transform contentContainer;
 
-        private APIService apiService;
+        private ServerSideService serverSideService;
 
         private void Start()
         {
-            apiService = GameServices.Instance.GetService<APIService>();
+            serverSideService = GameServices.Instance.GetService<ServerSideService>();
             backButton.onClick.AddListener(ClosePopup);
-            coinTxt.text = apiService.Coin.ToString();
+            coinTxt.text = serverSideService.Coin.ToString();
             energyTxt.text = "60 / 60";
             modeName.text = "Mode name here";
         }

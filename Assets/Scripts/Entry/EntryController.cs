@@ -39,10 +39,10 @@ namespace Entry
                 DontDestroyOnLoad(soundObject);
                 // Add Services
                 gameServices.AddService(new AudioService(music, sounds, soundObject));
-                gameServices.AddService(new APIService());
+                gameServices.AddService(new ServerSideService(model.BaseApiUrl));
                 gameServices.AddService(new DisplayService());
                 gameServices.AddService(new PlayerService());
-                gameServices.AddService(new GameService(model.TOSURL, model.PrivacyURL, model.RateURL));
+                gameServices.AddService(new GameService(model.TosURL, model.PrivacyURL, model.RateURL));
             }
         }
 
