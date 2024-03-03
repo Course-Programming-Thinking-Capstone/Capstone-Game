@@ -24,14 +24,7 @@ namespace MainScene
 
         private void Awake()
         {
-            var objectService = GameObject.FindWithTag(Constants.ServicesTag);
-            if (objectService == null)
-            {
-                SceneManager.LoadScene(Constants.EntryScene);
-                return;
-            }
-
-            var gameServices = objectService.GetComponent<GameServices>();
+            var gameServices = GameServices.Instance;
             playerService = gameServices.GetService<PlayerService>();
             currentLevel = playerService.CurrentLevel;
         }
