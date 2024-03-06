@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GameScene.Component;
 using GameScene.Component.SelectControl;
+using JetBrains.Annotations;
 using Services;
 using Spine.Unity;
 using UnityEngine;
@@ -199,6 +200,9 @@ namespace GameScene.GameFunction
             return false;
         }
 
+        [CanBeNull]
+        private Selector activeFunc;
+
         private IEnumerator StartPlayerMove()
         {
             view.ActiveSavePanel();
@@ -208,6 +212,27 @@ namespace GameScene.GameFunction
                 var actionItem = actionList[i];
                 view.SetParentSelectedToMove(actionItem.transform);
                 actionItem.ActiveEffect();
+                if (actionItem.SelectType == SelectType.Func && activeFunc == null)
+                {
+                    activeFunc = actionItem;
+                    continue;
+                }
+
+                if (actionItem.SelectType == SelectType.Func && activeFunc != null)
+                {
+                    activeFunc.ActiveEffect(false);
+                    view.SetParentSelected(activeFunc.transform);
+                    activeFunc = actionItem;
+                    continue;
+                }
+
+                if (activeFunc != null && !storeFuncSelected.Contains(actionItem)) // other type
+                {
+                    activeFunc.ActiveEffect(false);
+                    view.SetParentSelected(activeFunc.transform);
+                    activeFunc = null;
+                }
+
                 yield return HandleAction(actionItem);
                 actionItem.ActiveEffect(false);
                 view.SetParentSelected(actionItem.transform);
@@ -297,8 +322,13 @@ namespace GameScene.GameFunction
                 SimplePool.Despawn(selector.gameObject);
             }
 
-            storeSelected.Clear();
+            foreach (var selector in storeFuncSelected)
+            {
+                SimplePool.Despawn(selector.gameObject);
+            }
 
+            storeSelected.Clear();
+            storeFuncSelected.Clear();
             // Clear win condition
             foreach (var position in targetReferences.Keys)
             {
