@@ -16,7 +16,6 @@ namespace GameScene.GameLoop
         [Header("Reference model")]
         [SerializeField] private LoopView view;
         [SerializeField] private LoopModel model;
-    
 
         private void Start()
         {
@@ -191,6 +190,18 @@ namespace GameScene.GameLoop
             // Clear all things selected
             foreach (var selector in storeSelected)
             {
+                if (selector.SelectType == SelectType.Loop)
+                {
+                    var looper = (Loop)selector;
+
+                    foreach (var itemLooped in looper.StoreSelected)
+                    {
+                        SimplePool.Despawn(itemLooped.gameObject);
+                    }
+
+                    looper.StoreSelected.Clear();
+                }
+
                 SimplePool.Despawn(selector.gameObject);
             }
 
@@ -255,8 +266,10 @@ namespace GameScene.GameLoop
                         }
                     }
                 }
-
-                result.Add(item);
+                else
+                {
+                    result.Add(item);
+                }
             }
 
             return result;

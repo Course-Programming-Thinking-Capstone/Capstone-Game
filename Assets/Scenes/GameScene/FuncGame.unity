@@ -1599,7 +1599,7 @@ MonoBehaviour:
   deleteZone: {fileID: 2084806566}
   selectedZone: {fileID: 633439132}
   playButton: {fileID: 1035767137}
-  generateList: 010000000200000003000000040000000500000006000000
+  generateList: 010000000200000003000000040000000500000007000000
   boardMap:
   - {x: 1, y: 2}
   - {x: 2, y: 2}
