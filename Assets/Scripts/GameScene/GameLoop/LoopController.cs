@@ -122,7 +122,7 @@ namespace GameScene.GameLoop
             view.ActiveSavePanel(false);
             if (WinChecker())
             {
-                Debug.Log("You win");
+                ShowWinPopup(800);
                 // win
             }
             else

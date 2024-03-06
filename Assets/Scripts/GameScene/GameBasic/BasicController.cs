@@ -114,7 +114,7 @@ namespace GameScene.GameBasic
             }
 
             yield return MovePlayer(endPosGame, model.PlayerMoveTime);
-            playerControl.PlayAnimationEat();
+            ShowWinPopup(800);
             view.ActiveSavePanel(false);
         }
 

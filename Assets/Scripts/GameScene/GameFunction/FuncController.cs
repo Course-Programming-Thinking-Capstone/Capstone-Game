@@ -215,7 +215,7 @@ namespace GameScene.GameFunction
             view.ActiveSavePanel(false);
             if (WinChecker())
             {
-                Debug.Log("You win");
+                ShowWinPopup(800);
             }
             else
             {

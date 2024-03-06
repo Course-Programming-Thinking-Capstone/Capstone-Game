@@ -6,6 +6,7 @@ using Services;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Utilities;
 
 namespace GameScene
 {
@@ -28,7 +29,25 @@ namespace GameScene
         [SerializeField] protected RectTransform selectedZone;
         [SerializeField] protected Button playButton;
         [SerializeField] protected List<SelectType> generateList;
-        
+
+        protected void ShowWinPopup(int coinWin)
+        {
+            var parameter = PopupHelpers.PassParamPopup();
+            parameter.AddAction(PopupKey.YesOption, OnLoadNextLevel);
+            parameter.SaveObject(ParamType.CoinTxt, coinWin);
+            PopupHelpers.Show(Constants.WinPopup);
+        }
+
+        protected virtual void OnLoadNextLevel()
+        {
+            SceneManager.LoadScene(Constants.GameModePopup);
+        }
+
+        public void OnClickExit()
+        {
+            SceneManager.LoadScene(Constants.MainMenu);
+        }
+
         protected IEnumerator MovePlayer(Vector2 targetMove, float moveTime)
         {
             if (targetMove.x < playerControl.transform.position.x)
@@ -63,8 +82,7 @@ namespace GameScene
                 SceneManager.LoadScene(Constants.EntryScene);
             }
         }
-        
-        
+
         protected bool IsPointInRT(Vector2 point, RectTransform rt)
         {
             // Get the rectangular bounding box of your UI element
@@ -87,6 +105,5 @@ namespace GameScene
 
             return false;
         }
-
     }
 }

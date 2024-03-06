@@ -120,8 +120,7 @@ namespace GameScene.GameCondition
             view.ActiveSavePanel(false);
             if (WinChecker())
             {
-                Debug.Log("You win");
-                // win
+                ShowWinPopup(800);
             }
             else
             {

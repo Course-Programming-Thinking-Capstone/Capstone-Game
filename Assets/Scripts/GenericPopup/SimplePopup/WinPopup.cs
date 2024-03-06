@@ -14,11 +14,9 @@ namespace GenericPopup.SimplePopup
     {
         [Header("Special")]
         [SerializeField] private TextMeshProUGUI coinWinTxt;
-
         [SerializeField] private Button nextLevelButton;
         [SerializeField] private Button homeButton;
-
-
+        
         private UnityAction onClickNextLevelCallBack;
 
         private void Start()

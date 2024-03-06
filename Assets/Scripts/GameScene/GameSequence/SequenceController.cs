@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using GameScene.Component;
 using GameScene.Component.SelectControl;
-using JetBrains.Annotations;
 using Spine.Unity;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Utilities;
 
 namespace GameScene.GameSequence
@@ -16,8 +14,6 @@ namespace GameScene.GameSequence
         [Header("Reference model")]
         [SerializeField] private SequenceView view;
         [SerializeField] private SequenceModel model;
-
-
 
         #region INITIALIZE
 
@@ -30,6 +26,7 @@ namespace GameScene.GameSequence
             CreatePlayer();
             InitView();
         }
+
         private void Update()
         {
             if (selectedObject)
@@ -44,6 +41,7 @@ namespace GameScene.GameSequence
                 }
             }
         }
+
         private void CreateBoard()
         {
             var listBoard = new List<Transform>();
@@ -101,8 +99,6 @@ namespace GameScene.GameSequence
 
         #endregion
 
- 
-
         #region Perform action
 
         private void HandleMouseUp()
@@ -150,9 +146,8 @@ namespace GameScene.GameSequence
         private IEnumerator StartPlayerMove()
         {
             view.ActiveSavePanel();
-            for (int i = 0; i < storeSelected.Count; i++)
+            foreach (var item in storeSelected)
             {
-                var item = storeSelected[i];
                 view.SetParentSelectedToMove(item.transform);
                 item.ActiveEffect();
                 yield return HandleAction(item);
@@ -163,7 +158,7 @@ namespace GameScene.GameSequence
             view.ActiveSavePanel(false);
             if (WinChecker())
             {
-                Debug.Log("You win");
+                ShowWinPopup(700);
                 // win
             }
             else
@@ -371,52 +366,6 @@ namespace GameScene.GameSequence
             StartCoroutine(StartPlayerMove());
         }
 
-        /// <summary>
-        /// Win popup
-        /// </summary>
-        private void OnClickClaim()
-        {
-            // Save data
-            // playerService.UserCoin += coinWin;
-            // playerService.UserDiamond += gemWin;
-            playerService.SaveData();
-            // Load level
-
-            var param = PopupHelpers.PassParamPopup();
-            // param.SaveObject(ParamType.StageIndex, stageIndex);
-            param.SaveObject("OpenPopup", true);
-            SceneManager.LoadScene(Constants.MainMenu);
-        }
-
-        /// <summary>
-        /// Win popups
-        /// </summary>
-        private void OnClickClaimAds()
-        {
-            // Load level
-            var param = PopupHelpers.PassParamPopup();
-            // param.SaveObject(ParamType.StageIndex, stageIndex);
-            SceneManager.LoadScene(Constants.MainMenu);
-        }
-
-        private void OnClickExit()
-        {
-            SceneManager.LoadScene(Constants.MainMenu);
-        }
-
         #endregion
-
-        private void ShowWinPopup(int numOfStar, int coinReward, int gemReward)
-        {
-            var param = PopupHelpers.PassParamPopup();
-            param.SaveObject("Coin", coinReward);
-            param.SaveObject("Gem", gemReward);
-            param.SaveObject("NumberOfStars", numOfStar);
-            param.SaveObject("Title", "Stage clear!");
-            param.AddAction(PopupKey.YesOption, OnClickClaim);
-            param.AddAction(PopupKey.AdsOption, OnClickClaimAds);
-            param.AddAction(PopupKey.QuitOption, OnClickExit);
-            PopupHelpers.Show(Constants.WinPopup);
-        }
     }
 }
