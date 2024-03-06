@@ -171,6 +171,7 @@ namespace GameScene.GameBasic
             foreach (var positionRoad in roadPartPositions)
             {
                 var newRoad = Instantiate(model.RoadGroundPrefab);
+                newRoad.transform.localScale = Vector3.one;
                 var scriptControl = newRoad.GetComponent<GroundRoad>();
                 scriptControl.Initialized(OnClickRoad);
                 scriptControl.ChangeRender(model.GetSprite(SelectType.None), null);
