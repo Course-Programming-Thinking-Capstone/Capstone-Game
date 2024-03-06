@@ -2,6 +2,7 @@ using System;
 using Services;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Utilities;
 
@@ -68,18 +69,21 @@ namespace GenericPopup.GameLevelSelect
             switch (gameMode)
             {
                 case GameMode.Basic:
+                    SceneManager.LoadScene(Constants.BasicMode);
                     break;
                 case GameMode.Sequence:
+                    SceneManager.LoadScene(Constants.SequenceMode);
                     break;
                 case GameMode.Loop:
+                    SceneManager.LoadScene(Constants.LoopMode);
                     break;
                 case GameMode.Function:
+                    SceneManager.LoadScene(Constants.FuncMode);
                     break;
                 case GameMode.Condition:
+                    SceneManager.LoadScene(Constants.ConditionMode);
                     break;
             }
-            Debug.Log(gameMode);
-            Debug.Log(index);
         }
     }
 }

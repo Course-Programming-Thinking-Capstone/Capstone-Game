@@ -21,6 +21,18 @@ EditorBuildSettings:
     path: Assets/Scenes/Popups/LevelSelect.unity
     guid: f7dffb958a3445247acf4b5b66c3a98d
   - enabled: 1
+    path: Assets/Scenes/GameScene/BasicGame.unity
+    guid: 32cdf58dd783c2b44afe956c944a0843
+  - enabled: 1
+    path: Assets/Scenes/GameScene/ConditionGame.unity
+    guid: baddc57d8b113fb4b88fd4e349cb1b10
+  - enabled: 1
+    path: Assets/Scenes/GameScene/FuncGame.unity
+    guid: 7656ef73b9a6247499681c004a882a29
+  - enabled: 1
+    path: Assets/Scenes/GameScene/LoopGame.unity
+    guid: 7c2c1fc0ccccdc248842cebfd420723d
+  - enabled: 1
     path: Assets/Scenes/Popups/GameMode.unity
     guid: d3e82d899f3038d4f950f822da83017b
   - enabled: 1

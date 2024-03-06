@@ -15,6 +15,7 @@ public enum ParamType
     ModeGame,
     LevelIndex,
     PreviousLevel,
+    CoinTxt,
 }
 
 public class Parameter : MonoBehaviour
