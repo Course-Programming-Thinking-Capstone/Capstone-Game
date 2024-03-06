@@ -36,7 +36,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Popups/GameMode.unity
     guid: d3e82d899f3038d4f950f822da83017b
   - enabled: 1
-    path: Assets/Scenes/GameScene/SequenceGame.unity
+    path: Assets/Scenes/GameScene/SquenceGame.unity
     guid: 88952bbca418f384ba66e6cbd51553cd
   - enabled: 1
     path: Assets/Scenes/Popups/Login.unity

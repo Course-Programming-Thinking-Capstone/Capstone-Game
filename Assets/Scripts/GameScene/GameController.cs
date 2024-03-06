@@ -15,8 +15,10 @@ namespace GameScene
         // SERVICES
         [Header("All Mode")]
         [SerializeField] private bool isTesting;
+        [SerializeField] protected GameMode gameMode;
         protected PlayerService playerService;
         protected Player playerControl;
+        protected int levelIndex;
 
         // Param
         [SerializeField] protected Vector2 playerPosition;
@@ -38,9 +40,28 @@ namespace GameScene
             PopupHelpers.Show(Constants.WinPopup);
         }
 
-        protected virtual void OnLoadNextLevel()
+        private void OnLoadNextLevel()
         {
-            SceneManager.LoadScene(Constants.GameModePopup);
+            var param = PopupHelpers.PassParamPopup();
+            param.SaveObject(ParamType.LevelIndex, levelIndex);
+            switch (gameMode)
+            {
+                case GameMode.Basic:
+                    SceneManager.LoadScene(Constants.BasicMode);
+                    break;
+                case GameMode.Sequence:
+                    SceneManager.LoadScene(Constants.SequenceMode);
+                    break;
+                case GameMode.Loop:
+                    SceneManager.LoadScene(Constants.LoopMode);
+                    break;
+                case GameMode.Function:
+                    SceneManager.LoadScene(Constants.FuncMode);
+                    break;
+                case GameMode.Condition:
+                    SceneManager.LoadScene(Constants.ConditionMode);
+                    break;
+            }
         }
 
         public void OnClickExit()

@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -38,7 +36,7 @@ namespace GenericPopup.SimplePopup
             }
             else
             {
-                PopupHelpers.Close(gameObject.scene);
+                SceneManager.LoadScene(Constants.MainMenu);
             }
         }
 
@@ -47,12 +45,12 @@ namespace GenericPopup.SimplePopup
             if (animator != null)
             {
                 animator.SetBool(exit, true);
-                onClickNextLevelCallBack?.Invoke();
             }
             else
             {
                 PopupHelpers.Close(gameObject.scene);
             }
+            onClickNextLevelCallBack?.Invoke();
         }
 
         private IEnumerator LoadMain(float delay)

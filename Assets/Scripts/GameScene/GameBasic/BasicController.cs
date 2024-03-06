@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GameScene.Component;
 using GameScene.Component.GameBasic;
+using Services;
 using UnityEngine;
 
 namespace GameScene.GameBasic
@@ -25,6 +26,7 @@ namespace GameScene.GameBasic
 
         private void Start()
         {
+            gameMode = GameMode.Basic;
             Validation();
             CalcSolution();
             GenerateGround();

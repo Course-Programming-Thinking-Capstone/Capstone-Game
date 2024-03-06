@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GameScene.Component;
 using GameScene.Component.SelectControl;
+using Services;
 using Spine.Unity;
 using UnityEngine;
 using Utilities;
@@ -14,11 +15,13 @@ namespace GameScene.GameSequence
         [Header("Reference model")]
         [SerializeField] private SequenceView view;
         [SerializeField] private SequenceModel model;
-
+        
+        
         #region INITIALIZE
 
         private void Start()
         {
+            gameMode = GameMode.Sequence;
             // LoadData();
             CreateSelector();
             CreateBoard();

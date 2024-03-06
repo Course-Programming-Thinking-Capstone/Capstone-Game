@@ -4,6 +4,7 @@ using System.Linq;
 using GameScene.Component;
 using GameScene.Component.SelectControl;
 using JetBrains.Annotations;
+using Services;
 using Spine.Unity;
 using UnityEngine;
 using Utilities;
@@ -19,6 +20,7 @@ namespace GameScene.GameLoop
 
         private void Start()
         {
+            gameMode = GameMode.Loop;
             // LoadData();
             CreateSelector();
             CreateBoard();

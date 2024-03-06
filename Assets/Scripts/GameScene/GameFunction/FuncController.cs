@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GameScene.Component;
 using GameScene.Component.SelectControl;
+using Services;
 using Spine.Unity;
 using UnityEngine;
 using Utilities;
@@ -18,12 +19,12 @@ namespace GameScene.GameFunction
         // FOR CONTROL SELECTOR
         private readonly List<Selector> storeFuncSelected = new();
         private readonly List<Vector2> storedFuncPosition = new();
-        
 
         #region INITIALIZE
 
         private void Start()
         {
+            gameMode = GameMode.Function;
             CreateSelector();
             CreateBoard();
             CreateTarget();
