@@ -32,6 +32,7 @@ namespace Entry
                 gameServices = gameServiceObject.AddComponent<GameServices>();
 
                 // Instantie Audio
+                DontDestroyOnLoad(gameServiceObject);
                 DontDestroyOnLoad(musicObject);
 
                 GameObject soundObject = new(SoundObjectName);

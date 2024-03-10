@@ -1,3 +1,5 @@
+
+using Services;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,6 +15,14 @@ namespace GenericPopup.SimplePopup
         [SerializeField] private Button login;
         [SerializeField] private Button closeButton;
         [SerializeField] private Button signUp;
+
+        private ServerSideService serverSideService;
+
+        private void Awake()
+        {
+            serverSideService = GameServices.Instance.GetService<ServerSideService>();
+            serverSideService.OnFailed = err => { PopupHelpers.ShowError(err, "ERROR"); };
+        }
 
         private void Start()
         {
@@ -30,6 +40,8 @@ namespace GenericPopup.SimplePopup
 
         private void OnClickLogin()
         {
+            serverSideService.LoginWithEmail(user.text, password.text,
+                () => { PopupHelpers.ShowError("Login thành công", "Thông báo"); });
         }
 
         private void OnClickSigning()

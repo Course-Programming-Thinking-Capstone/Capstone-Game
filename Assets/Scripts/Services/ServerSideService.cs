@@ -1,5 +1,8 @@
+using System;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Services.Response;
+using UnityEngine.Events;
 using UnityEngine.Networking;
 
 namespace Services
@@ -7,13 +10,37 @@ namespace Services
     public class ServerSideService
     {
         private string baseApi;
-        public string Jwt { get; set; }
-        public int Coin { get; set; }
-        public int CurrentEnergy { get; set; }
+        public int userId = -1;
+        public int coin = 0;
+        private string jwt = "";
+        public UnityAction<string> OnFailed { get; set; }
 
         public ServerSideService(string baseApi)
         {
             this.baseApi = baseApi;
+        }
+
+        public async void LoginWithEmail(string email, string password, UnityAction onSuccess)
+        {
+            var api = baseApi + "authentication/login";
+            var requestParam = new
+            {
+                email, password
+            };
+            try
+            {
+                var result = await Post<LoginResponse>(api, requestParam);
+                if (result != null)
+                {
+                    onSuccess?.Invoke();
+                    jwt = result.AccessToken;
+                    userId = result.UserId;
+                }
+            }
+            catch (Exception e)
+            {
+                OnFailed.Invoke(e.Message);
+            }
         }
 
         #region Generic API
@@ -27,7 +54,7 @@ namespace Services
         public async Task<TResultType> Get<TResultType>(string url)
         {
             using UnityWebRequest request = UnityWebRequest.Get(url);
-            request.SetRequestHeader("Authorization", Jwt);
+            request.SetRequestHeader("Authorization", jwt);
 
             var operation = request.SendWebRequest();
             while (!operation.isDone) // wait for operation
@@ -63,7 +90,7 @@ namespace Services
         {
             var payload = JsonConvert.SerializeObject(requestData);
             using UnityWebRequest request = UnityWebRequest.Post(url, payload, "application/json");
-            request.SetRequestHeader("Authorization", Jwt);
+            request.SetRequestHeader("Authorization", jwt);
 
             var operation = request.SendWebRequest();
             while (!operation.isDone) // wait for operation
@@ -76,6 +103,12 @@ namespace Services
                 var jsonResult = request.downloadHandler.text;
                 var result = JsonConvert.DeserializeObject<TResultType>(jsonResult);
                 return result;
+            }
+            else
+            {
+                var jsonResult = request.downloadHandler.text;
+                var result = JsonConvert.DeserializeObject<ErrorResponse>(jsonResult);
+                OnFailed.Invoke(result.Title + " " + result.Message);
             }
 
             return default;
@@ -92,7 +125,7 @@ namespace Services
         {
             var payload = JsonConvert.SerializeObject(requestData);
             using UnityWebRequest request = UnityWebRequest.Put(url, payload);
-            request.SetRequestHeader("Authorization", Jwt);
+            request.SetRequestHeader("Authorization", jwt);
 
             var operation = request.SendWebRequest();
             while (!operation.isDone) // wait for operation
@@ -120,7 +153,7 @@ namespace Services
             using UnityWebRequest request = UnityWebRequest.Delete(url);
             var operation = request.SendWebRequest();
 
-            request.SetRequestHeader("Authorization", Jwt);
+            request.SetRequestHeader("Authorization", jwt);
             while (!operation.isDone)
             {
                 await Task.Yield();

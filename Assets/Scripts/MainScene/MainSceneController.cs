@@ -79,7 +79,7 @@ namespace MainScene
 
         private void OnClickUser()
         {
-            if (string.IsNullOrEmpty(serverSideService.Jwt))
+            if ((serverSideService.userId) == -1)
             {
                 PopupHelpers.Show(Constants.LoginPopup);
             }

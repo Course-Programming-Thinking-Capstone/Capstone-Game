@@ -22,7 +22,7 @@ namespace GenericPopup.SimplePopup
 
             okButton.onClick.AddListener(ClosePopup);
 
-            header.text = parameter.GetObject<string>(PopupKey.DescriptionKey.ToString());
+            header.text = parameter.GetObject<string>(PopupKey.IsErrorKey.ToString());
             detail.text = parameter.GetObject<string>(PopupKey.DescriptionKey.ToString());
         }
     }

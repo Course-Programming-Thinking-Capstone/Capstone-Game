@@ -445,8 +445,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 678230476}
-  user: {fileID: 0}
-  password: {fileID: 0}
+  loading: {fileID: 0}
+  user: {fileID: 5294214585779370495}
+  password: {fileID: 5294214586704669734}
   login: {fileID: 5294214587247360869}
   closeButton: {fileID: 1245519739957153010}
   signUp: {fileID: 5294214586869882461}
