@@ -15,6 +15,7 @@ namespace GameScene.GameSequence
         [Header("Reference model")]
         [SerializeField] private SequenceView view;
         [SerializeField] private SequenceModel model;
+        [SerializeField] private PadSelectController padSelectController;
 
         #region INITIALIZE
 
@@ -31,17 +32,12 @@ namespace GameScene.GameSequence
 
         private void Update()
         {
-            if (selectedObject)
+            if (Input.GetMouseButtonUp(0))
             {
-                if (Input.GetMouseButtonUp(0))
-                {
-                    HandleMouseUp();
-                }
-                else
-                {
-                    HandleMouseMoveSelected();
-                }
+                padSelectController.HandleMouseUp();
             }
+
+            padSelectController.HandleMouseMoveSelected();
         }
 
         private void CreateBoard()
@@ -105,44 +101,12 @@ namespace GameScene.GameSequence
 
         private void HandleMouseUp()
         {
-            if (storeSelected.Count == 15)
-            {
-                isDelete = true;
-            }
-
-            if (isDelete) // in delete zone
-            {
-                SimplePool.Despawn(selectedObject!.gameObject);
-                selectedObject = null;
-                isDelete = false;
-            }
-            else // Valid pos
-            {
-                if (!storeSelected.Contains(selectedObject))
-                {
-                    storeSelected.Insert(CalculatedCurrentPosition(Input.mousePosition), selectedObject);
-                }
-
-                view.SetParentSelected(selectedObject!.transform);
-                view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
-                selectedObject = null;
-            }
+          
         }
 
         private void HandleMouseMoveSelected()
         {
-            Vector3 mousePos = Input.mousePosition;
-            selectedObject!.RectTransform.position = mousePos;
-            // handle if inside delete zone
-            isDelete = IsPointInRT(mousePos, deleteZone);
-            if (storeSelected.Count == 15)
-            {
-                isDelete = true;
-                return;
-            }
-
-            // check to make space
-            HandleDisplayCalculate(mousePos);
+          
         }
 
         private IEnumerator StartPlayerMove()
