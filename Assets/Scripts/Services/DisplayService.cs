@@ -2,56 +2,34 @@ using UnityEngine;
 
 namespace Services
 {
-	public class DisplayService
-	{
-#if UNITY_EDITOR
-
-		public bool IsFake { get; set; }
-#endif
-		public DisplayService()
-		{
-			Application.targetFrameRate = 60;
-		}
-		public bool WideScreen()
-		{
-			if ((float)Screen.width / (float)Screen.height > 0.58f)
-			{
-				return true;
-			}
-			return false;
-		}
-		public Rect SafeArea()
-		{
-			Rect safeArea = Screen.safeArea;
-			Rect[] cutouts = Cutouts();
-
-			if (safeArea.y == 0)
-			{
-				float posY = safeArea.height;
-				foreach (Rect rect in cutouts)
-				{
-					if (posY > rect.y)
-					{
-						posY = rect.y;
-					}
-				}
-				safeArea.y = Screen.height - posY;
-			}
-
-#if UNITY_EDITOR
-			if (IsFake)
-			{
-				return new Rect(0f, 90f, Screen.width, Screen.height - 90f);
-			}
-			else
-#endif
-			{
-				return safeArea;
-			}
-		}
-		public Rect[] Cutouts()
-		{
-			return Screen.cutouts;
-		}
-	}
+    public class DisplayService : MonoBehaviour
+    {
+        [SerializeField] private GameObject changeOrientationGo;
+        private void Awake()
+        {
+            Application.targetFrameRate = 60;
+            changeOrientationGo.SetActive(false);
+        }
+        public void SetOrientation(int orient)
+        {
+            ScreenOrientation orientation = (ScreenOrientation)orient;
+            //the 'if' is obviously unnecessary. I'm just testing if the comparisons are working as expected. It's an example after all, might as well be thorough.
+            if (orientation == ScreenOrientation.Portrait
+                || orientation == ScreenOrientation.PortraitUpsideDown)
+            {
+                changeOrientationGo.SetActive(false);
+            }
+            else
+            {
+                if (Application.isMobilePlatform)
+                {
+                    changeOrientationGo.SetActive(true);
+                }
+                else
+                {
+                    changeOrientationGo.SetActive(false);
+                }
+            }
+        }
+    }
 }
