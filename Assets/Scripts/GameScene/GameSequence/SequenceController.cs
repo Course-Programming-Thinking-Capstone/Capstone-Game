@@ -52,22 +52,6 @@ namespace GameScene.GameSequence
             view.InitGroundBoard(listBoard, boardSize, model.GetBlockOffset());
         }
 
-        private void CreateSelector()
-        {
-            // Generate objects selector
-            foreach (var o in generateList)
-            {
-                var obj = Instantiate(model.SelectorPrefab);
-                view.SetParentSelector(obj.transform);
-                var scriptControl = obj.AddComponent<Arrow>();
-                scriptControl.Init(OnClickedSelector);
-                scriptControl.SelectType = o;
-                scriptControl.ChangeRender(model.GetSelector(o));
-
-                storeSelector.Add(scriptControl);
-            }
-        }
-
         private void CreatePlayer()
         {
             // Init player
@@ -98,16 +82,6 @@ namespace GameScene.GameSequence
         #endregion
 
         #region Perform action
-
-        private void HandleMouseUp()
-        {
-          
-        }
-
-        private void HandleMouseMoveSelected()
-        {
-          
-        }
 
         private IEnumerator StartPlayerMove()
         {
