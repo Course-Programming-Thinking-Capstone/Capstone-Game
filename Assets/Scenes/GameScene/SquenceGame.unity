@@ -1570,6 +1570,7 @@ MonoBehaviour:
   boardMap: []
   view: {fileID: 372901246}
   model: {fileID: 1966046701}
+  padSelectController: {fileID: 1365533570}
 --- !u!114 &1365533570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1588,7 +1589,6 @@ MonoBehaviour:
   selectedPad: {fileID: 633439132}
   baseXPositionA: {fileID: 687018834}
   baseXPositionB: {fileID: 101905899}
-  generateList: 
   data: {fileID: 11400000, guid: cfccc6f0ceb3f6c43a381844885fa699, type: 2}
   unSelectContainer: {fileID: 1328973360}
   selectedContainer: {fileID: 1249297808}

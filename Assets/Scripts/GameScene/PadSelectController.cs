@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using GameScene.Component;
@@ -13,7 +12,6 @@ namespace GameScene
 {
     public class PadSelectController : MonoBehaviour
     {
-        private const float OffSet = 0.2f;
         [Header("For animation")]
         [SerializeField] private Button controlButton;
         [SerializeField] private Transform arrowDir;
@@ -29,33 +27,17 @@ namespace GameScene
         [SerializeField] private Transform selectedContainer;
         [SerializeField] private Transform movingContainer;
         private List<InteractionItem> storeSelected;
-        private List<Vector2> tempPosition = new();
+        private List<float> tempPosition;
         private bool isDelete;
-        private Camera cameraMain;
         public List<InteractionItem> StoreSelected => storeSelected;
         [CanBeNull] private InteractionItem selectedObject;
 
         private void Awake()
         {
-            cameraMain = Camera.main;
             storeSelected = new List<InteractionItem>();
+            tempPosition = new List<float>();
             controlButton.onClick.AddListener(OnClickOpenClose);
             CreateSelector();
-        }
-
-        private void Update()
-        {
-            if (selectedObject)
-            {
-                if (Input.GetMouseButtonUp(0))
-                {
-                    HandleMouseUp();
-                }
-                else
-                {
-                    HandleMouseMoveSelected();
-                }
-            }
         }
 
         public void HandleMouseUp()
@@ -65,7 +47,7 @@ namespace GameScene
                 return;
             }
 
-            isDelete = false || storeSelected.Count == 15 || IsInDeleteZone();
+            isDelete = storeSelected.Count == 15 || IsInDeleteZone();
 
             if (isDelete) // in delete zone
             {
@@ -77,11 +59,11 @@ namespace GameScene
             {
                 if (!storeSelected.Contains(selectedObject))
                 {
-                    storeSelected.Insert(CalculatedCurrentPosition(Input.mousePosition), selectedObject);
+                    storeSelected.Insert(CalculatedNewItemCurrentIndexByPosition(), selectedObject);
                 }
 
                 selectedObject!.transform.SetParent(selectedContainer);
-                // view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
+                MakeItemSelectedInRightPlace();
                 selectedObject = null;
             }
         }
@@ -103,7 +85,7 @@ namespace GameScene
             }
 
             // check to make space
-            // HandleDisplayCalculate(mousePos);
+            MakeEmptySpace();
         }
 
         private void CreateSelector()
@@ -119,47 +101,68 @@ namespace GameScene
             }
         }
 
-        private int CalculatedCurrentPosition(Vector2 mousePos)
-        {
-            for (int i = 0; i < tempPosition.Count; i++)
-            {
-                if (i == 0 && tempPosition[i].y - OffSet < mousePos.y) // first item
-                {
-                    return 0;
-                }
-
-                if (i == tempPosition.Count - 1) // last item
-                {
-                    return tempPosition.Count;
-                }
-
-                if (tempPosition[i].y + OffSet > mousePos.y
-                    && tempPosition[i + 1].y - OffSet < mousePos.y)
-                {
-                    return i + 1;
-                }
-            }
-
-            return tempPosition.Count;
-        }
-
         private void StoreTempPosition()
         {
             tempPosition.Clear();
+
             foreach (var item in storeSelected)
             {
-                tempPosition.Add(item.RectTransform.position);
+                tempPosition.Add(item.RectTransform.position.y);
             }
         }
 
         private bool IsInDeleteZone()
         {
-            var result = false;
-            Vector3 mousePos = Input.mousePosition;
-            result = mousePos.x <= baseXPositionA.position.x;
-            Debug.Log(mousePos.x);
-            Debug.Log(baseXPositionA.position.x);
-            return result;
+            return Input.mousePosition.x <= baseXPositionA.position.x;
+        }
+
+        private void MakeItemSelectedInRightPlace(int skipIndex = -1)
+        {
+            var index = 0;
+            foreach (var item in storeSelected)
+            {
+                if (skipIndex == index)
+                {
+                    index++;
+                }
+
+                index++;
+                var yPosition = -item.RectTransform.sizeDelta.y * (index - 0.5f);
+                item.RectTransform.anchoredPosition = new Vector3(0f, yPosition, 0f);
+            }
+        }
+
+        private void MakeEmptySpace()
+        {
+            if (Input.mousePosition.x > baseXPositionB.position.x || IsInDeleteZone())
+            {
+                MakeItemSelectedInRightPlace();
+                return;
+            }
+
+            if (tempPosition.Count == 0)
+            {
+                return;
+            }
+
+            var newItemIndex = CalculatedNewItemCurrentIndexByPosition();
+            MakeItemSelectedInRightPlace(newItemIndex);
+        }
+
+        private int CalculatedNewItemCurrentIndexByPosition()
+        {
+            var mousePos = Input.mousePosition.y;
+            var index = 0;
+
+            foreach (var position in tempPosition)
+            {
+                if (position > mousePos)
+                {
+                    index++;
+                }
+            }
+
+            return index;
         }
 
         #region CALL BACK
@@ -175,6 +178,7 @@ namespace GameScene
             // assign to control
             selectedObject = arrow;
             selectedObject.transform.SetParent(movingContainer);
+            StoreTempPosition();
         }
 
         private void OnClickedSelected(InteractionItem selectedObj)
@@ -183,9 +187,7 @@ namespace GameScene
             storeSelected.Remove(selectedObj);
             selectedObject = selectedObj;
             selectedObject!.transform.SetParent(movingContainer);
-            // view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
-            //
-            // StoreTempPosition();
+            StoreTempPosition();
         }
 
         #endregion
