@@ -15,15 +15,14 @@ namespace GameScene.GameSequence
         [Header("Reference model")]
         [SerializeField] private SequenceView view;
         [SerializeField] private SequenceModel model;
-        
-        
+
         #region INITIALIZE
 
         private void Start()
         {
             gameMode = GameMode.Sequence;
             // LoadData();
-            CreateSelector();
+            // CreateSelector();
             CreateBoard();
             CreateTarget();
             CreatePlayer();
@@ -170,7 +169,7 @@ namespace GameScene.GameSequence
             }
         }
 
-        private IEnumerator HandleAction(Selector direction)
+        private IEnumerator HandleAction(InteractionItem direction)
         {
             var isEat = false;
             var isBreak = false;
@@ -335,7 +334,7 @@ namespace GameScene.GameSequence
         #region CALL BACK
 
         // Event clicked selector
-        private void OnClickedSelector(Selector selectedObj)
+        private void OnClickedSelector(InteractionItem selectedObj)
         {
             // Generate new selected
             var obj = SimplePool.Spawn(model.SelectedPrefab);
@@ -352,7 +351,7 @@ namespace GameScene.GameSequence
             StoreTempPosition();
         }
 
-        private void OnClickedSelected(Selector selectedObj)
+        private void OnClickedSelected(InteractionItem selectedObj)
         {
             // Get object to move
             storeSelected.Remove(selectedObj);

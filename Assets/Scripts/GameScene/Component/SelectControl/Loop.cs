@@ -7,7 +7,7 @@ using Utilities;
 
 namespace GameScene.Component.SelectControl
 {
-    public class Loop : Selector, IPointerDownHandler
+    public class Loop : InteractionItem, IPointerDownHandler
     {
         [SerializeField] private int maxLoop = 8;
         [SerializeField] private TextMeshProUGUI loopTxt;
@@ -16,14 +16,14 @@ namespace GameScene.Component.SelectControl
         [SerializeField] private RectTransform container;
         [SerializeField] private BoxCollider boxCollider;
         [SerializeField] private float offSetHeight;
-        public List<Selector> StoreSelected { get; } = new();
+        public List<InteractionItem> StoreSelected { get; } = new();
         private readonly List<RectTransform> storeRect = new();
         private readonly List<Vector2> storedPosition = new();
         private readonly float offSet = 0.2f;
         private float baseHeight;
 
         
-        public override void Init(UnityAction<Selector> onClickParam)
+        public override void Init(UnityAction<InteractionItem> onClickParam)
         {
             base.Init(onClickParam);
             LoopCount = 2;
@@ -170,32 +170,32 @@ namespace GameScene.Component.SelectControl
 
         #region Controller
 
-        public void AddItem(Selector selectorItem)
+        public void AddItem(InteractionItem interactionItemItem)
         {
-            if (!StoreSelected.Contains(selectorItem))
+            if (!StoreSelected.Contains(interactionItemItem))
             {
-                selectorItem.transform.SetParent(container);
-                var position = selectorItem.RectTransform.position;
+                interactionItemItem.transform.SetParent(container);
+                var position = interactionItemItem.RectTransform.position;
                 storeRect.Insert(
                     CalculatedCurrentPosition(position)
-                    , selectorItem.RectTransform);
+                    , interactionItemItem.RectTransform);
                 StoreSelected.Insert(
                     CalculatedCurrentPosition(position)
-                    , selectorItem);
+                    , interactionItemItem);
             }
 
             ReSortItemsSelected(storeRect);
-            FixHeightLooper(selectorItem.RectTransform.sizeDelta);
+            FixHeightLooper(interactionItemItem.RectTransform.sizeDelta);
             FixBoxCollider();
             StoreTempPosition();
         }
 
-        public void RemoveItem(Selector selectorItem)
+        public void RemoveItem(InteractionItem interactionItemItem)
         {
-            StoreSelected.Remove(selectorItem);
-            storeRect.Remove(selectorItem.RectTransform);
+            StoreSelected.Remove(interactionItemItem);
+            storeRect.Remove(interactionItemItem.RectTransform);
             ReSortItemsSelected(storeRect);
-            FixHeightLooper(selectorItem.RectTransform.sizeDelta);
+            FixHeightLooper(interactionItemItem.RectTransform.sizeDelta);
             FixBoxCollider();
             StoreTempPosition();
         }

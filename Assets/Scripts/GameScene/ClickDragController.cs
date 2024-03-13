@@ -10,12 +10,12 @@ namespace GameScene
     {
         [Header("Click and drag")]
         // FOR CONTROL SELECTOR
-        protected readonly List<Selector> storeSelector = new();
-        protected readonly List<Selector> storeSelected = new();
+        protected readonly List<InteractionItem> storeSelector = new();
+        protected readonly List<InteractionItem> storeSelected = new();
         protected readonly List<Vector2> storedPosition = new();
         protected bool isDelete;
         protected const float OffSet = 0.2f;
-        [CanBeNull] protected Selector selectedObject;
+        [CanBeNull] protected InteractionItem selectedObject;
 
         // System
         protected Candy candy;

@@ -1,7 +1,13 @@
 using System;
+using System.Collections.Generic;
 using DG.Tweening;
+using GameScene.Component;
+using GameScene.Component.SelectControl;
+using GameScene.Data;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
+using Utilities;
 
 namespace GameScene
 {
@@ -16,10 +22,64 @@ namespace GameScene
         [SerializeField] private Transform baseXPositionB;
         private bool isClose;
 
+        [Header("For Controller click and drag")]
+        [SerializeField] private GameControlItemGroupData data;
+        [SerializeField] private Transform unSelectContainer;
+        [SerializeField] private Transform selectedContainer;
+        [SerializeField] private Transform movingContainer;
+        private List<InteractionItem> storeSelected = new();
+        private bool isDelete;
+        private const float OffSet = 0.2f;
+        [CanBeNull] private InteractionItem selectedObject;
+
         private void Awake()
         {
             controlButton.onClick.AddListener(OnClickOpenClose);
+            CreateSelector();
         }
+
+        private void CreateSelector()
+        {
+            // Generate objects selector
+            foreach (var o in data.GameControlItemData)
+            {
+                var obj = Instantiate(data.SelectorModel, unSelectContainer);
+                var scriptControl = obj.AddComponent<Arrow>();
+                scriptControl.Init(OnClickedSelector);
+                scriptControl.SelectType = o.ItemType;
+                scriptControl.ChangeRender(o.UnSelectRender);
+            }
+        }
+
+        #region CALL BACK
+
+        private void OnClickedSelector(InteractionItem selectedObj)
+        {
+            var obj = SimplePool.Spawn(data.SelectedModel);
+            // Generate selected Item
+            var arrow = obj.GetComponent<Arrow>();
+            arrow.Init(OnClickedSelected);
+            arrow.ChangeRender(data.GetByType(selectedObj.SelectType).SelectedRender);
+            arrow.SelectType = selectedObj.SelectType;
+            // assign to control
+            selectedObject = arrow;
+            selectedObject.transform.SetParent(movingContainer);
+        }
+
+        private void OnClickedSelected(InteractionItem selectedObj)
+        {
+            // Get object to move
+            storeSelected.Remove(selectedObj);
+            selectedObject = selectedObj;
+            selectedObject!.transform.SetParent(movingContainer);
+            // view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
+            //
+            // StoreTempPosition();
+        }
+
+        #endregion
+
+        #region OPEN/CLOSE Control
 
         private void OnClickOpenClose()
         {
@@ -51,5 +111,7 @@ namespace GameScene
             selectorPad.DOMoveX(0, 0.5f);
             selectedPad.DOMoveX(0, 0.5f);
         }
+
+        #endregion
     }
 }

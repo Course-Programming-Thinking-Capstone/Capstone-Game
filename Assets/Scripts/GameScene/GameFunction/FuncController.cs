@@ -18,7 +18,7 @@ namespace GameScene.GameFunction
         [SerializeField] private FuncModel model;
         [SerializeField] private Transform funcTransform;
         // FOR CONTROL SELECTOR
-        private readonly List<Selector> storeFuncSelected = new();
+        private readonly List<InteractionItem> storeFuncSelected = new();
         private readonly List<Vector2> storedFuncPosition = new();
 
         #region INITIALIZE
@@ -201,7 +201,7 @@ namespace GameScene.GameFunction
         }
 
         [CanBeNull]
-        private Selector activeFunc;
+        private InteractionItem activeFunc;
 
         private IEnumerator StartPlayerMove()
         {
@@ -249,7 +249,7 @@ namespace GameScene.GameFunction
             }
         }
 
-        private IEnumerator HandleAction(Selector direction)
+        private IEnumerator HandleAction(InteractionItem direction)
         {
             var isEat = false;
             var isBreak = false;
@@ -454,7 +454,7 @@ namespace GameScene.GameFunction
         #endregion
 
         // Event clicked selector
-        private void OnClickedSelector(Selector selectedObj)
+        private void OnClickedSelector(InteractionItem selectedObj)
         {
             // Generate new selected
 
@@ -470,7 +470,7 @@ namespace GameScene.GameFunction
             StoreTempPosition();
         }
 
-        private void OnClickedSelected(Selector selectedObj)
+        private void OnClickedSelected(InteractionItem selectedObj)
         {
             // Get object to move
             storeSelected.Remove(selectedObj);
@@ -490,9 +490,9 @@ namespace GameScene.GameFunction
             StartCoroutine(StartPlayerMove());
         }
 
-        private List<Selector> ConvertToAction()
+        private List<InteractionItem> ConvertToAction()
         {
-            var result = new List<Selector>();
+            var result = new List<InteractionItem>();
             foreach (var item in storeSelected)
             {
                 result.Add(item);

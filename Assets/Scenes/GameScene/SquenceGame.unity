@@ -1112,7 +1112,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -108.5, y: 101.4}
+  m_AnchoredPosition: {x: -108.5, y: 101.3999}
   m_SizeDelta: {x: 123.75, y: 149.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1035767137
@@ -1586,6 +1586,13 @@ MonoBehaviour:
   arrowDir: {fileID: 1401263847}
   selectorPad: {fileID: 2084806566}
   selectedPad: {fileID: 633439132}
+  baseXPositionA: {fileID: 687018834}
+  baseXPositionB: {fileID: 101905899}
+  generateList: 
+  data: {fileID: 11400000, guid: cfccc6f0ceb3f6c43a381844885fa699, type: 2}
+  unSelectContainer: {fileID: 1328973360}
+  selectedContainer: {fileID: 1249297808}
+  movingContainer: {fileID: 1808259130}
 --- !u!1 &1398959422
 GameObject:
   m_ObjectHideFlags: 0

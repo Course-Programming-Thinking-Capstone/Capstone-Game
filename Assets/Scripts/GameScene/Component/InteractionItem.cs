@@ -4,17 +4,12 @@ using UnityEngine.UI;
 
 namespace GameScene.Component
 {
-    public class Selector : MonoBehaviour
+    public class InteractionItem : MonoBehaviour
     {
         [SerializeField] protected SelectType selectType;
         [SerializeField] protected RectTransform rectTransform;
         [SerializeField] protected Image rendererImg;
         [SerializeField] protected GameObject effectRender;
-
-        public float GetHeight()
-        {
-            return rectTransform.sizeDelta.y;
-        }
 
         public virtual void ChangeRender(Sprite newRender)
         {
@@ -27,12 +22,12 @@ namespace GameScene.Component
             set => selectType = value;
         }
         public RectTransform RectTransform => rectTransform;
-        private UnityAction<Selector> onClick;
+        private UnityAction<InteractionItem> onClick;
 
         /// <summary>
         /// Call Init when instantiate object 
         /// </summary>
-        public virtual void Init(UnityAction<Selector> onClickParam)
+        public virtual void Init(UnityAction<InteractionItem> onClickParam)
         {
             rectTransform = GetComponent<RectTransform>();
             if (rendererImg == null)

@@ -132,7 +132,7 @@ namespace GameScene.GameLoop
             }
         }
 
-        private IEnumerator HandleAction(Selector action)
+        private IEnumerator HandleAction(InteractionItem action)
         {
             var isMove = true;
             var targetMove = currentPlayerPosition;
@@ -250,9 +250,9 @@ namespace GameScene.GameLoop
             view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
         }
 
-        private List<Selector> ConvertToAction()
+        private List<InteractionItem> ConvertToAction()
         {
-            var result = new List<Selector>();
+            var result = new List<InteractionItem>();
             foreach (var item in storeSelected)
             {
                 if (item.SelectType == SelectType.Loop)
@@ -341,7 +341,7 @@ namespace GameScene.GameLoop
         #region CALL BACK
 
         // Event clicked selector
-        private void OnClickedSelector(Selector selectedObj)
+        private void OnClickedSelector(InteractionItem selectedObj)
         {
             // Generate new selected
 
@@ -371,7 +371,7 @@ namespace GameScene.GameLoop
             }
         }
 
-        private void OnClickedSelected(Selector selectedObj)
+        private void OnClickedSelected(InteractionItem selectedObj)
         {
             // Get object to move
             // not have?

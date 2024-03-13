@@ -15,10 +15,10 @@ namespace GameScene.GameBasic
         [SerializeField] private BasicModel model;
         // System
         private readonly List<GroundRoad> listBoard = new();
-        private readonly List<Selector> listSelector = new();
+        private readonly List<InteractionItem> listSelector = new();
         private Vector2 startPosGame;
         private Vector2 endPosGame;
-        private Selector selectedObject;
+        private InteractionItem selectedObject;
         private List<SelectType> answer = new();
         [Header("Demo param")]
         [SerializeField] [Tooltip("Max 8x6")]
@@ -205,7 +205,7 @@ namespace GameScene.GameBasic
             view.GetRoadToMove(oldPart.transform);
         }
 
-        private void OnClickSelector(Selector road)
+        private void OnClickSelector(InteractionItem road)
         {
             selectedObject = road;
             view.GetRoadToMove(selectedObject.transform);
