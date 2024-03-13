@@ -11,6 +11,13 @@ namespace Entry
     {
         [SerializeField] private Slider slider;
         [SerializeField] private TextMeshProUGUI loadTxt;
+        [SerializeField] private Transform bgContainer;
+
+        public void CreateBg(GameObject model)
+        {
+            var obj = Instantiate(model, bgContainer);
+            obj.transform.localScale = Vector3.one;
+        }
 
         public void PlayLoading(float loadTime, UnityAction callBack)
         {
@@ -29,7 +36,6 @@ namespace Entry
                 SetTextLoading(value);
                 yield return null;
             }
-
         }
 
         private void SetTextLoading(float value)

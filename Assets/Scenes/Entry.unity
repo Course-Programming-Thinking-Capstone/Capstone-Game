@@ -169,6 +169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 8649528732773325239}
   loadTxt: {fileID: 8649528732499623928}
+  bgContainer: {fileID: 324657790}
 --- !u!1 &29452091
 GameObject:
   m_ObjectHideFlags: 0
@@ -364,8 +365,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 8649528733035054252}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -621,7 +621,7 @@ MonoBehaviour:
   sounds: []
   music: {fileID: 745272479}
   musicObject: {fileID: 745272477}
-  loadingTime: 0.5
+  loadingTime: 3
 --- !u!1 &1582869041
 GameObject:
   m_ObjectHideFlags: 0
@@ -655,6 +655,15 @@ MonoBehaviour:
   tosURL: https://abigames.com.vn/ct-terms-of-service/
   privacyURL: https://abigames.com.vn/policy/
   rateURL: https://play.google.com/store/apps/details?id=game.onechain.galaxystacky
+  bgModel:
+  - {fileID: 2842634143430971566, guid: bc6a44715f2be2c4da5590d81810952d, type: 3}
+  - {fileID: 2068821180435011513, guid: cd71b9e66eb71664ab259929da2f2c05, type: 3}
+  - {fileID: 9135792313247213949, guid: 061de7a2e87773b4e949a11820e96b17, type: 3}
+  - {fileID: 8547549595353746183, guid: 157a3f1c72170ae4a9fc0bcfef34c51f, type: 3}
+  - {fileID: 6338966376667509136, guid: 28122a425267a6549a3dabff567fd451, type: 3}
+  - {fileID: 8376607556163208413, guid: eebafc9d6551c5447875e2bf92e2aceb, type: 3}
+  - {fileID: 7732326236426836097, guid: 1ba6666c8ff0d4b4da0a1edd1c36248c, type: 3}
+  - {fileID: 4887516071208240168, guid: 4ba465ffdcade214db3ce4b51a1248be, type: 3}
 --- !u!4 &1582869043
 Transform:
   m_ObjectHideFlags: 0
@@ -1054,81 +1063,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8649528732773325237}
   m_CullTransparentMesh: 0
---- !u!224 &8649528733035054252
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8649528733035054253}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 324657790}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1920, y: 1080}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &8649528733035054253
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8649528733035054252}
-  - component: {fileID: 8649528733035054254}
-  - component: {fileID: 8649528733035054255}
-  m_Layer: 5
-  m_Name: Background
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!222 &8649528733035054254
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8649528733035054253}
-  m_CullTransparentMesh: 0
---- !u!114 &8649528733035054255
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8649528733035054253}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: bfd71187e5f614337ae0b4a9bcfff07f, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &8649528733146642788
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Entry
@@ -11,6 +12,9 @@ namespace Entry
         [SerializeField] private string privacyURL = "url";
         [SerializeField] private string rateURL = "url";
 
+        [Header("Game models")]
+        [SerializeField] private List<GameObject> bgModel;
+        public List<GameObject> BgModel => bgModel;
         public string PrivacyURL => privacyURL;
         public string RateURL => rateURL;
         public string BaseApiUrl => baseApiUrl;

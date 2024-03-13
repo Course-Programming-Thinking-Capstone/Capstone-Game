@@ -23,6 +23,8 @@ namespace Entry
 
         void Awake()
         {
+            // Gen model
+            view.CreateBg(model.BgModel[Random.Range(0, model.BgModel.Count)]);
             if (GameObject.FindGameObjectWithTag(Constants.ServicesTag) == null)
             {
                 GameObject gameServiceObject = new(nameof(GameServices))
