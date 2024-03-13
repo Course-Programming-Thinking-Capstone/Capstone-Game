@@ -152,6 +152,7 @@ namespace GameScene.GameBasic
             {
                 var newObj = Instantiate(model.RoadToSelect);
                 view.AddRoadToContainer(newObj.transform);
+                newObj.transform.localScale = Vector3.one;
                 var scriptControl = newObj.GetComponent<Road>();
                 scriptControl.Init(OnClickSelector);
                 scriptControl.SelectType = item;
