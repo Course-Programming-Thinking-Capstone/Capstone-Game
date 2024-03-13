@@ -13,6 +13,7 @@ namespace GameScene
 {
     public class PadSelectController : MonoBehaviour
     {
+        private const float OffSet = 0.2f;
         [Header("For animation")]
         [SerializeField] private Button controlButton;
         [SerializeField] private Transform arrowDir;
@@ -27,13 +28,17 @@ namespace GameScene
         [SerializeField] private Transform unSelectContainer;
         [SerializeField] private Transform selectedContainer;
         [SerializeField] private Transform movingContainer;
-        private List<InteractionItem> storeSelected = new();
+        private List<InteractionItem> storeSelected;
+        private List<Vector2> tempPosition = new();
         private bool isDelete;
-        private const float OffSet = 0.2f;
+        private Camera cameraMain;
+        public List<InteractionItem> StoreSelected => storeSelected;
         [CanBeNull] private InteractionItem selectedObject;
 
         private void Awake()
         {
+            cameraMain = Camera.main;
+            storeSelected = new List<InteractionItem>();
             controlButton.onClick.AddListener(OnClickOpenClose);
             CreateSelector();
         }
@@ -60,10 +65,7 @@ namespace GameScene
                 return;
             }
 
-            if (storeSelected.Count == 15)
-            {
-                isDelete = true;
-            }
+            isDelete = false || storeSelected.Count == 15 || IsInDeleteZone();
 
             if (isDelete) // in delete zone
             {
@@ -73,14 +75,14 @@ namespace GameScene
             }
             else // Valid pos
             {
-                // if (!storeSelected.Contains(selectedObject))
-                // {
-                //     storeSelected.Insert(CalculatedCurrentPosition(Input.mousePosition), selectedObject);
-                // }
-                //
-                // view.SetParentSelected(selectedObject!.transform);
+                if (!storeSelected.Contains(selectedObject))
+                {
+                    storeSelected.Insert(CalculatedCurrentPosition(Input.mousePosition), selectedObject);
+                }
+
+                selectedObject!.transform.SetParent(selectedContainer);
                 // view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
-                // selectedObject = null;
+                selectedObject = null;
             }
         }
 
@@ -94,12 +96,9 @@ namespace GameScene
             Vector3 mousePos = Input.mousePosition;
             selectedObject!.RectTransform.position = mousePos;
 
-            // handle if inside delete zone
-            isDelete = true;
             // isDelete = IsPointInRT(mousePos, deleteZone);
             if (storeSelected.Count == 15)
             {
-                isDelete = true;
                 return;
             }
 
@@ -118,6 +117,49 @@ namespace GameScene
                 scriptControl.SelectType = o.ItemType;
                 scriptControl.ChangeRender(o.UnSelectRender);
             }
+        }
+
+        private int CalculatedCurrentPosition(Vector2 mousePos)
+        {
+            for (int i = 0; i < tempPosition.Count; i++)
+            {
+                if (i == 0 && tempPosition[i].y - OffSet < mousePos.y) // first item
+                {
+                    return 0;
+                }
+
+                if (i == tempPosition.Count - 1) // last item
+                {
+                    return tempPosition.Count;
+                }
+
+                if (tempPosition[i].y + OffSet > mousePos.y
+                    && tempPosition[i + 1].y - OffSet < mousePos.y)
+                {
+                    return i + 1;
+                }
+            }
+
+            return tempPosition.Count;
+        }
+
+        private void StoreTempPosition()
+        {
+            tempPosition.Clear();
+            foreach (var item in storeSelected)
+            {
+                tempPosition.Add(item.RectTransform.position);
+            }
+        }
+
+        private bool IsInDeleteZone()
+        {
+            var result = false;
+            Vector3 mousePos = Input.mousePosition;
+            result = mousePos.x <= baseXPositionA.position.x;
+            Debug.Log(mousePos.x);
+            Debug.Log(baseXPositionA.position.x);
+            return result;
         }
 
         #region CALL BACK
