@@ -1522,6 +1522,7 @@ GameObject:
   - component: {fileID: 1365533566}
   - component: {fileID: 1365533569}
   - component: {fileID: 1365533570}
+  - component: {fileID: 1365533571}
   m_Layer: 0
   m_Name: '@Controller'
   m_TagString: Untagged
@@ -1571,6 +1572,7 @@ MonoBehaviour:
   view: {fileID: 372901246}
   model: {fileID: 1966046701}
   padSelectController: {fileID: 1365533570}
+  boardController: {fileID: 1365533571}
 --- !u!114 &1365533570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1593,6 +1595,20 @@ MonoBehaviour:
   unSelectContainer: {fileID: 1328973360}
   selectedContainer: {fileID: 1249297808}
   movingContainer: {fileID: 1808259130}
+--- !u!114 &1365533571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365533565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59b9e43066794a218c0bfca72c537986, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startGroundPosition: {fileID: 933883831}
+  groundContainer: {fileID: 1154784788}
 --- !u!1 &1398959422
 GameObject:
   m_ObjectHideFlags: 0

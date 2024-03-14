@@ -29,7 +29,6 @@ namespace GameScene
         private List<InteractionItem> storeSelected;
         private List<float> tempPosition;
         private bool isDelete;
-        public List<InteractionItem> StoreSelected => storeSelected;
         [CanBeNull] private InteractionItem selectedObject;
 
         private void Awake()
@@ -37,7 +36,6 @@ namespace GameScene
             storeSelected = new List<InteractionItem>();
             tempPosition = new List<float>();
             controlButton.onClick.AddListener(OnClickOpenClose);
-            CreateSelector();
         }
 
         public void HandleMouseUp()
@@ -88,7 +86,16 @@ namespace GameScene
             MakeEmptySpace();
         }
 
-        private void CreateSelector()
+        /// <summary>
+        /// Convert all selected item to basic item 
+        /// </summary>
+        /// <returns></returns>
+        public List<InteractionItem> GetControlPart()
+        {
+            return storeSelected;
+        }
+
+        public void CreateSelector()
         {
             // Generate objects selector
             foreach (var o in data.GameControlItemData)
@@ -100,6 +107,8 @@ namespace GameScene
                 scriptControl.ChangeRender(o.UnSelectRender);
             }
         }
+
+        #region Private Control
 
         private void StoreTempPosition()
         {
@@ -164,6 +173,8 @@ namespace GameScene
 
             return index;
         }
+
+        #endregion
 
         #region CALL BACK
 

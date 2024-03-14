@@ -16,18 +16,19 @@ namespace GameScene.GameSequence
         [SerializeField] private SequenceView view;
         [SerializeField] private SequenceModel model;
         [SerializeField] private PadSelectController padSelectController;
+        [SerializeField] private BoardController boardController;
 
         #region INITIALIZE
 
         private void Start()
         {
             gameMode = GameMode.Sequence;
-            // LoadData();
-            // CreateSelector();
-            CreateBoard();
-            CreateTarget();
-            CreatePlayer();
-            InitView();
+            padSelectController.CreateSelector();
+            boardController.CreateBoard(new Vector2(8, 6), model.CellBoardPrefab);
+            // CreateBoard();
+            // CreateTarget();
+            // CreatePlayer();
+            // InitView();
         }
 
         private void Update()
