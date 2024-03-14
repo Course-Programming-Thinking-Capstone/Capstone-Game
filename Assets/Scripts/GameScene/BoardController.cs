@@ -20,6 +20,7 @@ namespace GameScene
 
         public void CreateBoard(Vector2 baseBoardSize, GameObject modelBoard)
         {
+            boardSize = baseBoardSize;
             var spriteRenderer = modelBoard.GetComponentInChildren<SpriteRenderer>();
             var cellSize = spriteRenderer.size * spriteRenderer.transform.localScale;
             for (int i = 0; i < baseBoardSize.x * baseBoardSize.y; i++)
@@ -61,7 +62,9 @@ namespace GameScene
         /// <returns></returns>
         public Vector2 GetPositionFromBoard(Vector2 position)
         {
+            Debug.Log(position);
             var index = (int)((position.y - 1) * boardSize.x + (position.x - 1));
+            Debug.Log(index);
             return cacheBoardItem[index].position;
         }
     }

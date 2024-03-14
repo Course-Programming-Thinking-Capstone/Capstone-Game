@@ -1,8 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using GameScene.Component;
-using GameScene.Component.SelectControl;
 using Services;
 using Spine.Unity;
 using UnityEngine;
