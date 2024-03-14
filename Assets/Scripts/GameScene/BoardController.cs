@@ -6,11 +6,12 @@ namespace GameScene
 {
     public class BoardController : MonoBehaviour
     {
+        [SerializeField] private float offsetBoard;
         [SerializeField] private Transform startGroundPosition;
         [SerializeField] private Transform groundContainer;
+        [SerializeField] private Transform objectPlacedContainer;
         private Vector2 boardSize;
         private List<Transform> cacheBoardItem;
-        //       private readonly float offSet = 0.2f;
 
         private void Awake()
         {
@@ -19,8 +20,8 @@ namespace GameScene
 
         public void CreateBoard(Vector2 baseBoardSize, GameObject modelBoard)
         {
-            var renderer = modelBoard.GetComponentInChildren<SpriteRenderer>();
-            var cellSize = renderer.size * renderer.transform.localScale;
+            var spriteRenderer = modelBoard.GetComponentInChildren<SpriteRenderer>();
+            var cellSize = spriteRenderer.size * spriteRenderer.transform.localScale;
             for (int i = 0; i < baseBoardSize.x * baseBoardSize.y; i++)
             {
                 var obj = Instantiate(modelBoard, groundContainer);
@@ -40,6 +41,28 @@ namespace GameScene
                     cacheBoardItem[i * sizeX + j].position = positionNew;
                 }
             }
+        }
+
+        /// <summary>
+        /// Place any object into to board
+        /// </summary>
+        /// <param name="objectToSet"></param>
+        /// <param name="playerPos"></param>
+        public void PlaceObjectToBoard(Transform objectToSet, Vector2 playerPos)
+        {
+            objectToSet.SetParent(objectPlacedContainer);
+            objectToSet.position = GetPositionFromBoard(playerPos);
+        }
+
+        /// <summary>
+        /// Get 2d position from board index
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
+        public Vector2 GetPositionFromBoard(Vector2 position)
+        {
+            var index = (int)((position.y - 1) * boardSize.x + (position.x - 1));
+            return cacheBoardItem[index].position;
         }
     }
 }

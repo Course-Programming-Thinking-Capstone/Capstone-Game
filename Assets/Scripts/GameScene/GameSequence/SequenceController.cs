@@ -23,12 +23,11 @@ namespace GameScene.GameSequence
         private void Start()
         {
             gameMode = GameMode.Sequence;
+            playButton.onClick.AddListener(OnClickPlay);
             padSelectController.CreateSelector();
             boardController.CreateBoard(new Vector2(8, 6), model.CellBoardPrefab);
-            // CreateBoard();
-            // CreateTarget();
-            // CreatePlayer();
-            // InitView();
+            CreateTarget();
+            CreatePlayer();
         }
 
         private void Update()
@@ -41,43 +40,23 @@ namespace GameScene.GameSequence
             padSelectController.HandleMouseMoveSelected();
         }
 
-        private void CreateBoard()
-        {
-            var listBoard = new List<Transform>();
-
-            for (int i = 0; i < boardSize.x * boardSize.y; i++)
-            {
-                listBoard.Add(Instantiate(model.CellBoardPrefab).transform);
-            }
-
-            view.InitGroundBoard(listBoard, boardSize, model.GetBlockOffset());
-        }
-
         private void CreatePlayer()
         {
-            // Init player
             playerControl = Instantiate(model.PlayerModel).GetComponent<Player>();
             currentPlayerPosition = playerPosition;
-            view.PlaceObjectToBoard(playerControl.transform, playerPosition);
+            boardController.PlaceObjectToBoard(playerControl.transform, playerPosition);
         }
 
         private void CreateTarget()
         {
-            // Init Candy
             foreach (var position in targetPosition)
             {
                 candy = Instantiate(model.TargetPrefab).GetComponent<Candy>();
                 candy.Init(model.CandySprites[Random.Range(0, model.CandySprites.Count)]);
-                view.PlaceObjectToBoard(candy.GetComponent<Transform>(), position);
+                boardController.PlaceObjectToBoard(candy.GetComponent<Transform>(), position);
                 targetChecker.Add(position, false);
                 targetReferences.Add(position, candy.transform);
             }
-        }
-
-        private void InitView()
-        {
-            // Play button
-            playButton.onClick.AddListener(OnClickPlay);
         }
 
         #endregion
@@ -196,7 +175,7 @@ namespace GameScene.GameSequence
                 targetPosition[0].x >= playerPosition.x
                 , 0.1f);
             playerControl.PlayAnimationIdle();
-            view.PlaceObjectToBoard(playerControl.transform, playerPosition);
+            boardController.PlaceObjectToBoard(playerControl.transform, playerPosition);
         }
 
         private bool WinChecker()
@@ -216,52 +195,6 @@ namespace GameScene.GameSequence
 
         #region Calulate func
 
-        private int CalculatedCurrentPosition(Vector2 mousePos)
-        {
-            for (int i = 0; i < storedPosition.Count; i++)
-            {
-                if (i == 0 && storedPosition[i].y - OffSet < mousePos.y) // first item
-                {
-                    return 0;
-                }
-
-                if (i == storedPosition.Count - 1) // last item
-                {
-                    return storedPosition.Count;
-                }
-
-                if (storedPosition[i].y + OffSet > mousePos.y
-                    && storedPosition[i + 1].y - OffSet < mousePos.y)
-                {
-                    return i + 1;
-                }
-            }
-
-            return storedPosition.Count;
-        }
-
-        private void HandleDisplayCalculate(Vector2 mousePos)
-        {
-            if (IsPointInRT(mousePos, selectedZone))
-            {
-                view.MakeEmptySpace(storeSelected.Select(o => o.RectTransform).ToList(),
-                    CalculatedCurrentPosition(mousePos));
-            }
-            else
-            {
-                view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
-            }
-        }
-
-        private void StoreTempPosition()
-        {
-            storedPosition.Clear();
-            foreach (var item in storeSelected)
-            {
-                storedPosition.Add(item.RectTransform.position);
-            }
-        }
-
         private bool IsOutsideBoard(Vector2 checkPosition)
         {
             return checkPosition.x > boardSize.x || checkPosition.y > boardSize.y ||
@@ -271,35 +204,6 @@ namespace GameScene.GameSequence
         #endregion
 
         #region CALL BACK
-
-        // Event clicked selector
-        private void OnClickedSelector(InteractionItem selectedObj)
-        {
-            // Generate new selected
-            var obj = SimplePool.Spawn(model.SelectedPrefab);
-
-            // Generate init selected
-            var arrow = obj.GetComponent<Arrow>();
-            arrow.Init(OnClickedSelected);
-            arrow.ChangeRender(model.GetSelected(selectedObj.SelectType));
-            arrow.SelectType = selectedObj.SelectType;
-
-            // assign to control
-            selectedObject = arrow;
-            view.SetParentSelectedToMove(selectedObject.transform);
-            StoreTempPosition();
-        }
-
-        private void OnClickedSelected(InteractionItem selectedObj)
-        {
-            // Get object to move
-            storeSelected.Remove(selectedObj);
-            selectedObject = selectedObj;
-            view.SetParentSelectedToMove(selectedObject!.transform);
-            view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
-
-            StoreTempPosition();
-        }
 
         // Start Moving
         private void OnClickPlay()
