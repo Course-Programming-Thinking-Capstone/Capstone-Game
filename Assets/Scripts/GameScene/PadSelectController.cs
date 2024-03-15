@@ -167,11 +167,11 @@ namespace GameScene
                 else
                 {
                     yPos -= item.RectTransform.sizeDelta.y / 2;
+                    yPos -= partOffset;
                 }
 
                 index++;
                 // đặt object vào và cộng thêm 1/2 cho điểm tiếp theo
-                yPos -= partOffset;
                 item.RectTransform.anchoredPosition = new Vector3(0f, yPos, 0f);
                 yPos -= item.RectTransform.sizeDelta.y / 2;
             }
