@@ -16,12 +16,11 @@ namespace GameScene
         [Header("All Mode")]
         [SerializeField] private bool isTesting;
         [SerializeField] protected GameMode gameMode;
-        protected PlayerService playerService;
-        protected Player playerControl;
+        [SerializeField] protected PlayerController playerController;
         protected int levelIndex;
 
         // Param
-        [SerializeField] protected Vector2 playerPosition;
+        [SerializeField] protected Vector2 basePlayerPosition;
         [SerializeField] protected List<Vector2> targetPosition;
         [SerializeField] protected Vector2 boardSize = new(8, 6);
 
@@ -71,17 +70,17 @@ namespace GameScene
 
         protected IEnumerator MovePlayer(Vector2 targetMove, float moveTime)
         {
-            if (targetMove.x < playerControl.transform.position.x)
+            if (targetMove.x < playerController.transform.position.x)
             {
-                playerControl.RotatePlayer(false, moveTime);
+                playerController.RotatePlayer(false, moveTime);
             }
-            else if (targetMove.x > playerControl.transform.position.x)
+            else if (targetMove.x > playerController.transform.position.x)
             {
-                playerControl.RotatePlayer(true, moveTime);
+                playerController.RotatePlayer(true, moveTime);
             }
 
-            var movePromise = playerControl.transform.DOMove(targetMove, moveTime);
-            playerControl.PlayAnimationMove();
+            var movePromise = playerController.transform.DOMove(targetMove, moveTime);
+            playerController.PlayAnimationMove();
             yield return movePromise.WaitForCompletion();
         }
 
@@ -96,7 +95,6 @@ namespace GameScene
             if (GameObject.FindGameObjectWithTag(Constants.ServicesTag) != null)
             {
                 var services = GameObject.FindGameObjectWithTag(Constants.ServicesTag).GetComponent<GameServices>();
-                playerService = services.GetService<PlayerService>();
             }
             else
             {

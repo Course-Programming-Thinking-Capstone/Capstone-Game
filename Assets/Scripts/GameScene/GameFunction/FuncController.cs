@@ -36,7 +36,7 @@ namespace GameScene.GameFunction
         private void CreateBoard()
         {
             view.InitGroundBoardFakePosition(boardSize, model.GetBlockOffset());
-            view.PlaceObjectToBoard(Instantiate(model.CellBoardPrefab).transform, playerPosition);
+            view.PlaceObjectToBoard(Instantiate(model.CellBoardPrefab).transform, basePlayerPosition);
             foreach (var target in targetPosition)
             {
                 view.PlaceObjectToBoard(Instantiate(model.CellBoardPrefab).transform, target);
@@ -65,9 +65,9 @@ namespace GameScene.GameFunction
         private void CreatePlayer()
         {
             // Init player
-            playerControl = Instantiate(model.PlayerModel).GetComponent<Player>();
-            currentPlayerPosition = playerPosition;
-            view.PlaceObjectToBoard(playerControl.transform, playerPosition);
+            playerController = Instantiate(model.PlayerModel).GetComponent<PlayerController>();
+            currentPlayerPosition = basePlayerPosition;
+            view.PlaceObjectToBoard(playerController.transform, basePlayerPosition);
         }
 
         private void CreateTarget()
@@ -283,7 +283,7 @@ namespace GameScene.GameFunction
                 if (IsOutsideBoard(targetMove))
                 {
                     // Reset game cuz it fail
-                    playerControl.PlayAnimationIdle();
+                    playerController.PlayAnimationIdle();
                     yield return new WaitForSeconds(1f);
                     ResetGame();
                     yield break;
@@ -295,7 +295,7 @@ namespace GameScene.GameFunction
 
             if (isEat)
             {
-                var tracker = playerControl.PlayAnimationEat();
+                var tracker = playerController.PlayAnimationEat();
 
                 if (targetChecker.ContainsKey(currentPlayerPosition))
                 {
@@ -304,12 +304,12 @@ namespace GameScene.GameFunction
                 }
 
                 yield return new WaitForSpineAnimationComplete(tracker);
-                playerControl.PlayAnimationIdle();
+                playerController.PlayAnimationIdle();
             }
 
             if (isBreak)
             {
-                playerControl.PlayAnimationIdle();
+                playerController.PlayAnimationIdle();
                 yield return new WaitForSeconds(1f);
             }
         }
@@ -337,12 +337,12 @@ namespace GameScene.GameFunction
             }
 
             // Reset player position
-            currentPlayerPosition = playerPosition;
-            playerControl.RotatePlayer(
-                targetPosition[0].x >= playerPosition.x
+            currentPlayerPosition = basePlayerPosition;
+            playerController.RotatePlayer(
+                targetPosition[0].x >= basePlayerPosition.x
                 , 0.1f);
-            playerControl.PlayAnimationIdle();
-            view.PlaceObjectToBoard(playerControl.transform, playerPosition);
+            playerController.PlayAnimationIdle();
+            view.PlaceObjectToBoard(playerController.transform, basePlayerPosition);
         }
 
         private bool WinChecker()
@@ -443,7 +443,7 @@ namespace GameScene.GameFunction
                 return false;
             }
 
-            if (playerPosition == checkPosition)
+            if (basePlayerPosition == checkPosition)
             {
                 return false;
             }

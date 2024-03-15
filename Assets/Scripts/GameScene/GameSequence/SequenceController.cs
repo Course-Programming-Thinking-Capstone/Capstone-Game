@@ -14,6 +14,7 @@ namespace GameScene.GameSequence
         [SerializeField] private SequenceModel model;
         [SerializeField] private PadSelectController padSelectController;
         [SerializeField] private BoardController boardController;
+        private Transform playerTf;
 
         #region INITIALIZE
 
@@ -23,8 +24,12 @@ namespace GameScene.GameSequence
             playButton.onClick.AddListener(OnClickPlay);
             padSelectController.CreateSelector();
             boardController.CreateBoard(new Vector2(8, 6), model.CellBoardPrefab);
+            playerTf = playerController.InitPlayer(model.PlayerModel);
+            // Init player model
+            currentPlayerPosition = basePlayerPosition;
+            boardController.PlaceObjectToBoard(playerTf, basePlayerPosition);
+
             CreateTarget();
-            CreatePlayer();
         }
 
         private void Update()
@@ -35,13 +40,6 @@ namespace GameScene.GameSequence
             }
 
             padSelectController.HandleMouseMoveSelected();
-        }
-
-        private void CreatePlayer()
-        {
-            playerControl = Instantiate(model.PlayerModel).GetComponent<Player>();
-            currentPlayerPosition = playerPosition;
-            boardController.PlaceObjectToBoard(playerControl.transform, playerPosition);
         }
 
         private void CreateTarget()
@@ -63,7 +61,7 @@ namespace GameScene.GameSequence
         private IEnumerator StartPlayerMove()
         {
             view.ActiveSavePanel();
-            foreach (var item in storeSelected)
+            foreach (var item in padSelectController.GetControlPart())
             {
                 view.SetParentSelectedToMove(item.transform);
                 item.ActiveEffect();
@@ -118,7 +116,7 @@ namespace GameScene.GameSequence
                 if (IsOutsideBoard(targetMove))
                 {
                     // Reset game cuz it fail
-                    playerControl.PlayAnimationIdle();
+                    playerController.PlayAnimationIdle();
                     yield return new WaitForSeconds(1f);
                     ResetGame();
                     yield break;
@@ -130,7 +128,7 @@ namespace GameScene.GameSequence
 
             if (isEat)
             {
-                var tracker = playerControl.PlayAnimationEat();
+                var tracker = playerController.PlayAnimationEat();
 
                 if (targetChecker.ContainsKey(currentPlayerPosition))
                 {
@@ -139,27 +137,21 @@ namespace GameScene.GameSequence
                 }
 
                 yield return new WaitForSpineAnimationComplete(tracker);
-                playerControl.PlayAnimationIdle();
+                playerController.PlayAnimationIdle();
             }
 
             if (isBreak)
             {
-                playerControl.PlayAnimationIdle();
+                playerController.PlayAnimationIdle();
                 yield return new WaitForSeconds(1f);
             }
         }
 
         private void ResetGame()
         {
-            // Clear all things selected
-            foreach (var selector in storeSelected)
-            {
-                SimplePool.Despawn(selector.gameObject);
-            }
+            padSelectController.Reset();
 
-            storeSelected.Clear();
-
-            // Clear win condition
+            // Clear win condition and re-active target
             foreach (var position in targetReferences.Keys)
             {
                 targetReferences[position].gameObject.SetActive(true);
@@ -167,12 +159,15 @@ namespace GameScene.GameSequence
             }
 
             // Reset player position
-            currentPlayerPosition = playerPosition;
-            playerControl.RotatePlayer(
-                targetPosition[0].x >= playerPosition.x
+            currentPlayerPosition = basePlayerPosition;
+
+            playerController.RotatePlayer(
+                targetPosition[0].x >= basePlayerPosition.x
                 , 0.1f);
-            playerControl.PlayAnimationIdle();
-            boardController.PlaceObjectToBoard(playerControl.transform, playerPosition);
+            playerController.PlayAnimationIdle();
+
+            // set player position
+            boardController.PlaceObjectToBoard(playerController.transform, basePlayerPosition);
         }
 
         private bool WinChecker()

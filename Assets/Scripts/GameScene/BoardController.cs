@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -37,8 +36,8 @@ namespace GameScene
                 for (int j = 0; j < sizeX; j++) // horizontal
                 {
                     var positionNew = startGroundPosition.position;
-                    positionNew.x += cellSize.x * j;
-                    positionNew.y += cellSize.y * i;
+                    positionNew.x += (offsetBoard + cellSize.x) * j;
+                    positionNew.y += (offsetBoard + cellSize.y) * i;
                     cacheBoardItem[i * sizeX + j].position = positionNew;
                 }
             }
@@ -62,9 +61,7 @@ namespace GameScene
         /// <returns></returns>
         public Vector2 GetPositionFromBoard(Vector2 position)
         {
-            Debug.Log(position);
             var index = (int)((position.y - 1) * boardSize.x + (position.x - 1));
-            Debug.Log(index);
             return cacheBoardItem[index].position;
         }
     }

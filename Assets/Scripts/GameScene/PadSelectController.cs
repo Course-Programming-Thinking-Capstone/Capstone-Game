@@ -95,6 +95,16 @@ namespace GameScene
             return storeSelected;
         }
 
+        public void Reset()
+        {
+            // Clear all things selected
+            foreach (var selector in storeSelected)
+            {
+                SimplePool.Despawn(selector.gameObject);
+            }
+
+            storeSelected.Clear();
+        }
         public void CreateSelector()
         {
             // Generate objects selector

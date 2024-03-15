@@ -123,9 +123,9 @@ namespace GameScene.GameBasic
         private void ResetGame()
         {
             // player position
-            playerControl.transform.position = startPosGame;
-            playerControl.PlayAnimationIdle();
-            playerControl.RotatePlayer(true, 0.1f);
+            playerController.transform.position = startPosGame;
+            playerController.PlayAnimationIdle();
+            playerController.RotatePlayer(true, 0.1f);
 
             // board
             foreach (var item in listBoard)
@@ -166,7 +166,7 @@ namespace GameScene.GameBasic
             // Ground
             view.InitGroundBoardFakePosition(boardSize, model.GetBlockOffset());
 
-            startPosGame = view.PlaceGround(Instantiate(model.RoadGroundPrefab).transform, playerPosition);
+            startPosGame = view.PlaceGround(Instantiate(model.RoadGroundPrefab).transform, basePlayerPosition);
             endPosGame = view.PlaceGround(Instantiate(model.RoadGroundPrefab).transform, targetPosition[0]);
 
             foreach (var positionRoad in roadPartPositions)
@@ -184,8 +184,8 @@ namespace GameScene.GameBasic
         private void GeneratePlayer()
         {
             // Init player
-            playerControl = Instantiate(model.PlayerModel).GetComponent<Player>();
-            view.PlacePlayer(playerControl.transform, playerPosition);
+            playerController = Instantiate(model.PlayerModel).GetComponent<PlayerController>();
+            view.PlacePlayer(playerController.transform, basePlayerPosition);
         }
 
         #endregion
@@ -242,7 +242,7 @@ namespace GameScene.GameBasic
             Queue<Vector2> queue = new Queue<Vector2>();
             Dictionary<Vector2, Vector2> previousNodes = new Dictionary<Vector2, Vector2>();
 
-            queue.Enqueue(playerPosition);
+            queue.Enqueue(basePlayerPosition);
 
             while (queue.Count > 0)
             {
@@ -253,7 +253,7 @@ namespace GameScene.GameBasic
                     // Reconstruct the path
                     List<Vector2> path = new List<Vector2>();
                     Vector2 current = currentNode;
-                    while (current != playerPosition)
+                    while (current != basePlayerPosition)
                     {
                         path.Add(current);
                         current = previousNodes[current];
@@ -295,7 +295,7 @@ namespace GameScene.GameBasic
                 allPart.Add(roadPart);
             }
 
-            allPart.Add(playerPosition);
+            allPart.Add(basePlayerPosition);
             allPart.Add(targetPosition[0]);
 
             while (queue.Count > 0)
