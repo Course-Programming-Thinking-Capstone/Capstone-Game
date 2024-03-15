@@ -1,3 +1,4 @@
+using System.Collections;
 using DG.Tweening;
 using Spine;
 using Spine.Unity;
@@ -13,23 +14,28 @@ namespace GameScene
         [SerializeField] private string idleAnimation;
         [SerializeField] private string moveAnimation;
         [SerializeField] private string collectAnimation;
-        private Transform playerTf;
 
-        public Transform InitPlayer(GameObject playerModel)
+        public IEnumerator MovePlayer(Vector2 targetMove, float moveTime)
         {
-            playerTf = Instantiate(playerModel).transform;
-            skeletonAnimation = playerTf.GetComponentInChildren<SkeletonAnimation>();
-            return playerTf;
+            if (targetMove.x < transform.position.x)
+            {
+                RotatePlayer(false, moveTime);
+            }
+            else if (targetMove.x > transform.position.x)
+            {
+                RotatePlayer(true, moveTime);
+            }
+
+            var movePromise = transform.DOMove(targetMove, moveTime);
+            PlayAnimationMove();
+            yield return movePromise.WaitForCompletion();
         }
 
         public void ForceMovePlayer(Vector2 targetPos)
         {
-            playerTf.position = targetPos;
+            transform.position = targetPos;
         }
-        public void MovePlayerWithAnimation(Vector2 targetPos)
-        {
-            playerTf.position = targetPos;
-        }
+
         public TrackEntry PlayAnimationMove()
         {
             return skeletonAnimation.AnimationState.SetAnimation(0, moveAnimation, true);

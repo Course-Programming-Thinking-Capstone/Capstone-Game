@@ -1559,8 +1559,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTesting: 1
-  gameMode: 0
-  playerPosition: {x: 2, y: 2}
+  gameMode: 2
+  playerController: {fileID: 0}
+  basePlayerPosition: {x: 1, y: 1}
   targetPosition:
   - {x: 3, y: 3}
   - {x: 5, y: 5}
@@ -1611,7 +1612,7 @@ MonoBehaviour:
   offsetBoard: 0
   startGroundPosition: {fileID: 933883831}
   groundContainer: {fileID: 1154784788}
-  objectPlacedContainer: {fileID: 0}
+  objectPlacedContainer: {fileID: 2064611205}
 --- !u!1 &1398959422
 GameObject:
   m_ObjectHideFlags: 0

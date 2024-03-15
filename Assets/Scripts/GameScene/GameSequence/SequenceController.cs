@@ -3,7 +3,6 @@ using GameScene.Component;
 using Services;
 using Spine.Unity;
 using UnityEngine;
-using Utilities;
 
 namespace GameScene.GameSequence
 {
@@ -14,7 +13,6 @@ namespace GameScene.GameSequence
         [SerializeField] private SequenceModel model;
         [SerializeField] private PadSelectController padSelectController;
         [SerializeField] private BoardController boardController;
-        private Transform playerTf;
 
         #region INITIALIZE
 
@@ -24,10 +22,10 @@ namespace GameScene.GameSequence
             playButton.onClick.AddListener(OnClickPlay);
             padSelectController.CreateSelector();
             boardController.CreateBoard(new Vector2(8, 6), model.CellBoardPrefab);
-            playerTf = playerController.InitPlayer(model.PlayerModel);
+            playerController = Instantiate(model.PlayerModel).GetComponent<PlayerController>();
             // Init player model
             currentPlayerPosition = basePlayerPosition;
-            boardController.PlaceObjectToBoard(playerTf, basePlayerPosition);
+            boardController.PlaceObjectToBoard(playerController.transform, basePlayerPosition);
 
             CreateTarget();
         }
@@ -122,14 +120,13 @@ namespace GameScene.GameSequence
                     yield break;
                 }
 
-                targetMove = view.GetPositionFromBoard(targetMove);
-                yield return MovePlayer(targetMove, model.PlayerMoveTime);
+                yield return playerController.MovePlayer(boardController.GetPositionFromBoard(targetMove),
+                    model.PlayerMoveTime);
             }
 
             if (isEat)
             {
                 var tracker = playerController.PlayAnimationEat();
-
                 if (targetChecker.ContainsKey(currentPlayerPosition))
                 {
                     targetChecker[currentPlayerPosition] = true;

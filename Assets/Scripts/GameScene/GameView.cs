@@ -64,7 +64,7 @@ namespace GameScene
         /// <returns></returns>
         public Vector2 GetPositionFromBoard(Vector2 position)
         {
-            var index = (int)((position.y - 1) * boardSize.x + (position.x - 1));
+            var index = (int)((position.y ) * boardSize.x + (position.x ));
        
             return positions[index];
         }
