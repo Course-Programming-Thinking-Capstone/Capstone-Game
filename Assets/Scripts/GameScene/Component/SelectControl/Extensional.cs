@@ -14,8 +14,7 @@ namespace GameScene.Component.SelectControl
         [SerializeField] private BoxCollider boxCollider;
         [SerializeField] private float offSetHeight;
         public List<InteractionItem> StoreSelected { get; } = new();
-        private readonly List<RectTransform> storeRect = new();
-        private readonly List<Vector2> storedPosition = new();
+        private readonly List<float> tempPosition = new();
         private readonly float offSet = 0.2f;
         private float baseHeight;
 
@@ -44,10 +43,8 @@ namespace GameScene.Component.SelectControl
             }
 
             StoreSelected.Clear();
-            storeRect.Clear();
-            ReSortItemsSelected(storeRect);
+            MakeItemSelectedInRightPlace();
             MatchHeightLooper(Vector2.zero);
-            MatchColliderSize();
             StoreTempPosition();
         }
 
@@ -55,47 +52,29 @@ namespace GameScene.Component.SelectControl
 
         #region UI Control
 
-        private int CalculatedCurrentPosition(Vector2 mousePos)
+        private int CalculatedNewItemCurrentIndexByPosition()
         {
-            for (int i = 0; i < storedPosition.Count; i++)
+            var mousePos = Input.mousePosition.y;
+            var index = 0;
+
+            foreach (var position in tempPosition)
             {
-                if (i == 0 && storedPosition[i].y - offSet < mousePos.y) // first item
+                if (position > mousePos)
                 {
-                    return 0;
-                }
-
-                if (i == storedPosition.Count - 1) // last item
-                {
-                    return storedPosition.Count;
-                }
-
-                if (storedPosition[i].y + offSet > mousePos.y
-                    && storedPosition[i + 1].y - offSet < mousePos.y)
-                {
-                    return i + 1;
+                    index++;
                 }
             }
 
-            return storedPosition.Count;
-        }
-
-        private void SetPositionSelected(RectTransform item, float yPosition)
-        {
-            item.anchoredPosition = new Vector3(container.anchoredPosition.x, yPosition, 0f);
+            return index;
         }
 
         private void StoreTempPosition()
         {
-            storedPosition.Clear();
+            tempPosition.Clear();
             foreach (var item in StoreSelected)
             {
-                storedPosition.Add(item.RectTransform.position);
+                tempPosition.Add(item.RectTransform.position.y);
             }
-        }
-
-        private void MatchColliderSize()
-        {
-            boxCollider.size = rectTransform.sizeDelta;
         }
 
         public void MatchHeightLooper(Vector2 itemSize, bool makeSpace = false)
@@ -127,48 +106,31 @@ namespace GameScene.Component.SelectControl
             }
 
             rectTransform.sizeDelta = temp;
+            boxCollider.size = rectTransform.sizeDelta;
         }
 
-        private void ReSortItemsSelected(IReadOnlyList<RectTransform> items)
+        /// <summary>
+        /// Điểm đầu lấy phân nữa, điểm sau = 1/2 trước đó và 1/2 hiện tại
+        /// </summary>
+        /// <param name="selectedObj"></param>
+        /// <param name="skipIndex"></param>
+        public void MakeItemSelectedInRightPlace(RectTransform selectedObj = null, int skipIndex = -1)
         {
-            var yPosition = 0f;
-            foreach (var rectItem in items)
-            {
-                yPosition += -rectItem.sizeDelta.y / 2;
-                SetPositionSelected(rectItem, yPosition);
-                yPosition += -rectItem.sizeDelta.y / 2;
-            }
-        }
+            var index = 0;
+            var yPos = 0f;
 
-        public void MakeEmptySpace(RectTransform itemSpace)
-        {
-            var yPosition = 0f;
-            int index = CalculatedCurrentPosition(itemSpace.position);
-
-            for (int i = 0; i < storeRect.Count; i++)
+            foreach (var item in StoreSelected)
             {
-                yPosition += -storeRect[i].sizeDelta.y / 2;
-                if (index == i)
+                if (skipIndex == index && selectedObj != null) // place skip
                 {
-                    yPosition += -itemSpace.sizeDelta.y;
+                    yPos -= selectedObj.sizeDelta.y / 2;
                 }
 
-                SetPositionSelected(storeRect[i], yPosition);
-                yPosition += -storeRect[i].sizeDelta.y / 2;
+                yPos -= index == 0 ? item.RectTransform.sizeDelta.y / 2 : item.RectTransform.sizeDelta.y / 2 + offSet;
+                item.RectTransform.anchoredPosition = new Vector3(0f, yPos, 0f);
+                yPos -= item.RectTransform.sizeDelta.y / 2;
+                index++;
             }
-        }
-
-        public void ClearEmptySpace()
-        {
-            var yPosition = 0f;
-            foreach (var rectItem in storeRect)
-            {
-                yPosition += -rectItem.sizeDelta.y / 2;
-                SetPositionSelected(rectItem, yPosition);
-                yPosition += -rectItem.sizeDelta.y / 2;
-            }
-
-            StoreTempPosition();
         }
 
         #endregion
@@ -180,28 +142,20 @@ namespace GameScene.Component.SelectControl
             if (!StoreSelected.Contains(interactionItemItem))
             {
                 interactionItemItem.transform.SetParent(container);
-                var position = interactionItemItem.RectTransform.position;
-                storeRect.Insert(
-                    CalculatedCurrentPosition(position)
-                    , interactionItemItem.RectTransform);
                 StoreSelected.Insert(
-                    CalculatedCurrentPosition(position)
+                    CalculatedNewItemCurrentIndexByPosition()
                     , interactionItemItem);
             }
 
-            ReSortItemsSelected(storeRect);
             MatchHeightLooper(interactionItemItem.RectTransform.sizeDelta);
-            MatchColliderSize();
             StoreTempPosition();
         }
 
         public void RemoveItem(InteractionItem interactionItemItem)
         {
             StoreSelected.Remove(interactionItemItem);
-            storeRect.Remove(interactionItemItem.RectTransform);
-            ReSortItemsSelected(storeRect);
+            MakeItemSelectedInRightPlace();
             MatchHeightLooper(interactionItemItem.RectTransform.sizeDelta);
-            MatchColliderSize();
             StoreTempPosition();
         }
 
@@ -218,6 +172,9 @@ namespace GameScene.Component.SelectControl
             OnClickButton();
         }
 
+        /// <summary>
+        /// Clicked loop number
+        /// </summary>
         public void OnClickLoop()
         {
             if (LoopCount == maxLoop)

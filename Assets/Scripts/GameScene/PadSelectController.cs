@@ -83,6 +83,25 @@ namespace GameScene
                 return;
             }
 
+            var extensional = CheckInsideLoop();
+            if (extensional)
+            {
+                extensional.MakeItemSelectedInRightPlace();
+                extensional.MatchHeightLooper(selectedObject.RectTransform.sizeDelta, true);
+            }
+            else
+            {
+                foreach (var selector in storeSelected)
+                {
+                    if (selector.SelectType == SelectType.Loop)
+                    {
+                        var extensional1 = (Extensional)selector;
+                        extensional1.MakeItemSelectedInRightPlace();
+                        extensional1.MatchHeightLooper(Vector2.zero);
+                    }
+                }
+            }
+
             // check to make space
             MakeEmptySpace();
         }
@@ -149,12 +168,14 @@ namespace GameScene
 
             foreach (var item in storeSelected)
             {
-                if (skipIndex == index) // place skip
+                if (skipIndex == index && selectedObject != null) // place skip
                 {
                     yPos -= selectedObject.RectTransform.sizeDelta.y / 2;
                 }
 
-                yPos -= index == 0 ? item.RectTransform.sizeDelta.y / 2 : item.RectTransform.sizeDelta.y / 2 + partOffset;
+                yPos -= index == 0
+                    ? item.RectTransform.sizeDelta.y / 2
+                    : item.RectTransform.sizeDelta.y / 2 + partOffset;
                 item.RectTransform.anchoredPosition = new Vector3(0f, yPos, 0f);
                 yPos -= item.RectTransform.sizeDelta.y / 2;
                 index++;
@@ -190,6 +211,27 @@ namespace GameScene
             }
 
             return index;
+        }
+
+        [CanBeNull]
+        private Extensional CheckInsideLoop()
+        {
+            // loop cannot inside loop
+            if (selectedObject.SelectType == SelectType.Loop)
+            {
+                return null;
+            }
+
+            var startPosition = (selectedObject.transform.position);
+            startPosition.z = -5;
+            Ray ray = new Ray(startPosition, Vector3.forward * 100);
+            if (Physics.Raycast(ray, out var hit))
+            {
+                var result = hit.transform.GetComponent<Extensional>();
+                return result;
+            }
+
+            return null;
         }
 
         #endregion

@@ -89,11 +89,11 @@ namespace GameScene.GameLoop
             // handle if inside delete zone
             isDelete = IsPointInRT(mousePos, deleteZone);
 
-            var looper = CheckInsideLoop();
-            if (looper)
+            var extensional = CheckInsideLoop();
+            if (extensional)
             {
-                looper.MakeEmptySpace(selectedObject.RectTransform);
-                looper.MatchHeightLooper(selectedObject.RectTransform.sizeDelta, true);
+                extensional.MakeItemSelectedInRightPlace();
+                extensional.MatchHeightLooper(selectedObject.RectTransform.sizeDelta, true);
                 view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
                 return;
             }
@@ -102,9 +102,9 @@ namespace GameScene.GameLoop
             {
                 if (selector.SelectType == SelectType.Loop)
                 {
-                    var xSelector = (Extensional)selector;
-                    xSelector.MatchHeightLooper(Vector2.zero);
-                    xSelector.ClearEmptySpace();
+                    var extensional1 = (Extensional)selector;
+                    extensional1.MakeItemSelectedInRightPlace();
+                    extensional1.MatchHeightLooper(Vector2.zero);
                 }
             }
 
@@ -285,7 +285,6 @@ namespace GameScene.GameLoop
 
         #region Initialized
 
-  
         private void CreateTarget()
         {
             foreach (var position in targetPosition)
@@ -297,7 +296,6 @@ namespace GameScene.GameLoop
                 targetReferences.Add(position, target.transform);
             }
         }
-
 
         #endregion
 
