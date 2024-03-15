@@ -93,7 +93,7 @@ namespace GameScene.GameLoop
             if (looper)
             {
                 looper.MakeEmptySpace(selectedObject.RectTransform);
-                looper.FixHeightLooper(selectedObject.RectTransform.sizeDelta, true);
+                looper.MatchHeightLooper(selectedObject.RectTransform.sizeDelta, true);
                 view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
                 return;
             }
@@ -102,8 +102,8 @@ namespace GameScene.GameLoop
             {
                 if (selector.SelectType == SelectType.Loop)
                 {
-                    var xSelector = (Loop)selector;
-                    xSelector.FixHeightLooper(Vector2.zero);
+                    var xSelector = (Extensional)selector;
+                    xSelector.MatchHeightLooper(Vector2.zero);
                     xSelector.ClearEmptySpace();
                 }
             }
@@ -198,7 +198,7 @@ namespace GameScene.GameLoop
             {
                 if (selector.SelectType == SelectType.Loop)
                 {
-                    var looper = (Loop)selector;
+                    var looper = (Extensional)selector;
 
                     foreach (var itemLooped in looper.StoreSelected)
                     {
@@ -248,8 +248,8 @@ namespace GameScene.GameLoop
             {
                 if (selector.SelectType == SelectType.Loop)
                 {
-                    var xSelector = (Loop)selector;
-                    xSelector.FixHeightLooper(Vector2.zero);
+                    var xSelector = (Extensional)selector;
+                    xSelector.MatchHeightLooper(Vector2.zero);
                 }
             }
 
@@ -263,7 +263,7 @@ namespace GameScene.GameLoop
             {
                 if (item.SelectType == SelectType.Loop)
                 {
-                    var looper = (Loop)item;
+                    var looper = (Extensional)item;
                     for (int i = 0; i < looper.LoopCount; i++)
                     {
                         foreach (var itemLooped in looper.StoreSelected)
@@ -310,7 +310,7 @@ namespace GameScene.GameLoop
             if (selectedObj.SelectType == SelectType.Loop)
             {
                 var objLoop = SimplePool.Spawn(model.Resource.LoopPrefab);
-                Loop selectedScript = objLoop.GetComponent<Loop>();
+                Extensional selectedScript = objLoop.GetComponent<Extensional>();
                 selectedScript.Init(OnClickedSelected);
                 selectedScript.SelectType = selectedObj.SelectType;
                 // Moving handler
@@ -321,7 +321,7 @@ namespace GameScene.GameLoop
             else
             {
                 var obj = SimplePool.Spawn(model.SelectedPrefab);
-                Arrow selectedScript = obj.GetComponent<Arrow>();
+                Basic selectedScript = obj.GetComponent<Basic>();
                 selectedScript.Init(OnClickedSelected);
                 selectedScript.ChangeRender(model.GetSelected(selectedObj.SelectType));
                 selectedScript.SelectType = selectedObj.SelectType;
@@ -342,7 +342,7 @@ namespace GameScene.GameLoop
             {
                 if (selector.SelectType == SelectType.Loop)
                 {
-                    var looper = (Loop)selector;
+                    var looper = (Extensional)selector;
                     looper.RemoveItem(selectedObj);
                 }
             }
@@ -404,8 +404,9 @@ namespace GameScene.GameLoop
         }
 
         [CanBeNull]
-        private Loop CheckInsideLoop()
+        private Extensional CheckInsideLoop()
         {
+            // loop cannot inside loop
             if (selectedObject.SelectType == SelectType.Loop)
             {
                 return null;
@@ -416,7 +417,7 @@ namespace GameScene.GameLoop
             Ray ray = new Ray(startPosition, Vector3.forward * 100);
             if (Physics.Raycast(ray, out var hit))
             {
-                var result = hit.transform.GetComponent<Loop>();
+                var result = hit.transform.GetComponent<Extensional>();
                 return result;
             }
 

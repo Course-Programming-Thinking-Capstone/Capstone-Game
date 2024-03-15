@@ -114,7 +114,7 @@ namespace GameScene
             foreach (var o in createItems)
             {
                 var obj = Instantiate(data.SelectorModel, unSelectContainer);
-                var scriptControl = obj.AddComponent<Arrow>();
+                var scriptControl = obj.AddComponent<Basic>();
                 scriptControl.Init(OnClickedSelector);
                 scriptControl.SelectType = o;
                 scriptControl.ChangeRender(data.GetByType(o).UnSelectRender);
@@ -146,34 +146,18 @@ namespace GameScene
         {
             var index = 0;
             var yPos = 0f;
+
             foreach (var item in storeSelected)
             {
                 if (skipIndex == index) // place skip
                 {
-                    if (index == 0)
-                    {
-                        yPos -= selectedObject.RectTransform.sizeDelta.y / 2;
-                    }
-                    else
-                    {
-                        yPos -= selectedObject.RectTransform.sizeDelta.y / 2;
-                    }
+                    yPos -= selectedObject.RectTransform.sizeDelta.y / 2;
                 }
 
-                if (index == 0)
-                {
-                    yPos -= item.RectTransform.sizeDelta.y / 2;
-                }
-                else
-                {
-                    yPos -= item.RectTransform.sizeDelta.y / 2;
-                    yPos -= partOffset;
-                }
-
-                index++;
-                // đặt object vào và cộng thêm 1/2 cho điểm tiếp theo
+                yPos -= index == 0 ? item.RectTransform.sizeDelta.y / 2 : item.RectTransform.sizeDelta.y / 2 + partOffset;
                 item.RectTransform.anchoredPosition = new Vector3(0f, yPos, 0f);
                 yPos -= item.RectTransform.sizeDelta.y / 2;
+                index++;
             }
         }
 
@@ -185,13 +169,11 @@ namespace GameScene
                 return;
             }
 
-            if (tempPosition.Count == 0)
+            if (tempPosition.Count > 0)
             {
-                return;
+                var newItemIndex = CalculatedNewItemCurrentIndexByPosition();
+                MakeItemSelectedInRightPlace(newItemIndex);
             }
-
-            var newItemIndex = CalculatedNewItemCurrentIndexByPosition();
-            MakeItemSelectedInRightPlace(newItemIndex);
         }
 
         private int CalculatedNewItemCurrentIndexByPosition()
@@ -220,7 +202,7 @@ namespace GameScene
             if (selectedObj.SelectType == SelectType.Loop)
             {
                 var objLoop = SimplePool.Spawn(data.LoopPrefab);
-                Loop looper = objLoop.GetComponent<Loop>();
+                Extensional looper = objLoop.GetComponent<Extensional>();
                 looper.Init(OnClickedSelected);
                 looper.SelectType = selectedObj.SelectType;
                 // assign to control
@@ -231,7 +213,7 @@ namespace GameScene
             {
                 var obj = SimplePool.Spawn(data.SelectedModel);
                 // Generate selected Item
-                var arrow = obj.GetComponent<Arrow>();
+                var arrow = obj.GetComponent<Basic>();
                 arrow.Init(OnClickedSelected);
                 arrow.ChangeRender(data.GetByType(selectedObj.SelectType).SelectedRender);
                 arrow.SelectType = selectedObj.SelectType;

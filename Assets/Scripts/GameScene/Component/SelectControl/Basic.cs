@@ -2,7 +2,7 @@ using UnityEngine.EventSystems;
 
 namespace GameScene.Component.SelectControl
 {
-    public class Arrow : InteractionItem, IPointerDownHandler
+    public class Basic : InteractionItem, IPointerDownHandler
     {
         public void OnPointerDown(PointerEventData eventData)
         {

@@ -55,7 +55,7 @@ namespace GameScene.GameFunction
             {
                 var obj = Instantiate(model.SelectorPrefab);
                 view.SetParentSelector(obj.transform);
-                var scriptControl = obj.AddComponent<Arrow>();
+                var scriptControl = obj.AddComponent<Basic>();
                 scriptControl.Init(OnClickedSelector);
                 scriptControl.SelectType = o;
                 scriptControl.ChangeRender(model.GetSelector(o));
@@ -459,7 +459,7 @@ namespace GameScene.GameFunction
             // Generate new selected
 
             var obj = SimplePool.Spawn(model.SelectedPrefab);
-            Arrow selectedScript = obj.GetComponent<Arrow>();
+            Basic selectedScript = obj.GetComponent<Basic>();
             selectedScript.Init(OnClickedSelected);
             selectedScript.ChangeRender(model.GetSelected(selectedObj.SelectType));
             selectedScript.SelectType = selectedObj.SelectType;

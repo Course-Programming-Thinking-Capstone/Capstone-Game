@@ -7,12 +7,9 @@ using Utilities;
 
 namespace GameScene.Component.SelectControl
 {
-    public class Loop : InteractionItem, IPointerDownHandler
+    public class Extensional : InteractionItem, IPointerDownHandler
     {
-        [SerializeField] private int maxLoop = 8;
-        [SerializeField] private TextMeshProUGUI loopTxt;
-        public int LoopCount { get; set; } = 2;
-        [Header("Loop behavior")]
+        [Header("Extensional behavior")]
         [SerializeField] private RectTransform container;
         [SerializeField] private BoxCollider boxCollider;
         [SerializeField] private float offSetHeight;
@@ -22,12 +19,20 @@ namespace GameScene.Component.SelectControl
         private readonly float offSet = 0.2f;
         private float baseHeight;
 
-        
+        [Header("Looper behavior")]
+        [SerializeField] private int maxLoop = 8;
+        [SerializeField] private TextMeshProUGUI loopTxt;
+        public int LoopCount { get; private set; } = 2;
+
         public override void Init(UnityAction<InteractionItem> onClickParam)
         {
             base.Init(onClickParam);
-            LoopCount = 2;
-            loopTxt.text = LoopCount.ToString();
+            if (loopTxt != null)
+            {
+                LoopCount = 2;
+                loopTxt.text = LoopCount.ToString();
+            }
+
             if (baseHeight == 0f)
             {
                 baseHeight = rectTransform.sizeDelta.y;
@@ -41,8 +46,8 @@ namespace GameScene.Component.SelectControl
             StoreSelected.Clear();
             storeRect.Clear();
             ReSortItemsSelected(storeRect);
-            FixHeightLooper(Vector2.zero);
-            FixBoxCollider();
+            MatchHeightLooper(Vector2.zero);
+            MatchColliderSize();
             StoreTempPosition();
         }
 
@@ -88,12 +93,12 @@ namespace GameScene.Component.SelectControl
             }
         }
 
-        private void FixBoxCollider()
+        private void MatchColliderSize()
         {
             boxCollider.size = rectTransform.sizeDelta;
         }
 
-        public void FixHeightLooper(Vector2 itemSize, bool makeSpace = false)
+        public void MatchHeightLooper(Vector2 itemSize, bool makeSpace = false)
         {
             var temp = rectTransform.sizeDelta;
             temp.y = baseHeight;
@@ -185,8 +190,8 @@ namespace GameScene.Component.SelectControl
             }
 
             ReSortItemsSelected(storeRect);
-            FixHeightLooper(interactionItemItem.RectTransform.sizeDelta);
-            FixBoxCollider();
+            MatchHeightLooper(interactionItemItem.RectTransform.sizeDelta);
+            MatchColliderSize();
             StoreTempPosition();
         }
 
@@ -195,8 +200,8 @@ namespace GameScene.Component.SelectControl
             StoreSelected.Remove(interactionItemItem);
             storeRect.Remove(interactionItemItem.RectTransform);
             ReSortItemsSelected(storeRect);
-            FixHeightLooper(interactionItemItem.RectTransform.sizeDelta);
-            FixBoxCollider();
+            MatchHeightLooper(interactionItemItem.RectTransform.sizeDelta);
+            MatchColliderSize();
             StoreTempPosition();
         }
 
