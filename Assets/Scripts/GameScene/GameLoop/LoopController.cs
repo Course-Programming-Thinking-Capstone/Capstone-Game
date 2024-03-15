@@ -307,7 +307,6 @@ namespace GameScene.GameLoop
         private void OnClickedSelector(InteractionItem selectedObj)
         {
             // Generate new selected
-
             if (selectedObj.SelectType == SelectType.Loop)
             {
                 var objLoop = SimplePool.Spawn(model.Resource.LoopPrefab);

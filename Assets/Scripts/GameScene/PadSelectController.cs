@@ -22,10 +22,10 @@ namespace GameScene
         private bool isClose;
 
         [Header("For Controller click and drag")]
-
         [SerializeField] private Transform unSelectContainer;
         [SerializeField] private Transform selectedContainer;
         [SerializeField] private Transform movingContainer;
+        [SerializeField] private float partOffset;
         private List<InteractionItem> storeSelected;
         private List<float> tempPosition;
         private bool isDelete;
@@ -138,19 +138,42 @@ namespace GameScene
             return Input.mousePosition.x <= baseXPositionA.position.x;
         }
 
+        /// <summary>
+        /// Điểm đầu lấy phân nữa, điểm sau = 1/2 trước đó và 1/2 hiện tại
+        /// </summary>
+        /// <param name="skipIndex"></param>
         private void MakeItemSelectedInRightPlace(int skipIndex = -1)
         {
             var index = 0;
+            var yPos = 0f;
             foreach (var item in storeSelected)
             {
-                if (skipIndex == index)
+                if (skipIndex == index) // place skip
                 {
-                    index++;
+                    if (index == 0)
+                    {
+                        yPos -= selectedObject.RectTransform.sizeDelta.y / 2;
+                    }
+                    else
+                    {
+                        yPos -= selectedObject.RectTransform.sizeDelta.y / 2;
+                    }
+                }
+
+                if (index == 0)
+                {
+                    yPos -= item.RectTransform.sizeDelta.y / 2;
+                }
+                else
+                {
+                    yPos -= item.RectTransform.sizeDelta.y / 2;
                 }
 
                 index++;
-                var yPosition = -item.RectTransform.sizeDelta.y * (index - 0.5f);
-                item.RectTransform.anchoredPosition = new Vector3(0f, yPosition, 0f);
+                // đặt object vào và cộng thêm 1/2 cho điểm tiếp theo
+                yPos -= partOffset;
+                item.RectTransform.anchoredPosition = new Vector3(0f, yPos, 0f);
+                yPos -= item.RectTransform.sizeDelta.y / 2;
             }
         }
 
@@ -193,15 +216,30 @@ namespace GameScene
 
         private void OnClickedSelector(InteractionItem selectedObj)
         {
-            var obj = SimplePool.Spawn(data.SelectedModel);
-            // Generate selected Item
-            var arrow = obj.GetComponent<Arrow>();
-            arrow.Init(OnClickedSelected);
-            arrow.ChangeRender(data.GetByType(selectedObj.SelectType).SelectedRender);
-            arrow.SelectType = selectedObj.SelectType;
-            // assign to control
-            selectedObject = arrow;
-            selectedObject.transform.SetParent(movingContainer);
+            // Generate new selected
+            if (selectedObj.SelectType == SelectType.Loop)
+            {
+                var objLoop = SimplePool.Spawn(data.LoopPrefab);
+                Loop looper = objLoop.GetComponent<Loop>();
+                looper.Init(OnClickedSelected);
+                looper.SelectType = selectedObj.SelectType;
+                // assign to control
+                selectedObject = looper;
+                selectedObject.transform.SetParent(movingContainer);
+            }
+            else
+            {
+                var obj = SimplePool.Spawn(data.SelectedModel);
+                // Generate selected Item
+                var arrow = obj.GetComponent<Arrow>();
+                arrow.Init(OnClickedSelected);
+                arrow.ChangeRender(data.GetByType(selectedObj.SelectType).SelectedRender);
+                arrow.SelectType = selectedObj.SelectType;
+                // assign to control
+                selectedObject = arrow;
+                selectedObject.transform.SetParent(movingContainer);
+            }
+
             StoreTempPosition();
         }
 

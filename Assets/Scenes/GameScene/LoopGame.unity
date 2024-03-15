@@ -1036,7 +1036,7 @@ MonoBehaviour:
   isTesting: 1
   gameMode: 0
   playerController: {fileID: 0}
-  basePlayerPosition: {x: 0, y: 0}
+  basePlayerPosition: {x: 1, y: 1}
   targetPosition:
   - {x: 5, y: 5}
   boardSize: {x: 8, y: 6}
@@ -1270,6 +1270,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 454645805}
     m_Modifications:
+    - target: {fileID: 208407751264521253, guid: 77443370ac562b041a9fa656d73d88b4, type: 3}
+      propertyPath: partOffset
+      value: -10
+      objectReference: {fileID: 0}
     - target: {fileID: 2800692229239673793, guid: 77443370ac562b041a9fa656d73d88b4, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
@@ -1698,7 +1702,7 @@ MonoBehaviour:
   blockOffset: 1.3
   playerMoveTime: 0.8
   playerModel: {fileID: 7691891174158779115, guid: 77697015dbe12b441afab207db53932a, type: 3}
-  resource: {fileID: 0}
+  resource: {fileID: 11400000, guid: cfccc6f0ceb3f6c43a381844885fa699, type: 2}
   modelSelect:
   - selectType: 1
     renderSpriteSelector: {fileID: 21300000, guid: d07bff4e34796a540b6571f8bccf125d, type: 3}
