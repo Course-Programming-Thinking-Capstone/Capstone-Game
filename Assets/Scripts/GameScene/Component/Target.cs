@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace GameScene.Component
 {
-    public class Candy : MonoBehaviour
+    public class Target : MonoBehaviour
     {
         public void Init(Sprite candySprite)
         {

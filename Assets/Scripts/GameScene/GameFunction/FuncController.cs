@@ -75,11 +75,11 @@ namespace GameScene.GameFunction
             // Init Candy
             foreach (var position in targetPosition)
             {
-                candy = Instantiate(model.TargetPrefab).GetComponent<Candy>();
-                candy.Init(model.CandySprites[Random.Range(0, model.CandySprites.Count)]);
-                view.PlaceObjectToBoard(candy.GetComponent<Transform>(), position);
+                target = Instantiate(model.TargetPrefab).GetComponent<Target>();
+                target.Init(model.CandySprites[Random.Range(0, model.CandySprites.Count)]);
+                view.PlaceObjectToBoard(target.GetComponent<Transform>(), position);
                 targetChecker.Add(position, false);
-                targetReferences.Add(position, candy.transform);
+                targetReferences.Add(position, target.transform);
             }
         }
 

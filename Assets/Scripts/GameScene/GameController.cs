@@ -24,12 +24,7 @@ namespace GameScene
         [SerializeField] protected List<Vector2> targetPosition;
         [SerializeField] protected Vector2 boardSize = new(8, 6);
 
-        [Header("Drag mode")]
-        [Header("Reference object game")]
-        [SerializeField] protected RectTransform deleteZone;
-        [SerializeField] protected RectTransform selectedZone;
-        [SerializeField] protected Button playButton;
-        [SerializeField] protected List<SelectType> generateList;
+    
 
         protected void ShowWinPopup(int coinWin)
         {
