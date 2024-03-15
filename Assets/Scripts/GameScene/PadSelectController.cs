@@ -22,13 +22,14 @@ namespace GameScene
         private bool isClose;
 
         [Header("For Controller click and drag")]
-        [SerializeField] private ResourcePack data;
+
         [SerializeField] private Transform unSelectContainer;
         [SerializeField] private Transform selectedContainer;
         [SerializeField] private Transform movingContainer;
         private List<InteractionItem> storeSelected;
         private List<float> tempPosition;
         private bool isDelete;
+        private ResourcePack data;
         [CanBeNull] private InteractionItem selectedObject;
 
         private void Awake()

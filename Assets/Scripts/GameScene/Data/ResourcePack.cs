@@ -10,11 +10,13 @@ namespace GameScene.Data
         [SerializeField] private GameObject selectorModel;
         [SerializeField] private GameObject selectedModel;
         [SerializeField] private GameObject boardCellModel;
+        [SerializeField] private GameObject loopPrefab;
         
         public List<GameControlItemData> GameControlItemData => gameControlItemData;
         public GameObject SelectorModel => selectorModel;
         public GameObject SelectedModel => selectedModel;
         public GameObject BoardCellModel => boardCellModel;
+        public GameObject LoopPrefab => loopPrefab;
 
         public GameControlItemData GetByType(SelectType selectType)
         {

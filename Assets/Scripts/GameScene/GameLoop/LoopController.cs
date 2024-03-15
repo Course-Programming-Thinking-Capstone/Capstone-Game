@@ -16,31 +16,37 @@ namespace GameScene.GameLoop
         [Header("Reference model")]
         [SerializeField] private LoopView view;
         [SerializeField] private LoopModel model;
+        [SerializeField] private PadSelectController padSelectController;
+        [SerializeField] private BoardController boardController;
 
         private void Start()
         {
             gameMode = GameMode.Loop;
             // LoadData();
-            CreateSelector();
-            CreateBoard();
+            // CreateSelector();
+            // CreateBoard();
+            // CreateTarget();
+            // CreatePlayer();
+            // InitView();
+            playButton.onClick.AddListener(OnClickPlay);
+            padSelectController.CreateSelector(generateList, model.Resource);
+            boardController.CreateBoard(new Vector2(8, 6), model.Resource.BoardCellModel);
+            playerController = Instantiate(model.PlayerModel).GetComponent<PlayerController>();
+            // Init player model
+            currentPlayerPosition = basePlayerPosition;
+            boardController.PlaceObjectToBoard(playerController.transform, basePlayerPosition);
+
             CreateTarget();
-            CreatePlayer();
-            InitView();
         }
 
         private void Update()
         {
-            if (selectedObject)
+            if (Input.GetMouseButtonUp(0))
             {
-                if (Input.GetMouseButtonUp(0))
-                {
-                    HandleMouseUp();
-                }
-                else
-                {
-                    HandleMouseMoveSelected();
-                }
+                padSelectController.HandleMouseUp();
             }
+
+            padSelectController.HandleMouseMoveSelected();
         }
 
         #region Game Flow
@@ -279,62 +285,19 @@ namespace GameScene.GameLoop
 
         #region Initialized
 
-        private void CreateBoard()
-        {
-            view.InitGroundBoardFakePosition(boardSize, model.GetBlockOffset());
-            view.PlaceObjectToBoard(Instantiate(model.CellBoardPrefab).transform, basePlayerPosition);
-            foreach (var target in targetPosition)
-            {
-                view.PlaceObjectToBoard(Instantiate(model.CellBoardPrefab).transform, target);
-            }
-
-            foreach (var positionRoad in boardMap)
-            {
-                var newRoad = Instantiate(model.CellBoardPrefab);
-                view.PlaceObjectToBoard(newRoad.transform, positionRoad);
-            }
-        }
-
-        private void CreateSelector()
-        {
-            // Generate objects selector
-            foreach (var o in generateList)
-            {
-                var obj = Instantiate(model.SelectorPrefab);
-                view.SetParentSelector(obj.transform);
-                var scriptControl = obj.AddComponent<Arrow>();
-                scriptControl.Init(OnClickedSelector);
-                scriptControl.SelectType = o;
-                scriptControl.ChangeRender(model.GetSelector(o));
-            }
-        }
-
-        private void CreatePlayer()
-        {
-            // Init player
-            playerController = Instantiate(model.PlayerModel).GetComponent<PlayerController>();
-            currentPlayerPosition = basePlayerPosition;
-            view.PlaceObjectToBoard(playerController.transform, basePlayerPosition);
-        }
-
+  
         private void CreateTarget()
         {
-            // Init Candy
             foreach (var position in targetPosition)
             {
                 target = Instantiate(model.TargetPrefab).GetComponent<Target>();
                 target.Init(model.CandySprites[Random.Range(0, model.CandySprites.Count)]);
-                view.PlaceObjectToBoard(target.GetComponent<Transform>(), position);
+                boardController.PlaceObjectToBoard(target.GetComponent<Transform>(), position);
                 targetChecker.Add(position, false);
                 targetReferences.Add(position, target.transform);
             }
         }
 
-        private void InitView()
-        {
-            // Play button
-            playButton.onClick.AddListener(OnClickPlay);
-        }
 
         #endregion
 
@@ -347,7 +310,7 @@ namespace GameScene.GameLoop
 
             if (selectedObj.SelectType == SelectType.Loop)
             {
-                var objLoop = SimplePool.Spawn(model.LoopPrefab);
+                var objLoop = SimplePool.Spawn(model.Resource.LoopPrefab);
                 Loop selectedScript = objLoop.GetComponent<Loop>();
                 selectedScript.Init(OnClickedSelected);
                 selectedScript.SelectType = selectedObj.SelectType;
