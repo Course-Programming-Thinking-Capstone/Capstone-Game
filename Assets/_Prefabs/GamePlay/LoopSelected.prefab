@@ -439,11 +439,11 @@ MonoBehaviour:
   rectTransform: {fileID: 3543341853022495899}
   rendererImg: {fileID: 4839388503448316491}
   effectRender: {fileID: 9179688125427523179}
-  maxLoop: 8
-  loopTxt: {fileID: 2973120712452095792}
   container: {fileID: 5385687997823657058}
   boxCollider: {fileID: 6592927703209506601}
   offSetHeight: 25
+  maxLoop: 8
+  loopTxt: {fileID: 2973120712452095792}
 --- !u!65 &6592927703209506601
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -497,8 +497,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 8.659977, y: -82.13606}
-  m_SizeDelta: {x: -17.319954, y: 0}
+  m_AnchoredPosition: {x: 19, y: -56.6}
+  m_SizeDelta: {x: -38, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &9179688125427523179
 GameObject:

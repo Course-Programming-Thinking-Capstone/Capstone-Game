@@ -47,12 +47,19 @@ namespace GameScene
             }
 
             isDelete = storeSelected.Count == 15 || IsInDeleteZone();
+            var looper = CheckInsideLoop();
 
             if (isDelete) // in delete zone
             {
                 SimplePool.Despawn(selectedObject!.gameObject);
                 selectedObject = null;
                 isDelete = false;
+            }
+            else if (looper)
+            {
+                looper.AddItem(selectedObject);
+                MakeItemSelectedInRightPlace();
+                selectedObject = null;
             }
             else // Valid pos
             {
@@ -86,8 +93,8 @@ namespace GameScene
             var extensional = CheckInsideLoop();
             if (extensional)
             {
-                extensional.MakeItemSelectedInRightPlace();
-                extensional.MatchHeightLooper(selectedObject.RectTransform.sizeDelta, true);
+                extensional.MakeEmptySpace(selectedObject.RectTransform);
+                extensional.MatchHeightLooper(selectedObject.RectTransform.sizeDelta/2, true);
             }
             else
             {
@@ -270,7 +277,18 @@ namespace GameScene
         private void OnClickedSelected(InteractionItem selectedObj)
         {
             // Get object to move
+            // not have?
             storeSelected.Remove(selectedObj);
+            foreach (var selector in storeSelected)
+            {
+                if (selector.SelectType == SelectType.Loop)
+                {
+                    var looper = (Extensional)selector;
+                    looper.RemoveItem(selectedObj);
+                }
+            }
+
+            // Get object to move
             selectedObject = selectedObj;
             selectedObject!.transform.SetParent(movingContainer);
             StoreTempPosition();

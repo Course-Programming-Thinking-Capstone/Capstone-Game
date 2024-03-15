@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using GameScene.Component;
 using GameScene.Component.SelectControl;
-using JetBrains.Annotations;
 using Services;
 using Spine.Unity;
 using UnityEngine;
@@ -22,12 +20,7 @@ namespace GameScene.GameLoop
         private void Start()
         {
             gameMode = GameMode.Loop;
-            // LoadData();
-            // CreateSelector();
-            // CreateBoard();
-            // CreateTarget();
-            // CreatePlayer();
-            // InitView();
+
             playButton.onClick.AddListener(OnClickPlay);
             padSelectController.CreateSelector(generateList, model.Resource);
             boardController.CreateBoard(new Vector2(8, 6), model.Resource.BoardCellModel);
@@ -50,67 +43,6 @@ namespace GameScene.GameLoop
         }
 
         #region Game Flow
-
-        private void HandleMouseUp()
-        {
-            if (isDelete) // in delete zone
-            {
-                SimplePool.Despawn(selectedObject!.gameObject);
-                isDelete = false;
-                selectedObject = null;
-                return;
-            }
-
-            // If looper, only detect if holding a part which is not a loop
-            var looper = CheckInsideLoop();
-            if (looper)
-            {
-                looper.AddItem(selectedObject);
-                view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
-            }
-            else
-            {
-                if (!storeSelected.Contains(selectedObject))
-                {
-                    storeSelected.Insert(CalculatedCurrentPosition(Input.mousePosition), selectedObject);
-                }
-
-                view.SetParentSelected(selectedObject!.transform);
-            }
-
-            FixHeightSelected();
-            selectedObject = null;
-        }
-
-        private void HandleMouseMoveSelected()
-        {
-            Vector3 mousePos = Input.mousePosition;
-            selectedObject!.RectTransform.position = mousePos;
-            // handle if inside delete zone
-            isDelete = IsPointInRT(mousePos, deleteZone);
-
-            var extensional = CheckInsideLoop();
-            if (extensional)
-            {
-                extensional.MakeItemSelectedInRightPlace();
-                extensional.MatchHeightLooper(selectedObject.RectTransform.sizeDelta, true);
-                view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
-                return;
-            }
-
-            foreach (var selector in storeSelected)
-            {
-                if (selector.SelectType == SelectType.Loop)
-                {
-                    var extensional1 = (Extensional)selector;
-                    extensional1.MakeItemSelectedInRightPlace();
-                    extensional1.MatchHeightLooper(Vector2.zero);
-                }
-            }
-
-            // check to make space
-            HandleDisplayCalculate(mousePos);
-        }
 
         private IEnumerator StartPlayerMove()
         {
@@ -242,20 +174,6 @@ namespace GameScene.GameLoop
             return true;
         }
 
-        private void FixHeightSelected()
-        {
-            foreach (var selector in storeSelected)
-            {
-                if (selector.SelectType == SelectType.Loop)
-                {
-                    var xSelector = (Extensional)selector;
-                    xSelector.MatchHeightLooper(Vector2.zero);
-                }
-            }
-
-            view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
-        }
-
         private List<InteractionItem> ConvertToAction()
         {
             var result = new List<InteractionItem>();
@@ -301,56 +219,6 @@ namespace GameScene.GameLoop
 
         #region CALL BACK
 
-        // Event clicked selector
-        private void OnClickedSelector(InteractionItem selectedObj)
-        {
-            // Generate new selected
-            if (selectedObj.SelectType == SelectType.Loop)
-            {
-                var objLoop = SimplePool.Spawn(model.Resource.LoopPrefab);
-                Extensional selectedScript = objLoop.GetComponent<Extensional>();
-                selectedScript.Init(OnClickedSelected);
-                selectedScript.SelectType = selectedObj.SelectType;
-                // Moving handler
-                selectedObject = selectedScript;
-                view.SetParentSelectedToMove(selectedObject.transform);
-                StoreTempPosition();
-            }
-            else
-            {
-                var obj = SimplePool.Spawn(model.SelectedPrefab);
-                Basic selectedScript = obj.GetComponent<Basic>();
-                selectedScript.Init(OnClickedSelected);
-                selectedScript.ChangeRender(model.GetSelected(selectedObj.SelectType));
-                selectedScript.SelectType = selectedObj.SelectType;
-
-                // Moving handler
-                selectedObject = selectedScript;
-                view.SetParentSelectedToMove(selectedObject.transform);
-                StoreTempPosition();
-            }
-        }
-
-        private void OnClickedSelected(InteractionItem selectedObj)
-        {
-            // Get object to move
-            // not have?
-            storeSelected.Remove(selectedObj);
-            foreach (var selector in storeSelected)
-            {
-                if (selector.SelectType == SelectType.Loop)
-                {
-                    var looper = (Extensional)selector;
-                    looper.RemoveItem(selectedObj);
-                }
-            }
-
-            selectedObject = selectedObj;
-            view.SetParentSelectedToMove(selectedObject!.transform);
-            view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
-            StoreTempPosition();
-        }
-
         // Start Moving
         private void OnClickPlay()
         {
@@ -360,76 +228,6 @@ namespace GameScene.GameLoop
         #endregion
 
         #region Calulate func
-
-        private int CalculatedCurrentPosition(Vector2 mousePos)
-        {
-            for (int i = 0; i < storedPosition.Count; i++)
-            {
-                if (i == 0 && storedPosition[i].y - OffSet < mousePos.y) // first item
-                {
-                    return 0;
-                }
-
-                if (i == storedPosition.Count - 1) // last item
-                {
-                    return storedPosition.Count;
-                }
-
-                if (storedPosition[i].y + OffSet > mousePos.y
-                    && storedPosition[i + 1].y - OffSet < mousePos.y)
-                {
-                    return i + 1;
-                }
-            }
-
-            return storedPosition.Count;
-        }
-
-        private void HandleDisplayCalculate(Vector2 mousePos)
-        {
-            if (IsPointInRT(mousePos, selectedZone))
-            {
-                view.MakeEmptySpace(
-                    storeSelected.Select(o => o.RectTransform).ToList(),
-                    CalculatedCurrentPosition(mousePos),
-                    selectedObject.RectTransform.sizeDelta.y
-                );
-            }
-            else
-            {
-                view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
-            }
-        }
-
-        [CanBeNull]
-        private Extensional CheckInsideLoop()
-        {
-            // loop cannot inside loop
-            if (selectedObject.SelectType == SelectType.Loop)
-            {
-                return null;
-            }
-
-            var startPosition = (selectedObject.transform.position);
-            startPosition.z = -5;
-            Ray ray = new Ray(startPosition, Vector3.forward * 100);
-            if (Physics.Raycast(ray, out var hit))
-            {
-                var result = hit.transform.GetComponent<Extensional>();
-                return result;
-            }
-
-            return null;
-        }
-
-        private void StoreTempPosition()
-        {
-            storedPosition.Clear();
-            foreach (var item in storeSelected)
-            {
-                storedPosition.Add(item.RectTransform.position);
-            }
-        }
 
         private bool IsOutsideBoard(Vector2 checkPosition)
         {

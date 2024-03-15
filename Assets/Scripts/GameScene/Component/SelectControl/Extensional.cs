@@ -109,6 +109,15 @@ namespace GameScene.Component.SelectControl
             boxCollider.size = rectTransform.sizeDelta;
         }
 
+        public void MakeEmptySpace(RectTransform selectedObj)
+        {
+            if (tempPosition.Count > 0)
+            {
+                var newItemIndex = CalculatedNewItemCurrentIndexByPosition();
+                MakeItemSelectedInRightPlace(selectedObj, newItemIndex);
+            }
+        }
+
         /// <summary>
         /// Điểm đầu lấy phân nữa, điểm sau = 1/2 trước đó và 1/2 hiện tại
         /// </summary>
@@ -147,6 +156,7 @@ namespace GameScene.Component.SelectControl
                     , interactionItemItem);
             }
 
+            MakeItemSelectedInRightPlace();
             MatchHeightLooper(interactionItemItem.RectTransform.sizeDelta);
             StoreTempPosition();
         }
