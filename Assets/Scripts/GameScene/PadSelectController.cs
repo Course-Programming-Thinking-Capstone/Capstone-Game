@@ -22,7 +22,7 @@ namespace GameScene
         private bool isClose;
 
         [Header("For Controller click and drag")]
-        [SerializeField] private GameControlItemGroupData data;
+        [SerializeField] private ResourcePack data;
         [SerializeField] private Transform unSelectContainer;
         [SerializeField] private Transform selectedContainer;
         [SerializeField] private Transform movingContainer;
@@ -105,16 +105,18 @@ namespace GameScene
 
             storeSelected.Clear();
         }
-        public void CreateSelector()
+
+        public void CreateSelector(List<SelectType> createItems, ResourcePack dataParam)
         {
+            data = dataParam;
             // Generate objects selector
-            foreach (var o in data.GameControlItemData)
+            foreach (var o in createItems)
             {
                 var obj = Instantiate(data.SelectorModel, unSelectContainer);
                 var scriptControl = obj.AddComponent<Arrow>();
                 scriptControl.Init(OnClickedSelector);
-                scriptControl.SelectType = o.ItemType;
-                scriptControl.ChangeRender(o.UnSelectRender);
+                scriptControl.SelectType = o;
+                scriptControl.ChangeRender(data.GetByType(o).UnSelectRender);
             }
         }
 

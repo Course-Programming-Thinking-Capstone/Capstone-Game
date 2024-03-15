@@ -21,6 +21,7 @@ namespace GameScene
         protected Target target;
 
         // Comment form here if finish
+        [Header("Remove soon")]
         [SerializeField] protected RectTransform deleteZone;
         [SerializeField] protected RectTransform selectedZone;
         // FOR CONTROL SELECTOR

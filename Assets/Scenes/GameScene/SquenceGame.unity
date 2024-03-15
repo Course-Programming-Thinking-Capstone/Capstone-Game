@@ -1566,11 +1566,11 @@ MonoBehaviour:
   - {x: 3, y: 3}
   - {x: 5, y: 5}
   boardSize: {x: 8, y: 6}
-  deleteZone: {fileID: 2084806566}
-  selectedZone: {fileID: 633439132}
   playButton: {fileID: 1035767137}
   generateList: 0100000002000000030000000400000005000000
   boardMap: []
+  deleteZone: {fileID: 2084806566}
+  selectedZone: {fileID: 633439132}
   view: {fileID: 372901246}
   model: {fileID: 1966046701}
   padSelectController: {fileID: 1365533570}
@@ -2539,6 +2539,7 @@ MonoBehaviour:
   blockOffset: 1.3
   playerMoveTime: 0.75
   playerModel: {fileID: 7691891174158779115, guid: 77697015dbe12b441afab207db53932a, type: 3}
+  resource: {fileID: 11400000, guid: cfccc6f0ceb3f6c43a381844885fa699, type: 2}
   modelSelect:
   - selectType: 1
     renderSpriteSelector: {fileID: 21300000, guid: d07bff4e34796a540b6571f8bccf125d, type: 3}

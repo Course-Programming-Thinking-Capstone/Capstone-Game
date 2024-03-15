@@ -20,8 +20,8 @@ namespace GameScene.GameSequence
         {
             gameMode = GameMode.Sequence;
             playButton.onClick.AddListener(OnClickPlay);
-            padSelectController.CreateSelector();
-            boardController.CreateBoard(new Vector2(8, 6), model.CellBoardPrefab);
+            padSelectController.CreateSelector(generateList, model.Resource);
+            boardController.CreateBoard(new Vector2(8, 6), model.Resource.BoardCellModel);
             playerController = Instantiate(model.PlayerModel).GetComponent<PlayerController>();
             // Init player model
             currentPlayerPosition = basePlayerPosition;
@@ -56,20 +56,28 @@ namespace GameScene.GameSequence
 
         #region Perform action
 
+        private bool valid;
+
         private IEnumerator StartPlayerMove()
         {
             view.ActiveSavePanel();
-            foreach (var item in padSelectController.GetControlPart())
+            valid = true;
+            var controlPart = padSelectController.GetControlPart();
+            foreach (var item in controlPart)
             {
                 view.SetParentSelectedToMove(item.transform);
                 item.ActiveEffect();
                 yield return HandleAction(item);
                 item.ActiveEffect(false);
                 view.SetParentSelected(item.transform);
+                if (!valid)
+                {
+                    break;
+                }
             }
 
             view.ActiveSavePanel(false);
-            if (WinChecker())
+            if (WinChecker() && valid)
             {
                 ShowWinPopup(700);
                 // win
@@ -116,7 +124,7 @@ namespace GameScene.GameSequence
                     // Reset game cuz it fail
                     playerController.PlayAnimationIdle();
                     yield return new WaitForSeconds(1f);
-                    ResetGame();
+                    valid = false;
                     yield break;
                 }
 

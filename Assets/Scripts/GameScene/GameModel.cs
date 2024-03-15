@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using GameScene.Data;
 using UnityEngine;
 
 namespace GameScene
@@ -12,7 +13,10 @@ namespace GameScene
         [SerializeField] private float playerMoveTime;
         [SerializeField] private GameObject playerModel;
 
-        [Header("Not basic mode")]
+        [Header("Model Pack")]
+        [SerializeField] private ResourcePack resource;
+        // Comment All from here
+        [Header("remove soon")]
         [SerializeField] private List<ModelSelect> modelSelect;
         [SerializeField] private GameObject selectorPrefab;
         [SerializeField] private GameObject selectedPrefab;
@@ -21,6 +25,7 @@ namespace GameScene
 
         #region Getter / Setter
 
+        public ResourcePack Resource => resource;
         public GameObject SelectorPrefab => selectorPrefab;
         public GameObject SelectedPrefab => selectedPrefab;
         public GameObject TargetPrefab => targetPrefab;
