@@ -15,6 +15,10 @@ namespace GameScene
 
         [Header("Model Pack")]
         [SerializeField] private ResourcePack resource;
+        [SerializeField] private List<Sprite> candySprites;
+        public List<Sprite> CandySprites => candySprites;
+
+
         // Comment All from here
         [Header("remove soon")]
         [SerializeField] private List<ModelSelect> modelSelect;

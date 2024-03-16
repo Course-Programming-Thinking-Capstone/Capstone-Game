@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using GameScene.Component;
@@ -37,6 +38,12 @@ namespace GameScene
             storeSelected = new List<InteractionItem>();
             tempPosition = new List<float>();
             controlButton.onClick.AddListener(OnClickOpenClose);
+        }
+
+        public void SetDisplayPart(InteractionItem effectedItem, bool isOn)
+        {
+            effectedItem.ActiveEffect(isOn);
+            effectedItem.transform.SetParent(isOn ? movingContainer : selectedContainer);
         }
 
         public void HandleMouseUp()
@@ -94,7 +101,7 @@ namespace GameScene
             if (extensional)
             {
                 extensional.MakeEmptySpace(selectedObject.RectTransform);
-                extensional.MatchHeightLooper(selectedObject.RectTransform.sizeDelta/2, true);
+                extensional.MatchHeightLooper(selectedObject.RectTransform.sizeDelta / 2, true);
             }
             else
             {
@@ -119,7 +126,38 @@ namespace GameScene
         /// <returns></returns>
         public List<InteractionItem> GetControlPart()
         {
-            return storeSelected;
+            var result = new List<InteractionItem>();
+            foreach (var baseSelectItem in storeSelected)
+            {
+                switch (baseSelectItem.SelectType)
+                {
+                    case SelectType.Up:
+                    case SelectType.Down:
+                    case SelectType.Left:
+                    case SelectType.Right:
+                    case SelectType.Collect:
+                        result.Add(baseSelectItem);
+                        break;
+                    case SelectType.Loop:
+                        result.Add(baseSelectItem);
+                        var loop = (Extensional)baseSelectItem;
+                        foreach (var item in loop.StoreSelected)
+                        {
+                            for (int i = 0; i < loop.LoopCount; i++)
+                            {
+                                result.Add(item);
+                            }
+                        }
+
+                        break;
+                    case SelectType.Func:
+                        break;
+                    case SelectType.Condition:
+                        break;
+                }
+            }
+
+            return result;
         }
 
         public void Reset()

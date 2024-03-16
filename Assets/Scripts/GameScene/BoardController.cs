@@ -43,6 +43,19 @@ namespace GameScene
             }
         }
 
+        public void ActiveSpecificBoard(List<Vector2> neededBoard)
+        {
+            foreach (var board in cacheBoardItem)
+            {
+                board.gameObject.SetActive(false);
+            }
+
+            foreach (var position in neededBoard)
+            {
+                cacheBoardItem[(int)((position.y - 1) * boardSize.x + (position.x - 1))].gameObject.SetActive(true);
+            }
+        }
+
         /// <summary>
         /// Place any object into to board
         /// </summary>

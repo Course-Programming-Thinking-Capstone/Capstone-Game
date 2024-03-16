@@ -239,16 +239,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 372901244}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f88d3f4bbe9145898b33bd7748199444, type: 3}
+  m_Script: {fileID: 11500000, guid: 341daf13b8ed4976afb76779b3a6b9c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   savePanel: {fileID: 718398932}
-  startGroundPosition: {fileID: 933883831}
-  container: {fileID: 716583636}
-  blockContainer: {fileID: 1154784788}
-  selectorContainer: {fileID: 1328973360}
-  selectedContainer: {fileID: 1249297808}
-  movingContainer: {fileID: 1961906771}
+  disPlayContainer: {fileID: 0}
+  startGroundPosition: {fileID: 0}
+  container: {fileID: 0}
+  blockContainer: {fileID: 0}
+  selectorContainer: {fileID: 0}
+  selectedContainer: {fileID: 0}
 --- !u!1 &454645804
 GameObject:
   m_ObjectHideFlags: 0
@@ -994,16 +994,6 @@ Transform:
   - {fileID: 933883831}
   m_Father: {fileID: 716583636}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!224 &1249297808 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4794556811166686288, guid: 77443370ac562b041a9fa656d73d88b4, type: 3}
-  m_PrefabInstance: {fileID: 4834454353254278897}
-  m_PrefabAsset: {fileID: 0}
---- !u!224 &1328973360 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 2800692229239673793, guid: 77443370ac562b041a9fa656d73d88b4, type: 3}
-  m_PrefabInstance: {fileID: 4834454353254278897}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1365533565
 GameObject:
   m_ObjectHideFlags: 0
@@ -1057,15 +1047,15 @@ MonoBehaviour:
   - {x: 3, y: 3}
   - {x: 5, y: 5}
   boardSize: {x: 8, y: 6}
+  view: {fileID: 372901246}
+  model: {fileID: 1966046701}
+  padSelectController: {fileID: 4834454353254278898}
+  boardController: {fileID: 1365533571}
   playButton: {fileID: 1035767137}
   generateList: 0100000002000000030000000400000005000000
   boardMap: []
   deleteZone: {fileID: 2084806566}
   selectedZone: {fileID: 633439132}
-  view: {fileID: 372901246}
-  model: {fileID: 1966046701}
-  padSelectController: {fileID: 4834454353254278898}
-  boardController: {fileID: 1365533571}
 --- !u!114 &1365533571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1590,37 +1580,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 1966046699}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97fac5e07b2242c5bfd1dd32fe85d53e, type: 3}
+  m_Script: {fileID: 11500000, guid: f4c68963a6f64807a01d82d9ee522fa7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   blockOffset: 1.3
-  playerMoveTime: 0.75
-  playerModel: {fileID: 7691891174158779115, guid: 77697015dbe12b441afab207db53932a, type: 3}
+  playerMoveTime: 0.6
+  playerModel: {fileID: 7691891174158779115, guid: d9c4bc473832fc043845243f6ad62e1f, type: 3}
   resource: {fileID: 11400000, guid: cfccc6f0ceb3f6c43a381844885fa699, type: 2}
-  modelSelect:
-  - selectType: 1
-    renderSpriteSelector: {fileID: 21300000, guid: d07bff4e34796a540b6571f8bccf125d, type: 3}
-    renderSpriteSelected: {fileID: 21300000, guid: dd42d5923581a6a488bae80605495224, type: 3}
-  - selectType: 2
-    renderSpriteSelector: {fileID: 21300000, guid: 33d289fae53b348479450da350f38942, type: 3}
-    renderSpriteSelected: {fileID: 21300000, guid: b229b04320ba90340892b1d3fae353cc, type: 3}
-  - selectType: 3
-    renderSpriteSelector: {fileID: 21300000, guid: a93ab5bc5ddc92c4ca7b8e07d1cb7f3e, type: 3}
-    renderSpriteSelected: {fileID: 21300000, guid: ff465af64c6af4a4793bbd4733ce6cf4, type: 3}
-  - selectType: 4
-    renderSpriteSelector: {fileID: 21300000, guid: fe6a6d4086a110842b448e0c9478dd82, type: 3}
-    renderSpriteSelected: {fileID: 21300000, guid: f6daaeaf4e4e6e84d82b78a1c1f6568e, type: 3}
-  - selectType: 5
-    renderSpriteSelector: {fileID: 21300000, guid: 0946204cce3955c499a18037dc619f38, type: 3}
-    renderSpriteSelected: {fileID: 21300000, guid: e62f21787936c654a97885b672eab284, type: 3}
-  selectorPrefab: {fileID: 5241791683117841287, guid: 34b628f1adf0989468cc4c22a153ba14, type: 3}
-  selectedPrefab: {fileID: 5923298832287941037, guid: 69864048f965f1a4492eb962ffe524dc, type: 3}
-  targetPrefab: {fileID: 802349416297577777, guid: b9df67cdd2479614f9efbba43c5772be, type: 3}
-  cellBoardPrefab: {fileID: 8313896542140405589, guid: ba55010254c6eb64696f2c69bf1da902, type: 3}
   candySprites:
-  - {fileID: 21300000, guid: 8f9335cddb67b400cbb29a1d8dc11a04, type: 3}
-  - {fileID: 21300000, guid: 1290ebdb32ab2475aa759c206aadbb89, type: 3}
-  - {fileID: 21300000, guid: 86fe3cabe72b14bf1b9092f7821222ed, type: 3}
+  - {fileID: 21300000, guid: 600d811c4c65b0745b1c02fbb8c46ede, type: 3}
+  - {fileID: 21300000, guid: 4090cb9f69d3e8c42a2b1b8bfc28cea2, type: 3}
+  modelSelect: []
+  selectorPrefab: {fileID: 0}
+  selectedPrefab: {fileID: 0}
+  targetPrefab: {fileID: 0}
+  cellBoardPrefab: {fileID: 0}
 --- !u!1 &2005999894
 GameObject:
   m_ObjectHideFlags: 0

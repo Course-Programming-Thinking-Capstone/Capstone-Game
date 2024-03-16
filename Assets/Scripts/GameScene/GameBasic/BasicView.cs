@@ -34,7 +34,7 @@ namespace GameScene.GameBasic
                 CountRight--;
             }
 
-            objectClicked.SetParent(movingContainer);
+            objectClicked.SetParent(disPlayContainer);
         }
 
         public Vector2 PlaceGround(Transform groundItem, Vector2 position)

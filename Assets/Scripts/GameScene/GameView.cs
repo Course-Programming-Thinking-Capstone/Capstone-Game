@@ -2,19 +2,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameScene
-{   
+{
     public class GameView : MonoBehaviour
     {
         [Header("2D references")]
         [SerializeField] protected GameObject savePanel;
+        [SerializeField] protected Transform disPlayContainer;
+        [Header("ClickAndDrag")]
         [SerializeField] protected Transform startGroundPosition;
         [SerializeField] protected Transform container;
         [SerializeField] protected Transform blockContainer;
-        
-        [Header("ClickAndDrag")]
+
         [SerializeField] protected Transform selectorContainer;
         [SerializeField] protected Transform selectedContainer;
-        [SerializeField] protected Transform movingContainer;
 
         [Header("Cache")]
         protected readonly List<Vector2> positions = new();
@@ -45,7 +45,7 @@ namespace GameScene
                 }
             }
         }
-        
+
         /// <summary>
         /// Place any object to board position
         /// </summary>
@@ -56,7 +56,7 @@ namespace GameScene
             objectToSet.SetParent(container);
             objectToSet.position = GetPositionFromBoard(playerPos);
         }
-        
+
         /// <summary>
         /// Get 2d position from board index
         /// </summary>
@@ -64,13 +64,13 @@ namespace GameScene
         /// <returns></returns>
         public Vector2 GetPositionFromBoard(Vector2 position)
         {
-            var index = (int)((position.y ) * boardSize.x + (position.x ));
-       
+            var index = (int)((position.y) * boardSize.x + (position.x));
+
             return positions[index];
         }
 
         #endregion
-        
+
         #region Canvas
 
         public void SetParentSelector(Transform child)
@@ -87,7 +87,7 @@ namespace GameScene
 
         public void SetParentSelectedToMove(Transform child)
         {
-            child.SetParent(movingContainer);
+            child.SetParent(disPlayContainer);
             child.localScale = Vector3.one;
         }
 
@@ -126,6 +126,7 @@ namespace GameScene
                 itemIndex++;
             }
         }
+
         public void InitGroundBoardFakePosition(Vector2 board, float offSet)
         {
             boardSize = board;
@@ -140,10 +141,9 @@ namespace GameScene
                     positionNew.y += offSet * i;
                     positions.Add(positionNew);
                 }
-            }   
+            }
         }
 
         #endregion
-
     }
 }

@@ -7,12 +7,14 @@ namespace GameScene.Data
     public class ResourcePack : ScriptableObject
     {
         [SerializeField] private List<GameControlItemData> gameControlItemData;
+        [SerializeField] private GameObject targetModel;
         [SerializeField] private GameObject selectorModel;
         [SerializeField] private GameObject selectedModel;
         [SerializeField] private GameObject boardCellModel;
         [SerializeField] private GameObject loopPrefab;
         
         public List<GameControlItemData> GameControlItemData => gameControlItemData;
+        public GameObject TargetModel => targetModel;
         public GameObject SelectorModel => selectorModel;
         public GameObject SelectedModel => selectedModel;
         public GameObject BoardCellModel => boardCellModel;
