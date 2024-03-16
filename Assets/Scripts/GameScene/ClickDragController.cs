@@ -81,7 +81,6 @@ namespace GameScene
         protected IEnumerator HandleAction(InteractionItem direction)
         {
             var isEat = false;
-            var isBreak = false;
             var targetMove = currentPlayerPosition;
             switch (direction.SelectType)
             {
@@ -100,9 +99,10 @@ namespace GameScene
                 case SelectType.Collect:
                     isEat = true;
                     break;
+                case SelectType.Loop:
                 default:
-                    isBreak = true;
-                    break;
+                    playerController.PlayAnimationIdle();
+                    yield break;
             }
 
             if (targetMove != currentPlayerPosition)
@@ -133,12 +133,6 @@ namespace GameScene
 
                 yield return new WaitForSpineAnimationComplete(tracker);
                 playerController.PlayAnimationIdle();
-            }
-
-            if (isBreak)
-            {
-                playerController.PlayAnimationIdle();
-                yield return new WaitForSeconds(1f);
             }
         }
 
