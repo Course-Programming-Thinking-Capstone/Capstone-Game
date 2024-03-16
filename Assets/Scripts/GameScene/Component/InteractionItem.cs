@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -10,6 +11,11 @@ namespace GameScene.Component
         [SerializeField] protected RectTransform rectTransform;
         [SerializeField] protected Image rendererImg;
         [SerializeField] protected GameObject effectRender;
+
+        private void OnEnable()
+        {
+            transform.localScale = Vector3.one;
+        }
 
         public virtual void ChangeRender(Sprite newRender)
         {

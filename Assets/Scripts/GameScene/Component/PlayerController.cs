@@ -3,9 +3,8 @@ using DG.Tweening;
 using Spine;
 using Spine.Unity;
 using UnityEngine;
-using UnityEngine.Events;
 
-namespace GameScene
+namespace GameScene.Component
 {
     public class PlayerController : MonoBehaviour
     {
