@@ -141,9 +141,9 @@ namespace GameScene
                     case SelectType.Loop:
                         result.Add(baseSelectItem);
                         var loop = (Extensional)baseSelectItem;
-                        foreach (var item in loop.StoreSelected)
+                        for (int i = 0; i < loop.LoopCount; i++)
                         {
-                            for (int i = 0; i < loop.LoopCount; i++)
+                            foreach (var item in loop.StoreSelected)
                             {
                                 result.Add(item);
                             }
@@ -165,6 +165,15 @@ namespace GameScene
             // Clear all things selected
             foreach (var selector in storeSelected)
             {
+                if (selector.SelectType == SelectType.Loop)
+                {
+                    var loop = (Extensional)selector;
+                    foreach (var selectorInLoop in loop.StoreSelected)
+                    {
+                        SimplePool.Despawn(selectorInLoop.gameObject);
+                    }
+                }
+
                 SimplePool.Despawn(selector.gameObject);
             }
 
