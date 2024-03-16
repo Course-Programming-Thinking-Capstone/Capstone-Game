@@ -441,7 +441,8 @@ MonoBehaviour:
   effectRender: {fileID: 9179688125427523179}
   container: {fileID: 5385687997823657058}
   boxCollider: {fileID: 6592927703209506601}
-  offSetHeight: 25
+  offSetHeight: -25
+  partOffSet: -10
   maxLoop: 8
   loopTxt: {fileID: 2973120712452095792}
 --- !u!65 &6592927703209506601

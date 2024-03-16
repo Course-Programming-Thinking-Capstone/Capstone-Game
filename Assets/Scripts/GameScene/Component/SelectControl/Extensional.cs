@@ -13,9 +13,10 @@ namespace GameScene.Component.SelectControl
         [SerializeField] private RectTransform container;
         [SerializeField] private BoxCollider boxCollider;
         [SerializeField] private float offSetHeight;
+        [SerializeField] private float partOffSet = 0.2f;
         public List<InteractionItem> StoreSelected { get; } = new();
         private readonly List<float> tempPosition = new();
-        private readonly float offSet = 0.2f;
+
         private float baseHeight;
 
         [Header("Looper behavior")]
@@ -79,34 +80,30 @@ namespace GameScene.Component.SelectControl
 
         public void MatchHeightLooper(Vector2 itemSize, bool makeSpace = false)
         {
-            var temp = rectTransform.sizeDelta;
-            temp.y = baseHeight;
-            for (int i = 0; i < StoreSelected.Count; i++)
+            var temp = baseHeight;
+            var tempVec = rectTransform.sizeDelta;
+            if (StoreSelected.Count == 0)
             {
-                if (i == 0)
-                {
-                    temp.y = baseHeight + (StoreSelected[i].RectTransform.sizeDelta.y - offSetHeight);
-                }
-                else
-                {
-                    temp.y += StoreSelected[i].RectTransform.sizeDelta.y;
-                }
+                tempVec.y = baseHeight;
+                rectTransform.sizeDelta = tempVec;
+                boxCollider.size = tempVec;
+                return;
+            }
+
+            foreach (var item in StoreSelected)
+            {
+                temp += item.RectTransform.sizeDelta.y + partOffSet;
             }
 
             if (makeSpace) // add fake size
             {
-                if (StoreSelected.Count == 0)
-                {
-                    temp.y = baseHeight + (itemSize.y - offSetHeight);
-                }
-                else
-                {
-                    temp.y += (itemSize.y);
-                }
+                temp += itemSize.y;
             }
 
-            rectTransform.sizeDelta = temp;
-            boxCollider.size = rectTransform.sizeDelta;
+            temp += offSetHeight;
+            tempVec.y = temp;
+            rectTransform.sizeDelta = tempVec;
+            boxCollider.size = tempVec;
         }
 
         public void MakeEmptySpace(RectTransform selectedObj)
@@ -135,7 +132,9 @@ namespace GameScene.Component.SelectControl
                     yPos -= selectedObj.sizeDelta.y / 2;
                 }
 
-                yPos -= index == 0 ? item.RectTransform.sizeDelta.y / 2 : item.RectTransform.sizeDelta.y / 2 + offSet;
+                yPos -= index == 0
+                    ? item.RectTransform.sizeDelta.y / 2
+                    : item.RectTransform.sizeDelta.y / 2 + partOffSet;
                 item.RectTransform.anchoredPosition = new Vector3(0f, yPos, 0f);
                 yPos -= item.RectTransform.sizeDelta.y / 2;
                 index++;
