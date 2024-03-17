@@ -14,8 +14,6 @@ namespace GameScene.GameFunction
     public class FuncController : ClickDragController
     {
         [Header("Reference model")]
-        [SerializeField] private FuncView view;
-        [SerializeField] private FuncModel model;
         [SerializeField] private Transform funcTransform;
         // FOR CONTROL SELECTOR
         private readonly List<InteractionItem> storeFuncSelected = new();
@@ -25,129 +23,42 @@ namespace GameScene.GameFunction
 
         private void Start()
         {
-            gameMode = GameMode.Function;
-            CreateSelector();
-            CreateBoard();
-            CreateTarget();
-            CreatePlayer();
-            InitView();
-        }
-
-        private void CreateBoard()
-        {
-            view.InitGroundBoardFakePosition(boardSize, model.GetBlockOffset());
-            view.PlaceObjectToBoard(Instantiate(model.CellBoardPrefab).transform, basePlayerPosition);
-            foreach (var target in targetPosition)
-            {
-                view.PlaceObjectToBoard(Instantiate(model.CellBoardPrefab).transform, target);
-            }
-
-            foreach (var positionRoad in boardMap)
-            {
-                view.PlaceObjectToBoard(Instantiate(model.CellBoardPrefab).transform, positionRoad);
-            }
-        }
-
-        private void CreateSelector()
-        {
-            // Generate objects selector
-            foreach (var o in generateList)
-            {
-                var obj = Instantiate(model.SelectorPrefab);
-                view.SetParentSelector(obj.transform);
-                var scriptControl = obj.AddComponent<Basic>();
-                scriptControl.Init(OnClickedSelector);
-                scriptControl.SelectType = o;
-                scriptControl.ChangeRender(model.GetSelector(o));
-            }
-        }
-
-        private void CreatePlayer()
-        {
-            // Init player
-            playerController = Instantiate(model.PlayerModel).GetComponent<PlayerController>();
-            currentPlayerPosition = basePlayerPosition;
-            view.PlaceObjectToBoard(playerController.transform, basePlayerPosition);
-        }
-
-        private void CreateTarget()
-        {
-            // Init Candy
-            foreach (var position in targetPosition)
-            {
-                target = Instantiate(model.TargetPrefab).GetComponent<Target>();
-                target.Init(model.CandySprites[Random.Range(0, model.CandySprites.Count)]);
-                view.PlaceObjectToBoard(target.GetComponent<Transform>(), position);
-                targetChecker.Add(position, false);
-                targetReferences.Add(position, target.transform);
-            }
-        }
-
-        private void InitView()
-        {
-            // Play button
+            gameMode = GameMode.Loop;
             playButton.onClick.AddListener(OnClickPlay);
+            padSelectController.CreateSelector(generateList, model.Resource);
+            boardController.CreateBoard(new Vector2(8, 6), model.Resource.BoardCellModel);
+
+            if (!boardMap.Contains(basePlayerPosition))
+            {
+                boardMap.Add(basePlayerPosition);
+            }
+
+            foreach (var tg in targetPosition)
+            {
+                if (!boardMap.Contains(tg))
+                {
+                    boardMap.Add(tg);
+                }
+            }
+
+            boardController.ActiveSpecificBoard(boardMap);
+            playerController = Instantiate(model.Resource.PlayerModel).GetComponent<PlayerController>();
+            // Init player model
+            currentPlayerPosition = basePlayerPosition;
+            boardController.PlaceObjectToBoard(playerController.transform, basePlayerPosition);
+            CreateTarget();
         }
 
         #endregion
 
         private void Update()
         {
-            if (selectedObject)
+            if (Input.GetMouseButtonUp(0))
             {
-                if (Input.GetMouseButtonUp(0))
-                {
-                    HandleMouseUp();
-                }
-                else
-                {
-                    HandleMouseMoveSelected();
-                }
-            }
-        }
-
-        private void HandleMouseUp()
-        {
-            if (isDelete) // in delete zone
-            {
-                SimplePool.Despawn(selectedObject!.gameObject);
-                selectedObject = null;
-                isDelete = false;
-                return;
+                padSelectController.HandleMouseUp();
             }
 
-            // Valid pos
-
-            var func = CheckInsideFunc();
-            if (func)
-            {
-                if (!storeFuncSelected.Contains(selectedObject))
-                {
-                    storeFuncSelected.Insert(CalculatedCurrentPosition(Input.mousePosition, storedFuncPosition),
-                        selectedObject);
-                }
-
-                view.SetParentFuncSelected(selectedObject!.transform);
-            }
-            else
-            {
-                if (storeSelected.Count == 10)
-                {
-                    return;
-                }
-
-                if (!storeSelected.Contains(selectedObject))
-                {
-                    storeSelected.Insert(CalculatedCurrentPosition(Input.mousePosition, storedPosition),
-                        selectedObject);
-                }
-
-                view.SetParentSelected(selectedObject!.transform);
-            }
-
-            view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
-            view.ReSortItemsSelected(storeFuncSelected.Select(o => o.RectTransform).ToList());
-            selectedObject = null;
+            padSelectController.HandleMouseMoveSelected();
         }
 
         private void HandleMouseMoveSelected()
@@ -388,11 +299,11 @@ namespace GameScene.GameFunction
         {
             if (IsPointInRT(mousePos, selectedZone))
             {
-                view.MakeEmptySpace(
-                    storeFuncSelected.Select(o => o.RectTransform).ToList(),
-                    CalculatedCurrentPosition(mousePos, storedFuncPosition),
-                    selectedObject.RectTransform.sizeDelta.y
-                );
+                // view.MakeEmptySpace(
+                //     storeFuncSelected.Select(o => o.RectTransform).ToList(),
+                //     CalculatedCurrentPosition(mousePos, storedFuncPosition),
+                //     selectedObject.RectTransform.sizeDelta.y
+                // );
             }
             else
             {
@@ -404,11 +315,11 @@ namespace GameScene.GameFunction
         {
             if (IsPointInRT(mousePos, selectedZone))
             {
-                view.MakeEmptySpace(
-                    storeSelected.Select(o => o.RectTransform).ToList(),
-                    CalculatedCurrentPosition(mousePos, storedPosition),
-                    selectedObject.RectTransform.sizeDelta.y
-                );
+                // view.MakeEmptySpace(
+                //     storeSelected.Select(o => o.RectTransform).ToList(),
+                //     CalculatedCurrentPosition(mousePos, storedPosition),
+                //     selectedObject.RectTransform.sizeDelta.y
+                // );
             }
             else
             {
@@ -453,36 +364,36 @@ namespace GameScene.GameFunction
 
         #endregion
 
-        // Event clicked selector
-        private void OnClickedSelector(InteractionItem selectedObj)
-        {
-            // Generate new selected
-
-            var obj = SimplePool.Spawn(model.SelectedPrefab);
-            Basic selectedScript = obj.GetComponent<Basic>();
-            selectedScript.Init(OnClickedSelected);
-            selectedScript.ChangeRender(model.GetSelected(selectedObj.SelectType));
-            selectedScript.SelectType = selectedObj.SelectType;
-
-            // Moving handler
-            selectedObject = selectedScript;
-            view.SetParentSelectedToMove(selectedObject.transform);
-            StoreTempPosition();
-        }
-
-        private void OnClickedSelected(InteractionItem selectedObj)
-        {
-            // Get object to move
-            storeSelected.Remove(selectedObj);
-            storeFuncSelected.Remove(selectedObj);
-
-            selectedObject = selectedObj;
-            view.SetParentSelectedToMove(selectedObject!.transform);
-            view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
-            view.ReSortItemsSelected(storeFuncSelected.Select(o => o.RectTransform).ToList());
-
-            StoreTempPosition();
-        }
+        // // Event clicked selector
+        // private void OnClickedSelector(InteractionItem selectedObj)
+        // {
+        //     // Generate new selected
+        //
+        //     var obj = SimplePool.Spawn(model.SelectedPrefab);
+        //     Basic selectedScript = obj.GetComponent<Basic>();
+        //     selectedScript.Init(OnClickedSelected);
+        //     selectedScript.ChangeRender(model.Resource.GetByType(selectedObj.SelectType.)));
+        //     selectedScript.SelectType = selectedObj.SelectType;
+        //
+        //     // Moving handler
+        //     selectedObject = selectedScript;
+        //     view.SetParentSelectedToMove(selectedObject.transform);
+        //     StoreTempPosition();
+        // }
+        //
+        // private void OnClickedSelected(InteractionItem selectedObj)
+        // {
+        //     // Get object to move
+        //     storeSelected.Remove(selectedObj);
+        //     storeFuncSelected.Remove(selectedObj);
+        //
+        //     selectedObject = selectedObj;
+        //     view.SetParentSelectedToMove(selectedObject!.transform);
+        //     view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
+        //     view.ReSortItemsSelected(storeFuncSelected.Select(o => o.RectTransform).ToList());
+        //
+        //     StoreTempPosition();
+        // }
 
         // Start Moving
         private void OnClickPlay()

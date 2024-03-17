@@ -21,7 +21,6 @@ namespace GameScene
         {
             boardSize = baseBoardSize;
             var spriteRenderer = modelBoard.GetComponentInChildren<SpriteRenderer>();
-            Debug.Log(spriteRenderer.transform.localScale);
             var cellSize = spriteRenderer.size * spriteRenderer.transform.localScale;
             for (int i = 0; i < baseBoardSize.x * baseBoardSize.y; i++)
             {

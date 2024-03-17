@@ -19,21 +19,11 @@ namespace GameScene
         public List<Sprite> CandySprites => candySprites;
 
 
-        // Comment All from here
-        [Header("remove soon")]
-        [SerializeField] private List<ModelSelect> modelSelect;
-        [SerializeField] private GameObject selectorPrefab;
-        [SerializeField] private GameObject selectedPrefab;
-        [SerializeField] private GameObject targetPrefab;
-        [SerializeField] private GameObject cellBoardPrefab;
-
+      
         #region Getter / Setter
 
         public ResourcePack Resource => resource;
-        public GameObject SelectorPrefab => selectorPrefab;
-        public GameObject SelectedPrefab => selectedPrefab;
-        public GameObject TargetPrefab => targetPrefab;
-        public GameObject CellBoardPrefab => cellBoardPrefab;
+
         public float PlayerMoveTime => playerMoveTime;
         public GameObject PlayerModel => playerModel;
 
@@ -42,17 +32,6 @@ namespace GameScene
             return blockOffset;
         }
 
-        public Sprite GetSelected(SelectType selectType)
-        {
-            var result = modelSelect.FirstOrDefault(o => o.SelectType == selectType);
-            return result?.RenderSpriteSelected;
-        }
-
-        public Sprite GetSelector(SelectType selectType)
-        {
-            var result = modelSelect.FirstOrDefault(o => o.SelectType == selectType);
-            return result?.RenderSpriteSelector;
-        }
 
         #endregion
     }
