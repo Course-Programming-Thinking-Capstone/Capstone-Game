@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using GameScene.Component;
-using JetBrains.Annotations;
 using Spine.Unity;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,25 +15,16 @@ namespace GameScene
         [SerializeField] protected PadSelectController padSelectController;
         [SerializeField] protected BoardController boardController;
         [SerializeField] protected Button playButton;
-        [Header("Test Param")]
+        [Header("Default Param")]
         [SerializeField] protected List<SelectType> generateList;
         [SerializeField] protected List<Vector2> boardMap;
         // System
-        protected readonly Dictionary<Vector2, Transform> targetReferences = new();
+        private readonly Dictionary<Vector2, Transform> targetReferences = new();
         protected readonly Dictionary<Vector2, bool> targetChecker = new();
         protected Vector2 currentPlayerPosition;
-        protected Target target;
-        protected bool valid;
+
+        private bool valid;
         // Comment form here if finish
-        [Header("Remove soon")]
-        [SerializeField] protected RectTransform deleteZone;
-        [SerializeField] protected RectTransform selectedZone;
-        // FOR CONTROL SELECTOR
-        protected readonly List<InteractionItem> storeSelected = new();
-        protected readonly List<Vector2> storedPosition = new();
-        protected bool isDelete;
-        protected const float OffSet = 0.2f;
-        [CanBeNull] protected InteractionItem selectedObject;
 
         #region Perform action
 
@@ -42,7 +32,7 @@ namespace GameScene
         {
             foreach (var position in targetPosition)
             {
-                target = Instantiate(model.Resource.TargetModel).GetComponent<Target>();
+                var target = Instantiate(model.Resource.TargetModel).GetComponent<Target>();
                 target.Init(model.CandySprites[Random.Range(0, model.CandySprites.Count)]);
                 boardController.PlaceObjectToBoard(target.GetComponent<Transform>(), position);
                 targetChecker.Add(position, false);
