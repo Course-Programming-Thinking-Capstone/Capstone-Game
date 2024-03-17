@@ -11,13 +11,13 @@ namespace GameScene.GameBasic
     public class BasicGameController : GameController
     {
         [Header("Reference model")]
-        [SerializeField] private BasicView view;
-        [SerializeField] private BasicModel model;
+        [SerializeField] private BoardController boardController;
+        [SerializeField] private BasicGameView gameView;
+        [SerializeField] private GameModel model;
         // System
-        private readonly List<GroundRoad> listBoard = new();
-        private readonly List<InteractionItem> listSelector = new();
-        private Vector2 startPosGame;
-        private Vector2 endPosGame;
+        private List<GroundRoad> listBoard = new();
+        private List<InteractionItem> listSelector = new();
+
         private InteractionItem selectedObject;
         private List<SelectType> answer = new();
         [Header("Demo param")]
@@ -57,20 +57,22 @@ namespace GameScene.GameBasic
                 if (hitObj.CurrentDisplay != null) // SWAP
                 {
                     var oldPart = hitObj.CurrentDisplay;
-                    hitObj.ChangeRender(model.GetSprite(selectedObject.SelectType), selectedObject);
+                    hitObj.ChangeRender(model.Resource.GetByType(selectedObject.SelectType).SelectedRender,
+                        selectedObject);
                     oldPart.gameObject.SetActive(true);
                     selectedObject.gameObject.SetActive(false);
-                    view.AddRoadToContainer(oldPart.transform);
+                    gameView.AddRoadToContainer(oldPart.transform);
                 }
-                else // Null -> Add new
+                else // current is Null? -> Add new
                 {
-                    hitObj.ChangeRender(model.GetSprite(selectedObject.SelectType), selectedObject);
+                    hitObj.ChangeRender(model.Resource.GetByType(selectedObject.SelectType).SelectedRender,
+                        selectedObject);
                     selectedObject.gameObject.SetActive(false);
                 }
             }
             else // Drag not valid
             {
-                view.AddRoadToContainer(selectedObject.transform);
+                gameView.AddRoadToContainer(selectedObject.transform);
             }
 
             selectedObject = null;
@@ -96,7 +98,7 @@ namespace GameScene.GameBasic
 
         private IEnumerator StartPlayerMove()
         {
-            view.ActiveSavePanel();
+            gameView.ActiveSavePanel();
 
             for (int i = 0; i < answer.Count; i++)
             {
@@ -109,36 +111,36 @@ namespace GameScene.GameBasic
                 else
                 {
                     yield return new WaitForSeconds(1);
-                    view.ActiveSavePanel(false);
+                    gameView.ActiveSavePanel(false);
                     ResetGame();
                     yield break;
                 }
             }
 
-            yield return MovePlayer(endPosGame, model.PlayerMoveTime);
+            yield return MovePlayer(boardController.GetPositionFromBoard(targetPosition[0]), model.PlayerMoveTime);
             ShowWinPopup(800);
-            view.ActiveSavePanel(false);
+            gameView.ActiveSavePanel(false);
         }
 
         private void ResetGame()
         {
             // player position
-            playerController.transform.position = startPosGame;
+            playerController.transform.position = boardController.GetPositionFromBoard(basePlayerPosition);
             playerController.PlayAnimationIdle();
             playerController.RotatePlayer(true, 0.1f);
 
             // board
             foreach (var item in listBoard)
             {
-                item.ChangeRender(model.GetSprite(SelectType.None), null);
+                item.ChangeRender(null, null);
             }
 
             // Selector
-            view.CountLeft = 0;
-            view.CountRight = 0;
+            gameView.CountLeft = 0;
+            gameView.CountRight = 0;
             foreach (var item in listSelector)
             {
-                view.AddRoadToContainer(item.transform);
+                gameView.AddRoadToContainer(item.transform);
                 item.gameObject.SetActive(true);
             }
         }
@@ -150,42 +152,45 @@ namespace GameScene.GameBasic
             // Selector
             foreach (var item in answer)
             {
-                var newObj = Instantiate(model.RoadToSelect);
-                view.AddRoadToContainer(newObj.transform);
+                var newObj = Instantiate(model.Resource.RoadSelector);
+                gameView.AddRoadToContainer(newObj.transform);
                 newObj.transform.localScale = Vector3.one;
                 var scriptControl = newObj.GetComponent<Road>();
                 scriptControl.Init(OnClickSelector);
                 scriptControl.SelectType = item;
                 listSelector.Add(scriptControl);
-                scriptControl.ChangeRender(model.GetSprite(item));
+                scriptControl.ChangeRender(model.Resource.GetByType(item).UnSelectRender);
             }
         }
 
         private void GenerateGround()
         {
             // Ground
-            view.InitGroundBoardFakePosition(boardSize, model.GetBlockOffset());
-
-            startPosGame = view.PlaceGround(Instantiate(model.RoadGroundPrefab).transform, basePlayerPosition);
-            endPosGame = view.PlaceGround(Instantiate(model.RoadGroundPrefab).transform, targetPosition[0]);
-
-            foreach (var positionRoad in roadPartPositions)
+            boardController.CreateBoard(new Vector2(8, 6), model.Resource.BoardRoadCell);
+            if (!roadPartPositions.Contains(basePlayerPosition))
             {
-                var newRoad = Instantiate(model.RoadGroundPrefab);
-                newRoad.transform.localScale = Vector3.one;
-                var scriptControl = newRoad.GetComponent<GroundRoad>();
-                scriptControl.Initialized(OnClickRoad);
-                scriptControl.ChangeRender(model.GetSprite(SelectType.None), null);
-                listBoard.Add(scriptControl);
-                view.PlaceGround(newRoad.transform, positionRoad);
+                roadPartPositions.Add(basePlayerPosition);
+            }
+
+            if (!roadPartPositions.Contains(targetPosition[0]))
+            {
+                roadPartPositions.Add(targetPosition[0]);
+            }
+
+            listBoard = boardController.ActiveSpecificBoard<GroundRoad>(roadPartPositions);
+            listBoard.Remove(boardController.GetPartAtPosition<GroundRoad>(basePlayerPosition));
+            listBoard.Remove(boardController.GetPartAtPosition<GroundRoad>(targetPosition[0]));
+            foreach (var controlBoard in listBoard)
+            {
+                controlBoard.Initialized(OnClickRoad);
+                controlBoard.ChangeToQuestionRender();
             }
         }
 
         private void GeneratePlayer()
         {
-            // Init player
-            playerController = Instantiate(model.PlayerModel).GetComponent<PlayerController>();
-            view.PlacePlayer(playerController.transform, basePlayerPosition);
+            playerController = Instantiate(model.Resource.PlayerModel).GetComponent<PlayerController>();
+            boardController.PlaceObjectToBoard(playerController.transform, basePlayerPosition);
         }
 
         #endregion
@@ -199,16 +204,16 @@ namespace GameScene.GameBasic
         private void OnClickRoad(GroundRoad arg0)
         {
             var oldPart = arg0.CurrentDisplay;
-            arg0.ChangeRender(model.GetSprite(SelectType.None), null);
+            arg0.ChangeToQuestionRender();
             oldPart.gameObject.SetActive(true);
             selectedObject = oldPart;
-            view.GetRoadToMove(oldPart.transform);
+            gameView.GetRoadToMove(oldPart.transform);
         }
 
         private void OnClickSelector(InteractionItem road)
         {
             selectedObject = road;
-            view.GetRoadToMove(selectedObject.transform);
+            gameView.GetRoadToMove(selectedObject.transform);
         }
 
         #endregion

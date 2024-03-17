@@ -2,12 +2,19 @@ using UnityEngine;
 
 namespace GameScene.GameBasic
 {
-    public class BasicView : GameView
+    public class BasicGameView : MonoBehaviour
     {
+        [SerializeField] protected GameObject savePanel;
+        [SerializeField] private Transform disPlayContainer;
         [SerializeField] private Transform container1;
         [SerializeField] private Transform container2;
         public int CountLeft { get; set; }
         public int CountRight { get; set; }
+
+        public void ActiveSavePanel(bool isActive = true)
+        {
+            savePanel.SetActive(isActive);
+        }
 
         public void AddRoadToContainer(Transform newObjectRoad)
         {
@@ -35,18 +42,6 @@ namespace GameScene.GameBasic
             }
 
             objectClicked.SetParent(disPlayContainer);
-        }
-
-        public Vector2 PlaceGround(Transform groundItem, Vector2 position)
-        {
-            groundItem.position = GetPositionFromBoard(position);
-            groundItem.SetParent(blockContainer);
-            return groundItem.position;
-        }
-
-        public void PlacePlayer(Transform playerTransform, Vector2 position)
-        {
-            playerTransform.position = GetPositionFromBoard(position);
         }
     }
 }

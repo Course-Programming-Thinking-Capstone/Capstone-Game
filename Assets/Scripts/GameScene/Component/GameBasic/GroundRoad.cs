@@ -8,6 +8,8 @@ namespace GameScene.Component.GameBasic
     public class GroundRoad : MonoBehaviour
     {
         [SerializeField] private SpriteRenderer rendererGround;
+        [SerializeField] private Sprite questSprite;
+        [SerializeField] private Sprite baseSprite;
         private UnityAction<GroundRoad> callBack;
         public InteractionItem CurrentDisplay { get; set; }
 
@@ -15,7 +17,16 @@ namespace GameScene.Component.GameBasic
         {
             callBack = callBackController;
         }
-
+        public void ChangeToQuestionRender()
+        {
+            rendererGround.sprite = questSprite;
+            CurrentDisplay = null;
+        }
+        public void ChangeToBaseRender()
+        {
+            rendererGround.sprite = baseSprite;
+            CurrentDisplay = null;
+        }
         public void ChangeRender(Sprite newSprite, [CanBeNull] InteractionItem type)
         {
             rendererGround.sprite = newSprite;

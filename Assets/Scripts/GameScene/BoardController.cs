@@ -21,6 +21,7 @@ namespace GameScene
         {
             boardSize = baseBoardSize;
             var spriteRenderer = modelBoard.GetComponentInChildren<SpriteRenderer>();
+            Debug.Log(spriteRenderer.transform.localScale);
             var cellSize = spriteRenderer.size * spriteRenderer.transform.localScale;
             for (int i = 0; i < baseBoardSize.x * baseBoardSize.y; i++)
             {
@@ -54,6 +55,31 @@ namespace GameScene
             {
                 cacheBoardItem[(int)((position.y - 1) * boardSize.x + (position.x - 1))].gameObject.SetActive(true);
             }
+        }
+
+        public List<T> ActiveSpecificBoard<T>(List<Vector2> neededBoard)
+        {
+            var result = new List<T>();
+            foreach (var board in cacheBoardItem)
+            {
+                board.gameObject.SetActive(false);
+            }
+
+            foreach (var position in neededBoard)
+            {
+                var obj = cacheBoardItem[(int)((position.y - 1) * boardSize.x + (position.x - 1))].gameObject;
+                obj.SetActive(true);
+                result.Add(obj.GetComponent<T>());
+            }
+
+            return result;
+        }
+
+        public T GetPartAtPosition<T>(Vector2 targetPosition)
+        {
+            var obj = cacheBoardItem[(int)((targetPosition.y - 1) * boardSize.x + (targetPosition.x - 1))].gameObject;
+
+            return obj.GetComponent<T>();
         }
 
         /// <summary>
