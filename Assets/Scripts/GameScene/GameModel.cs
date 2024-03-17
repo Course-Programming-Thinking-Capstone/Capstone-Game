@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using GameScene.Data;
 using UnityEngine;
 
@@ -18,8 +17,6 @@ namespace GameScene
         [SerializeField] private List<Sprite> candySprites;
         public List<Sprite> CandySprites => candySprites;
 
-
-      
         #region Getter / Setter
 
         public ResourcePack Resource => resource;
@@ -31,7 +28,6 @@ namespace GameScene
         {
             return blockOffset;
         }
-
 
         #endregion
     }

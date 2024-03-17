@@ -1,7 +1,5 @@
-using System.Collections;
 using GameScene.Component;
 using Services;
-using Spine.Unity;
 using UnityEngine;
 
 namespace GameScene.GameSequence

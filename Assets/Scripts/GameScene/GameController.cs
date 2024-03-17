@@ -5,7 +5,6 @@ using GameScene.Component;
 using Services;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using Utilities;
 
 namespace GameScene
@@ -23,8 +22,6 @@ namespace GameScene
         [SerializeField] protected Vector2 basePlayerPosition;
         [SerializeField] protected List<Vector2> targetPosition;
         [SerializeField] protected Vector2 boardSize = new(8, 6);
-
-    
 
         protected void ShowWinPopup(int coinWin)
         {
