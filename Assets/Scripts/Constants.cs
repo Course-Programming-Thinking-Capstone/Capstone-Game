@@ -7,6 +7,8 @@ public static class Constants
     // Tags
     public const string ServicesTag = "Services";
     public const string ParamsTag = "Params";
+    public const string FuncTag = "Func";
+    public const string LoopTag = "Looper";
 
     // Scenes
     public const string EntryScene = "Scenes/Entry";

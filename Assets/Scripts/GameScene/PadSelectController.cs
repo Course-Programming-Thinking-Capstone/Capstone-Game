@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using GameScene.Component;
 using GameScene.Component.SelectControl;
@@ -17,8 +18,10 @@ namespace GameScene
         [SerializeField] private Transform arrowDir;
         [SerializeField] private Transform selectorPad;
         [SerializeField] private Transform selectedPad;
+        [SerializeField] private Transform FuncPad;
         [SerializeField] private Transform baseXPositionA;
         [SerializeField] private Transform baseXPositionB;
+        [SerializeField] private Transform baseFuncPosition;
         private bool isClose;
 
         [Header("For controller click and drag")]
@@ -35,13 +38,26 @@ namespace GameScene
         [Header("Func control")]
         [SerializeField] private Transform funcContainer;
         private List<InteractionItem> storeFuncSelected = new();
-        private List<Vector2> storedFuncPosition = new();
+        private List<float> tempFuncPosition = new();
+
+        private void OpenFunc(bool isOpen = true)
+        {
+            if (isOpen)
+            {
+                FuncPad.DOMoveY(baseFuncPosition.position.y, 0.5f);
+            }
+            else
+            {
+                FuncPad.DOMoveY(0, 0.5f);
+            }
+        }
 
         private void Awake()
         {
             storeSelected = new List<InteractionItem>();
             tempPosition = new List<float>();
             controlButton.onClick.AddListener(OnClickOpenClose);
+            OpenFunc(false);
         }
 
         public void SetDisplayPart(InteractionItem effectedItem, bool isOn)
@@ -58,7 +74,7 @@ namespace GameScene
             }
 
             isDelete = storeSelected.Count == 15 || IsInDeleteZone();
-            var looper = CheckInsideLoop();
+            var checker = CheckInsideOther();
 
             if (isDelete) // in delete zone
             {
@@ -66,13 +82,7 @@ namespace GameScene
                 selectedObject = null;
                 isDelete = false;
             }
-            else if (looper)
-            {
-                looper.AddItem(selectedObject);
-                MakeItemSelectedInRightPlace();
-                selectedObject = null;
-            }
-            else // Valid pos
+            else if (checker == null) // normal add
             {
                 if (!storeSelected.Contains(selectedObject))
                 {
@@ -82,6 +92,29 @@ namespace GameScene
                 selectedObject!.transform.SetParent(selectedContainer);
                 MakeItemSelectedInRightPlace();
                 selectedObject = null;
+            }
+            else if (checker!.CompareTag(Constants.LoopTag))
+            {
+                var extensional = checker.GetComponent<Extensional>();
+                extensional.AddItem(selectedObject);
+                MakeItemSelectedInRightPlace();
+                selectedObject = null;
+            }
+            else if (checker.CompareTag(Constants.FuncTag))
+            {
+                storeFuncSelected.Add(selectedObject);
+                selectedObject!.transform.SetParent(funcContainer);
+                MakeItemSelectedInRightPlace(isFunc: true);
+                selectedObject = null;
+            }
+
+            if (storeSelected.Any(o => o.SelectType == SelectType.Func))
+            {
+                OpenFunc();
+            }
+            else
+            {
+                OpenFunc(false);
             }
         }
 
@@ -95,19 +128,13 @@ namespace GameScene
             Vector3 mousePos = Input.mousePosition;
             selectedObject!.RectTransform.position = mousePos;
 
-            // isDelete = IsPointInRT(mousePos, deleteZone);
             if (storeSelected.Count == 15)
             {
                 return;
             }
 
-            var extensional = CheckInsideLoop();
-            if (extensional)
-            {
-                extensional.MakeEmptySpace(selectedObject.RectTransform);
-                extensional.MatchHeightLooper(selectedObject.RectTransform.sizeDelta / 2, true);
-            }
-            else
+            var checker = CheckInsideOther();
+            if (checker == null) // Normal behavior
             {
                 foreach (var selector in storeSelected)
                 {
@@ -118,10 +145,31 @@ namespace GameScene
                         extensional1.MatchHeightLooper(Vector2.zero);
                     }
                 }
-            }
 
-            // check to make space
-            MakeEmptySpace();
+                // check to make space
+                MakeEmptySpace(false);
+            }
+            else if (checker.CompareTag(Constants.LoopTag))
+            {
+                var extensional = checker.GetComponent<Extensional>();
+                extensional.MakeEmptySpace(selectedObject.RectTransform);
+                extensional.MatchHeightLooper(selectedObject.RectTransform.sizeDelta / 2, true);
+            }
+            else if (checker.CompareTag(Constants.FuncTag))
+            {
+                // check to make space
+                foreach (var selector in storeSelected)
+                {
+                    if (selector.SelectType == SelectType.Loop)
+                    {
+                        var extensional1 = (Extensional)selector;
+                        extensional1.MakeItemSelectedInRightPlace();
+                        extensional1.MatchHeightLooper(Vector2.zero);
+                    }
+                }
+
+                MakeEmptySpace(true);
+            }
         }
 
         /// <summary>
@@ -208,6 +256,13 @@ namespace GameScene
             {
                 tempPosition.Add(item.RectTransform.position.y);
             }
+
+            tempFuncPosition.Clear();
+
+            foreach (var item in storeFuncSelected)
+            {
+                tempFuncPosition.Add(item.RectTransform.position.y);
+            }
         }
 
         private bool IsInDeleteZone()
@@ -219,14 +274,30 @@ namespace GameScene
         /// Điểm đầu lấy phân nữa, điểm sau = 1/2 trước đó và 1/2 hiện tại
         /// </summary>
         /// <param name="skipIndex"></param>
-        private void MakeItemSelectedInRightPlace(int skipIndex = -1)
+        private void MakeItemSelectedInRightPlace(int skipIndex = -1, bool isFunc = false)
         {
             var index = 0;
             var yPos = 0f;
-
             foreach (var item in storeSelected)
             {
-                if (skipIndex == index && selectedObject != null) // place skip
+                if (skipIndex == index && selectedObject != null && !isFunc) // place skip
+                {
+                    yPos -= selectedObject.RectTransform.sizeDelta.y / 2;
+                }
+
+                yPos -= index == 0
+                    ? item.RectTransform.sizeDelta.y / 2
+                    : item.RectTransform.sizeDelta.y / 2 + partOffset;
+                item.RectTransform.anchoredPosition = new Vector3(0f, yPos, 0f);
+                yPos -= item.RectTransform.sizeDelta.y / 2;
+                index++;
+            }
+
+            index = 0;
+            yPos = 0f;
+            foreach (var item in storeFuncSelected)
+            {
+                if (skipIndex == index && selectedObject != null && isFunc) // place skip
                 {
                     yPos -= selectedObject.RectTransform.sizeDelta.y / 2;
                 }
@@ -240,31 +311,49 @@ namespace GameScene
             }
         }
 
-        private void MakeEmptySpace()
+        private void MakeEmptySpace(bool isFunc = false)
         {
+            // check for outside
             if (Input.mousePosition.x > baseXPositionB.position.x || IsInDeleteZone())
             {
                 MakeItemSelectedInRightPlace();
                 return;
             }
 
-            if (tempPosition.Count > 0)
+            if (tempPosition.Count > 0 && !isFunc)
             {
-                var newItemIndex = CalculatedNewItemCurrentIndexByPosition();
+                var newItemIndex = CalculatedNewItemCurrentIndexByPosition(false);
                 MakeItemSelectedInRightPlace(newItemIndex);
+            }
+            else if (tempFuncPosition.Count > 0 && isFunc)
+            {
+                var newItemIndex = CalculatedNewItemCurrentIndexByPosition(true);
+                MakeItemSelectedInRightPlace(newItemIndex, true);
             }
         }
 
-        private int CalculatedNewItemCurrentIndexByPosition()
+        private int CalculatedNewItemCurrentIndexByPosition(bool isFunc = false)
         {
             var mousePos = Input.mousePosition.y;
             var index = 0;
-
-            foreach (var position in tempPosition)
+            if (isFunc)
             {
-                if (position > mousePos)
+                foreach (var position in tempFuncPosition)
                 {
-                    index++;
+                    if (position > mousePos)
+                    {
+                        index++;
+                    }
+                }
+            }
+            else
+            {
+                foreach (var position in tempPosition)
+                {
+                    if (position > mousePos)
+                    {
+                        index++;
+                    }
                 }
             }
 
@@ -272,10 +361,17 @@ namespace GameScene
         }
 
         [CanBeNull]
-        private Extensional CheckInsideLoop()
+        private Transform CheckInsideOther()
         {
             // loop cannot inside loop
-            if (selectedObject.SelectType == SelectType.Loop)
+            if (selectedObject == null)
+            {
+                return null;
+            }
+
+            if (selectedObject.SelectType == SelectType.Loop
+                || selectedObject.SelectType == SelectType.Func
+               )
             {
                 return null;
             }
@@ -285,8 +381,10 @@ namespace GameScene
             Ray ray = new Ray(startPosition, Vector3.forward * 100);
             if (Physics.Raycast(ray, out var hit))
             {
-                var result = hit.transform.GetComponent<Extensional>();
-                return result;
+                if (hit.transform.CompareTag(Constants.LoopTag) || hit.transform.CompareTag(Constants.FuncTag))
+                {
+                    return hit.transform;
+                }
             }
 
             return null;
@@ -330,6 +428,7 @@ namespace GameScene
             // Get object to move
             // not have?
             storeSelected.Remove(selectedObj);
+            storeFuncSelected.Remove(selectedObj);
             foreach (var selector in storeSelected)
             {
                 if (selector.SelectType == SelectType.Loop)
