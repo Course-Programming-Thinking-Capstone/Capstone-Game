@@ -131,6 +131,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 454645805}
     m_Modifications:
+    - target: {fileID: 208407751264521253, guid: 77443370ac562b041a9fa656d73d88b4, type: 3}
+      propertyPath: funcContainer
+      value: 
+      objectReference: {fileID: 118973501}
+    - target: {fileID: 208407751264521253, guid: 77443370ac562b041a9fa656d73d88b4, type: 3}
+      propertyPath: funcTransform
+      value: 
+      objectReference: {fileID: 1814321336}
+    - target: {fileID: 1378185705609521504, guid: 77443370ac562b041a9fa656d73d88b4, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1378185705609521504, guid: 77443370ac562b041a9fa656d73d88b4, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1378185705609521504, guid: 77443370ac562b041a9fa656d73d88b4, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1378185705609521504, guid: 77443370ac562b041a9fa656d73d88b4, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 350
+      objectReference: {fileID: 0}
+    - target: {fileID: 1378185705609521504, guid: 77443370ac562b041a9fa656d73d88b4, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1378185705609521504, guid: 77443370ac562b041a9fa656d73d88b4, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2800692229239673793, guid: 77443370ac562b041a9fa656d73d88b4, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
@@ -215,6 +247,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4260691204675129312, guid: 77443370ac562b041a9fa656d73d88b4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4964288961736499453, guid: 77443370ac562b041a9fa656d73d88b4, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 265
+      objectReference: {fileID: 0}
+    - target: {fileID: 4964288961736499453, guid: 77443370ac562b041a9fa656d73d88b4, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 132
+      objectReference: {fileID: 0}
     - target: {fileID: 7210163217530419093, guid: 77443370ac562b041a9fa656d73d88b4, type: 3}
       propertyPath: m_Name
       value: Interaction
@@ -227,6 +271,11 @@ PrefabInstance:
 --- !u!224 &118973500 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3559835720152044297, guid: 77443370ac562b041a9fa656d73d88b4, type: 3}
+  m_PrefabInstance: {fileID: 118973499}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &118973501 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1378185705609521504, guid: 77443370ac562b041a9fa656d73d88b4, type: 3}
   m_PrefabInstance: {fileID: 118973499}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &265681266
@@ -349,12 +398,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   savePanel: {fileID: 718398932}
-  disPlayContainer: {fileID: 0}
-  startGroundPosition: {fileID: 0}
-  container: {fileID: 0}
-  blockContainer: {fileID: 0}
-  selectorContainer: {fileID: 0}
-  selectedContainer: {fileID: 0}
 --- !u!114 &415459390 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 208407751264521253, guid: 77443370ac562b041a9fa656d73d88b4, type: 3}
@@ -983,9 +1026,6 @@ MonoBehaviour:
   boardMap:
   - {x: 3, y: 4}
   - {x: 5, y: 4}
-  deleteZone: {fileID: 0}
-  selectedZone: {fileID: 0}
-  funcTransform: {fileID: 0}
 --- !u!114 &1365533571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1401,6 +1441,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1745232833}
   m_CullTransparentMesh: 1
+--- !u!224 &1814321336 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8560284220922151087, guid: 77443370ac562b041a9fa656d73d88b4, type: 3}
+  m_PrefabInstance: {fileID: 118973499}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1827143077
 GameObject:
   m_ObjectHideFlags: 0
@@ -1645,7 +1690,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 1
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0

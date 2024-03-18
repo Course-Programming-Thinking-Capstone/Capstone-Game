@@ -21,7 +21,7 @@ namespace GameScene
         [SerializeField] private Transform baseXPositionB;
         private bool isClose;
 
-        [Header("For Controller click and drag")]
+        [Header("For controller click and drag")]
         [SerializeField] private Transform unSelectContainer;
         [SerializeField] private Transform selectedContainer;
         [SerializeField] private Transform movingContainer;
@@ -31,6 +31,11 @@ namespace GameScene
         private bool isDelete;
         private ResourcePack data;
         [CanBeNull] private InteractionItem selectedObject;
+
+        [Header("Func control")]
+        [SerializeField] private Transform funcContainer;
+        private List<InteractionItem> storeFuncSelected = new();
+        private List<Vector2> storedFuncPosition = new();
 
         private void Awake()
         {

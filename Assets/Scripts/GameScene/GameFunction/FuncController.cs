@@ -1,24 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using GameScene.Component;
-using GameScene.Component.SelectControl;
-using JetBrains.Annotations;
 using Services;
-using Spine.Unity;
 using UnityEngine;
-using Utilities;
 
 namespace GameScene.GameFunction
 {
     public class FuncController : ClickDragController
     {
-        [Header("Reference model")]
-        [SerializeField] private Transform funcTransform;
-        // FOR CONTROL SELECTOR
-        private readonly List<InteractionItem> storeFuncSelected = new();
-        private readonly List<Vector2> storedFuncPosition = new();
-
         #region INITIALIZE
 
         private void Start()
@@ -111,21 +98,8 @@ namespace GameScene.GameFunction
         //     return false;
         // }
 
-        
-        private bool WinChecker()
-        {
-            foreach (var value in targetChecker.Values)
-            {
-                if (!value) // any not get
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
         #region Calulate func
+
         //
         // private int CalculatedCurrentPosition(Vector2 mousePos, List<Vector2> storedList)
         // {
@@ -198,32 +172,12 @@ namespace GameScene.GameFunction
         //     }
         // }
 
-        private bool IsOutsideBoard(Vector2 checkPosition)
-        {
-            if (boardMap.Contains(checkPosition))
-            {
-                return false;
-            }
-
-            if (targetPosition.Contains(checkPosition))
-            {
-                return false;
-            }
-
-            if (basePlayerPosition == checkPosition)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
         #endregion
+
         // Start Moving
         private void OnClickPlay()
         {
             StartCoroutine(StartPlayerMove());
         }
-        
     }
 }
