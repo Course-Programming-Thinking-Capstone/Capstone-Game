@@ -745,7 +745,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 374}
+  m_AnchoredPosition: {x: 0, y: -47}
   m_SizeDelta: {x: 238, y: 530}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &6508521435578304678
@@ -1063,7 +1063,9 @@ MonoBehaviour:
   selectedContainer: {fileID: 4794556811166686288}
   movingContainer: {fileID: 3559835720152044297}
   partOffset: -10
+  maxBaseControl: 9
   funcContainer: {fileID: 4964288961736499453}
+  maxFuncControl: 5
 --- !u!1 &7638287458383560956
 GameObject:
   m_ObjectHideFlags: 0

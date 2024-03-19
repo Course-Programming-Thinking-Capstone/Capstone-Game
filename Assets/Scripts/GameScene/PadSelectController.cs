@@ -215,14 +215,17 @@ namespace GameScene
                         var loop = (Extensional)baseSelectItem;
                         for (int i = 0; i < loop.LoopCount; i++)
                         {
-                            foreach (var item in loop.StoreSelected)
-                            {
-                                result.Add(item);
-                            }
+                            result.AddRange(loop.StoreSelected);
+                            // foreach (var item in loop.StoreSelected)
+                            // {
+                            //     result.Add(item);
+                            // }
                         }
 
                         break;
                     case SelectType.Func:
+                        result.AddRange(storeFuncSelected);
+
                         break;
                     case SelectType.Condition:
                         break;
