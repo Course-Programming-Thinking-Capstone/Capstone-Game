@@ -29,6 +29,7 @@ namespace GameScene
         [SerializeField] private Transform selectedContainer;
         [SerializeField] private Transform movingContainer;
         [SerializeField] private float partOffset;
+        [SerializeField] [Range(1, 15)] private int maxBaseControl = 8;
         private List<InteractionItem> storeSelected;
         private List<float> tempPosition;
         private bool isDelete;
@@ -37,6 +38,8 @@ namespace GameScene
 
         [Header("Func control")]
         [SerializeField] private Transform funcContainer;
+        [SerializeField] [Range(1, 5)]
+        private int maxFuncControl = 5;
         private List<InteractionItem> storeFuncSelected = new();
         private List<float> tempFuncPosition = new();
 
@@ -73,9 +76,8 @@ namespace GameScene
                 return;
             }
 
-            isDelete = storeSelected.Count == 15 || IsInDeleteZone();
             var checker = CheckInsideOther();
-
+            isDelete = IsInDeleteZone();
             if (isDelete) // in delete zone
             {
                 SimplePool.Despawn(selectedObject!.gameObject);
@@ -84,14 +86,23 @@ namespace GameScene
             }
             else if (checker == null) // normal add
             {
-                if (!storeSelected.Contains(selectedObject))
+                if (storeSelected.Count == maxBaseControl) //max
                 {
-                    storeSelected.Insert(CalculatedNewItemCurrentIndexByPosition(), selectedObject);
+                    SimplePool.Despawn(selectedObject!.gameObject);
+                    selectedObject = null;
+                    isDelete = false;
                 }
+                else
+                {
+                    if (!storeSelected.Contains(selectedObject))
+                    {
+                        storeSelected.Insert(CalculatedNewItemCurrentIndexByPosition(), selectedObject);
+                    }
 
-                selectedObject!.transform.SetParent(selectedContainer);
-                MakeItemSelectedInRightPlace();
-                selectedObject = null;
+                    selectedObject!.transform.SetParent(selectedContainer);
+                    MakeItemSelectedInRightPlace();
+                    selectedObject = null;
+                }
             }
             else if (checker!.CompareTag(Constants.LoopTag))
             {
@@ -102,10 +113,19 @@ namespace GameScene
             }
             else if (checker.CompareTag(Constants.FuncTag))
             {
-                storeFuncSelected.Add(selectedObject);
-                selectedObject!.transform.SetParent(funcContainer);
-                MakeItemSelectedInRightPlace(isFunc: true);
-                selectedObject = null;
+                if (storeFuncSelected.Count == maxFuncControl) //max
+                {
+                    SimplePool.Despawn(selectedObject!.gameObject);
+                    selectedObject = null;
+                    isDelete = false;
+                }
+                else
+                {
+                    storeFuncSelected.Insert(CalculatedNewItemCurrentIndexByPosition(true), selectedObject);
+                    selectedObject!.transform.SetParent(funcContainer);
+                    MakeItemSelectedInRightPlace(isFunc: true);
+                    selectedObject = null;
+                }
             }
 
             if (storeSelected.Any(o => o.SelectType == SelectType.Func))
@@ -320,12 +340,12 @@ namespace GameScene
                 return;
             }
 
-            if (tempPosition.Count > 0 && !isFunc)
+            if (tempPosition.Count > 0 && !isFunc && tempPosition.Count < maxBaseControl)
             {
                 var newItemIndex = CalculatedNewItemCurrentIndexByPosition(false);
                 MakeItemSelectedInRightPlace(newItemIndex);
             }
-            else if (tempFuncPosition.Count > 0 && isFunc)
+            else if (tempFuncPosition.Count > 0 && isFunc && storeFuncSelected.Count < maxFuncControl)
             {
                 var newItemIndex = CalculatedNewItemCurrentIndexByPosition(true);
                 MakeItemSelectedInRightPlace(newItemIndex, true);
