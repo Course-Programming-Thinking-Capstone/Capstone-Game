@@ -136,6 +136,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1449062201}
     - target: {fileID: 208407751264521253, guid: 77443370ac562b041a9fa656d73d88b4, type: 3}
+      propertyPath: maxBaseControl
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 208407751264521253, guid: 77443370ac562b041a9fa656d73d88b4, type: 3}
       propertyPath: baseFuncPosition
       value: 
       objectReference: {fileID: 842316423}
@@ -149,7 +153,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1378185705609521504, guid: 77443370ac562b041a9fa656d73d88b4, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 374
+      value: -47
       objectReference: {fileID: 0}
     - target: {fileID: 1729329230439042892, guid: 77443370ac562b041a9fa656d73d88b4, type: 3}
       propertyPath: m_Pivot.y
