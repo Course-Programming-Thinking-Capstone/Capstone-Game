@@ -66,7 +66,15 @@ namespace GameScene
         public void SetDisplayPart(InteractionItem effectedItem, bool isOn)
         {
             effectedItem.ActiveEffect(isOn);
-            effectedItem.transform.SetParent(isOn ? movingContainer : selectedContainer);
+
+            if (storeFuncSelected.Contains(effectedItem))
+            {
+                effectedItem.transform.SetParent(isOn ? movingContainer : funcContainer);
+            }
+            else
+            {
+                effectedItem.transform.SetParent(isOn ? movingContainer : selectedContainer);
+            }
         }
 
         public void HandleMouseUp()
@@ -216,10 +224,6 @@ namespace GameScene
                         for (int i = 0; i < loop.LoopCount; i++)
                         {
                             result.AddRange(loop.StoreSelected);
-                            // foreach (var item in loop.StoreSelected)
-                            // {
-                            //     result.Add(item);
-                            // }
                         }
 
                         break;
@@ -252,7 +256,14 @@ namespace GameScene
                 SimplePool.Despawn(selector.gameObject);
             }
 
+            foreach (var selector in storeFuncSelected)
+            {
+                SimplePool.Despawn(selector.gameObject);
+            }
+
             storeSelected.Clear();
+            storeFuncSelected.Clear();
+            OpenFunc(false);
         }
 
         public void CreateSelector(List<SelectType> createItems, ResourcePack dataParam)
