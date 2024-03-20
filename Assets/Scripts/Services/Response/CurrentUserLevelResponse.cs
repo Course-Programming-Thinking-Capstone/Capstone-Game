@@ -11,7 +11,7 @@ namespace Services.Response
 
     public class CurrentLevelData
     {
-        private GameMode Mode { get; set; }
+        private GameModeResponse ModeResponse { get; set; }
         private int LevelIndex { get; set; }
     }
 

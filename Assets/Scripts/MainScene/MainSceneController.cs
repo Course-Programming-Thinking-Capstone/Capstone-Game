@@ -17,14 +17,14 @@ namespace MainScene
         [SerializeField] private Button settingButton;
         [Header("SYSTEM")]
         private PlayerService playerService;
-        private ServerSideService serverSideService;
+        private ClientService clientService;
         private AudioService audioService;
 
         private void Awake()
         {
             var gameServices = GameServices.Instance;
             playerService = gameServices.GetService<PlayerService>();
-            serverSideService = gameServices.GetService<ServerSideService>();
+            clientService = gameServices.GetService<ClientService>();
             audioService = gameServices.GetService<AudioService>();
         }
 
@@ -79,7 +79,7 @@ namespace MainScene
 
         private void OnClickUser()
         {
-            if ((serverSideService.userId) == -1)
+            if ((clientService.userId) == -1)
             {
                 PopupHelpers.Show(Constants.LoginPopup);
             }

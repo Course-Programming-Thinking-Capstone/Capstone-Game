@@ -16,12 +16,12 @@ namespace GenericPopup.SimplePopup
         [SerializeField] private Button closeButton;
         [SerializeField] private Button signUp;
 
-        private ServerSideService serverSideService;
+        private ClientService clientService;
 
         private void Awake()
         {
-            serverSideService = GameServices.Instance.GetService<ServerSideService>();
-            serverSideService.OnFailed = err => { PopupHelpers.ShowError(err, "ERROR"); };
+            clientService = GameServices.Instance.GetService<ClientService>();
+            clientService.OnFailed = err => { PopupHelpers.ShowError(err, "ERROR"); };
         }
 
         private void Start()
@@ -40,7 +40,7 @@ namespace GenericPopup.SimplePopup
 
         private void OnClickLogin()
         {
-            serverSideService.LoginWithEmail(user.text, password.text,
+            clientService.LoginWithEmail(user.text, password.text,
                 () => { PopupHelpers.ShowError("Login thành công", "Thông báo"); });
         }
 

@@ -43,7 +43,7 @@ namespace Entry
                 DontDestroyOnLoad(soundObject);
                 // Add Services
                 gameServices.AddService(new AudioService(music, sounds, soundObject));
-                gameServices.AddService(new ServerSideService(model.BaseApiUrl));
+                gameServices.AddService(new ClientService(model.BaseApiUrl));
                 gameServices.AddService(new PlayerService());
                 gameServices.AddService(new GameService(model.TosURL, model.PrivacyURL, model.RateURL));
             }

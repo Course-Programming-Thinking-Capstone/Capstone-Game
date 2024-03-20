@@ -1,3 +1,4 @@
+using System;
 using Services;
 using TMPro;
 using UnityEngine;
@@ -16,20 +17,38 @@ namespace GenericPopup.GameModeSelect
         [SerializeField] private Transform contentContainer;
         [SerializeField] private Image modeBg;
 
-        private ServerSideService serverSideService;
+        private ClientService clientService;
 
-        private void Start()
+        private void Awake()
         {
-            serverSideService = GameServices.Instance.GetService<ServerSideService>();
+            clientService = GameServices.Instance.GetService<ClientService>();
+            clientService.OnFailed = err => { PopupHelpers.ShowError(err); };
+        }
+
+        private async void Start()
+        {
             backButton.onClick.AddListener(ClosePopup);
-            coinTxt.text = serverSideService.coin.ToString();
+            coinTxt.text = clientService.coin.ToString();
             energyTxt.text = "60 / 60";
 
-            for (int i = 1; i < 6; i++)
+            var modeData = await clientService.GetGameMode();
+            if (modeData != null && modeData.Count > 0)
             {
-                var index = i;
-                var item = CreateGameModeItem();
-                item.Initialized(null, ((GameMode)index).ToString(), () => { OnClickStage((GameMode)index); });
+                foreach (var item in modeData)
+                {
+                    var index = item.idMode;
+                    var objet = CreateGameModeItem();
+                    objet.Initialized(null, item.typeName, () => { OnClickStage(index); });
+                }
+            }
+            else
+            {
+                for (int i = 1; i < 6; i++)
+                {
+                    var index = i;
+                    var objet = CreateGameModeItem();
+                    objet.Initialized(null, ((GameMode)index).ToString(), () => { OnClickStage(index); });
+                }
             }
         }
 
@@ -40,7 +59,7 @@ namespace GenericPopup.GameModeSelect
             return obj.GetComponent<StageItem>();
         }
 
-        private void OnClickStage(GameMode mode)
+        private void OnClickStage(int mode)
         {
             var param = PopupHelpers.PassParamPopup();
             param.SaveObject(ParamType.ModeGame, mode);

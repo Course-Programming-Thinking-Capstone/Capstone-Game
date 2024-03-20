@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Services.Response;
@@ -7,17 +8,39 @@ using UnityEngine.Networking;
 
 namespace Services
 {
-    public class ServerSideService
+    public class ClientService
     {
         private string baseApi;
         public int userId = -1;
         public int coin = 0;
         private string jwt = "";
+        public Dictionary<int, GameModeResponse> GameModes { get; set; } = new();
         public UnityAction<string> OnFailed { get; set; }
 
-        public ServerSideService(string baseApi)
+        public ClientService(string baseApi)
         {
             this.baseApi = baseApi;
+        }
+
+        public async Task<List<GameModeResponse>> GetGameMode()
+        {
+            var api = baseApi + "games/gameMode";
+            try
+            {
+                var result = await Get<List<GameModeResponse>>(api);
+                foreach (var mode in result)
+                {
+                    GameModes.Add(mode.idMode, mode);
+                }
+
+                return result;
+            }
+            catch (Exception e)
+            {
+                OnFailed.Invoke(e.Message);
+            }
+
+            return null;
         }
 
         public async void LoginWithEmail(string email, string password, UnityAction onSuccess)

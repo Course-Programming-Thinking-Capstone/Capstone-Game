@@ -18,31 +18,41 @@ namespace GenericPopup.GameLevelSelect
         [SerializeField] private Transform contentContainer;
         [SerializeField] private GameObject levelItem;
 
-        private ServerSideService serverSideService;
+        private ClientService clientService;
 
         private int currentLevel;
         private int allLevel;
 
-        private GameMode gameMode;
+        private int gameMode;
 
         private void Awake()
         {
+            clientService = GameServices.Instance.GetService<ClientService>();
             var param = PopupHelpers.PassParamPopup();
-            gameMode = param.GetObject<GameMode>(ParamType.ModeGame);
+            gameMode = param.GetObject<int>(ParamType.ModeGame);
             Destroy(param.gameObject);
         }
 
         private void Start()
         {
-            serverSideService = GameServices.Instance.GetService<ServerSideService>();
             backButton.onClick.AddListener(ClosePopup);
-            coinTxt.text = serverSideService.coin.ToString();
+            coinTxt.text = clientService.coin.ToString();
             energyTxt.text = "60 / 60";
             modeName.text = gameMode.ToString();
 
             // Test
-            currentLevel = 10;
-            allLevel = 50;
+            if (clientService.GameModes.TryGetValue(gameMode, out var mode))
+            {
+                currentLevel = mode.totalLevel;
+                allLevel = mode.totalLevel;
+                modeName.text = mode.typeName;
+            }
+            else
+            {
+                currentLevel = 5;
+                allLevel = 10;
+            }
+
             // Create Level
             for (int i = 0; i < allLevel; i++)
             {
@@ -66,7 +76,7 @@ namespace GenericPopup.GameLevelSelect
         {
             var param = PopupHelpers.PassParamPopup();
             param.SaveObject(ParamType.LevelIndex, index);
-            switch (gameMode)
+            switch ((GameMode)gameMode)
             {
                 case GameMode.Basic:
                     SceneManager.LoadScene(Constants.BasicMode);
