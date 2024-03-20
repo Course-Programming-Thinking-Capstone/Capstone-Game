@@ -11,7 +11,6 @@ namespace GameScene.GameBasic
     public class BasicGameController : GameController
     {
         [Header("Reference model")]
-        [SerializeField] private BoardController boardController;
         [SerializeField] private BasicGameView gameView;
         [SerializeField] private GameModel model;
         // System
@@ -20,13 +19,16 @@ namespace GameScene.GameBasic
 
         private InteractionItem selectedObject;
         private List<SelectType> answer = new();
-        [Header("Demo param")]
-        [SerializeField] [Tooltip("Max 8x6")]
-        private List<Vector2> roadPartPositions;
 
-        private void Start()
+        private async void Start()
         {
             gameMode = GameMode.Basic;
+            foreach (var item in boardMap)
+            {
+                Debug.Log(item);
+            }
+
+            await LoadData();
             Validation();
             CalcSolution();
             GenerateGround();
@@ -167,17 +169,17 @@ namespace GameScene.GameBasic
         {
             // Ground
             boardController.CreateBoard(new Vector2(8, 6), model.Resource.BoardRoadCell);
-            if (!roadPartPositions.Contains(basePlayerPosition))
+            if (!boardMap.Contains(basePlayerPosition))
             {
-                roadPartPositions.Add(basePlayerPosition);
+                boardMap.Add(basePlayerPosition);
             }
 
-            if (!roadPartPositions.Contains(targetPosition[0]))
+            if (!boardMap.Contains(targetPosition[0]))
             {
-                roadPartPositions.Add(targetPosition[0]);
+                boardMap.Add(targetPosition[0]);
             }
 
-            listBoard = boardController.ActiveSpecificBoard<GroundRoad>(roadPartPositions);
+            listBoard = boardController.ActiveSpecificBoard<GroundRoad>(boardMap);
             listBoard.Remove(boardController.GetPartAtPosition<GroundRoad>(basePlayerPosition));
             listBoard.Remove(boardController.GetPartAtPosition<GroundRoad>(targetPosition[0]));
             foreach (var controlBoard in listBoard)
@@ -222,7 +224,7 @@ namespace GameScene.GameBasic
 
         private bool Validation()
         {
-            if (roadPartPositions.Count != roadPartPositions.Distinct().Count())
+            if (boardMap.Count != boardMap.Distinct().Count())
             {
                 Debug.LogError("Duplicate values found in roadPartPositions!");
                 return false;
@@ -236,7 +238,7 @@ namespace GameScene.GameBasic
             }
 
             sortedPath.Remove(targetPosition[0]);
-            roadPartPositions = sortedPath;
+            boardMap = sortedPath;
 
             return true;
         }
@@ -290,12 +292,12 @@ namespace GameScene.GameBasic
             Queue<Vector2> queue = new Queue<Vector2>();
             var result = new List<SelectType>();
             var allPart = new List<Vector2>();
-            foreach (var roadPart in roadPartPositions)
+            foreach (var roadPart in boardMap)
             {
                 queue.Enqueue(roadPart);
             }
 
-            foreach (var roadPart in roadPartPositions)
+            foreach (var roadPart in boardMap)
             {
                 allPart.Add(roadPart);
             }
@@ -384,7 +386,7 @@ namespace GameScene.GameBasic
 
             foreach (Vector2 neighborCoord in neighborCoordinates)
             {
-                if (roadPartPositions.Contains(neighborCoord))
+                if (boardMap.Contains(neighborCoord))
                 {
                     neighbors.Add(neighborCoord);
                 }

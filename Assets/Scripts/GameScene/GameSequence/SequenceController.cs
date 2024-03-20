@@ -8,9 +8,10 @@ namespace GameScene.GameSequence
     {
         #region INITIALIZE
 
-        private void Start()
+        private async void Start()
         {
             gameMode = GameMode.Sequence;
+            await LoadData();
             playButton.onClick.AddListener(OnClickPlay);
             padSelectController.CreateSelector(generateList, model.Resource);
             boardController.CreateBoard(new Vector2(8, 6), model.Resource.BoardCellModel);

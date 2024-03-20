@@ -652,7 +652,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b4f635bd2b8d344295bfcd1399ca6bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseApiUrl: https://www.kidpro-production.somee.com/api/v1/
+  baseApiUrl: http://localhost:5082/api/v1/
   tosURL: https://abigames.com.vn/ct-terms-of-service/
   privacyURL: https://abigames.com.vn/policy/
   rateURL: https://play.google.com/store/apps/details?id=game.onechain.galaxystacky

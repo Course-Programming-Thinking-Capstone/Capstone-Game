@@ -13,18 +13,14 @@ namespace GameScene
         [SerializeField] protected GameView view;
         [SerializeField] protected GameModel model;
         [SerializeField] protected PadSelectController padSelectController;
-        [SerializeField] protected BoardController boardController;
         [SerializeField] protected Button playButton;
         [Header("Default Param")]
         [SerializeField] protected List<SelectType> generateList;
-        [SerializeField] protected List<Vector2> boardMap;
         // System
         private readonly Dictionary<Vector2, Transform> targetReferences = new();
-        protected readonly Dictionary<Vector2, bool> targetChecker = new();
+        private readonly Dictionary<Vector2, bool> targetChecker = new();
         protected Vector2 currentPlayerPosition;
-
         private bool valid;
-        // Comment form here if finish
 
         #region Perform action
 
@@ -126,7 +122,7 @@ namespace GameScene
             }
         }
 
-        protected void ResetGame()
+        private void ResetGame()
         {
             padSelectController.Reset();
 

@@ -10,7 +10,7 @@ namespace Services
 {
     public class ClientService
     {
-        private string baseApi;
+        private readonly string baseApi;
         public int userId = -1;
         public int coin = 0;
         private string jwt = "";
@@ -28,11 +28,28 @@ namespace Services
             try
             {
                 var result = await Get<List<GameModeResponse>>(api);
+                if (result == null || result.Count <= 0) return result;
+                GameModes.Clear();
                 foreach (var mode in result)
                 {
                     GameModes.Add(mode.idMode, mode);
                 }
+                return result;
+            }
+            catch (Exception e)
+            {
+                OnFailed.Invoke(e.Message);
+            }
 
+            return null;
+        }
+
+        public async Task<LevelInformationResponse> GetLevelData(int modeId, int levelIndex)
+        {
+            var api = baseApi + "games/leveldata/" + modeId + "/" + levelIndex;
+            try
+            {
+                var result = await Get<LevelInformationResponse>(api);
                 return result;
             }
             catch (Exception e)

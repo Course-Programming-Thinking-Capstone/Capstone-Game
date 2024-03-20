@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using DG.Tweening;
 using GameScene.Component;
 using Services;
@@ -16,24 +18,83 @@ namespace GameScene
         [SerializeField] private bool isTesting;
         [SerializeField] protected GameMode gameMode;
         [SerializeField] protected PlayerController playerController;
-        protected int levelIndex;
+        [SerializeField] protected BoardController boardController;
 
-        // Param
+        protected int levelIndex;
+        protected ClientService clientService;
+
+        [Header("Game data")]
         [SerializeField] protected Vector2 basePlayerPosition;
         [SerializeField] protected List<Vector2> targetPosition;
+        [SerializeField] protected List<Vector2> boardMap;
         [SerializeField] protected Vector2 boardSize = new(8, 6);
+        [SerializeField] protected int coinWin = 0;
 
-        protected void ShowWinPopup(int coinWin)
+        protected  void Awake()
+        {
+            if (isTesting)
+            {
+                return;
+            }
+
+            Debug.Log("TRY LOAD");
+            clientService = GameServices.Instance.GetService<ClientService>();
+        }
+
+        protected async Task LoadData()
+        {
+            if (isTesting)
+            {
+                return;
+            }
+
+            var param = PopupHelpers.PassParamPopup();
+            levelIndex = param.GetObject<int>(ParamType.LevelIndex);
+            var levelData = await clientService.GetLevelData((int)gameMode, levelIndex);
+            if (levelData != null)
+            {
+                coinWin = levelData.coinReward;
+                basePlayerPosition = ConvertIntToVector2(levelData.vStartPosition);
+                targetPosition.Clear();
+                boardMap.Clear();
+                foreach (var detail in levelData.levelDetail)
+                {
+                    switch (detail.positionType)
+                    {
+                        case PositionType.Board:
+                            Debug.Log("TRY add " + ConvertIntToVector2(detail.vPosition));
+                            boardMap.Add(ConvertIntToVector2(detail.vPosition));
+                            break;
+                        case PositionType.Target:
+                            targetPosition.Add(ConvertIntToVector2(detail.vPosition));
+                            break;
+                        case PositionType.Rock:
+                            break;
+                    }
+                }
+            }
+        }
+
+        private Vector2 ConvertIntToVector2(int value)
+        {
+            int x = (value - 1) % 8 + 1;
+            int y = (value - 1) / 8 + 1;
+
+            return new Vector2(x, y);
+        }
+
+        protected void ShowWinPopup(int coinValue)
         {
             var parameter = PopupHelpers.PassParamPopup();
             parameter.AddAction(PopupKey.YesOption, OnLoadNextLevel);
-            parameter.SaveObject(ParamType.CoinTxt, coinWin);
+            parameter.SaveObject(ParamType.CoinTxt, coinValue);
             PopupHelpers.Show(Constants.WinPopup);
         }
 
         private void OnLoadNextLevel()
         {
             var param = PopupHelpers.PassParamPopup();
+            levelIndex++;
             param.SaveObject(ParamType.LevelIndex, levelIndex);
             switch (gameMode)
             {
@@ -74,47 +135,6 @@ namespace GameScene
             var movePromise = playerController.transform.DOMove(targetMove, moveTime);
             playerController.PlayAnimationMove();
             yield return movePromise.WaitForCompletion();
-        }
-
-        private void Awake()
-        {
-            if (isTesting)
-            {
-                return;
-            }
-
-            // Load services
-            if (GameObject.FindGameObjectWithTag(Constants.ServicesTag) != null)
-            {
-                var services = GameObject.FindGameObjectWithTag(Constants.ServicesTag).GetComponent<GameServices>();
-            }
-            else
-            {
-                SceneManager.LoadScene(Constants.EntryScene);
-            }
-        }
-
-        protected bool IsPointInRT(Vector2 point, RectTransform rt)
-        {
-            // Get the rectangular bounding box of your UI element
-            var rect = rt.rect;
-            var anchoredPosition = rt.position;
-            // Get the left, right, top, and bottom boundaries of the rect
-            float leftSide = anchoredPosition.x - rect.width / 2f;
-            float rightSide = anchoredPosition.x + rect.width / 2f;
-            float topSide = anchoredPosition.y + rect.height / 2f;
-            float bottomSide = anchoredPosition.y - rect.height / 2f;
-
-            // Check to see if the point is in the calculated bounds
-            if (point.x >= leftSide &&
-                point.x <= rightSide &&
-                point.y >= bottomSide &&
-                point.y <= topSide)
-            {
-                return true;
-            }
-
-            return false;
         }
     }
 }

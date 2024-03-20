@@ -2,19 +2,13 @@ using UnityEngine;
 
 namespace GameScene.GameBasic
 {
-    public class BasicGameView : MonoBehaviour
+    public class BasicGameView : GameView
     {
-        [SerializeField] protected GameObject savePanel;
         [SerializeField] private Transform disPlayContainer;
         [SerializeField] private Transform container1;
         [SerializeField] private Transform container2;
         public int CountLeft { get; set; }
         public int CountRight { get; set; }
-
-        public void ActiveSavePanel(bool isActive = true)
-        {
-            savePanel.SetActive(isActive);
-        }
 
         public void AddRoadToContainer(Transform newObjectRoad)
         {
