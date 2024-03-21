@@ -24,7 +24,7 @@ namespace Services
 
         public async Task<List<GameModeResponse>> GetGameMode()
         {
-            var api = baseApi + "games/gameMode";
+            var api = baseApi + "games/game-mode";
             try
             {
                 var result = await Get<List<GameModeResponse>>(api);
@@ -34,6 +34,7 @@ namespace Services
                 {
                     GameModes.Add(mode.idMode, mode);
                 }
+
                 return result;
             }
             catch (Exception e)
@@ -46,7 +47,8 @@ namespace Services
 
         public async Task<LevelInformationResponse> GetLevelData(int modeId, int levelIndex)
         {
-            var api = baseApi + "games/leveldata/" + modeId + "/" + levelIndex;
+            //  http://localhost:5082/api/v1/games/level-data?id=3&index=2
+            var api = baseApi + "games/level-data?id=" + modeId + "&index=" + levelIndex;
             try
             {
                 var result = await Get<LevelInformationResponse>(api);

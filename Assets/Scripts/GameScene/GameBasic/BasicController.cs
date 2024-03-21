@@ -5,6 +5,7 @@ using GameScene.Component;
 using GameScene.Component.GameBasic;
 using Services;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace GameScene.GameBasic
 {
@@ -23,12 +24,12 @@ namespace GameScene.GameBasic
         private async void Start()
         {
             gameMode = GameMode.Basic;
-            foreach (var item in boardMap)
+            if (!await LoadData())
             {
-                Debug.Log(item);
+                SceneManager.LoadScene(Constants.MainMenu);
+                return;
             }
 
-            await LoadData();
             Validation();
             CalcSolution();
             GenerateGround();

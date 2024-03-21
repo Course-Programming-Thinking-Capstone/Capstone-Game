@@ -30,22 +30,22 @@ namespace GameScene
         [SerializeField] protected Vector2 boardSize = new(8, 6);
         [SerializeField] protected int coinWin = 0;
 
-        protected  void Awake()
+        protected void Awake()
         {
             if (isTesting)
             {
                 return;
             }
 
-            Debug.Log("TRY LOAD");
             clientService = GameServices.Instance.GetService<ClientService>();
         }
+        
 
-        protected async Task LoadData()
+        protected async Task<bool> LoadData()
         {
             if (isTesting)
             {
-                return;
+                return true;
             }
 
             var param = PopupHelpers.PassParamPopup();
@@ -62,7 +62,6 @@ namespace GameScene
                     switch (detail.positionType)
                     {
                         case PositionType.Board:
-                            Debug.Log("TRY add " + ConvertIntToVector2(detail.vPosition));
                             boardMap.Add(ConvertIntToVector2(detail.vPosition));
                             break;
                         case PositionType.Target:
@@ -73,6 +72,12 @@ namespace GameScene
                     }
                 }
             }
+            else
+            {
+                return false;
+            }
+
+            return true;
         }
 
         private Vector2 ConvertIntToVector2(int value)

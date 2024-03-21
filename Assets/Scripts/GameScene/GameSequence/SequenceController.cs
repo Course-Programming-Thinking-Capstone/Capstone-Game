@@ -1,6 +1,7 @@
 using GameScene.Component;
 using Services;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace GameScene.GameSequence
 {
@@ -11,7 +12,12 @@ namespace GameScene.GameSequence
         private async void Start()
         {
             gameMode = GameMode.Sequence;
-            await LoadData();
+            if (!await LoadData())
+            {
+                SceneManager.LoadScene(Constants.MainMenu);
+                return;
+            }
+
             playButton.onClick.AddListener(OnClickPlay);
             padSelectController.CreateSelector(generateList, model.Resource);
             boardController.CreateBoard(new Vector2(8, 6), model.Resource.BoardCellModel);

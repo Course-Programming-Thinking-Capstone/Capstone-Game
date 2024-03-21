@@ -243,12 +243,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   savePanel: {fileID: 718398932}
-  disPlayContainer: {fileID: 454645805}
-  startGroundPosition: {fileID: 0}
-  container: {fileID: 0}
-  blockContainer: {fileID: 0}
-  selectorContainer: {fileID: 0}
-  selectedContainer: {fileID: 0}
 --- !u!1 &454645804
 GameObject:
   m_ObjectHideFlags: 0
@@ -1033,19 +1027,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc2f60c8456941e29fd3618320a8e1f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isTesting: 1
+  isTesting: 0
   gameMode: 3
   playerController: {fileID: 0}
+  boardController: {fileID: 1365533570}
   basePlayerPosition: {x: 1, y: 1}
   targetPosition:
   - {x: 5, y: 5}
-  boardSize: {x: 8, y: 6}
-  view: {fileID: 372901246}
-  model: {fileID: 1966046701}
-  padSelectController: {fileID: 1563191254}
-  boardController: {fileID: 1365533570}
-  playButton: {fileID: 1035767137}
-  generateList: 010000000200000003000000040000000500000006000000
   boardMap:
   - {x: 1, y: 2}
   - {x: 2, y: 2}
@@ -1054,8 +1042,13 @@ MonoBehaviour:
   - {x: 3, y: 4}
   - {x: 4, y: 4}
   - {x: 4, y: 5}
-  deleteZone: {fileID: 0}
-  selectedZone: {fileID: 0}
+  boardSize: {x: 8, y: 6}
+  coinWin: 0
+  view: {fileID: 372901246}
+  model: {fileID: 1966046701}
+  padSelectController: {fileID: 1563191254}
+  playButton: {fileID: 1035767137}
+  generateList: 010000000200000003000000040000000500000006000000
 --- !u!114 &1365533570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1629,7 +1622,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 1
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -1706,11 +1699,6 @@ MonoBehaviour:
   candySprites:
   - {fileID: 21300000, guid: 544e04d39ea01fc43bf9b8f9f52cc5d8, type: 3}
   - {fileID: 21300000, guid: 2ff45a57941036a4ab1fc3c26abab11d, type: 3}
-  modelSelect: []
-  selectorPrefab: {fileID: 0}
-  selectedPrefab: {fileID: 0}
-  targetPrefab: {fileID: 0}
-  cellBoardPrefab: {fileID: 0}
 --- !u!1 &2005999894
 GameObject:
   m_ObjectHideFlags: 0
