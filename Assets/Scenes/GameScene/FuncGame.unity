@@ -977,7 +977,7 @@ MonoBehaviour:
   model: {fileID: 1966046701}
   padSelectController: {fileID: 415459390}
   playButton: {fileID: 1035767137}
-  generateList: 01000000020000000300000004000000050000000700000006000000
+  generateList: 010000000200000003000000040000000500000007000000
 --- !u!114 &1365533571
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -11,7 +11,7 @@ namespace GameScene.GameFunction
 
         private async void Start()
         {
-            gameMode = GameMode.Loop;
+            gameMode = GameMode.Function;
             if (!await LoadData())
             {
                 SceneManager.LoadScene(Constants.MainMenu);
