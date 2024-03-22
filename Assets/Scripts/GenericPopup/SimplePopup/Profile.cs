@@ -16,7 +16,6 @@ namespace GenericPopup.SimplePopup
         [SerializeField] private Button logout;
         [SerializeField] private Button closeButton;
 
-
         private ClientService clientService;
         private UnityAction onLogout;
 
@@ -45,17 +44,16 @@ namespace GenericPopup.SimplePopup
             updateProfile.onClick.AddListener(OnClickUpdateProfile);
             logout.onClick.AddListener(OnClickLogout);
             closeButton.onClick.AddListener(ClosePopup);
-            
-            
         }
 
         private void OnClickUpdateProfile()
         {
-        
         }
 
         private void OnClickLogout()
         {
+            clientService.LogOut();
+            ClosePopup();
             onLogout?.Invoke();
         }
     }

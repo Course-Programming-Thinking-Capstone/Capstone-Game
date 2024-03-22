@@ -13,11 +13,10 @@ namespace Services
         #region Cache user data
 
         public string UserEmail { get; set; }
-        public string UserDisplayName{ get; set; }
-        public int UserId{ get; set; }
+        public string UserDisplayName { get; set; }
+        public int UserId { get; set; }
         public int Coin { get; set; }
-        
-        
+
         #endregion
 
         private readonly string baseApi;
@@ -71,6 +70,14 @@ namespace Services
             }
 
             return null;
+        }
+
+        public void LogOut()
+        {
+            jwt = "";
+            UserId = -1;
+            UserEmail = "";
+            UserDisplayName = "";
         }
 
         public async void LoginWithEmail(string email, string password, UnityAction onSuccess)
