@@ -79,12 +79,26 @@ namespace MainScene
 
         private void OnClickUser()
         {
-            if ((clientService.UserId) == -1)
+            if (clientService.UserId == -1)
             {
+                var param = PopupHelpers.PassParamPopup();
+                param.AddAction(PopupKey.CallBack, () =>
+                {
+                    view.SetDisplayUserCoin(clientService.Coin);
+                    view.SetDisplayUserName(clientService.UserDisplayName);
+                });
+
                 PopupHelpers.Show(Constants.LoginPopup);
             }
             else
             {
+                var param = PopupHelpers.PassParamPopup();
+                param.AddAction(PopupKey.CallBack, () =>
+                {
+                    view.SetDisplayUserCoin(0);
+                    view.SetDisplayUserName("Guest");
+                });
+
                 PopupHelpers.Show(Constants.ProfilePopup);
             }
         }

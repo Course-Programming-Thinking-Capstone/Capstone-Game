@@ -36,6 +36,7 @@ namespace GenericPopup.SimplePopup
             if (parameter == null)
             {
                 onLogin = parameter.GetAction(PopupKey.CallBack);
+                Destroy(parameter);
                 ClosePopup();
             }
 
