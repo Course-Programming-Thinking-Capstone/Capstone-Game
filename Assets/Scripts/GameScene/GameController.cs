@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -20,18 +19,19 @@ namespace GameScene
         [SerializeField] protected PlayerController playerController;
         [SerializeField] protected BoardController boardController;
 
-        protected int levelIndex;
-        protected ClientService clientService;
+        private int levelIndex;
+        private ClientService clientService;
 
         [Header("Game data")]
-        [SerializeField] protected Vector2 basePlayerPosition;
-        [SerializeField] protected List<Vector2> targetPosition;
-        [SerializeField] protected List<Vector2> boardMap;
-        [SerializeField] protected Vector2 boardSize = new(8, 6);
-        [SerializeField] protected int coinWin = 0;
+        protected Vector2 basePlayerPosition = new Vector2();
+        protected List<Vector2> targetPosition = new List<Vector2>();
+        protected List<Vector2> boardMap = new List<Vector2>();
+        protected Vector2 boardSize = new(8, 6);
+        protected int coinWin = 0;
 
         protected void Awake()
         {
+           
             if (isTesting)
             {
                 return;
@@ -39,7 +39,6 @@ namespace GameScene
 
             clientService = GameServices.Instance.GetService<ClientService>();
         }
-        
 
         protected async Task<bool> LoadData()
         {

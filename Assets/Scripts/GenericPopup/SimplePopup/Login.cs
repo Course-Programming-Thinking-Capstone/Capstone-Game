@@ -1,4 +1,3 @@
-
 using Services;
 using TMPro;
 using UnityEngine;
@@ -41,11 +40,16 @@ namespace GenericPopup.SimplePopup
         private void OnClickLogin()
         {
             clientService.LoginWithEmail(user.text, password.text,
-                () => { PopupHelpers.ShowError("Login thành công", "Thông báo"); });
+                () =>
+                {
+                    ClosePopup();
+                    PopupHelpers.ShowError("Login successfully", "Notification");
+                });
         }
 
         private void OnClickSigning()
         {
+            Application.OpenURL("https://www.facebook.com/DenkTieu/");
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Services.Response;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Networking;
 
@@ -11,15 +12,17 @@ namespace Services
     public class ClientService
     {
         private readonly string baseApi;
-        public int userId = -1;
+        public int userId;
         public int coin = 0;
-        private string jwt = "";
+        private string jwt;
         public Dictionary<int, GameModeResponse> GameModes { get; set; } = new();
         public UnityAction<string> OnFailed { get; set; }
 
         public ClientService(string baseApi)
         {
             this.baseApi = baseApi;
+            jwt = "";
+            userId = -1;
         }
 
         public async Task<List<GameModeResponse>> GetGameMode()
@@ -64,7 +67,7 @@ namespace Services
 
         public async void LoginWithEmail(string email, string password, UnityAction onSuccess)
         {
-            var api = baseApi + "authentication/login";
+            var api = baseApi + "games/authentication/login";
             var requestParam = new
             {
                 email, password
@@ -75,8 +78,8 @@ namespace Services
                 if (result != null)
                 {
                     onSuccess?.Invoke();
-                    jwt = result.AccessToken;
-                    userId = result.UserId;
+                    jwt = result.accessToken;
+                    userId = result.userId;
                 }
             }
             catch (Exception e)
@@ -140,17 +143,21 @@ namespace Services
                 await Task.Yield();
             }
 
-            if (request.result == UnityWebRequest.Result.Success)
+            switch (request.result)
             {
-                var jsonResult = request.downloadHandler.text;
-                var result = JsonConvert.DeserializeObject<TResultType>(jsonResult);
-                return result;
-            }
-            else
-            {
-                var jsonResult = request.downloadHandler.text;
-                var result = JsonConvert.DeserializeObject<ErrorResponse>(jsonResult);
-                OnFailed.Invoke(result.Title + " " + result.Message);
+                case UnityWebRequest.Result.Success:
+                    var jsonResult = request.downloadHandler.text;
+                    var result = JsonConvert.DeserializeObject<TResultType>(jsonResult);
+                    return result;
+                case UnityWebRequest.Result.ConnectionError:
+                    OnFailed?.Invoke("ConnectionError");
+                    break;
+                case UnityWebRequest.Result.ProtocolError:
+                    OnFailed?.Invoke("ProtocolError");
+                    break;
+                case UnityWebRequest.Result.DataProcessingError:
+                    OnFailed?.Invoke("DataProcessingError");
+                    break;
             }
 
             return default;
