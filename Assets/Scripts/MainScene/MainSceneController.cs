@@ -55,7 +55,7 @@ namespace MainScene
             }
             else
             {
-                view.SetDisplayUserCoin(playerService.UserCoin);
+                view.SetDisplayUserCoin(0);
                 view.SetDisplayUserName("Guest");
             }
           

@@ -51,9 +51,9 @@ namespace GenericPopup.SimplePopup
             clientService.LoginWithEmail(user.text, password.text,
                 () =>
                 {
+                    onLogin?.Invoke();
                     ActiveSafePanel(false);
                     ClosePopup();
-                    onLogin?.Invoke();
                     PopupHelpers.ShowError("Login successfully", "Notification");
                 });
         }

@@ -12,9 +12,6 @@ namespace Services
         private const string UserCurrentLevelKey = "uclk";
         private const string HistoryStarKey = "hsk";
 
-        public int UserCoin { get; set; }
-        public int UserDiamond { get; set; }
-
 
         public PlayerService()
         {
@@ -47,15 +44,11 @@ namespace Services
 
         public void LoadData()
         {
-            UserCoin = PlayerPrefs.GetInt(UserCoinKey, 0);
-            UserDiamond = PlayerPrefs.GetInt(UserDiamondKey, 0);
 
         }
 
         public void SaveData()
         {
-            PlayerPrefs.SetInt(UserCoinKey, UserCoin);
-            PlayerPrefs.SetInt(UserDiamondKey, UserDiamond);
         }
 
         #region Ultils method
