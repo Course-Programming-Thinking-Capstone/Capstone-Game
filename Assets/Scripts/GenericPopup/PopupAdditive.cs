@@ -12,6 +12,10 @@ namespace GenericPopup
 
         protected readonly int exit = Animator.StringToHash("Exit");
 
+        protected void ActiveSafePanel(bool isActive)
+        {
+            loading.SetActive(isActive);
+        }
         protected virtual void ClosePopup()
         {
             if (animator != null)

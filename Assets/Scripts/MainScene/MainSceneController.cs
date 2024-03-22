@@ -79,13 +79,13 @@ namespace MainScene
 
         private void OnClickUser()
         {
-            if ((clientService.userId) == -1)
+            if ((clientService.UserId) == -1)
             {
                 PopupHelpers.Show(Constants.LoginPopup);
             }
             else
             {
-                PopupHelpers.ShowError("Chức năng này chưa được hiện thực");
+                PopupHelpers.Show(Constants.ProfilePopup);
             }
         }
 

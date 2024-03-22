@@ -36,7 +36,7 @@ namespace GenericPopup.GameLevelSelect
         private void Start()
         {
             backButton.onClick.AddListener(ClosePopup);
-            coinTxt.text = clientService.coin.ToString();
+            coinTxt.text = clientService.Coin.ToString();
             energyTxt.text = "60 / 60";
             modeName.text = gameMode.ToString();
 

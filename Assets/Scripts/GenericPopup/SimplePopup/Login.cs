@@ -1,6 +1,7 @@
 using Services;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using Utilities;
 
@@ -16,11 +17,16 @@ namespace GenericPopup.SimplePopup
         [SerializeField] private Button signUp;
 
         private ClientService clientService;
+        private UnityAction onLogin;
 
         private void Awake()
         {
             clientService = GameServices.Instance.GetService<ClientService>();
-            clientService.OnFailed = err => { PopupHelpers.ShowError(err, "ERROR"); };
+            clientService.OnFailed = err =>
+            {
+                ActiveSafePanel(false);
+                PopupHelpers.ShowError(err, "ERROR");
+            };
         }
 
         private void Start()
@@ -29,6 +35,7 @@ namespace GenericPopup.SimplePopup
 
             if (parameter == null)
             {
+                onLogin = parameter.GetAction(PopupKey.CallBack);
                 ClosePopup();
             }
 
@@ -39,10 +46,13 @@ namespace GenericPopup.SimplePopup
 
         private void OnClickLogin()
         {
+            ActiveSafePanel(true);
             clientService.LoginWithEmail(user.text, password.text,
                 () =>
                 {
+                    ActiveSafePanel(false);
                     ClosePopup();
+                    onLogin?.Invoke();
                     PopupHelpers.ShowError("Login successfully", "Notification");
                 });
         }

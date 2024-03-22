@@ -18,6 +18,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Popups/Win.unity
     guid: ca41e72483529004cbef5bcc87a36531
   - enabled: 1
+    path: Assets/Scenes/Popups/Profile.unity
+    guid: 23e1f7fb19d8e054bab46a9b589cfdbc
+  - enabled: 1
     path: Assets/Scenes/Popups/LevelSelect.unity
     guid: f7dffb958a3445247acf4b5b66c3a98d
   - enabled: 1

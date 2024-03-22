@@ -28,7 +28,7 @@ namespace GenericPopup.GameModeSelect
         private async void Start()
         {
             backButton.onClick.AddListener(ClosePopup);
-            coinTxt.text = clientService.coin.ToString();
+            coinTxt.text = clientService.Coin.ToString();
             energyTxt.text = "60 / 60";
 
             var modeData = await clientService.GetGameMode();

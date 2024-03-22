@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Services.Response;
-using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Networking;
 
@@ -11,9 +10,18 @@ namespace Services
 {
     public class ClientService
     {
+        #region Cache user data
+
+        public string UserEmail { get; set; }
+        public string UserDisplayName{ get; set; }
+        public int UserId{ get; set; }
+        public int Coin { get; set; }
+        
+        
+        #endregion
+
         private readonly string baseApi;
-        public int userId;
-        public int coin = 0;
+
         private string jwt;
         public Dictionary<int, GameModeResponse> GameModes { get; set; } = new();
         public UnityAction<string> OnFailed { get; set; }
@@ -22,7 +30,7 @@ namespace Services
         {
             this.baseApi = baseApi;
             jwt = "";
-            userId = -1;
+            UserId = -1;
         }
 
         public async Task<List<GameModeResponse>> GetGameMode()
@@ -79,7 +87,9 @@ namespace Services
                 {
                     onSuccess?.Invoke();
                     jwt = result.accessToken;
-                    userId = result.userId;
+                    UserId = result.userId;
+                    UserEmail = email;
+                    UserDisplayName = result.displayName;
                 }
             }
             catch (Exception e)

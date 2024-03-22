@@ -7,6 +7,7 @@ namespace Utilities
     public enum PopupKey
     {
         YesOption,
+        CallBack,
         AdsOption,
         QuitOption,
         DescriptionKey,
