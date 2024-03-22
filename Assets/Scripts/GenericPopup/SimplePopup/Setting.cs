@@ -13,10 +13,10 @@ namespace GenericPopup.SimplePopup
         [SerializeField] private Button facebookButton;
         [SerializeField] private Button logoutButton;
         [SerializeField] private Button languageButton;
-        
+
         [SerializeField] private Slider sound;
         [SerializeField] private Slider music;
-        
+
         private ClientService clientService;
         private UnityAction onLogout;
 
@@ -40,6 +40,7 @@ namespace GenericPopup.SimplePopup
                 Destroy(parameter);
                 ClosePopup();
             }
+
             closeButton.onClick.AddListener(ClosePopup);
             logoutButton.onClick.AddListener(OnClickLogout);
             facebookButton.onClick.AddListener(OnClickFB);
@@ -55,11 +56,12 @@ namespace GenericPopup.SimplePopup
 
         private void OnClickFB()
         {
-            
+            GameServices.Instance.GetService<GameService>().FaceBook();
         }
+
         private void OnClickWebsite()
         {
-            
+            GameServices.Instance.GetService<GameService>().Web();
         }
     }
 }

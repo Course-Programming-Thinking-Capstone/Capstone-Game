@@ -16,14 +16,12 @@ namespace Services
 		private DateTime firstTimeShowRate;
 
 		// Link
-		private readonly string tosURL;
-		private readonly string privacyURL;
-		private readonly string rateURL;
-		public GameService(string tos, string privacy, string rate)
+		private readonly string facebookURL;
+		private readonly string webURL;
+		public GameService(string tos, string privacy)
 		{
-			this.tosURL = tos;
-			this.privacyURL = privacy;
-			this.rateURL = rate;
+			this.facebookURL = tos;
+			this.webURL = privacy;
 		}
 
 		public void Rate()
@@ -35,14 +33,14 @@ namespace Services
 #endif
 		}
 
-		public void TOS()
+		public void FaceBook()
 		{
-			Application.OpenURL(tosURL);
+			Application.OpenURL(facebookURL);
 		}
 
-		public void Privacy()
+		public void Web()
 		{
-			Application.OpenURL(privacyURL);
+			Application.OpenURL(webURL);
 		}
 		/// <summary>
 		/// Save when user rate game.

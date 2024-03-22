@@ -653,9 +653,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseApiUrl: http://localhost:5082/api/v1/
-  tosURL: https://abigames.com.vn/ct-terms-of-service/
-  privacyURL: https://abigames.com.vn/policy/
-  rateURL: https://play.google.com/store/apps/details?id=game.onechain.galaxystacky
+  facebookPage: https://www.facebook.com/DenkTieu/
+  webPage: https://www.youtube.com/watch?v=k4EQilGwtus
   bgModel:
   - {fileID: 2842634143430971566, guid: bc6a44715f2be2c4da5590d81810952d, type: 3}
   - {fileID: 2068821180435011513, guid: cd71b9e66eb71664ab259929da2f2c05, type: 3}

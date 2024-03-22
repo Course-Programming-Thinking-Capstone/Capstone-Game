@@ -45,7 +45,7 @@ namespace Entry
                 gameServices.AddService(new AudioService(music, sounds, soundObject));
                 gameServices.AddService(new ClientService(model.BaseApiUrl));
                 gameServices.AddService(new PlayerService());
-                gameServices.AddService(new GameService(model.TosURL, model.PrivacyURL, model.RateURL));
+                gameServices.AddService(new GameService(model.FacebookPage, model.WebPage));
             }
         }
 
