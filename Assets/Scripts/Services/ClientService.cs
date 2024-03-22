@@ -97,6 +97,7 @@ namespace Services
                     UserId = result.userId;
                     UserEmail = email;
                     UserDisplayName = result.displayName;
+                    Coin = result.userCoin;
                 }
             }
             catch (Exception e)

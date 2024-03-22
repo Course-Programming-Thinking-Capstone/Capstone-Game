@@ -48,8 +48,17 @@ namespace MainScene
 
         private void InitMain()
         {
-            view.SetDisplayUserCoin(playerService.UserCoin);
-            view.SetDisplayUserName("Guest");
+            if (clientService.UserId != -1)
+            {
+                view.SetDisplayUserCoin(clientService.Coin);
+                view.SetDisplayUserName(clientService.UserDisplayName);
+            }
+            else
+            {
+                view.SetDisplayUserCoin(playerService.UserCoin);
+                view.SetDisplayUserName("Guest");
+            }
+          
             view.SetDisplayUserEnergy(60, 60);
         }
 
