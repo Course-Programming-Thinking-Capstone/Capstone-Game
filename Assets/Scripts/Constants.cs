@@ -26,4 +26,5 @@ public static class Constants
     public const string WinPopup = "Scenes/Popups/Win";
     public const string LoginPopup = "Scenes/Popups/Login";
     public const string ProfilePopup = "Scenes/Popups/Profile";
+    public const string SettingPopup = "Scenes/Popups/Setting";
 }

@@ -58,7 +58,7 @@ namespace MainScene
                 view.SetDisplayUserCoin(0);
                 view.SetDisplayUserName("Guest");
             }
-          
+
             view.SetDisplayUserEnergy(60, 60);
         }
 
@@ -73,7 +73,7 @@ namespace MainScene
 
         private void OnClickSetting()
         {
-            PopupHelpers.ShowError("Chức năng này chưa được hiện thực");
+            PopupHelpers.Show(Constants.SettingPopup);
         }
 
         private void OnClickInventory()
