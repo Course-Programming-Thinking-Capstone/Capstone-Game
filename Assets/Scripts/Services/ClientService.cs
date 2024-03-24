@@ -16,6 +16,7 @@ namespace Services
         public string UserDisplayName { get; set; }
         public int UserId { get; set; }
         public int Coin { get; set; }
+        public bool IsLogin => UserId != -1;
 
         #endregion
 
@@ -30,6 +31,29 @@ namespace Services
             this.baseApi = baseApi;
             jwt = "";
             UserId = -1;
+        }
+
+        public async Task<List<UserProcessResponse>> GetUserProcess()
+        {
+            if (!IsLogin)
+            {
+                return new List<UserProcessResponse>();
+            }
+
+            var api = baseApi + "games/user-process/" + UserId;
+            try
+            {
+                var result = await Get<List<UserProcessResponse>>(api);
+                if (result == null || result.Count <= 0) return result;
+
+                return result;
+            }
+            catch (Exception e)
+            {
+                OnFailed.Invoke(e.Message);
+            }
+
+            return null;
         }
 
         public async Task<List<GameModeResponse>> GetGameMode()

@@ -20,9 +20,6 @@ namespace GenericPopup.GameLevelSelect
 
         private ClientService clientService;
 
-        private int currentLevel;
-        private int allLevel;
-
         private int gameMode;
 
         private void Awake()
@@ -33,24 +30,30 @@ namespace GenericPopup.GameLevelSelect
             Destroy(param.gameObject);
         }
 
-        private void Start()
+        private async void Start()
         {
             backButton.onClick.AddListener(ClosePopup);
             coinTxt.text = clientService.Coin.ToString();
             energyTxt.text = "60 / 60";
             modeName.text = gameMode.ToString();
+            var userPlayedLevel = -1;
+            var baseUnlockLevel = 2;
+            var allLevel = 10;
 
-            // Test
             if (clientService.GameModes.TryGetValue(gameMode, out var mode))
             {
-                currentLevel = mode.totalLevel;
                 allLevel = mode.totalLevel;
                 modeName.text = mode.typeName;
-            }
-            else
-            {
-                currentLevel = 5;
-                allLevel = 10;
+
+                var currentLeveList = await clientService.GetUserProcess();
+                foreach (var process in currentLeveList)
+                {
+                    if ((int)process.mode == gameMode)
+                    {
+                        userPlayedLevel = process.levelIndex;
+                        break;
+                    }
+                }
             }
 
             // Create Level
@@ -58,9 +61,29 @@ namespace GenericPopup.GameLevelSelect
             {
                 var item = CreateLevelItem();
                 var index = i;
+                var isPlayed = false;
+                var isLocked = true;
+                if (clientService.UserId != -1) // load login
+                {
+                    if (i <= userPlayedLevel) // Already play
+                    {
+                        isPlayed = true;
+                        isLocked = false;
+                    }
+
+                    if (i == userPlayedLevel + 1) // Unlock for next level to play
+                    {
+                        isLocked = false;
+                    }
+                }
+                if (i <= baseUnlockLevel) // Not play but inside base level
+                {
+                    isLocked = false;
+                }
                 item.Initialized(
-                    i, i < currentLevel,
-                    i > currentLevel, () => { OnClickLevel(index); }, i == allLevel - 1
+                    i,
+                    isPlayed,
+                    isLocked, () => { OnClickLevel(index); }, i == allLevel - 1
                 );
             }
         }
