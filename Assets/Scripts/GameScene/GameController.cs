@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -20,6 +21,7 @@ namespace GameScene
         [SerializeField] protected BoardController boardController;
 
         private int levelIndex;
+        private DateTime startTime;
         private ClientService clientService;
 
         [Header("Game data")]
@@ -27,17 +29,16 @@ namespace GameScene
         protected List<Vector2> targetPosition = new List<Vector2>();
         protected List<Vector2> boardMap = new List<Vector2>();
         protected Vector2 boardSize = new(8, 6);
-        protected int coinWin = 0;
 
         protected void Awake()
         {
-           
             if (isTesting)
             {
                 return;
             }
 
             clientService = GameServices.Instance.GetService<ClientService>();
+            startTime = DateTime.Now;
         }
 
         protected async Task<bool> LoadData()
@@ -52,7 +53,6 @@ namespace GameScene
             var levelData = await clientService.GetLevelData((int)gameMode, levelIndex);
             if (levelData != null)
             {
-                coinWin = levelData.coinReward;
                 basePlayerPosition = ConvertIntToVector2(levelData.vStartPosition);
                 targetPosition.Clear();
                 boardMap.Clear();
@@ -87,11 +87,23 @@ namespace GameScene
             return new Vector2(x, y);
         }
 
-        protected void ShowWinPopup(int coinValue)
+        protected async void ShowWinPopup()
         {
+            var result = await clientService.FinishLevel((int)gameMode, levelIndex, startTime);
+            var coinWin = 0;
+            var gemWin = 0;
+            if (result != null)
+            {
+                coinWin = result.UserCoin - result.OldCoin;
+                gemWin = result.UserGem - result.OldGem;
+                clientService.Coin = result.UserCoin;
+                clientService.Gem = result.UserGem;
+            }
+
             var parameter = PopupHelpers.PassParamPopup();
             parameter.AddAction(PopupKey.YesOption, OnLoadNextLevel);
-            parameter.SaveObject(ParamType.CoinTxt, coinValue);
+            parameter.SaveObject(ParamType.CoinTxt, coinWin);
+            parameter.SaveObject(ParamType.GemTxt, gemWin);
             PopupHelpers.Show(Constants.WinPopup);
         }
 

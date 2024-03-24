@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Services.Request;
 using Services.Response;
 using UnityEngine.Events;
 using UnityEngine.Networking;
@@ -16,6 +17,7 @@ namespace Services
         public string UserDisplayName { get; set; }
         public int UserId { get; set; }
         public int Coin { get; set; }
+        public int Gem { get; set; }
         public bool IsLogin => UserId != -1;
 
         #endregion
@@ -31,6 +33,35 @@ namespace Services
             this.baseApi = baseApi;
             jwt = "";
             UserId = -1;
+        }
+
+        public async Task<UserDataResponse> FinishLevel(int mode, int levelIndex, DateTime startTime)
+        {
+            if (!IsLogin)
+            {
+                return null;
+            }
+
+            var api = baseApi + "games/game-play-history";
+            try
+            {
+                var requestParam = new FinishGameRequest
+                {
+                    UserID = UserId,
+                    ModeId = mode,
+                    LevelIndex = levelIndex,
+                    StartTime = startTime
+                };
+                var result = await Post<UserDataResponse>(api, requestParam);
+
+                return result;
+            }
+            catch (Exception e)
+            {
+                OnFailed.Invoke(e.Message);
+            }
+
+            return null;
         }
 
         public async Task<List<UserProcessResponse>> GetUserProcess()

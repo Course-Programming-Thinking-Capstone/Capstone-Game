@@ -55,7 +55,7 @@ namespace GameScene
             view.ActiveSavePanel(false);
             if (WinChecker() && valid)
             {
-                ShowWinPopup(700);
+                ShowWinPopup();
                 // win
             }
             else

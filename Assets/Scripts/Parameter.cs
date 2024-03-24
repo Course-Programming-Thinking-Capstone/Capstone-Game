@@ -16,6 +16,7 @@ public enum ParamType
     LevelIndex,
     PreviousLevel,
     CoinTxt,
+    GemTxt,
 }
 
 public class Parameter : MonoBehaviour

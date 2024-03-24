@@ -121,7 +121,7 @@ namespace GameScene.GameBasic
             }
 
             yield return MovePlayer(boardController.GetPositionFromBoard(targetPosition[0]), model.PlayerMoveTime);
-            ShowWinPopup(800);
+            ShowWinPopup();
             gameView.ActiveSavePanel(false);
         }
 
