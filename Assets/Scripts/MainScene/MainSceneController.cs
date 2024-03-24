@@ -73,6 +73,12 @@ namespace MainScene
 
         private void OnClickSetting()
         {
+            var param = PopupHelpers.PassParamPopup();
+            param.AddAction(PopupKey.CallBack, () =>
+            {
+                view.SetDisplayUserCoin(0);
+                view.SetDisplayUserName("Guest");
+            });
             PopupHelpers.Show(Constants.SettingPopup);
         }
 
@@ -101,13 +107,6 @@ namespace MainScene
             }
             else
             {
-                var param = PopupHelpers.PassParamPopup();
-                param.AddAction(PopupKey.CallBack, () =>
-                {
-                    view.SetDisplayUserCoin(0);
-                    view.SetDisplayUserName("Guest");
-                });
-
                 PopupHelpers.Show(Constants.ProfilePopup);
             }
         }

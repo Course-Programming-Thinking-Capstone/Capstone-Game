@@ -33,11 +33,9 @@ namespace GenericPopup.SimplePopup
         {
             var parameter = PopupHelpers.PassParamPopup();
 
-            if (parameter == null)
+            if (parameter != null)
             {
                 onLogin = parameter.GetAction(PopupKey.CallBack);
-                Destroy(parameter);
-                ClosePopup();
             }
 
             login.onClick.AddListener(OnClickLogin);

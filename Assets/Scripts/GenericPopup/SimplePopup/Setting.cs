@@ -34,17 +34,19 @@ namespace GenericPopup.SimplePopup
         {
             var parameter = PopupHelpers.PassParamPopup();
 
-            if (parameter == null)
+            if (parameter != null)
             {
                 onLogout = parameter.GetAction(PopupKey.CallBack);
-                Destroy(parameter);
-                ClosePopup();
             }
 
             closeButton.onClick.AddListener(ClosePopup);
             logoutButton.onClick.AddListener(OnClickLogout);
             facebookButton.onClick.AddListener(OnClickFB);
             webButton.onClick.AddListener(OnClickWebsite);
+            if (clientService.UserId == -1)
+            {
+                logoutButton.interactable = false;
+            }
         }
 
         private void OnClickLogout()

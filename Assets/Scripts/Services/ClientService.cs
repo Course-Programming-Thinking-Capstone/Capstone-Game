@@ -92,12 +92,12 @@ namespace Services
                 var result = await Post<LoginResponse>(api, requestParam);
                 if (result != null)
                 {
-                    onSuccess?.Invoke();
                     jwt = result.accessToken;
                     UserId = result.userId;
                     UserEmail = email;
                     UserDisplayName = result.displayName;
                     Coin = result.userCoin;
+                    onSuccess?.Invoke();
                 }
             }
             catch (Exception e)
