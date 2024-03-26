@@ -17,6 +17,7 @@ namespace GameScene
         [Header("All Mode")]
         [SerializeField] private bool isTesting;
         [SerializeField] protected GameMode gameMode;
+        [SerializeField] protected GameObject loading;
         [SerializeField] protected PlayerController playerController;
         [SerializeField] protected BoardController boardController;
 
@@ -47,10 +48,12 @@ namespace GameScene
             {
                 return true;
             }
-
+            loading.SetActive(true);
             var param = PopupHelpers.PassParamPopup();
             levelIndex = param.GetObject<int>(ParamType.LevelIndex);
             var levelData = await clientService.GetLevelData((int)gameMode, levelIndex);
+            loading.SetActive(false);
+            startTime = DateTime.Now;
             if (levelData != null)
             {
                 basePlayerPosition = ConvertIntToVector2(levelData.vStartPosition);

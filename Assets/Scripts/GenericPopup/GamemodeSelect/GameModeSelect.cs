@@ -31,7 +31,9 @@ namespace GenericPopup.GameModeSelect
             coinTxt.text = clientService.Coin.ToString();
             energyTxt.text = "60 / 60";
 
+            loading.SetActive(true);
             var modeData = await clientService.GetGameMode();
+            loading.SetActive(false);
             if (modeData != null && modeData.Count > 0)
             {
                 foreach (var item in modeData)
@@ -43,12 +45,8 @@ namespace GenericPopup.GameModeSelect
             }
             else
             {
-                for (int i = 1; i < 6; i++)
-                {
-                    var index = i;
-                    var objet = CreateGameModeItem();
-                    objet.Initialized(null, ((GameMode)index).ToString(), () => { OnClickStage(index); });
-                }
+                PopupHelpers.ShowError("Not found any level, please contact our support or try again later",
+                    "Notification");
             }
         }
 
