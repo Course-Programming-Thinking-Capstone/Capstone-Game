@@ -623,6 +623,7 @@ MonoBehaviour:
   musicObject: {fileID: 745272477}
   orentation: {fileID: 2498336594730766422}
   loadingTime: 3
+  useLocalHost: 0
 --- !u!1 &1582869041
 GameObject:
   m_ObjectHideFlags: 0
@@ -652,7 +653,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b4f635bd2b8d344295bfcd1399ca6bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseApiUrl: http://localhost:5082/api/v1/
+  localBaseApiUrl: http://localhost:5082/api/v1/
+  productionBaseApi: https://www.kidpro-production.somee.com/api/v1/
   facebookPage: https://www.facebook.com/DenkTieu/
   webPage: https://www.youtube.com/watch?v=k4EQilGwtus
   bgModel:
