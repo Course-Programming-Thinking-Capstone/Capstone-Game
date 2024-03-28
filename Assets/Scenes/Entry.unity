@@ -623,7 +623,7 @@ MonoBehaviour:
   musicObject: {fileID: 745272477}
   orentation: {fileID: 2498336594730766422}
   loadingTime: 3
-  useLocalHost: 1
+  useLocalHost: 0
 --- !u!1 &1582869041
 GameObject:
   m_ObjectHideFlags: 0
