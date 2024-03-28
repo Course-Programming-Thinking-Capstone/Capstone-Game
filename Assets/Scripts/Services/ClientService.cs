@@ -135,12 +135,12 @@ namespace Services
             UserDisplayName = "";
         }
 
-        public async void LoginWithEmail(string email, string password, UnityAction onSuccess)
+        public async void LoginWithEmail(string account, string password, UnityAction onSuccess)
         {
             var api = baseApi + "games/authentication/login";
             var requestParam = new
             {
-                email, password
+                account, password
             };
             try
             {
@@ -149,7 +149,7 @@ namespace Services
                 {
                     jwt = result.accessToken;
                     UserId = result.userId;
-                    UserEmail = email;
+                    UserEmail = account;
                     UserDisplayName = result.displayName;
                     Coin = result.userCoin;
                     onSuccess?.Invoke();
