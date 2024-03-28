@@ -1573,6 +1573,7 @@ GameObject:
   - component: {fileID: 5294214585779370489}
   - component: {fileID: 5294214585779370494}
   - component: {fileID: 5294214585779370495}
+  - component: {fileID: 5294214585779370496}
   m_Layer: 5
   m_Name: InputField_ID
   m_TagString: Untagged
@@ -1708,6 +1709,19 @@ MonoBehaviour:
   m_isRichTextEditingAllowed: 0
   m_LineLimit: 0
   m_InputValidator: {fileID: 0}
+--- !u!114 &5294214585779370496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5294214585779370493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc33a39070010f94fb1c2dd721c1286d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showHtmlElement: 0
 --- !u!114 &5294214586093397704
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2028,6 +2042,7 @@ GameObject:
   - component: {fileID: 5294214586704669728}
   - component: {fileID: 5294214586704669729}
   - component: {fileID: 5294214586704669734}
+  - component: {fileID: 5294214586704669736}
   m_Layer: 5
   m_Name: InputField_Pssword
   m_TagString: Untagged
@@ -2154,6 +2169,19 @@ RectTransform:
   m_AnchoredPosition: {x: 2.6, y: 96.19}
   m_SizeDelta: {x: 700, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &5294214586704669736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5294214586704669732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc33a39070010f94fb1c2dd721c1286d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showHtmlElement: 0
 --- !u!222 &5294214586722900141
 CanvasRenderer:
   m_ObjectHideFlags: 0
