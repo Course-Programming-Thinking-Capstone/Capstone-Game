@@ -1399,17 +1399,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isTesting: 1
   gameMode: 0
-  playerPosition: {x: 1, y: 1}
-  targetPosition:
-  - {x: 3, y: 3}
-  boardSize: {x: 8, y: 6}
-  deleteZone: {fileID: 2084806566}
-  selectedZone: {fileID: 633439132}
-  playButton: {fileID: 1035767137}
-  generateList: 010000000200000003000000040000000800000005000000
-  boardMap: []
+  loading: {fileID: 0}
+  playerController: {fileID: 0}
+  boardController: {fileID: 0}
   view: {fileID: 372901246}
   model: {fileID: 1966046701}
+  padSelectController: {fileID: 0}
+  playButton: {fileID: 1035767137}
+  generateList: 010000000200000003000000040000000800000005000000
 --- !u!1 &1398959422
 GameObject:
   m_ObjectHideFlags: 0
@@ -1597,7 +1594,7 @@ SpriteRenderer:
   m_Size: {x: 19.2, y: 10.8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1745232833
@@ -2080,7 +2077,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
-  m_ScreenMatchMode: 2
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96

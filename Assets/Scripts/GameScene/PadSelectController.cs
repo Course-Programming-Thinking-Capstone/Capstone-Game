@@ -437,6 +437,8 @@ namespace GameScene
                 Extensional looper = objLoop.GetComponent<Extensional>();
                 looper.Init(OnClickedSelected);
                 looper.SelectType = selectedObj.SelectType;
+                objLoop.transform.SetParent(selectedContainer);
+                objLoop.transform.localScale = Vector3.one;
                 // assign to control
                 selectedObject = looper;
                 selectedObject.transform.SetParent(movingContainer);
@@ -449,6 +451,8 @@ namespace GameScene
                 arrow.Init(OnClickedSelected);
                 arrow.ChangeRender(data.GetByType(selectedObj.SelectType).SelectedRender);
                 arrow.SelectType = selectedObj.SelectType;
+                obj.transform.SetParent(selectedContainer);
+                obj.transform.localScale = Vector3.one;
                 // assign to control
                 selectedObject = arrow;
                 selectedObject.transform.SetParent(movingContainer);
