@@ -135,7 +135,7 @@ namespace GameScene.GameBasic
             // board
             foreach (var item in listBoard)
             {
-                item.ChangeRender(null, null);
+                item.ChangeToQuestionRender();
             }
 
             // Selector
