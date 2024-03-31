@@ -24,6 +24,7 @@ namespace GameScene
         private int levelIndex;
         private DateTime startTime;
         private ClientService clientService;
+        private PlayerService playerService;
 
         [Header("Game data")]
         protected Vector2 basePlayerPosition = new Vector2();
@@ -39,6 +40,7 @@ namespace GameScene
             }
 
             clientService = GameServices.Instance.GetService<ClientService>();
+            playerService = GameServices.Instance.GetService<PlayerService>();
             startTime = DateTime.Now;
         }
 
@@ -48,6 +50,7 @@ namespace GameScene
             {
                 return true;
             }
+
             loading.SetActive(true);
             var param = PopupHelpers.PassParamPopup();
             levelIndex = param.GetObject<int>(ParamType.LevelIndex);
@@ -92,6 +95,9 @@ namespace GameScene
 
         protected async void ShowWinPopup()
         {
+            levelIndex++;
+            playerService.SaveData((int)gameMode, levelIndex);
+
             var result = await clientService.FinishLevel((int)gameMode, levelIndex, startTime);
             var coinWin = 0;
             var gemWin = 0;
@@ -108,12 +114,32 @@ namespace GameScene
             parameter.SaveObject(ParamType.CoinTxt, coinWin);
             parameter.SaveObject(ParamType.GemTxt, gemWin);
             PopupHelpers.Show(Constants.WinPopup);
+
+            if (!clientService.IsLogin)
+            {
+                if (levelIndex >= Constants.FreeLevel)
+                {
+                    PopupHelpers.ShowError(
+                        "Thanks for playing, You need to register and upgrade to a student account to continue learning without limitations.",
+                        "Notification");
+                    return;
+                }
+            }
         }
 
         private void OnLoadNextLevel()
         {
+            if (!clientService.IsLogin)
+            {
+                if (levelIndex >= Constants.FreeLevel)
+                {
+                    SceneManager.LoadScene(Constants.MainMenu);
+                    return;
+                }
+            }
+
             var param = PopupHelpers.PassParamPopup();
-            levelIndex++;
+
             param.SaveObject(ParamType.LevelIndex, levelIndex);
             switch (gameMode)
             {

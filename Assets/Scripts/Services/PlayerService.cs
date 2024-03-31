@@ -7,48 +7,21 @@ namespace Services
     public class PlayerService
     {
         private const char Break = '~';
-        private const string UserCoinKey = "uck";
-        private const string UserDiamondKey = "udk";
-        private const string UserCurrentLevelKey = "uclk";
-        private const string HistoryStarKey = "hsk";
-
+        private const string LevelPlayedKey = "lpk";
+        private Dictionary<int, int> levelPlayer;
 
         public PlayerService()
         {
-            LoadData();
         }
 
-        public List<int> GetHistoryStar(int stateIndex)
+        public int GetCurrentLevel(int modeId)
         {
-            return GetList(HistoryStarKey + stateIndex, new List<int>());
+            return PlayerPrefs.GetInt(LevelPlayedKey + modeId, 0);
         }
 
-        public void SaveHistoryStar(int stateIndex, List<int> newData)
+        public void SaveData(int modeId, int index)
         {
-            SaveList(HistoryStarKey + stateIndex, newData);
-        }
-
-        public void SaveHistoryStar(int stateIndex, int saveIndex, int newData)
-        {
-            var current = GetHistoryStar(stateIndex);
-            current[saveIndex] = newData;
-            SaveList(HistoryStarKey + stateIndex, current);
-        }
-
-        public void AddHistoryStar(int stateIndex, int newData)
-        {
-            var current = GetHistoryStar(stateIndex);
-            current.Add(newData);
-            SaveList(HistoryStarKey + stateIndex, current);
-        }
-
-        public void LoadData()
-        {
-
-        }
-
-        public void SaveData()
-        {
+            PlayerPrefs.SetInt(LevelPlayedKey + modeId, index);
         }
 
         #region Ultils method

@@ -1,4 +1,3 @@
-using System;
 using Services;
 using TMPro;
 using UnityEngine;
@@ -19,12 +18,14 @@ namespace GenericPopup.GameLevelSelect
         [SerializeField] private GameObject levelItem;
 
         private ClientService clientService;
+        private PlayerService playerService;
 
         private int gameMode;
 
         private void Awake()
         {
             clientService = GameServices.Instance.GetService<ClientService>();
+            playerService = GameServices.Instance.GetService<PlayerService>();
             var param = PopupHelpers.PassParamPopup();
             gameMode = param.GetObject<int>(ParamType.ModeGame);
             Destroy(param.gameObject);
@@ -36,8 +37,9 @@ namespace GenericPopup.GameLevelSelect
             coinTxt.text = clientService.Coin.ToString();
             energyTxt.text = "60 / 60";
             modeName.text = gameMode.ToString();
+            var currentLocalPlayed = playerService.GetCurrentLevel(gameMode);
             var userPlayedLevel = -1;
-            var baseUnlockLevel = 2;
+            var baseUnlockLevel = Constants.FreeLevel;
             var allLevel = 10;
 
             if (clientService.GameModes.TryGetValue(gameMode, out var mode))
@@ -63,23 +65,37 @@ namespace GenericPopup.GameLevelSelect
                 var index = i;
                 var isPlayed = false;
                 var isLocked = true;
-                if (clientService.UserId != -1) // load login
+
+                // Local handle level
+                if (i < baseUnlockLevel)
                 {
-                    if (i <= userPlayedLevel) // Already play
+                    if (i <= currentLocalPlayed) // unlock all
                     {
-                        isPlayed = true;
                         isLocked = false;
                     }
 
-                    if (i == userPlayedLevel + 1) // Unlock for next level to play
+                    if (i < currentLocalPlayed)
                     {
-                        isLocked = false;
+                        isPlayed = true;
                     }
                 }
-                if (i <= baseUnlockLevel) // Not play but inside base level
+                else
                 {
-                    isLocked = false;
+                    if (clientService.UserId != -1) // already login
+                    {
+                        if (i <= userPlayedLevel) // Already play this level
+                        {
+                            isPlayed = true;
+                            isLocked = false;
+                        }
+
+                        if (i == userPlayedLevel + 1) // Unlock for next level to play
+                        {
+                            isLocked = false;
+                        }
+                    }
                 }
+
                 item.Initialized(
                     i,
                     isPlayed,
