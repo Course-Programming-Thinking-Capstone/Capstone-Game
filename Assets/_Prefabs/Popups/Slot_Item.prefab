@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &9060096667611305965
 RectTransform:
   m_ObjectHideFlags: 0
@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 6809601631322930074}
   - component: {fileID: 5194857961976255712}
   m_Layer: 5
-  m_Name: Slot_Green
+  m_Name: Slot_Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -165,6 +165,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffd24167803049d3a62f0bbfc3368ff5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rateRender:
+    _serializedList:
+    - Key: 0
+      Value: {fileID: 21300000, guid: f92948cd36628424ab38aec187a0fe50, type: 3}
+    - Key: 1
+      Value: {fileID: 21300000, guid: b024e90cffaafd344a584d2275e57a4f, type: 3}
+    - Key: 2
+      Value: {fileID: 21300000, guid: e59df8332bff60e4cb462ca4fc850735, type: 3}
+    - Key: 3
+      Value: {fileID: 21300000, guid: 34b1258699354f9489b9986a717fee40, type: 3}
+    - Key: 4
+      Value: {fileID: 21300000, guid: 4d7ddd7dc6690f145bea8ac7c17bc425, type: 3}
+    - Key: 5
+      Value: {fileID: 21300000, guid: 60575ac29ab27db41abff0bde81e6e5a, type: 3}
+  renderImg: {fileID: 5504816567369351611}
+  rateRenderImg: {fileID: 1988005276061263493}
+  quantityTxt: {fileID: 3907563865214365824}
+  focusObj: {fileID: 3267126194408767}
 --- !u!1 &5641363787594852136
 GameObject:
   m_ObjectHideFlags: 0

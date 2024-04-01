@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using AYellowpaper.SerializedCollections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -9,26 +9,36 @@ namespace GenericPopup.Inventory
     public class InventItem : MonoBehaviour
     {
         [SerializeField]
-        private List<Sprite> rateRender;
+        [SerializedDictionary("RateType", "Sprite color")]
+        private SerializedDictionary<RateType, Sprite> rateRender;
         [SerializeField] private Image renderImg;
         [SerializeField] private Image rateRenderImg;
         [SerializeField] private TextMeshProUGUI quantityTxt;
+        [SerializeField] private GameObject focusObj;
+
         private UnityAction onClick;
 
-        public void InitializedItem(Sprite sprite, int quantity, UnityAction callBack)
+        public void InitializedItem(RateType rateType, Sprite sprite, int quantity, UnityAction callBack)
         {
             renderImg.sprite = sprite;
             quantityTxt.text = quantity.ToString();
             onClick = callBack;
+            rateRenderImg.sprite = rateRender[rateType];
         }
 
         public void OnClickThisItem()
         {
+            SetFocus(true);
             onClick?.Invoke();
+        }
+
+        public void SetFocus(bool isActive)
+        {
+            focusObj.SetActive(isActive);
         }
     }
 
-    public enum ValueRate
+    public enum RateType
     {
         Orange,
         Red,
