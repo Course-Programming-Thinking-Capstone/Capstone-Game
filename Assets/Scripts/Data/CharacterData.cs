@@ -4,6 +4,8 @@ using UnityEngine;
 
 namespace Data
 {
+    [CreateAssetMenu(fileName = "CharacterData", menuName = "Character/CharacterData", order = -998)]
+
     public class CharacterDataScriptableObject : ScriptableObject
     {
         [SerializeField]

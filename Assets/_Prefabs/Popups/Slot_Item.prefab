@@ -167,7 +167,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rateRender:
     _serializedList:
-    - Key: 0
+    - Key: 6
       Value: {fileID: 21300000, guid: f92948cd36628424ab38aec187a0fe50, type: 3}
     - Key: 1
       Value: {fileID: 21300000, guid: b024e90cffaafd344a584d2275e57a4f, type: 3}

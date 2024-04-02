@@ -1,4 +1,5 @@
 using AYellowpaper.SerializedCollections;
+using Data;
 using Services;
 using TMPro;
 using UnityEngine;
@@ -18,6 +19,7 @@ namespace GenericPopup.SimplePopup
         [SerializeField] private TextMeshProUGUI energyTxt;
         [SerializeField] private TextMeshProUGUI coinTxt;
         [SerializeField] private TextMeshProUGUI gemTxt;
+        [SerializeField] private CharacterDataScriptableObject shopData;
         private ClientService clientService;
 
         private void Awake()
