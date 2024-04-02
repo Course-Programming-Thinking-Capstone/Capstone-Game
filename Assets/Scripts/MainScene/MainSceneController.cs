@@ -84,7 +84,7 @@ namespace MainScene
 
         private void OnClickInventory()
         {
-            PopupHelpers.ShowError("Chức năng này chưa được hiện thực");
+            PopupHelpers.Show(Constants.InventoryPopup);
         }
 
         private void OnClickShop()

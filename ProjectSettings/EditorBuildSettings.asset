@@ -12,14 +12,26 @@ EditorBuildSettings:
     path: Assets/Scenes/MainScene/MainScene.unity
     guid: fe5bb56b758cd82469df24b5567037d0
   - enabled: 1
+    path: Assets/Scenes/Popups/Shop.unity
+    guid: 87a3256570895d246bd72edcce25287e
+  - enabled: 1
     path: Assets/Scenes/Popups/Error.unity
     guid: 7bcd90b947c4abc48ac3ac4cfd91478c
+  - enabled: 1
+    path: Assets/Scenes/Popups/GameMode.unity
+    guid: d3e82d899f3038d4f950f822da83017b
   - enabled: 1
     path: Assets/Scenes/Popups/Win.unity
     guid: ca41e72483529004cbef5bcc87a36531
   - enabled: 1
+    path: Assets/Scenes/Popups/Inventory.unity
+    guid: abc72823192ad5d47a957a9826d2320d
+  - enabled: 1
     path: Assets/Scenes/Popups/Profile.unity
     guid: 23e1f7fb19d8e054bab46a9b589cfdbc
+  - enabled: 1
+    path: Assets/Scenes/Popups/Login.unity
+    guid: 04b52e8d659b0b04cbc9346a9dc3e5fd
   - enabled: 1
     path: Assets/Scenes/Popups/Setting.unity
     guid: 1216025b4b3961149b062d86ae6f84ef
@@ -39,12 +51,6 @@ EditorBuildSettings:
     path: Assets/Scenes/GameScene/LoopGame.unity
     guid: 7c2c1fc0ccccdc248842cebfd420723d
   - enabled: 1
-    path: Assets/Scenes/Popups/GameMode.unity
-    guid: d3e82d899f3038d4f950f822da83017b
-  - enabled: 1
     path: Assets/Scenes/GameScene/SquenceGame.unity
     guid: 88952bbca418f384ba66e6cbd51553cd
-  - enabled: 1
-    path: Assets/Scenes/Popups/Login.unity
-    guid: 04b52e8d659b0b04cbc9346a9dc3e5fd
   m_configObjects: {}
