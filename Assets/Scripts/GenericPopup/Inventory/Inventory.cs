@@ -23,7 +23,7 @@ namespace GenericPopup.Inventory
             gemTxt.text = clientService.Gem.ToString();
             energyTxt.text = "60 / 60";
 
-            loading.SetActive(true);
+            loading.SetActive(false);
         }
 
         public void OnClickClose()

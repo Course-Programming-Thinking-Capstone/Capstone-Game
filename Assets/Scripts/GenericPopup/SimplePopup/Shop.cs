@@ -1,18 +1,29 @@
-using System.Collections;
-using System.Collections.Generic;
+using Services;
+using TMPro;
 using UnityEngine;
 
-public class Shop : MonoBehaviour
+namespace GenericPopup.SimplePopup
 {
-    // Start is called before the first frame update
-    void Start()
+    public class Shop : PopupAdditive
     {
-        
-    }
+        [SerializeField] private GameObject itemPrefab;
+        [SerializeField] private TextMeshProUGUI energyTxt;
+        [SerializeField] private TextMeshProUGUI coinTxt;
+        [SerializeField] private TextMeshProUGUI gemTxt;
+        private ClientService clientService;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        private void Awake()
+        {
+            clientService = GameServices.Instance.GetService<ClientService>();
+        }
+
+        private void Start()
+        {
+            coinTxt.text = clientService.Coin.ToString();
+            gemTxt.text = clientService.Gem.ToString();
+            energyTxt.text = "60 / 60";
+
+            loading.SetActive(true);
+        }
     }
 }
