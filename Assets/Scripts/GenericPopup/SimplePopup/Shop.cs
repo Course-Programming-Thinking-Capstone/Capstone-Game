@@ -1,12 +1,20 @@
+using AYellowpaper.SerializedCollections;
 using Services;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace GenericPopup.SimplePopup
 {
     public class Shop : PopupAdditive
     {
-        [SerializeField] private GameObject itemPrefab;
+        [SerializeField]
+        [SerializedDictionary("RateType", "Sprite color")]
+        private SerializedDictionary<Enums.RateType, Sprite> rateRender;
+        [SerializeField] private Image rateImage;
+        [SerializeField] private TextMeshProUGUI characterNameTxt;
+        [SerializeField] private TextMeshProUGUI characterDetailTxt;
+        [SerializeField] private GameObject shopPrefab;
         [SerializeField] private TextMeshProUGUI energyTxt;
         [SerializeField] private TextMeshProUGUI coinTxt;
         [SerializeField] private TextMeshProUGUI gemTxt;
@@ -24,6 +32,11 @@ namespace GenericPopup.SimplePopup
             energyTxt.text = "60 / 60";
 
             loading.SetActive(true);
+        }
+
+        public void OnClickClose()
+        {
+            ClosePopup();
         }
     }
 }

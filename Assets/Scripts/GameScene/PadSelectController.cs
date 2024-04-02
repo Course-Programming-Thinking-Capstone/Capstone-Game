@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using Data;
 using DG.Tweening;
 using GameScene.Component;
 using GameScene.Component.SelectControl;
-using GameScene.Data;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;

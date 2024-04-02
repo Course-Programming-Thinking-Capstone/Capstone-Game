@@ -10,7 +10,7 @@ namespace GenericPopup.Inventory
     {
         [SerializeField]
         [SerializedDictionary("RateType", "Sprite color")]
-        private SerializedDictionary<RateType, Sprite> rateRender;
+        private SerializedDictionary<Enums.RateType, Sprite> rateRender;
         [SerializeField] private Image renderImg;
         [SerializeField] private Image rateRenderImg;
         [SerializeField] private TextMeshProUGUI quantityTxt;
@@ -18,7 +18,7 @@ namespace GenericPopup.Inventory
 
         private UnityAction onClick;
 
-        public void InitializedItem(RateType rateType, Sprite sprite, int quantity, UnityAction callBack)
+        public void InitializedItem(Enums.RateType rateType, Sprite sprite, int quantity, UnityAction callBack)
         {
             renderImg.sprite = sprite;
             quantityTxt.text = quantity.ToString();
@@ -38,13 +38,5 @@ namespace GenericPopup.Inventory
         }
     }
 
-    public enum RateType
-    {
-        Orange,
-        Red,
-        Purple,
-        Blue,
-        Green,
-        Gray
-    }
+   
 }

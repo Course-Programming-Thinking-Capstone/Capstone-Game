@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using GameScene.Data;
+using Data;
 using UnityEngine;
 
 namespace GameScene
