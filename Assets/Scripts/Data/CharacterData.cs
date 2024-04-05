@@ -6,18 +6,19 @@ namespace Data
 {
     [CreateAssetMenu(fileName = "CharacterData", menuName = "Character/CharacterData", order = -998)]
 
-    public class CharacterDataScriptableObject : ScriptableObject
+    public class CharacterData : ScriptableObject
     {
         [SerializeField]
         [SerializedDictionary("Id", "Character Data")]
-        private SerializedDictionary<int, CharacterData> dataValue;
-        public SerializedDictionary<int, CharacterData> Data => dataValue;
+        private SerializedDictionary<int, CharacterDataDetail> dataValue;
+        public SerializedDictionary<int, CharacterDataDetail> Data => dataValue;
     }
 
     [Serializable]
-    public class CharacterData
+    public class CharacterDataDetail
     {
         public string charName;
+        [TextArea(15,20)]
         public string charDetail;
         public int charPrice;
         public GameObject charModelUI;

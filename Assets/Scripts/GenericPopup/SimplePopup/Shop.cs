@@ -13,13 +13,12 @@ namespace GenericPopup.SimplePopup
         [SerializedDictionary("RateType", "Sprite color")]
         private SerializedDictionary<Enums.RateType, Sprite> rateRender;
         [SerializeField] private Image rateImage;
+        [SerializeField] private TextMeshProUGUI rankTxt;
         [SerializeField] private TextMeshProUGUI characterNameTxt;
         [SerializeField] private TextMeshProUGUI characterDetailTxt;
-        [SerializeField] private GameObject shopPrefab;
-        [SerializeField] private TextMeshProUGUI energyTxt;
         [SerializeField] private TextMeshProUGUI coinTxt;
         [SerializeField] private TextMeshProUGUI gemTxt;
-        [SerializeField] private CharacterDataScriptableObject shopData;
+        [SerializeField] private CharacterData shopData;
         private ClientService clientService;
 
         private void Awake()
@@ -31,7 +30,6 @@ namespace GenericPopup.SimplePopup
         {
             coinTxt.text = clientService.Coin.ToString();
             gemTxt.text = clientService.Gem.ToString();
-            energyTxt.text = "60 / 60";
 
             loading.SetActive(true);
         }
