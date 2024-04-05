@@ -61,7 +61,7 @@ namespace GenericPopup.SimplePopup
             currentChar = SimplePool.Spawn(character.charModelUI, Vector3.zero, Quaternion.identity);
             currentChar.transform.SetParent(characterContainer);
             currentChar.transform.localScale = Vector3.one;
-            currentChar.GetComponent<SkeletonGraphic>().AnimationState.SetAnimation(0, "action/idle/normal", false);
+            currentChar.GetComponent<SkeletonGraphic>().AnimationState.SetAnimation(0, "action/idle/normal", true);
         }
 
         public void OnClickSelect()
