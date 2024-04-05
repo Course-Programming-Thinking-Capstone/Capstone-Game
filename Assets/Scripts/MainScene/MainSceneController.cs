@@ -89,7 +89,7 @@ namespace MainScene
 
         private void OnClickShop()
         {
-            PopupHelpers.ShowError("Chức năng này chưa được hiện thực");
+            PopupHelpers.Show(Constants.ShopPopup);
         }
 
         private void OnClickUser()

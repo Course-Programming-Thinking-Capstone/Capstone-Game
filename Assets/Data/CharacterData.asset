@@ -25,7 +25,7 @@ MonoBehaviour:
     - Key: 1
       Value:
         charName: Auesitle
-        rateType: 2
+        rateType: 1
         charDetail: "\rAuesitle is an adventurous being, constantly seeking new discoveries
           with a playful curiosity that knows no bounds"
         charPrice: 500
@@ -33,7 +33,7 @@ MonoBehaviour:
     - Key: 2
       Value:
         charName: Wirder
-        rateType: 2
+        rateType: 1
         charDetail: 'Wirder is a mysterious individual, known for their eccentricities
           and unconventional lifestyle. They possess a unique perspective, constantly
           questioning norms and exploring the depths of the unknown, captivating
@@ -45,7 +45,7 @@ MonoBehaviour:
     - Key: 3
       Value:
         charName: Baqua
-        rateType: 2
+        rateType: 1
         charDetail: "\rBaqua is a resilient warrior, embodying strength and determination
           in every step. With a heart full of courage, Baqua faces challenges head-on,
           inspiring others with their unwavering resolve and indomitable spirit."
@@ -82,7 +82,7 @@ MonoBehaviour:
     - Key: 7
       Value:
         charName: Crimson
-        rateType: 4
+        rateType: 3
         charDetail: "Crimson is a fierce warrior, renowned for his unmatched skill
           and unwavering determination. He commands respect with his imposing presence,
           leading with courage and valor on the battlefield.\r"
@@ -91,7 +91,7 @@ MonoBehaviour:
     - Key: 8
       Value:
         charName: Risir
-        rateType: 4
+        rateType: 3
         charDetail: "\rRisir is a cunning strategist, wielding intellect and wit
           to overcome any challenge. He navigates complexities with ease, his sharp
           mind always one step ahead of his adversaries."
@@ -100,7 +100,7 @@ MonoBehaviour:
     - Key: 9
       Value:
         charName: Dupomo
-        rateType: 4
+        rateType: 3
         charDetail: Dupomo is a gentle soul, exuding kindness and compassion in every
           action. She brings harmony wherever she goes, her soothing presence a source
           of comfort to those around her.
@@ -137,16 +137,16 @@ MonoBehaviour:
     - Key: 13
       Value:
         charName: Obube
-        rateType: 6
+        rateType: 5
         charDetail: "Obube is a charismatic and dynamic character, radiating charm
           and charisma in every interaction. She possesses a magnetic personality,
           effortlessly drawing others to her with her wit and warmth, leaving a lasting
           impression wherever she goes.\r"
         charPrice: 3000
-        charModelUI: {fileID: 699519261887233133, guid: c385fe9ea369c8141b5b877ee95c80dd, type: 3}
+        charModelUI: {fileID: 211098905458832614, guid: 2a07315eac190ac4982b8c1a3c9e0ea3, type: 3}
     - Key: 14
       Value:
-        charName: Hirgh
+        charName: Dupomo
         rateType: 6
         charDetail: Dupomo is a gentle soul, exuding kindness and compassion in every
           action. She brings harmony wherever she goes, her soothing presence a source
