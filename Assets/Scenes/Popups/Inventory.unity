@@ -267,11 +267,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 678230476}
   loading: {fileID: 1286631249}
-  itemContainer: {fileID: 134526601018387581}
-  itemPrefab: {fileID: 4984476994651768992, guid: 872c5975e75da8842b2356cd3a2b62e5, type: 3}
   energyTxt: {fileID: 5500875111696726970}
   coinTxt: {fileID: 5500875110508252428}
   gemTxt: {fileID: 5500875111216825571}
+  itemContainer: {fileID: 134526601018387581}
+  itemPrefab: {fileID: 4984476994651768992, guid: 872c5975e75da8842b2356cd3a2b62e5, type: 3}
+  imageDetailRate: {fileID: 6152813858311618799}
+  imageDetail: {fileID: 6152813856930926043}
+  countTxt: {fileID: 6152813857032101568}
+  rateTxt: {fileID: 134526601932924404}
+  itemNameTxt: {fileID: 134526601673215462}
+  itemDetailTxt: {fileID: 134526602531052300}
+  sellValueTxt: {fileID: 0}
   resourcesPath: Fruits/
 --- !u!1001 &1286631247
 PrefabInstance:
@@ -14124,7 +14131,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 860.26, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &5500875110325426489
@@ -14482,7 +14489,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 488.26, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5500875111055860707
@@ -14778,7 +14785,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 124.880005, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &5500875111367867226

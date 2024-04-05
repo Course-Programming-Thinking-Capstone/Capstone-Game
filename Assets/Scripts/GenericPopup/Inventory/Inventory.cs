@@ -1,17 +1,35 @@
+using AYellowpaper.SerializedCollections;
 using Services;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace GenericPopup.Inventory
 {
     public class Inventory : PopupAdditive
     {
-        [SerializeField] private Transform itemContainer;
-        [SerializeField] private GameObject itemPrefab;
+        [SerializeField]
+        [SerializedDictionary("RateType", "Sprite color")]
+        private SerializedDictionary<Enums.RateType, Sprite> rateRender;
+        [Header("Header infor")]
         [SerializeField] private TextMeshProUGUI energyTxt;
         [SerializeField] private TextMeshProUGUI coinTxt;
         [SerializeField] private TextMeshProUGUI gemTxt;
+
+        [Header("Items")]
+        [SerializeField] private Transform itemContainer;
+        [SerializeField] private GameObject itemPrefab;
+
+        [Header("Item details")]
+        [SerializeField] private Image imageDetailRate;
+        [SerializeField] private Image imageDetail;
+        [SerializeField] private TextMeshProUGUI countTxt;
+        [SerializeField] private TextMeshProUGUI rateTxt;
+        [SerializeField] private TextMeshProUGUI itemNameTxt;
+        [SerializeField] private TextMeshProUGUI itemDetailTxt;
+        [SerializeField] private TextMeshProUGUI sellValueTxt;
         private ClientService clientService;
+        [Header("System")]
         [SerializeField] private string resourcesPath;
 
         private void Awake()
@@ -29,7 +47,7 @@ namespace GenericPopup.Inventory
             {
                 var fakeIt = CreateItem();
                 fakeIt.InitializedItem(
-                    (Enums.RateType)Random.Range(1, 7),
+                    rateRender[(Enums.RateType)Random.Range(1, 7)],
                     Resources.Load<Sprite>(resourcesPath + "T_fruit_" + Random.Range(1, 15)),
                     Random.Range(1, 7),
                     () => { Debug.Log("CLICKED"); }

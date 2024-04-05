@@ -1,5 +1,4 @@
-﻿using AYellowpaper.SerializedCollections;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -8,9 +7,7 @@ namespace GenericPopup.Inventory
 {
     public class InventItem : MonoBehaviour
     {
-        [SerializeField]
-        [SerializedDictionary("RateType", "Sprite color")]
-        private SerializedDictionary<Enums.RateType, Sprite> rateRender;
+    
         [SerializeField] private Image renderImg;
         [SerializeField] private Image rateRenderImg;
         [SerializeField] private TextMeshProUGUI quantityTxt;
@@ -18,12 +15,12 @@ namespace GenericPopup.Inventory
 
         private UnityAction onClick;
 
-        public void InitializedItem(Enums.RateType rateType, Sprite sprite, int quantity, UnityAction callBack)
+        public void InitializedItem(Sprite rateTypeSprite, Sprite sprite, int quantity, UnityAction callBack)
         {
             renderImg.sprite = sprite;
             quantityTxt.text = quantity.ToString();
             onClick = callBack;
-            rateRenderImg.sprite = rateRender[rateType];
+            rateRenderImg.sprite = rateTypeSprite;
         }
 
         public void OnClickThisItem()
@@ -37,6 +34,4 @@ namespace GenericPopup.Inventory
             focusObj.SetActive(isActive);
         }
     }
-
-   
 }
