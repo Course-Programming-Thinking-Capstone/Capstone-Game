@@ -1,3 +1,4 @@
+using System.Linq;
 using AYellowpaper.SerializedCollections;
 using Data;
 using Services;
@@ -28,12 +29,14 @@ namespace GenericPopup.SimplePopup
 
         private GameObject currentChar;
         private ClientService clientService;
+        private PlayerService playerService;
         private int currentIndex = 0;
         private int maxIndex = 0;
 
         private void Awake()
         {
             clientService = GameServices.Instance.GetService<ClientService>();
+            playerService = GameServices.Instance.GetService<PlayerService>();
         }
 
         private void Start()
@@ -62,14 +65,33 @@ namespace GenericPopup.SimplePopup
             currentChar.transform.SetParent(characterContainer);
             currentChar.transform.localScale = Vector3.one;
             currentChar.GetComponent<SkeletonGraphic>().AnimationState.SetAnimation(0, "action/idle/normal", true);
+
+            if (playerService.characterBought.Contains(character.itemId))
+            {
+                buyButton.SetActive(false);
+                selectButton.SetActive(true);
+            }
+            else
+            {
+                buyButton.SetActive(true);
+                selectButton.SetActive(false);
+            }
         }
 
         public void OnClickSelect()
         {
+            PopupHelpers.ShowError("Character equipped ", "Notification");
+            selectButton.SetActive(false);
         }
 
         public void OnClickBuy()
         {
+            var character = shopData.Data[currentIndex];
+            playerService.SaveNewCharacter(character.itemId);
+            PopupHelpers.ShowError("Buy successfully", "Congratulation");
+
+            buyButton.SetActive(false);
+            selectButton.SetActive(true);
         }
 
         public void OnClickPrevious()

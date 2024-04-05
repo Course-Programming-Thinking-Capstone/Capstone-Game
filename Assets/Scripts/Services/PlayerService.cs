@@ -8,10 +8,23 @@ namespace Services
     {
         private const char Break = '~';
         private const string LevelPlayedKey = "lpk";
+        private const string CharacterOwnKey = "cok";
         private Dictionary<int, int> levelPlayer;
+
+        public readonly List<int> characterBought;
 
         public PlayerService()
         {
+            characterBought = GetList(CharacterOwnKey, new List<int> { 0 });
+        }
+
+        public void SaveNewCharacter(int boughtId)
+        {
+            if (!characterBought.Contains(boughtId))
+            {
+                characterBought.Add(boughtId);
+                SaveList(CharacterOwnKey, characterBought);
+            }
         }
 
         public int GetCurrentLevel(int modeId)
