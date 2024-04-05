@@ -18,7 +18,8 @@ namespace Data
     public class CharacterDataDetail
     {
         public string charName;
-        [TextArea(15,20)]
+        public Enums.RateType rateType;
+        [TextArea(5,25)]
         public string charDetail;
         public int charPrice;
         public GameObject charModelUI;

@@ -8,11 +8,11 @@ public abstract class Enums
 
     public enum RateType
     {
-        Orange =6,
-        Red =5,
-        Purple = 4,
-        Blue = 3,
-        Green = 2,
-        Gray = 1
+        Legendary = 6,
+        Epic = 5,
+        Elite = 4,
+        Rare = 3,
+        Uncommon = 2,
+        Common = 1
     }
 }

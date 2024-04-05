@@ -439,7 +439,6 @@ MonoBehaviour:
   rankTxt: {fileID: 7459603270380089489}
   characterNameTxt: {fileID: 7459603270154582343}
   characterDetailTxt: {fileID: 7459603269519373704}
-  energyTxt: {fileID: 0}
   coinTxt: {fileID: 4575968921495275210}
   gemTxt: {fileID: 4575968921051991845}
   shopData: {fileID: 11400000, guid: add0c2f86d7dca649ab5dcd6ee6fa14a, type: 2}
