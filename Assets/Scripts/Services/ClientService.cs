@@ -247,6 +247,8 @@ namespace Services
                 case UnityWebRequest.Result.ConnectionError:
                     break;
                 case UnityWebRequest.Result.ProtocolError:
+                    var errorResult = JsonConvert.DeserializeObject<ErrorResponse>(request.downloadHandler.text);
+                    OnFailed?.Invoke(errorResult.Message);
                     break;
                 case UnityWebRequest.Result.DataProcessingError:
                     break;
@@ -284,7 +286,8 @@ namespace Services
                     OnFailed?.Invoke("ConnectionError");
                     break;
                 case UnityWebRequest.Result.ProtocolError:
-                    OnFailed?.Invoke("ProtocolError");
+                    var errorResult = JsonConvert.DeserializeObject<ErrorResponse>(request.downloadHandler.text);
+                    OnFailed?.Invoke(errorResult.Message);
                     break;
                 case UnityWebRequest.Result.DataProcessingError:
                     OnFailed?.Invoke("DataProcessingError");
