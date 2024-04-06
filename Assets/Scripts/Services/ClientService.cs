@@ -18,6 +18,7 @@ namespace Services
         public int UserId { get; set; }
         public int Coin { get; set; }
         public int Gem { get; set; }
+        public List<GameShopItemResponse> CacheShopData { get; set; }
         public bool IsLogin => UserId != -1;
 
         #endregion
@@ -33,6 +34,22 @@ namespace Services
             this.baseApi = baseApi;
             jwt = "";
             UserId = -1;
+        }
+
+        public async Task<List<GameShopItemResponse>> GetShopData()
+        {
+            var api = baseApi + "games/shop-item";
+            try
+            {
+                CacheShopData = await Get<List<GameShopItemResponse>>(api);
+                return CacheShopData;
+            }
+            catch (Exception e)
+            {
+                OnFailed.Invoke(e.Message);
+            }
+
+            return null;
         }
 
         public async Task<UserDataResponse> FinishLevel(int mode, int levelIndex, DateTime startTime)

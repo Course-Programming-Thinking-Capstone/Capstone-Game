@@ -27,14 +27,14 @@ namespace Services
             }
         }
 
-        public int GetCurrentLevel(int modeId)
+        public int GetCurrentLevel(int modeId, int userId = -1)
         {
             return PlayerPrefs.GetInt(LevelPlayedKey + modeId, 0);
         }
 
-        public void SaveData(int modeId, int index)
+        public void SaveData(int modeId, int currentLevel, int userId = -1)
         {
-            PlayerPrefs.SetInt(LevelPlayedKey + modeId, index);
+            PlayerPrefs.SetInt(LevelPlayedKey + modeId, currentLevel);
         }
 
         #region Ultils method

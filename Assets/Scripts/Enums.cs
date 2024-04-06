@@ -13,6 +13,7 @@ public abstract class Enums
         Elite = 4,
         Rare = 3,
         Uncommon = 2,
-        Common = 1
+        Common = 1,
+        Default = 0
     }
 }

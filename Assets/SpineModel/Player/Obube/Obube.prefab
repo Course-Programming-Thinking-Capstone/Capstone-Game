@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8177295750786859480
+--- !u!1 &211098905458832614
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,23 +8,23 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5644271975899416989}
-  - component: {fileID: 3909783144219818143}
-  - component: {fileID: 7595994465508702633}
+  - component: {fileID: 2800168865334657125}
+  - component: {fileID: 3218919617399081185}
+  - component: {fileID: 2600063421252278696}
   m_Layer: 0
-  m_Name: SkeletonGraphic (06-pomodoro-bug)
+  m_Name: Obube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &5644271975899416989
+--- !u!224 &2800168865334657125
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8177295750786859480}
+  m_GameObject: {fileID: 211098905458832614}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -35,23 +35,23 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 188.11371, y: 143.7817}
-  m_Pivot: {x: 0.48337784, y: 0.12495287}
---- !u!222 &3909783144219818143
+  m_SizeDelta: {x: 190.79135, y: 157.03189}
+  m_Pivot: {x: 0.47659394, y: 0.11440949}
+--- !u!222 &3218919617399081185
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8177295750786859480}
+  m_GameObject: {fileID: 211098905458832614}
   m_CullTransparentMesh: 1
---- !u!114 &7595994465508702633
+--- !u!114 &2600063421252278696
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8177295750786859480}
+  m_GameObject: {fileID: 211098905458832614}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d85b887af7e6c3f45a2e2d2920d641bc, type: 3}
@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  skeletonDataAsset: {fileID: 11400000, guid: aae79832a3f22487ab29ca5bad687273, type: 2}
+  skeletonDataAsset: {fileID: 11400000, guid: b49379cb4c0ea41ad8687d360ccaa72b, type: 2}
   initialSkinName: default
   initialFlipX: 0
   initialFlipY: 0
