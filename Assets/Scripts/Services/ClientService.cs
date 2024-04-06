@@ -56,18 +56,23 @@ namespace Services
             return null;
         }
 
-        public async Task<List<int>> GetShopOwnedData(int itemId)
+        public async Task GetShopOwnedData()
         {
-            var api = baseApi + "games/game-shop-item-owned?itemId=" + itemId + "&userId=" + UserId;
+            if (!IsLogin)
+            {
+                return;
+            }
+
+            var api = baseApi + "games/game-shop-item-owned?userId=" + UserId;
             try
             {
+                var response = await Get<List<int>>(api);
+                UserOwnedShopItem = response ?? new List<int>();
             }
             catch (Exception e)
             {
                 OnFailed.Invoke(e.Message);
             }
-
-            return null;
         }
 
         public async Task<List<GameShopItemResponse>> GetShopData()

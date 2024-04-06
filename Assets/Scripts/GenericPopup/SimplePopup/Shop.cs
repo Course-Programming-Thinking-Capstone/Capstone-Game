@@ -56,7 +56,12 @@ namespace GenericPopup.SimplePopup
                 return;
             }
 
-            clientService.UserOwnedShopItem ??= new List<int>();
+            if (clientService.UserOwnedShopItem == null || clientService.UserOwnedShopItem.Count == 0)
+            {
+                loading.SetActive(true);
+                await clientService.GetShopOwnedData();
+                loading.SetActive(false);
+            }
 
             maxIndex = clientService.CacheShopData.Count - 1;
             LoadCharacterData();
