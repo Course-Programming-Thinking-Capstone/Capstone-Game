@@ -1,6 +1,6 @@
+using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
 using Services;
-using Spine.Unity;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -56,6 +56,8 @@ namespace GenericPopup.SimplePopup
                 return;
             }
 
+            clientService.UserOwnedShopItem ??= new List<int>();
+
             maxIndex = clientService.CacheShopData.Count - 1;
             LoadCharacterData();
         }
@@ -83,8 +85,10 @@ namespace GenericPopup.SimplePopup
             currentChar = SimplePool.Spawn(characterModel, Vector3.zero, Quaternion.identity);
             currentChar.transform.SetParent(characterContainer);
             currentChar.transform.localScale = Vector3.one;
-         
-            if (character.ItemRateType == 0 || playerService.characterBought.Contains(character.Id))
+
+            if (character.ItemRateType == 0
+                || (clientService.UserOwnedShopItem != null
+                    && clientService.UserOwnedShopItem.Contains(character.Id)))
             {
                 buyButton.SetActive(false);
                 selectButton.SetActive(true);
@@ -102,7 +106,7 @@ namespace GenericPopup.SimplePopup
             selectButton.SetActive(false);
         }
 
-        public void OnClickBuy()
+        public async void OnClickBuy()
         {
             if (!clientService.IsLogin)
             {
@@ -112,12 +116,19 @@ namespace GenericPopup.SimplePopup
                 return;
             }
 
+            ActiveSafePanel(true);
             var itemId = clientService.CacheShopData[currentIndex].Id;
-            playerService.SaveNewCharacter(itemId);
-            PopupHelpers.ShowError("Buy successfully", "Congratulation");
+            var result = await clientService.BuyItem(itemId);
+            if (result != null)
+            {
+                coinTxt.text = result.CurrentCoin.ToString();
+                gemTxt.text = result.CurrentGem.ToString();
+                PopupHelpers.ShowError("Buy successfully", "Congratulation");
+                buyButton.SetActive(false);
+                selectButton.SetActive(true);
+            }
 
-            buyButton.SetActive(false);
-            selectButton.SetActive(true);
+            ActiveSafePanel(false);
         }
 
         public void OnClickPrevious()

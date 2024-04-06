@@ -19,6 +19,7 @@ namespace Services
         public int Coin { get; set; }
         public int Gem { get; set; }
         public List<GameShopItemResponse> CacheShopData { get; set; }
+        public List<int> UserOwnedShopItem { get; set; }
         public bool IsLogin => UserId != -1;
 
         #endregion
@@ -36,6 +37,39 @@ namespace Services
             UserId = -1;
         }
 
+        #region SHOP
+
+        public async Task<BuyResponse> BuyItem(int itemId)
+        {
+            var api = baseApi + "games/game-shop-item-owned?itemId=" + itemId + "&userId=" + UserId;
+            try
+            {
+                var response = await Post<BuyResponse>(api, null);
+                UserOwnedShopItem = response.OwnedItem;
+                return response;
+            }
+            catch (Exception e)
+            {
+                OnFailed.Invoke(e.Message);
+            }
+
+            return null;
+        }
+
+        public async Task<List<int>> GetShopOwnedData(int itemId)
+        {
+            var api = baseApi + "games/game-shop-item-owned?itemId=" + itemId + "&userId=" + UserId;
+            try
+            {
+            }
+            catch (Exception e)
+            {
+                OnFailed.Invoke(e.Message);
+            }
+
+            return null;
+        }
+
         public async Task<List<GameShopItemResponse>> GetShopData()
         {
             var api = baseApi + "games/shop-item";
@@ -51,6 +85,8 @@ namespace Services
 
             return null;
         }
+
+        #endregion
 
         public async Task<UserDataResponse> FinishLevel(int mode, int levelIndex, DateTime startTime)
         {
