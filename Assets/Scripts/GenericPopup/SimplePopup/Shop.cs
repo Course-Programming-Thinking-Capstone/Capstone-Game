@@ -140,7 +140,7 @@ namespace GenericPopup.SimplePopup
             if (!clientService.IsLogin)
             {
                 PopupHelpers.ShowError(
-                    "Thanks for playing, You need to register and upgrade to a student account to continue learning without limitations.",
+                    "You need to register and upgrade to a student account to continue perform this action.",
                     "Notification");
                 return;
             }
