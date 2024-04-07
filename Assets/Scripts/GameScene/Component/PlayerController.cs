@@ -100,7 +100,7 @@ namespace GameScene.Component
             return skeletonAnimation.AnimationState.SetAnimation(0, moveAnimation, true);
         }
 
-        public TrackEntry PlayAnimationIdle(bool isLoop = false)
+        public TrackEntry PlayAnimationIdle(bool isLoop = true)
         {
             return skeletonAnimation.AnimationState.SetAnimation(0, idleAnimation, isLoop);
         }
