@@ -103,10 +103,16 @@ namespace GenericPopup.SimplePopup
                 buyButton.SetActive(true);
                 selectButton.SetActive(false);
             }
+
+            if (playerService.SelectedCharacter == character.Id)
+            {
+                selectButton.SetActive(false);
+            }
         }
 
         public void OnClickSelect()
         {
+            playerService.SaveSelectedCharacter(clientService.CacheShopData[currentIndex].Id);
             PopupHelpers.ShowError("Character equipped ", "Notification");
             selectButton.SetActive(false);
         }
