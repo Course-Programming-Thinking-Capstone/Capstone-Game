@@ -1,5 +1,8 @@
+using System;
 using System.Collections;
+using System.Linq;
 using DG.Tweening;
+using Services;
 using Spine;
 using Spine.Unity;
 using UnityEngine;
@@ -16,10 +19,55 @@ namespace GameScene.Component
         [SerializeField] private string moveAnimation;
         [SerializeField] private string collectAnimation;
 
+        private void Start()
+        {
+            var clientService = GameServices.Instance.GetService<ClientService>();
+            var playerService = GameServices.Instance.GetService<PlayerService>();
+
+            if (!clientService.IsLogin)
+            {
+                return;
+            }
+
+            // not login
+            if (!clientService.IsLogin)
+            {
+                defaultCharacter.SetActive(true);
+                return;
+            }
+
+            // not select new
+            if (playerService.SelectedCharacter == -1)
+            {
+                defaultCharacter.SetActive(true);
+                return;
+            }
+
+            // not have shop data
+            if (clientService.CacheShopData == null)
+            {
+                return;
+            }
+
+            var character =
+                clientService.CacheShopData.FirstOrDefault(o => o.Id == playerService.SelectedCharacter);
+            defaultCharacter.SetActive(false);
+
+            if (character != null)
+            {
+                var characterModel = Resources.Load<GameObject>("InGameCharacters/" + character.SpritesUrl);
+                if (characterModel != null)
+                {
+                    InitPlayerModel(characterModel);
+                }
+            }
+        }
+
         public void InitPlayerModel(GameObject spineModel)
         {
             var obj = Instantiate(spineModel, skeletonContainer);
             obj.transform.localScale = Vector3.one;
+            obj.transform.rotation = Quaternion.identity;
             obj.transform.localPosition = Vector3.one;
             skeletonAnimation = obj.GetComponent<SkeletonAnimation>();
             defaultCharacter.SetActive(false);
