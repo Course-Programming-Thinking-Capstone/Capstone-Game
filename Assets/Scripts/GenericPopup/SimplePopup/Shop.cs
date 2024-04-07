@@ -104,6 +104,13 @@ namespace GenericPopup.SimplePopup
                 selectButton.SetActive(false);
             }
 
+            // Set default character
+            if (playerService.SelectedCharacter == -1 && character.ItemRateType == 0)
+            {
+                playerService.SaveSelectedCharacter(character.Id);
+                selectButton.SetActive(false);
+            }
+
             if (playerService.SelectedCharacter == character.Id)
             {
                 selectButton.SetActive(false);
