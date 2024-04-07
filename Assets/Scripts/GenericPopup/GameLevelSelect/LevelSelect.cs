@@ -26,13 +26,19 @@ namespace GenericPopup.GameLevelSelect
         {
             clientService = GameServices.Instance.GetService<ClientService>();
             playerService = GameServices.Instance.GetService<PlayerService>();
-            var param = PopupHelpers.PassParamPopup();
-            gameMode = param.GetObject<int>(ParamType.ModeGame);
-            Destroy(param.gameObject);
+
+            clientService.OnFailed = err =>
+            {
+                ActiveSafePanel(false);
+                PopupHelpers.ShowError(err, "ERROR");
+            };
         }
 
         private async void Start()
         {
+            var param = PopupHelpers.PassParamPopup();
+            gameMode = param.GetObject<int>(ParamType.ModeGame);
+            
             backButton.onClick.AddListener(ClosePopup);
             coinTxt.text = clientService.Coin.ToString();
             energyTxt.text = "60 / 60";

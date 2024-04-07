@@ -24,6 +24,7 @@ namespace GenericPopup.SimplePopup
             clientService = GameServices.Instance.GetService<ClientService>();
             clientService.OnFailed = err =>
             {
+                ActiveSafePanel(false);
                 PopupHelpers.ShowError(err, "ERROR");
             };
         }

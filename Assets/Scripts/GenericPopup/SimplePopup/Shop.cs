@@ -41,6 +41,7 @@ namespace GenericPopup.SimplePopup
             onSelectedNew = param.GetAction(PopupKey.CallBack);
             clientService.OnFailed = err =>
             {
+                ActiveSafePanel(false);
                 PopupHelpers.ShowError(err, "ERROR");
             };
         }
@@ -152,7 +153,7 @@ namespace GenericPopup.SimplePopup
             ActiveSafePanel(true);
             var itemId = clientService.CacheShopData[currentIndex].Id;
             var result = await clientService.BuyItem(itemId);
-            ActiveSafePanel(false);
+
             if (result != null)
             {
                 coinTxt.text = result.CurrentCoin.ToString();

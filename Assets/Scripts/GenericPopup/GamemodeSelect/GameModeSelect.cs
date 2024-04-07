@@ -22,7 +22,11 @@ namespace GenericPopup.GameModeSelect
         private void Awake()
         {
             clientService = GameServices.Instance.GetService<ClientService>();
-            clientService.OnFailed = err => { PopupHelpers.ShowError(err); };
+            clientService.OnFailed = err =>
+            {
+                ActiveSafePanel(false);
+                PopupHelpers.ShowError(err, "ERROR");
+            };
         }
 
         private async void Start()
