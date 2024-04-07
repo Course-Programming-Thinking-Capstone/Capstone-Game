@@ -131,7 +131,11 @@ namespace GameScene.GameBasic
             playerController.transform.position = boardController.GetPositionFromBoard(basePlayerPosition);
             playerController.PlayAnimationIdle();
             playerController.RotatePlayer(true, 0.1f);
-
+            if (targetPosition[0].x > basePlayerPosition.x)
+            {
+                playerController.RotatePlayer(true, 0.1f);
+            }
+            
             // board
             foreach (var item in listBoard)
             {
@@ -194,6 +198,10 @@ namespace GameScene.GameBasic
         {
             playerController = Instantiate(model.Resource.PlayerModel).GetComponent<PlayerController>();
             boardController.PlaceObjectToBoard(playerController.transform, basePlayerPosition);
+            if (targetPosition[0].x > basePlayerPosition.x)
+            {
+                playerController.RotatePlayer(true, 0.1f);
+            }
         }
 
         #endregion

@@ -68,10 +68,10 @@ namespace GameScene.Component
             var obj = Instantiate(spineModel, skeletonContainer);
             obj.transform.localScale = Vector3.one;
             obj.transform.rotation = Quaternion.identity;
-            obj.transform.localPosition = Vector3.one;
+            obj.transform.localPosition = Vector3.zero;
             skeletonAnimation = obj.GetComponent<SkeletonAnimation>();
             defaultCharacter.SetActive(false);
-            PlayAnimationIdle();
+            PlayAnimationIdle(true);
         }
 
         public IEnumerator MovePlayer(Vector2 targetMove, float moveTime)
@@ -100,9 +100,9 @@ namespace GameScene.Component
             return skeletonAnimation.AnimationState.SetAnimation(0, moveAnimation, true);
         }
 
-        public TrackEntry PlayAnimationIdle()
+        public TrackEntry PlayAnimationIdle(bool isLoop = false)
         {
-            return skeletonAnimation.AnimationState.SetAnimation(0, idleAnimation, false);
+            return skeletonAnimation.AnimationState.SetAnimation(0, idleAnimation, isLoop);
         }
 
         public TrackEntry PlayAnimationEat()
