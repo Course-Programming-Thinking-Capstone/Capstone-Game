@@ -24,7 +24,6 @@ namespace GenericPopup.SimplePopup
             clientService = GameServices.Instance.GetService<ClientService>();
             clientService.OnFailed = err =>
             {
-                ActiveSafePanel(false);
                 PopupHelpers.ShowError(err, "ERROR");
             };
         }
@@ -32,11 +31,7 @@ namespace GenericPopup.SimplePopup
         private void Start()
         {
             var parameter = PopupHelpers.PassParamPopup();
-
-            if (parameter != null)
-            {
-                onLogin = parameter.GetAction(PopupKey.CallBack);
-            }
+            onLogin = parameter.GetAction(PopupKey.CallBack);
 
             login.onClick.AddListener(OnClickLogin);
             signUp.onClick.AddListener(OnClickSigning);

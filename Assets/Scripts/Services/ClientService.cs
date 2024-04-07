@@ -51,9 +51,13 @@ namespace Services
             try
             {
                 var response = await Post<BuyResponse>(api, null);
-                Coin = response.CurrentCoin;
-                Gem = response.CurrentGem;
-                UserOwnedShopItem = response.OwnedItem;
+                if (response != null)
+                {
+                    Coin = response.CurrentCoin;
+                    Gem = response.CurrentGem;
+                    UserOwnedShopItem = response.OwnedItem;
+                }
+
                 return response;
             }
             catch (Exception e)

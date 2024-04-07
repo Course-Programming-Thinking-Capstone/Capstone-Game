@@ -34,7 +34,6 @@ public class Parameter : MonoBehaviour
     public UnityAction GetAction(PopupKey type)
     {
         var action = actionDic.ContainsKey(type) ? actionDic[type] : null;
-        actionDic.Remove(type);
         return action;
     }
 

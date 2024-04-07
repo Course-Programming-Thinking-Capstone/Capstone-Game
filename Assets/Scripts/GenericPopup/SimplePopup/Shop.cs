@@ -39,6 +39,10 @@ namespace GenericPopup.SimplePopup
             playerService = GameServices.Instance.GetService<PlayerService>();
             var param = PopupHelpers.PassParamPopup();
             onSelectedNew = param.GetAction(PopupKey.CallBack);
+            clientService.OnFailed = err =>
+            {
+                PopupHelpers.ShowError(err, "ERROR");
+            };
         }
 
         private async void Start()
@@ -148,6 +152,7 @@ namespace GenericPopup.SimplePopup
             ActiveSafePanel(true);
             var itemId = clientService.CacheShopData[currentIndex].Id;
             var result = await clientService.BuyItem(itemId);
+            ActiveSafePanel(false);
             if (result != null)
             {
                 coinTxt.text = result.CurrentCoin.ToString();
@@ -156,8 +161,6 @@ namespace GenericPopup.SimplePopup
                 buyButton.SetActive(false);
                 selectButton.SetActive(true);
             }
-
-            ActiveSafePanel(false);
         }
 
         public void OnClickPrevious()
