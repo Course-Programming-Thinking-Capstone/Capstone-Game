@@ -9,10 +9,22 @@ namespace GameScene.Component
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] private SkeletonAnimation skeletonAnimation;
+        [SerializeField] private Transform skeletonContainer;
+        [SerializeField] private GameObject defaultCharacter;
 
         [SerializeField] private string idleAnimation;
         [SerializeField] private string moveAnimation;
         [SerializeField] private string collectAnimation;
+
+        public void InitPlayerModel(GameObject spineModel)
+        {
+            var obj = Instantiate(spineModel, skeletonContainer);
+            obj.transform.localScale = Vector3.one;
+            obj.transform.localPosition = Vector3.one;
+            skeletonAnimation = obj.GetComponent<SkeletonAnimation>();
+            defaultCharacter.SetActive(false);
+            PlayAnimationIdle();
+        }
 
         public IEnumerator MovePlayer(Vector2 targetMove, float moveTime)
         {
