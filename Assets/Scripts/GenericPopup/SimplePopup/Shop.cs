@@ -1,8 +1,8 @@
-using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
 using Services;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using Utilities;
 
@@ -31,11 +31,14 @@ namespace GenericPopup.SimplePopup
         private PlayerService playerService;
         private int currentIndex = 0;
         private int maxIndex = 0;
+        private UnityAction onSelectedNew;
 
         private void Awake()
         {
             clientService = GameServices.Instance.GetService<ClientService>();
             playerService = GameServices.Instance.GetService<PlayerService>();
+            var param = PopupHelpers.PassParamPopup();
+            onSelectedNew = param.GetAction(PopupKey.CallBack);
         }
 
         private async void Start()
@@ -111,6 +114,13 @@ namespace GenericPopup.SimplePopup
                 selectButton.SetActive(false);
             }
 
+            // Set default if not login
+            if (!clientService.IsLogin && character.ItemRateType == 0)
+            {
+                selectButton.SetActive(false);
+            }
+
+            // trigger selected character to display select button or not
             if (playerService.SelectedCharacter == character.Id)
             {
                 selectButton.SetActive(false);
@@ -120,6 +130,7 @@ namespace GenericPopup.SimplePopup
         public void OnClickSelect()
         {
             playerService.SaveSelectedCharacter(clientService.CacheShopData[currentIndex].Id);
+            onSelectedNew?.Invoke();
             PopupHelpers.ShowError("Character equipped ", "Notification");
             selectButton.SetActive(false);
         }

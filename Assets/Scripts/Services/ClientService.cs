@@ -37,6 +37,12 @@ namespace Services
             UserId = -1;
         }
 
+        public async Task LoadData()
+        {
+            await GetShopOwnedData();
+            await GetShopData();
+        }
+
         #region SHOP
 
         public async Task<BuyResponse> BuyItem(int itemId)
@@ -45,6 +51,8 @@ namespace Services
             try
             {
                 var response = await Post<BuyResponse>(api, null);
+                Coin = response.CurrentCoin;
+                Gem = response.CurrentGem;
                 UserOwnedShopItem = response.OwnedItem;
                 return response;
             }
@@ -191,6 +199,7 @@ namespace Services
             UserId = -1;
             UserEmail = "";
             UserDisplayName = "";
+            UserOwnedShopItem = new List<int>();
         }
 
         public async void LoginWithEmail(string account, string password, UnityAction onSuccess)

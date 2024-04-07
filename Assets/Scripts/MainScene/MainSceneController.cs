@@ -1,3 +1,4 @@
+using System.Linq;
 using Services;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,6 +16,8 @@ namespace MainScene
         [SerializeField] private Button inventoryButton;
         [SerializeField] private Button userButton;
         [SerializeField] private Button settingButton;
+        [SerializeField] private Transform spineContainer;
+        [SerializeField] private GameObject defaultCharacter;
         [Header("SYSTEM")]
         private PlayerService playerService;
         private ClientService clientService;
@@ -33,6 +36,60 @@ namespace MainScene
             // main 
             InitMain();
             AssignButton();
+            LoadCharacter();
+        }
+
+        private GameObject currentDisplay;
+
+        private async void LoadCharacter()
+        {
+            if (currentDisplay != null)
+            {
+                SimplePool.Despawn(currentDisplay);
+            }
+
+            // not login
+            if (!clientService.IsLogin)
+            {
+                defaultCharacter.SetActive(true);
+                return;
+            }
+
+            // not select new
+            if (playerService.SelectedCharacter == -1)
+            {
+                defaultCharacter.SetActive(true);
+                return;
+            }
+
+            // not have shop data
+            if (clientService.CacheShopData == null)
+            {
+                await clientService.GetShopData();
+            }
+
+            // still not have shop data (load fail)
+            if (clientService.CacheShopData == null)
+            {
+                return;
+            }
+
+            var character =
+                clientService.CacheShopData.FirstOrDefault(o => o.Id == playerService.SelectedCharacter);
+            defaultCharacter.SetActive(false);
+
+            if (character != null)
+            {
+                var characterModel = Resources.Load<GameObject>("ShopCharacters/" + character.SpritesUrl);
+                if (characterModel != null)
+                {
+                    currentDisplay = SimplePool.Spawn(characterModel, Vector3.zero, Quaternion.identity);
+                    currentDisplay.transform.SetParent(spineContainer);
+                    currentDisplay.transform.localScale = Vector3.one;
+                    currentDisplay.transform.localPosition = Vector3.one;
+                    defaultCharacter.SetActive(false);
+                }
+            }
         }
 
         #region Initialized
@@ -76,6 +133,7 @@ namespace MainScene
             var param = PopupHelpers.PassParamPopup();
             param.AddAction(PopupKey.CallBack, () =>
             {
+                LoadCharacter();
                 view.SetDisplayUserCoin(0);
                 view.SetDisplayUserName("Guest");
             });
@@ -89,6 +147,8 @@ namespace MainScene
 
         private void OnClickShop()
         {
+            var param = PopupHelpers.PassParamPopup();
+            param.AddAction(PopupKey.CallBack, LoadCharacter);
             PopupHelpers.Show(Constants.ShopPopup);
         }
 
@@ -101,6 +161,7 @@ namespace MainScene
                 {
                     view.SetDisplayUserCoin(clientService.Coin);
                     view.SetDisplayUserName(clientService.UserDisplayName);
+                    LoadCharacter();
                 });
 
                 PopupHelpers.Show(Constants.LoginPopup);

@@ -53,6 +53,7 @@ namespace Entry
 
         private void Start()
         {
+
             Loading();
         }
 

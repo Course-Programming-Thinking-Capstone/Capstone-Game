@@ -33,7 +33,9 @@ public class Parameter : MonoBehaviour
 
     public UnityAction GetAction(PopupKey type)
     {
-        return actionDic.ContainsKey(type) ? actionDic[type] : null;
+        var action = actionDic.ContainsKey(type) ? actionDic[type] : null;
+        actionDic.Remove(type);
+        return action;
     }
 
     public void SaveObject<T>(ParamType key, T obj)
