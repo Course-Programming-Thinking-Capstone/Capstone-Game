@@ -38,7 +38,7 @@ namespace GenericPopup.GameLevelSelect
         {
             var param = PopupHelpers.PassParamPopup();
             gameMode = param.GetObject<int>(ParamType.ModeGame);
-            
+
             backButton.onClick.AddListener(ClosePopup);
             coinTxt.text = clientService.Coin.ToString();
             energyTxt.text = "60 / 60";
@@ -68,6 +68,7 @@ namespace GenericPopup.GameLevelSelect
             for (int i = 0; i < allLevel; i++)
             {
                 var item = CreateLevelItem();
+                item.gameObject.SetActive(true);
                 var index = i;
                 var isPlayed = false;
                 var isLocked = true;

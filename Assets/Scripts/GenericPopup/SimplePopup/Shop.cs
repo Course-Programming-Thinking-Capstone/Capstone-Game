@@ -77,6 +77,11 @@ namespace GenericPopup.SimplePopup
 
         private void LoadCharacterData()
         {
+            if (clientService.CacheShopData == null || clientService.CacheShopData.Count == 0)
+            {
+                PopupHelpers.ShowError("Dose not have any shop item");
+                return;
+            }
             var character = clientService.CacheShopData[currentIndex];
             rateImage.sprite = rateRender[(Enums.RateType)character.ItemRateType];
             rankTxt.text = ((Enums.RateType)character.ItemRateType).ToString();
@@ -153,7 +158,7 @@ namespace GenericPopup.SimplePopup
             ActiveSafePanel(true);
             var itemId = clientService.CacheShopData[currentIndex].Id;
             var result = await clientService.BuyItem(itemId);
-
+            ActiveSafePanel(false);
             if (result != null)
             {
                 coinTxt.text = result.CurrentCoin.ToString();

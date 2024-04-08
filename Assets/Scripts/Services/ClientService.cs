@@ -223,6 +223,7 @@ namespace Services
                     UserEmail = account;
                     UserDisplayName = result.displayName;
                     Coin = result.userCoin;
+                    Gem = result.userGem;
                     onSuccess?.Invoke();
                 }
             }

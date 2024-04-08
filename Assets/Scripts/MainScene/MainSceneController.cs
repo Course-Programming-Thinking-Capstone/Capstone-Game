@@ -43,6 +43,7 @@ namespace MainScene
 
         private async void LoadCharacter()
         {
+            defaultCharacter.SetActive(true);
             if (currentDisplay != null)
             {
                 SimplePool.Despawn(currentDisplay);
@@ -51,14 +52,12 @@ namespace MainScene
             // not login
             if (!clientService.IsLogin)
             {
-                defaultCharacter.SetActive(true);
                 return;
             }
 
             // not select new
             if (playerService.SelectedCharacter == -1)
             {
-                defaultCharacter.SetActive(true);
                 return;
             }
 
@@ -69,15 +68,13 @@ namespace MainScene
             }
 
             // still not have shop data (load fail)
-            if (clientService.CacheShopData == null)
+            if (clientService.CacheShopData == null || clientService.CacheShopData.Count == 0)
             {
                 return;
             }
 
             var character =
                 clientService.CacheShopData.FirstOrDefault(o => o.Id == playerService.SelectedCharacter);
-            defaultCharacter.SetActive(false);
-
             if (character != null)
             {
                 var characterModel = Resources.Load<GameObject>("ShopCharacters/" + character.SpritesUrl);

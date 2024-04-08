@@ -1,7 +1,7 @@
-using System;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 namespace GameScene.Component.GameBasic
 {
@@ -17,16 +17,19 @@ namespace GameScene.Component.GameBasic
         {
             callBack = callBackController;
         }
+
         public void ChangeToQuestionRender()
         {
             rendererGround.sprite = questSprite;
             CurrentDisplay = null;
         }
+
         public void ChangeToBaseRender()
         {
             rendererGround.sprite = baseSprite;
             CurrentDisplay = null;
         }
+
         public void ChangeRender(Sprite newSprite, [CanBeNull] InteractionItem type)
         {
             rendererGround.sprite = newSprite;
@@ -35,10 +38,22 @@ namespace GameScene.Component.GameBasic
 
         private void OnMouseDown()
         {
-            if (CurrentDisplay)
+            if (!IsPointerOverUIObject())
             {
-                callBack.Invoke(this);
+                if (CurrentDisplay)
+                {
+                    callBack.Invoke(this);
+                }
             }
+        }
+
+        bool IsPointerOverUIObject()
+        {
+            EventSystem eventSystem = EventSystem.current;
+            if (eventSystem == null)
+                return false;
+
+            return eventSystem.IsPointerOverGameObject();
         }
     }
 }
