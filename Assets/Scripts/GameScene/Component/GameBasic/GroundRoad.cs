@@ -38,22 +38,10 @@ namespace GameScene.Component.GameBasic
 
         private void OnMouseDown()
         {
-            if (!IsPointerOverUIObject())
+            if (CurrentDisplay)
             {
-                if (CurrentDisplay)
-                {
-                    callBack.Invoke(this);
-                }
+                callBack.Invoke(this);
             }
-        }
-
-        bool IsPointerOverUIObject()
-        {
-            EventSystem eventSystem = EventSystem.current;
-            if (eventSystem == null)
-                return false;
-
-            return eventSystem.IsPointerOverGameObject();
         }
     }
 }
