@@ -11,10 +11,12 @@ namespace GameScene
         [SerializeField] private Transform objectPlacedContainer;
         private Vector2 boardSize;
         private List<Transform> cacheBoardItem;
-
+        private List<Animator> cacheBoardAnimator;
+        
         private void Awake()
         {
             cacheBoardItem = new List<Transform>();
+            cacheBoardAnimator = new List<Animator>();
         }
 
         public void CreateBoard(Vector2 baseBoardSize, GameObject modelBoard)
@@ -27,6 +29,7 @@ namespace GameScene
                 var obj = Instantiate(modelBoard, groundContainer);
                 obj.transform.localScale = Vector3.one;
                 cacheBoardItem.Add(obj.transform);
+                cacheBoardAnimator.Add(obj.GetComponent<Animator>());
             }
 
             var sizeY = (int)baseBoardSize.y;
@@ -101,6 +104,13 @@ namespace GameScene
         {
             var index = (int)((position.y - 1) * boardSize.x + (position.x - 1));
             return cacheBoardItem[index].position;
+        }
+   
+        public void SetGroundAnimation(Vector2 position, bool isOn)
+        {
+            var index = (int)((position.y - 1) * boardSize.x + (position.x - 1));
+            var animator = cacheBoardAnimator[index];
+            animator.SetBool("IsOn", isOn);
         }
     }
 }

@@ -44,6 +44,7 @@ namespace GameScene
             foreach (var item in controlPart)
             {
                 padSelectController.SetDisplayPart(item, true);
+                
                 yield return HandleAction(item);
                 padSelectController.SetDisplayPart(item, false);
                 if (!valid)
@@ -64,8 +65,12 @@ namespace GameScene
             }
         }
 
+        private Vector2 tempPreviousPart;
+
         protected IEnumerator HandleAction(InteractionItem direction)
         {
+            tempPreviousPart = currentPlayerPosition;
+
             var isEat = false;
             var targetMove = currentPlayerPosition;
             switch (direction.SelectType)
@@ -104,8 +109,13 @@ namespace GameScene
                     yield break;
                 }
 
+         
+                // Move Player
                 yield return playerController.MovePlayer(boardController.GetPositionFromBoard(targetMove),
                     model.PlayerMoveTime);
+                boardController.SetGroundAnimation(targetMove, true);
+                yield return new WaitForSeconds(0.2f); // Delay
+                boardController.SetGroundAnimation(targetMove, false);
             }
 
             if (isEat)
