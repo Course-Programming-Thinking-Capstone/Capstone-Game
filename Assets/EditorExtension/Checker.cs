@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace Editor
+namespace EditorExtension
 {
 	internal static class Checker
 	{
