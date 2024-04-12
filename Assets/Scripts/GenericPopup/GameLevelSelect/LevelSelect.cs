@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Services;
 using TMPro;
 using UnityEngine;
@@ -44,7 +46,7 @@ namespace GenericPopup.GameLevelSelect
             energyTxt.text = "60 / 60";
             modeName.text = gameMode.ToString();
             var currentLocalPlayed = playerService.GetCurrentLevel(gameMode);
-            var userPlayedLevel = -1;
+            var userPlayedLevel = new List<int>();
             var baseUnlockLevel = Constants.FreeLevel;
             var allLevel = 10;
 
@@ -58,7 +60,7 @@ namespace GenericPopup.GameLevelSelect
                 {
                     if ((int)process.mode == gameMode)
                     {
-                        userPlayedLevel = process.levelIndex;
+                        userPlayedLevel = process.PlayedLevel;
                         break;
                     }
                 }
@@ -73,32 +75,31 @@ namespace GenericPopup.GameLevelSelect
                 var isPlayed = false;
                 var isLocked = true;
 
-                // Local handle level
-                if (i < baseUnlockLevel)
+                if (clientService.UserId != -1) // already login
                 {
-                    if (i <= currentLocalPlayed) // unlock all
+                    if (i <= userPlayedLevel.Max() + 1)
                     {
                         isLocked = false;
                     }
 
-                    if (i < currentLocalPlayed)
+                    if (userPlayedLevel.Contains(i)) // Already play this level
                     {
                         isPlayed = true;
                     }
                 }
-                else
+                else // using local
                 {
-                    if (clientService.UserId != -1) // already login
+                    // Local handle level
+                    if (i < baseUnlockLevel)
                     {
-                        if (i <= userPlayedLevel) // Already play this level
+                        if (i <= currentLocalPlayed) // unlock all first 3
                         {
-                            isPlayed = true;
                             isLocked = false;
                         }
 
-                        if (i == userPlayedLevel + 1) // Unlock for next level to play
+                        if (i < currentLocalPlayed)
                         {
-                            isLocked = false;
+                            isPlayed = true;
                         }
                     }
                 }

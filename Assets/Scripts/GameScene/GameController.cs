@@ -95,10 +95,10 @@ namespace GameScene
 
         protected async void ShowWinPopup()
         {
-            levelIndex++;
-            playerService.SaveData((int)gameMode, levelIndex);
-
+            playerService.SaveData((int)gameMode, levelIndex + 1);
             var result = await clientService.FinishLevel((int)gameMode, levelIndex, startTime);
+            
+            levelIndex++;
             var coinWin = 0;
             var gemWin = 0;
             if (result != null)
