@@ -75,7 +75,7 @@ namespace GenericPopup.GameLevelSelect
                 var isPlayed = false;
                 var isLocked = true;
 
-                if (clientService.UserId != -1) // already login
+                if (clientService.UserId != -1 && userPlayedLevel != null && userPlayedLevel.Count > 0) // already login
                 {
                     if (i <= userPlayedLevel.Max() + 1)
                     {
