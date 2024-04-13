@@ -21,7 +21,7 @@ namespace GameScene
         [SerializeField] protected PlayerController playerController;
         [SerializeField] protected BoardController boardController;
 
-        private int levelIndex;
+        protected int levelIndex;
         private DateTime startTime;
         private ClientService clientService;
         private PlayerService playerService;
@@ -42,6 +42,7 @@ namespace GameScene
             clientService = GameServices.Instance.GetService<ClientService>();
             playerService = GameServices.Instance.GetService<PlayerService>();
             startTime = DateTime.Now;
+    
         }
 
         protected async Task<bool> LoadData()
@@ -57,6 +58,7 @@ namespace GameScene
             var levelData = await clientService.GetLevelData((int)gameMode, levelIndex);
             loading.SetActive(false);
             startTime = DateTime.Now;
+            
             if (levelData != null)
             {
                 basePlayerPosition = ConvertIntToVector2(levelData.vStartPosition);
@@ -97,7 +99,7 @@ namespace GameScene
         {
             playerService.SaveData((int)gameMode, levelIndex + 1);
             var result = await clientService.FinishLevel((int)gameMode, levelIndex, startTime);
-            
+
             levelIndex++;
             var coinWin = 0;
             var gemWin = 0;
@@ -161,9 +163,13 @@ namespace GameScene
             }
         }
 
-        public void OnClickExit()
+        public void OnClickPause()
         {
-            SceneManager.LoadScene(Constants.MainMenu);
+            var param = PopupHelpers.PassParamPopup();
+            param.SaveObject(ParamType.ModeGame, gameMode);
+            param.SaveObject(ParamType.LevelIndex, levelIndex);
+
+            PopupHelpers.Show(Constants.PausePopup);
         }
 
         protected IEnumerator MovePlayer(Vector2 targetMove, float moveTime)

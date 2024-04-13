@@ -18,6 +18,8 @@ namespace GameScene.GameSequence
                 return;
             }
 
+            view.SetDetail(gameMode + " Level " + levelIndex);
+
             playButton.onClick.AddListener(OnClickPlay);
             padSelectController.CreateSelector(generateList, model.Resource);
             boardController.CreateBoard(new Vector2(8, 6), model.Resource.BoardCellModel);

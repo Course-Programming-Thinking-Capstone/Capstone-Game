@@ -27,6 +27,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Popups/Inventory.unity
     guid: abc72823192ad5d47a957a9826d2320d
   - enabled: 1
+    path: Assets/Scenes/Popups/Pause.unity
+    guid: 1860e728b197a484f892f510acf89023
+  - enabled: 1
     path: Assets/Scenes/Popups/Profile.unity
     guid: 23e1f7fb19d8e054bab46a9b589cfdbc
   - enabled: 1

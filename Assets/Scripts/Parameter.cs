@@ -17,6 +17,7 @@ public enum ParamType
     PreviousLevel,
     CoinTxt,
     GemTxt,
+    IsInGame,
 }
 
 public class Parameter : MonoBehaviour

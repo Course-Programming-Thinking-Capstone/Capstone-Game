@@ -30,7 +30,7 @@ namespace GameScene.GameBasic
             {
                 CountLeft--;
             }
-            else
+            else if (objectClicked.parent == container2)
             {
                 CountRight--;
             }
