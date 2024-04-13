@@ -23,14 +23,18 @@ namespace Services
             PlayerPrefs.SetInt(SelectCharacterKey, SelectedCharacter);
         }
 
-        public int GetCurrentLevel(int modeId, int userId = -1)
+        public int GetCurrentLevel(int modeId)
         {
             return PlayerPrefs.GetInt(LevelPlayedKey + modeId, 0);
         }
 
-        public void SaveData(int modeId, int currentLevel, int userId = -1)
+        public void SaveData(int modeId, int currentLevel)
         {
-            PlayerPrefs.SetInt(LevelPlayedKey + modeId, currentLevel);
+            var current = GetCurrentLevel(modeId);
+            if (current < currentLevel)
+            {
+                PlayerPrefs.SetInt(LevelPlayedKey + modeId, currentLevel);
+            }
         }
 
         #region Ultils method
