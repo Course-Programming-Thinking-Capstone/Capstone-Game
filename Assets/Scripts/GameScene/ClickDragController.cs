@@ -4,6 +4,7 @@ using GameScene.Component;
 using Spine.Unity;
 using UnityEngine;
 using UnityEngine.UI;
+using Utilities;
 
 namespace GameScene
 {
@@ -44,7 +45,7 @@ namespace GameScene
             foreach (var item in controlPart)
             {
                 padSelectController.SetDisplayPart(item, true);
-                
+
                 yield return HandleAction(item);
                 padSelectController.SetDisplayPart(item, false);
                 if (!valid)
@@ -109,7 +110,6 @@ namespace GameScene
                     yield break;
                 }
 
-         
                 // Move Player
                 yield return playerController.MovePlayer(boardController.GetPositionFromBoard(targetMove),
                     model.PlayerMoveTime);
@@ -134,6 +134,13 @@ namespace GameScene
 
         private void ResetGame()
         {
+            var param = PopupHelpers.PassParamPopup();
+            param.SaveObject(ParamType.ModeGame, gameMode);
+            param.SaveObject(ParamType.LevelIndex, levelIndex);
+
+            PopupHelpers.Show(Constants.FailPopup);
+            
+            return;
             padSelectController.Reset();
 
             // Clear win condition and re-active target

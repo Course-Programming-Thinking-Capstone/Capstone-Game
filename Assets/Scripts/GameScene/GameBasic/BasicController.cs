@@ -6,6 +6,7 @@ using GameScene.Component.GameBasic;
 using Services;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Utilities;
 
 namespace GameScene.GameBasic
 {
@@ -129,28 +130,34 @@ namespace GameScene.GameBasic
         private void ResetGame()
         {
             // player position
-            playerController.transform.position = boardController.GetPositionFromBoard(basePlayerPosition);
-            playerController.PlayAnimationIdle();
-            playerController.RotatePlayer(true, 0.1f);
-            if (targetPosition[0].x > basePlayerPosition.x)
-            {
-                playerController.RotatePlayer(true, 0.1f);
-            }
-            
-            // board
-            foreach (var item in listBoard)
-            {
-                item.ChangeToQuestionRender();
-            }
+            var param = PopupHelpers.PassParamPopup();
+            param.SaveObject(ParamType.ModeGame, gameMode);
+            param.SaveObject(ParamType.LevelIndex, levelIndex);
 
-            // Selector
-            gameView.CountLeft = 0;
-            gameView.CountRight = 0;
-            foreach (var item in listSelector)
-            {
-                gameView.AddRoadToContainer(item.transform);
-                item.gameObject.SetActive(true);
-            }
+            PopupHelpers.Show(Constants.FailPopup);
+
+            // playerController.transform.position = boardController.GetPositionFromBoard(basePlayerPosition);
+            // playerController.PlayAnimationIdle();
+            // playerController.RotatePlayer(true, 0.1f);
+            // if (targetPosition[0].x > basePlayerPosition.x)
+            // {
+            //     playerController.RotatePlayer(true, 0.1f);
+            // }
+            //
+            // // board
+            // foreach (var item in listBoard)
+            // {
+            //     item.ChangeToQuestionRender();
+            // }
+            //
+            // // Selector
+            // gameView.CountLeft = 0;
+            // gameView.CountRight = 0;
+            // foreach (var item in listSelector)
+            // {
+            //     gameView.AddRoadToContainer(item.transform);
+            //     item.gameObject.SetActive(true);
+            // }
         }
 
         #region INITIALIZE

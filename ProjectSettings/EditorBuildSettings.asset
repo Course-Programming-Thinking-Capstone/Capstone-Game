@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Popups/Shop.unity
     guid: 87a3256570895d246bd72edcce25287e
   - enabled: 1
+    path: Assets/Scenes/Popups/Fail.unity
+    guid: f37d52939d9e2304fa4fbf983ebfb260
+  - enabled: 1
     path: Assets/Scenes/Popups/Error.unity
     guid: 7bcd90b947c4abc48ac3ac4cfd91478c
   - enabled: 1
