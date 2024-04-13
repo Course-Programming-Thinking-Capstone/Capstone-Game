@@ -18,7 +18,7 @@ namespace GameScene.GameFunction
                 return;
             }
             
-            view.SetDetail(gameMode + " Level " + levelIndex);
+            view.SetDetail(gameMode + " mode: " + " Level " + levelIndex);
             playButton.onClick.AddListener(OnClickPlay);
             padSelectController.CreateSelector(generateList, model.Resource);
             boardController.CreateBoard(new Vector2(8, 6), model.Resource.BoardCellModel);

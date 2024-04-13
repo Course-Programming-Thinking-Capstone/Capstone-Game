@@ -30,7 +30,7 @@ namespace GameScene.GameBasic
                 return;
             }
 
-            gameView.SetDetail(gameMode + " Level " + levelIndex);
+            gameView.SetDetail(gameMode + " mode: " + " Level " + levelIndex);
             Validation();
             CalcSolution();
             GenerateGround();
