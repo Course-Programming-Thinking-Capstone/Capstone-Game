@@ -18,7 +18,7 @@ namespace GameScene.GameSequence
                 return;
             }
 
-            view.SetDetail(gameMode + " mode: " + " Level " + levelIndex);
+            view.SetDetail(gameMode + " mode: " + " Level " + (levelIndex+1));
 
             playButton.onClick.AddListener(OnClickPlay);
             padSelectController.CreateSelector(generateList, model.Resource);

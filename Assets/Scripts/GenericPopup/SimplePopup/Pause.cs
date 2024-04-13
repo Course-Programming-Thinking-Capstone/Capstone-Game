@@ -31,7 +31,7 @@ namespace GenericPopup.SimplePopup
             gameMode = parameter.GetObject<int>(ParamType.ModeGame);
             levelIndex = parameter.GetObject<int>(ParamType.LevelIndex);
 
-            txt.text = ((GameMode)gameMode) + " Mode: " + "Level " + levelIndex + 1;
+            txt.text = ((GameMode)gameMode) + " Mode: " + "Level " + (levelIndex+1);
         }
 
         public void OnClickSetting()
