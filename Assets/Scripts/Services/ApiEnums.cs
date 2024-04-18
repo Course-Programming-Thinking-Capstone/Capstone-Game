@@ -11,6 +11,7 @@ namespace Services
         Loop = 3,
         Function = 4,
         Condition = 5,
+        Custom = 6,
     }
 
     public enum PositionType

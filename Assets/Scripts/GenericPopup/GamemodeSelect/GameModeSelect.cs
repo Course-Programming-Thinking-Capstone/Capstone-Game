@@ -1,4 +1,5 @@
-using System;
+using System.Collections.Generic;
+using System.Linq;
 using Services;
 using TMPro;
 using UnityEngine;
@@ -9,6 +10,9 @@ namespace GenericPopup.GameModeSelect
 {
     public class GameModeSelect : PopupAdditive
     {
+        [SerializeField]
+        private List<GameMode> modesIndex;
+
         [Header("View")]
         [SerializeField] private Button backButton;
         [SerializeField] private TextMeshProUGUI coinTxt;
@@ -38,24 +42,31 @@ namespace GenericPopup.GameModeSelect
             loading.SetActive(true);
             var modeData = await clientService.GetGameMode();
             loading.SetActive(false);
-            if (modeData != null && modeData.Count > 0)
-            {
-                foreach (var item in modeData)
-                {
-                    var index = item.idMode;
-                    var objet = CreateGameModeItem();
 
-                    objet.Initialized(null, item.typeName, () => { OnClickStage(index); });
-                    // if (item.idMode == (int)GameMode.Condition)
-                    // {
-                    //     objet.gameObject.SetActive(false);
-                    // }
-                }
-            }
-            else
+            if (modeData == null || modeData.Count == 0)
             {
                 PopupHelpers.ShowError("Not found any level, please contact our support or try again later",
                     "Notification");
+                return;
+            }
+
+            if (modesIndex.Count != modesIndex.Distinct().Count())
+            {
+                PopupHelpers.ShowError("List index mode not valid");
+                return;
+            }
+
+            foreach (var modeLoaded in modesIndex)
+            {
+                foreach (var item in modeData)
+                {
+                    if ((GameMode)item.idMode == modeLoaded)
+                    {
+                        var index = item.idMode;
+                        var objet = CreateGameModeItem();
+                        objet.Initialized(null, item.typeName, () => { OnClickStage(index); });
+                    }
+                }
             }
         }
 

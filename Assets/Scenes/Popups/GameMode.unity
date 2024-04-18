@@ -480,6 +480,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 678230476}
   loading: {fileID: 666637082}
+  modesIndex: 0100000002000000050000000300000004000000
   backButton: {fileID: 3285295786087350538}
   coinTxt: {fileID: 4035021341720416689}
   energyTxt: {fileID: 5611452559997704917}
