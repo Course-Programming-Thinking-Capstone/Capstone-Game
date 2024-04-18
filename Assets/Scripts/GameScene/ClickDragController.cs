@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using GameScene.Component;
+using Services;
 using Spine.Unity;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +21,7 @@ namespace GameScene
         // System
         private readonly Dictionary<Vector2, Transform> targetReferences = new();
         private readonly Dictionary<Vector2, bool> targetChecker = new();
+        private readonly Dictionary<Vector2, bool> conditionChecker = new();
         protected Vector2 currentPlayerPosition;
         private bool valid;
 
@@ -27,13 +29,40 @@ namespace GameScene
 
         protected void CreateTarget()
         {
-            foreach (var position in targetPosition)
+            var conditionResource = Resources.Load<Sprite>("Fruits/T_fruit_unknow");
+            if (gameMode == GameMode.Condition)
             {
-                var target = Instantiate(model.Resource.TargetModel).GetComponent<Target>();
-                target.Init(model.CandySprites[Random.Range(0, model.CandySprites.Count)]);
-                boardController.PlaceObjectToBoard(target.GetComponent<Transform>(), position);
-                targetChecker.Add(position, false);
-                targetReferences.Add(position, target.transform);
+                foreach (var position in targetPosition)
+                {
+                    var target = Instantiate(model.Resource.TargetModel).GetComponent<Target>();
+                   
+                    boardController.PlaceObjectToBoard(target.GetComponent<Transform>(), position);
+
+                    targetChecker.Add(position, false);
+                    conditionChecker.Add(position, Random.Range(0, 11) < 6); // true -> need condition
+                    if (conditionChecker[position])
+                    {
+                        target.Init(conditionResource);
+                    }
+                    else
+                    {
+                        target.Init(model.CandySprites[Random.Range(0, model.CandySprites.Count)]);
+                    }
+                    targetReferences.Add(position, target.transform);
+                }
+
+                return;
+            }
+            else
+            {
+                foreach (var position in targetPosition)
+                {
+                    var target = Instantiate(model.Resource.TargetModel).GetComponent<Target>();
+                    target.Init(model.CandySprites[Random.Range(0, model.CandySprites.Count)]);
+                    boardController.PlaceObjectToBoard(target.GetComponent<Transform>(), position);
+                    targetChecker.Add(position, false);
+                    targetReferences.Add(position, target.transform);
+                }
             }
         }
 
