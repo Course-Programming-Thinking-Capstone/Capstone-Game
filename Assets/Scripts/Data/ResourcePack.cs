@@ -19,8 +19,10 @@ namespace Data
         [SerializeField] private GameObject selectedModel;
         [SerializeField] private GameObject boardCellModel;
         [SerializeField] private GameObject loopPrefab;
+        [SerializeField] private GameObject conditionPrefab;
         
         public List<GameControlItemData> GameControlItemData => gameControlItemData;
+        public GameObject ConditionPrefab => conditionPrefab;
         public GameObject BoardRoadCell => boardRoadCell;
         public GameObject RoadSelector => roadSelector;
         public GameObject PlayerModel => playerModel;

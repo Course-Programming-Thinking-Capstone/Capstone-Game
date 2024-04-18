@@ -66,12 +66,8 @@ namespace GameScene
             }
         }
 
-        private Vector2 tempPreviousPart;
-
         protected IEnumerator HandleAction(InteractionItem direction)
         {
-            tempPreviousPart = currentPlayerPosition;
-
             var isEat = false;
             var targetMove = currentPlayerPosition;
             switch (direction.SelectType)
@@ -139,26 +135,6 @@ namespace GameScene
             param.SaveObject(ParamType.LevelIndex, levelIndex);
 
             PopupHelpers.Show(Constants.FailPopup);
-            
-        //     padSelectController.Reset();
-        //
-        //     // Clear win condition and re-active target
-        //     foreach (var position in targetReferences.Keys)
-        //     {
-        //         targetReferences[position].gameObject.SetActive(true);
-        //         targetChecker[position] = false;
-        //     }
-        //
-        //     // Reset player position
-        //     currentPlayerPosition = basePlayerPosition;
-        //
-        //     playerController.RotatePlayer(
-        //         targetPosition[0].x >= basePlayerPosition.x
-        //         , 0.1f);
-        //     playerController.PlayAnimationIdle();
-        //
-        //     // set player position
-        //     boardController.PlaceObjectToBoard(playerController.transform, basePlayerPosition);
         }
 
         private bool WinChecker()

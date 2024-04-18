@@ -166,7 +166,8 @@ namespace GameScene
             {
                 foreach (var selector in storeSelected)
                 {
-                    if (selector.SelectType == SelectType.Loop)
+                    if (selector.SelectType == SelectType.Loop ||
+                        selector.SelectType == SelectType.Condition)
                     {
                         var extensional1 = (Extensional)selector;
                         extensional1.MakeItemSelectedInRightPlace();
@@ -232,6 +233,13 @@ namespace GameScene
 
                         break;
                     case SelectType.Condition:
+                        result.Add(baseSelectItem);
+                        var condition = (Extensional)baseSelectItem;
+                        for (int i = 0; i < condition.LoopCount; i++)
+                        {
+                            result.AddRange(condition.StoreSelected);
+                        }
+
                         break;
                 }
             }
@@ -244,7 +252,8 @@ namespace GameScene
             // Clear all things selected
             foreach (var selector in storeSelected)
             {
-                if (selector.SelectType == SelectType.Loop)
+                if (selector.SelectType == SelectType.Loop ||
+                    selector.SelectType == SelectType.Condition)
                 {
                     var loop = (Extensional)selector;
                     foreach (var selectorInLoop in loop.StoreSelected)
@@ -405,6 +414,7 @@ namespace GameScene
 
             if (selectedObject.SelectType == SelectType.Loop
                 || selectedObject.SelectType == SelectType.Func
+                || selectedObject.SelectType == SelectType.Condition
                )
             {
                 return null;
@@ -431,9 +441,11 @@ namespace GameScene
         private void OnClickedSelector(InteractionItem selectedObj)
         {
             // Generate new selected
-            if (selectedObj.SelectType == SelectType.Loop)
+            if (selectedObj.SelectType == SelectType.Loop
+                || selectedObj.SelectType == SelectType.Condition)
             {
-                var objLoop = SimplePool.Spawn(data.LoopPrefab);
+                var prefab = selectedObj.SelectType == SelectType.Loop ? data.LoopPrefab : data.ConditionPrefab;
+                var objLoop = SimplePool.Spawn(prefab);
                 Extensional looper = objLoop.GetComponent<Extensional>();
                 looper.Init(OnClickedSelected);
                 looper.SelectType = selectedObj.SelectType;
@@ -469,7 +481,8 @@ namespace GameScene
             storeFuncSelected.Remove(selectedObj);
             foreach (var selector in storeSelected)
             {
-                if (selector.SelectType == SelectType.Loop)
+                if (selector.SelectType == SelectType.Loop ||
+                    selector.SelectType == SelectType.Condition)
                 {
                     var looper = (Extensional)selector;
                     looper.RemoveItem(selectedObj);

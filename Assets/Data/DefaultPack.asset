@@ -35,3 +35,4 @@ MonoBehaviour:
   selectedModel: {fileID: 7932451840886001887, guid: 9c52ef2f3c9aac74ba7de551378d7eb3, type: 3}
   boardCellModel: {fileID: 8313896542140405589, guid: ba55010254c6eb64696f2c69bf1da902, type: 3}
   loopPrefab: {fileID: 4903770973405204659, guid: c5781ed7ba32e36419fdcbd4e13f42ab, type: 3}
+  conditionPrefab: {fileID: 4903770973405204659, guid: e287f02ed86f2b242af7ae811b9d1081, type: 3}
