@@ -248,7 +248,7 @@ namespace GameScene
                         break;
                     case SelectType.Condition:
                         var condition = (Extensional)baseSelectItem;
-                        if (condition.LoopCount > 0) // Valid condition
+                        if (condition.StoreSelected.Count > 0) // Valid condition
                         {
                             result.Add(baseSelectItem);
                         }
