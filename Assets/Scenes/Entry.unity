@@ -654,7 +654,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   localBaseApiUrl: http://localhost:5082/api/v1/
-  productionBaseApi: https://www.kidpro-production.somee.com/api/v1/
+  productionBaseApi: https://kidpro.azurewebsites.net/api/v1/
   facebookPage: https://www.facebook.com/profile.php?id=100008671441396
   webPage: https://kid-pro.vercel.app/
   bgModel:
