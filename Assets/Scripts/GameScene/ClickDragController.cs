@@ -168,7 +168,6 @@ namespace GameScene
                 }
                 else
                 {
-                    
                     yield return new WaitForSpineAnimationComplete(tracker);
                     if (targetChecker.ContainsKey(currentPlayerPosition))
                     {
@@ -208,7 +207,6 @@ namespace GameScene
             {
                 if (!value) // any not get
                 {
-                    Debug.Log("Not eat all");
                     return false;
                 }
             }

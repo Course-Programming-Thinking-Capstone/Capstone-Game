@@ -429,6 +429,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 454645805}
     m_Modifications:
+    - target: {fileID: 208407751264521253, guid: 77443370ac562b041a9fa656d73d88b4, type: 3}
+      propertyPath: maxBaseControl
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 208407751264521253, guid: 77443370ac562b041a9fa656d73d88b4, type: 3}
+      propertyPath: maxFuncControl
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2800692229239673793, guid: 77443370ac562b041a9fa656d73d88b4, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
@@ -1151,7 +1159,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1300445e832ddb8498b9df9ef0a2633f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isTesting: 1
   gameMode: 5
   loading: {fileID: 1761691097}
   playerController: {fileID: 0}
