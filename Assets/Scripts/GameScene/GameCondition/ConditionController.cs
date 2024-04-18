@@ -16,7 +16,7 @@ namespace GameScene.GameCondition
                 return;
             }
 
-            view.SetDetail(gameMode + " mode: " + " Level " + (levelIndex+1));
+            view.SetDetail(gameMode + " mode: " + " Level " + (levelIndex + 1));
 
             playButton.onClick.AddListener(OnClickPlay);
             padSelectController.CreateSelector(generateList, model.Resource);
@@ -49,30 +49,6 @@ namespace GameScene.GameCondition
         private void OnClickPlay()
         {
             StartCoroutine(StartPlayerMove());
-        }
-
-        #endregion
-
-        #region Calulate func
-
-        protected override bool IsOutsideBoard(Vector2 checkPosition)
-        {
-            if (boardMap.Contains(checkPosition))
-            {
-                return false;
-            }
-
-            if (targetPosition.Contains(checkPosition))
-            {
-                return false;
-            }
-
-            if (basePlayerPosition == checkPosition)
-            {
-                return false;
-            }
-
-            return true;
         }
 
         #endregion
