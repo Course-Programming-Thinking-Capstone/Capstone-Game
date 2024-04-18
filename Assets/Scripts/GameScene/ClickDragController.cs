@@ -140,26 +140,25 @@ namespace GameScene
 
             PopupHelpers.Show(Constants.FailPopup);
             
-            return;
-            padSelectController.Reset();
-
-            // Clear win condition and re-active target
-            foreach (var position in targetReferences.Keys)
-            {
-                targetReferences[position].gameObject.SetActive(true);
-                targetChecker[position] = false;
-            }
-
-            // Reset player position
-            currentPlayerPosition = basePlayerPosition;
-
-            playerController.RotatePlayer(
-                targetPosition[0].x >= basePlayerPosition.x
-                , 0.1f);
-            playerController.PlayAnimationIdle();
-
-            // set player position
-            boardController.PlaceObjectToBoard(playerController.transform, basePlayerPosition);
+        //     padSelectController.Reset();
+        //
+        //     // Clear win condition and re-active target
+        //     foreach (var position in targetReferences.Keys)
+        //     {
+        //         targetReferences[position].gameObject.SetActive(true);
+        //         targetChecker[position] = false;
+        //     }
+        //
+        //     // Reset player position
+        //     currentPlayerPosition = basePlayerPosition;
+        //
+        //     playerController.RotatePlayer(
+        //         targetPosition[0].x >= basePlayerPosition.x
+        //         , 0.1f);
+        //     playerController.PlayAnimationIdle();
+        //
+        //     // set player position
+        //     boardController.PlaceObjectToBoard(playerController.transform, basePlayerPosition);
         }
 
         private bool WinChecker()
