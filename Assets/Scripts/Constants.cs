@@ -33,4 +33,5 @@ public static class Constants
     public const string ShopPopup = "Scenes/Popups/Shop";
     public const string PausePopup = "Scenes/Popups/Pause";
     public const string FailPopup = "Scenes/Popups/Fail";
+    public const string TutorialPopup = "Scenes/Popups/Tutorial";
 }
