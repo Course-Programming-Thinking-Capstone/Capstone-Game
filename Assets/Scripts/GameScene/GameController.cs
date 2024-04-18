@@ -29,6 +29,7 @@ namespace GameScene
         protected Vector2 basePlayerPosition = new Vector2();
         protected List<Vector2> targetPosition = new List<Vector2>();
         protected List<Vector2> boardMap = new List<Vector2>();
+        protected List<Vector2> rockMap = new List<Vector2>();
         protected Vector2 boardSize = new(8, 6);
 
         protected void Awake()
@@ -52,6 +53,7 @@ namespace GameScene
                 basePlayerPosition = ConvertIntToVector2(levelData.vStartPosition);
                 targetPosition.Clear();
                 boardMap.Clear();
+                rockMap.Clear();
                 foreach (var detail in levelData.levelDetail)
                 {
                     switch (detail.positionType)
@@ -63,6 +65,7 @@ namespace GameScene
                             targetPosition.Add(ConvertIntToVector2(detail.vPosition));
                             break;
                         case PositionType.Rock:
+                            rockMap.Add(ConvertIntToVector2(detail.vPosition));
                             break;
                     }
                 }
