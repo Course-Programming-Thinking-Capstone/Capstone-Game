@@ -624,6 +624,7 @@ MonoBehaviour:
   orentation: {fileID: 2498336594730766422}
   loadingTime: 3
   useLocalHost: 0
+  useProduction: 0
 --- !u!1 &1582869041
 GameObject:
   m_ObjectHideFlags: 0
@@ -654,7 +655,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   localBaseApiUrl: http://localhost:5082/api/v1/
-  productionBaseApi: https://kidpro.azurewebsites.net/api/v1/
+  productionTestBaseApi: https://kidpro.azurewebsites.net/api/v1/
+  productionBaseApi: https://kidproproduction.azurewebsites.net/api/v1/
   facebookPage: https://www.facebook.com/profile.php?id=100008671441396
   webPage: https://kid-pro.vercel.app/
   bgModel:

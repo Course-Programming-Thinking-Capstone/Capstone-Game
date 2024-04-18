@@ -20,6 +20,7 @@ namespace Entry
         [Space(8.0f)]
         [SerializeField] private float loadingTime = 3f;
         [SerializeField] private bool useLocalHost;
+        [SerializeField] private bool useProduction;
 
         private GameServices gameServices = null;
 
@@ -43,9 +44,11 @@ namespace Entry
                 GameObject soundObject = new(SoundObjectName);
                 DontDestroyOnLoad(soundObject);
                 // Add Services
+                var apiString = useLocalHost ? model.LocalBaseApiUrl :
+                    useProduction ? model.ProductionBaseApi : model.ProductionTestBaseApi;
+
                 gameServices.AddService(new AudioService(music, sounds, soundObject));
-                gameServices.AddService(
-                    new ClientService(useLocalHost ? model.LocalBaseApiUrl : model.ProductionBaseApi));
+                gameServices.AddService(new ClientService(apiString));
                 gameServices.AddService(new PlayerService());
                 gameServices.AddService(new GameService(model.FacebookPage, model.WebPage));
             }
@@ -53,7 +56,6 @@ namespace Entry
 
         private void Start()
         {
-
             Loading();
         }
 
