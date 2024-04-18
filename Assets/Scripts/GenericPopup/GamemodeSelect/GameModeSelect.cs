@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Services;
+using Services.Response;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,10 +23,12 @@ namespace GenericPopup.GameModeSelect
         [SerializeField] private Image modeBg;
 
         private ClientService clientService;
+        private PlayerService playerService;
 
         private void Awake()
         {
             clientService = GameServices.Instance.GetService<ClientService>();
+            playerService = GameServices.Instance.GetService<PlayerService>();
             clientService.OnFailed = err =>
             {
                 ActiveSafePanel(false);
@@ -41,6 +44,7 @@ namespace GenericPopup.GameModeSelect
 
             loading.SetActive(true);
             var modeData = await clientService.GetGameMode();
+            // var userProcess = await clientService.GetUserProcess();
             loading.SetActive(false);
 
             if (modeData == null || modeData.Count == 0)
@@ -56,15 +60,31 @@ namespace GenericPopup.GameModeSelect
                 return;
             }
 
+            GameModeResponse previousMode = null;
             foreach (var modeLoaded in modesIndex)
             {
                 foreach (var item in modeData)
                 {
                     if ((GameMode)item.idMode == modeLoaded)
                     {
+                        var isLocked = true;
+                        if (previousMode != null)
+                        {
+                          var previousLevel=  playerService.GetCurrentLevel(previousMode.idMode);
+                          if (previousLevel >= 3)
+                          {
+                              isLocked = false;
+                          }
+                        }
+                        else
+                        {
+                            isLocked = false;
+                        }
+
+                        previousMode = item;
                         var index = item.idMode;
                         var objet = CreateGameModeItem();
-                        objet.Initialized(null, item.typeName, () => { OnClickStage(index); });
+                        objet.Initialized(null, item.typeName, () => { OnClickStage(index); }, isLocked);
                     }
                 }
             }
