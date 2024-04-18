@@ -35,7 +35,7 @@ namespace GameScene.GameLoop
             }
 
             boardController.ActiveSpecificBoard(boardMap);
-            playerController = Instantiate(model.PlayerModel).GetComponent<PlayerController>();
+            playerController = Instantiate(model.Resource.PlayerModel).GetComponent<PlayerController>();
             if (targetPosition[0].x > basePlayerPosition.x)
             {
                 playerController.RotatePlayer(true, 0.1f);

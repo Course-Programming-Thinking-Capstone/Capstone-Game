@@ -8,9 +8,7 @@ namespace GameScene
     public class GameModel : MonoBehaviour
     {
         [Header("Overall setting")]
-        [SerializeField] private float blockOffset = 1.3f;
         [SerializeField] private float playerMoveTime;
-        [SerializeField] private GameObject playerModel;
 
         [Header("Model Pack")]
         [SerializeField] private ResourcePack resource;
@@ -22,12 +20,6 @@ namespace GameScene
         public ResourcePack Resource => resource;
 
         public float PlayerMoveTime => playerMoveTime;
-        public GameObject PlayerModel => playerModel;
-
-        public virtual float GetBlockOffset()
-        {
-            return blockOffset;
-        }
 
         #endregion
     }

@@ -46,10 +46,10 @@ namespace GenericPopup.GameModeSelect
                     var objet = CreateGameModeItem();
 
                     objet.Initialized(null, item.typeName, () => { OnClickStage(index); });
-                    if (item.idMode == (int)GameMode.Condition)
-                    {
-                        objet.gameObject.SetActive(false);
-                    }
+                    // if (item.idMode == (int)GameMode.Condition)
+                    // {
+                    //     objet.gameObject.SetActive(false);
+                    // }
                 }
             }
             else
