@@ -5,6 +5,7 @@ using DG.Tweening;
 using GameScene.Component;
 using GameScene.Component.SelectControl;
 using JetBrains.Annotations;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.UI;
 using Utilities;
@@ -119,6 +120,13 @@ namespace GameScene
                 MakeItemSelectedInRightPlace();
                 selectedObject = null;
             }
+            else if (checker.CompareTag(Constants.ConditionTag))
+            {
+                var extensional = checker.GetComponent<Extensional>();
+                extensional.AddItem(selectedObject);
+                MakeItemSelectedInRightPlace();
+                selectedObject = null;
+            }
             else if (checker.CompareTag(Constants.FuncTag))
             {
                 if (storeFuncSelected.Count == maxFuncControl) //max
@@ -184,6 +192,12 @@ namespace GameScene
                 extensional.MakeEmptySpace(selectedObject.RectTransform);
                 extensional.MatchHeightLooper(selectedObject.RectTransform.sizeDelta / 2, true);
             }
+            else if (checker.CompareTag(Constants.ConditionTag))
+            {
+                var extensional = checker.GetComponent<Extensional>();
+                extensional.MakeEmptySpace(selectedObject.RectTransform);
+                extensional.MatchHeightLooper(selectedObject.RectTransform.sizeDelta / 2, true);
+            }
             else if (checker.CompareTag(Constants.FuncTag))
             {
                 // check to make space
@@ -233,15 +247,19 @@ namespace GameScene
 
                         break;
                     case SelectType.Condition:
-                        result.Add(baseSelectItem);
                         var condition = (Extensional)baseSelectItem;
-                        for (int i = 0; i < condition.LoopCount; i++)
+                        if (condition.LoopCount > 0) // Valid condition
                         {
-                            result.AddRange(condition.StoreSelected);
+                            result.Add(baseSelectItem);
                         }
 
                         break;
                 }
+            }
+
+            foreach (var ite in result)
+            {
+                Debug.Log(ite.ToString());
             }
 
             return result;
@@ -428,6 +446,18 @@ namespace GameScene
                 if (hit.transform.CompareTag(Constants.LoopTag) || hit.transform.CompareTag(Constants.FuncTag))
                 {
                     return hit.transform;
+                }
+
+                if (hit.transform.CompareTag(Constants.ConditionTag))
+                {
+                    if (selectedObject.SelectType == SelectType.Collect)
+                    {
+                        var condition = hit.transform.GetComponent<Extensional>();
+                        if (condition.StoreSelected.Count == 0)
+                        {
+                            return hit.transform;
+                        }
+                    }
                 }
             }
 

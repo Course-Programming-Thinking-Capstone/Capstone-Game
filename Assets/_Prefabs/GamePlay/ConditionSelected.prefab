@@ -226,7 +226,7 @@ GameObject:
   - component: {fileID: 6592927703209506601}
   m_Layer: 5
   m_Name: ConditionSelected
-  m_TagString: Looper
+  m_TagString: Condition
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -10,6 +10,7 @@ public static class Constants
     public const string ParamsTag = "Params";
     public const string FuncTag = "Func";
     public const string LoopTag = "Looper";
+    public const string ConditionTag = "Condition";
 
     // Scenes
     public const string EntryScene = "Scenes/Entry";
