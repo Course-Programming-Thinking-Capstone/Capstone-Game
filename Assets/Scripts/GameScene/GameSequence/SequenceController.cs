@@ -32,7 +32,6 @@ namespace GameScene.GameSequence
             // Init player model
             currentPlayerPosition = basePlayerPosition;
             boardController.PlaceObjectToBoard(playerController.transform, basePlayerPosition);
-
             CreateTarget();
         }
 

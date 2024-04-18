@@ -1,51 +1,47 @@
+using GameScene.Component;
 using Services;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace GameScene.GameCondition
 {
     public class ConditionController : ClickDragController
     {
-        private void Start()
+        private async void Start()
         {
             gameMode = GameMode.Condition;
-            // LoadData();
+            if (!await LoadData())
+            {
+                SceneManager.LoadScene(Constants.MainMenu);
+                return;
+            }
+
+            view.SetDetail(gameMode + " mode: " + " Level " + (levelIndex + 1));
+            playButton.onClick.AddListener(OnClickPlay);
+            padSelectController.CreateSelector(generateList, model.Resource);
+            boardController.CreateBoard(new Vector2(8, 6), model.Resource.BoardCellModel);
+            playerController = Instantiate(model.Resource.PlayerModel).GetComponent<PlayerController>();
+
+            if (targetPosition[0].x > basePlayerPosition.x)
+            {
+                playerController.RotatePlayer(true, 0.1f);
+            }
+
+            // Init player model
+            currentPlayerPosition = basePlayerPosition;
+            boardController.PlaceObjectToBoard(playerController.transform, basePlayerPosition);
+            CreateTarget();
         }
 
         private void Update()
         {
+            if (Input.GetMouseButtonUp(0))
+            {
+                padSelectController.HandleMouseUp();
+            }
+
+            padSelectController.HandleMouseMoveSelected();
         }
-
-        #region Initialized
-
-        // private void CreateBoard()
-        // {
-        //     view.InitGroundBoardFakePosition(boardSize, model.GetBlockOffset());
-        //     view.PlaceObjectToBoard(Instantiate(model.CellBoardPrefab).transform, basePlayerPosition);
-        //
-        //     var listBoard = new List<Transform>();
-        //
-        //     for (int i = 0; i < boardSize.x * boardSize.y; i++)
-        //     {
-        //         listBoard.Add(Instantiate(model.CellBoardPrefab).transform);
-        //     }
-        //
-        //     view.InitGroundBoard(listBoard, boardSize, model.GetBlockOffset());
-        // }
-        //
-        // private void CreateSelector()
-        // {
-        //     // Generate objects selector
-        //     foreach (var o in generateList)
-        //     {
-        //         var obj = Instantiate(model.SelectorPrefab);
-        //         view.SetParentSelector(obj.transform);
-        //         var scriptControl = obj.AddComponent<Basic>();
-        //         scriptControl.Init(OnClickedSelector);
-        //         scriptControl.SelectType = o;
-        //         scriptControl.ChangeRender(model.GetSelector(o));
-        //     }
-        // }
-
-        #endregion
 
         #region CALL BACK
 
@@ -53,6 +49,30 @@ namespace GameScene.GameCondition
         private void OnClickPlay()
         {
             StartCoroutine(StartPlayerMove());
+        }
+
+        #endregion
+
+        #region Calulate func
+
+        protected override bool IsOutsideBoard(Vector2 checkPosition)
+        {
+            if (boardMap.Contains(checkPosition))
+            {
+                return false;
+            }
+
+            if (targetPosition.Contains(checkPosition))
+            {
+                return false;
+            }
+
+            if (basePlayerPosition == checkPosition)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         #endregion
