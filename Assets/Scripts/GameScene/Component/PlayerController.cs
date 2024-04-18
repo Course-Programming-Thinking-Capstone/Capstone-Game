@@ -15,6 +15,7 @@ namespace GameScene.Component
         [SerializeField] private Transform skeletonContainer;
         [SerializeField] private GameObject defaultCharacter;
 
+        [SerializeField] private string deadAnimation;
         [SerializeField] private string idleAnimation;
         [SerializeField] private string moveAnimation;
         [SerializeField] private string collectAnimation;
@@ -104,7 +105,10 @@ namespace GameScene.Component
         {
             return skeletonAnimation.AnimationState.SetAnimation(0, idleAnimation, isLoop);
         }
-
+        public TrackEntry PlayAnimationFail()
+        {
+            return skeletonAnimation.AnimationState.SetAnimation(0, deadAnimation, true);
+        }
         public TrackEntry PlayAnimationEat()
         {
             return skeletonAnimation.AnimationState.SetAnimation(0, collectAnimation, true);

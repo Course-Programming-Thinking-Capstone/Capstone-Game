@@ -201,6 +201,7 @@ MonoBehaviour:
   skeletonAnimation: {fileID: 6890684932404960608}
   skeletonContainer: {fileID: 6776115952872649923}
   defaultCharacter: {fileID: 4776783628248793063}
+  deadAnimation: activity/evolve
   idleAnimation: action/idle/normal
   moveAnimation: action/move-forward
   collectAnimation: activity/eat-bite

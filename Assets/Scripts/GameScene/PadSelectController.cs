@@ -257,11 +257,6 @@ namespace GameScene
                 }
             }
 
-            foreach (var ite in result)
-            {
-                Debug.Log(ite.ToString());
-            }
-
             return result;
         }
 

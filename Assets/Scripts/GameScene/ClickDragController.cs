@@ -35,7 +35,7 @@ namespace GameScene
                 foreach (var position in targetPosition)
                 {
                     var target = Instantiate(model.Resource.TargetModel).GetComponent<Target>();
-                   
+
                     boardController.PlaceObjectToBoard(target.GetComponent<Transform>(), position);
 
                     targetChecker.Add(position, false);
@@ -48,6 +48,7 @@ namespace GameScene
                     {
                         target.Init(model.CandySprites[Random.Range(0, model.CandySprites.Count)]);
                     }
+
                     targetReferences.Add(position, target.transform);
                 }
 
@@ -87,7 +88,6 @@ namespace GameScene
             if (WinChecker() && valid)
             {
                 ShowWinPopup();
-                // win
             }
             else
             {
@@ -116,7 +116,9 @@ namespace GameScene
                 case SelectType.Collect:
                     isEat = true;
                     break;
-                case SelectType.Loop:
+                case SelectType.Condition:
+                    isEat = true;
+                    break;
                 default:
                     playerController.PlayAnimationIdle();
                     yield break;
@@ -146,14 +148,41 @@ namespace GameScene
             if (isEat)
             {
                 var tracker = playerController.PlayAnimationEat();
-                if (targetChecker.ContainsKey(currentPlayerPosition))
+                if (direction.SelectType == SelectType.Condition)
                 {
-                    targetChecker[currentPlayerPosition] = true;
-                    targetReferences[currentPlayerPosition].gameObject.SetActive(false);
-                }
+                    yield return new WaitForSpineAnimationComplete(tracker);
+                    if (targetChecker.ContainsKey(currentPlayerPosition)) // candy? -> eat
+                    {
+                        targetChecker[currentPlayerPosition] = true;
+                        targetReferences[currentPlayerPosition].gameObject.SetActive(false);
+                    }
 
-                yield return new WaitForSpineAnimationComplete(tracker);
-                playerController.PlayAnimationIdle();
+                    playerController.PlayAnimationIdle();
+                }
+                else
+                {
+                    if (targetChecker.ContainsKey(currentPlayerPosition))
+                    {
+                        yield return new WaitForSpineAnimationComplete(tracker);
+                        if (conditionChecker[currentPlayerPosition]) // need condition!
+                        {
+                            // Reset game cuz you eat something wrong, hohoho
+                            valid = false;
+                            targetReferences[currentPlayerPosition].gameObject.SetActive(false);
+                            playerController.PlayAnimationFail();
+                            yield return new WaitForSeconds(1f);
+                            yield break;
+                        }
+                        else // normal fruits
+                        {
+                            targetChecker[currentPlayerPosition] = true;
+                            targetReferences[currentPlayerPosition].gameObject.SetActive(false);
+                        }
+                    }
+
+                    yield return new WaitForSpineAnimationComplete(tracker);
+                    playerController.PlayAnimationIdle();
+                }
             }
         }
 
