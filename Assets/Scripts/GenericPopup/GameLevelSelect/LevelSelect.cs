@@ -75,6 +75,8 @@ namespace GenericPopup.GameLevelSelect
                 var isPlayed = false;
                 var isLocked = true;
 
+                
+                
                 if (clientService.UserId != -1 && userPlayedLevel != null && userPlayedLevel.Count > 0) // already login
                 {
                     if (i <= userPlayedLevel.Max() + 1)
@@ -87,20 +89,17 @@ namespace GenericPopup.GameLevelSelect
                         isPlayed = true;
                     }
                 }
-                else // using local
+                
+                if (i < baseUnlockLevel) // handle if below free level
                 {
-                    // Local handle level
-                    if (i < baseUnlockLevel)
+                    if (i <= currentLocalPlayed) // previous played
                     {
-                        if (i <= currentLocalPlayed) // unlock all first 3
-                        {
-                            isLocked = false;
-                        }
+                        isLocked = false;
+                    }
 
-                        if (i < currentLocalPlayed)
-                        {
-                            isPlayed = true;
-                        }
+                    if (i < currentLocalPlayed) // local already play
+                    {
+                        isPlayed = true;
                     }
                 }
 
