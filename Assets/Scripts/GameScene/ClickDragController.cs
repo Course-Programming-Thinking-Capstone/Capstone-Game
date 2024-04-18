@@ -27,6 +27,15 @@ namespace GameScene
 
         #region Perform action
 
+        protected void CreateBlockers()
+        {
+            foreach (var position in rockMap)
+            {
+                var target = Instantiate(model.Resource.BlockPrefab);
+                boardController.PlaceObjectToBoard(target.GetComponent<Transform>(), position);
+            }
+        }
+
         protected void CreateTarget()
         {
             var conditionResource = Resources.Load<Sprite>("Fruits/T_fruit_unknow");
@@ -51,8 +60,6 @@ namespace GameScene
 
                     targetReferences.Add(position, target.transform);
                 }
-
-                return;
             }
             else
             {
@@ -128,7 +135,7 @@ namespace GameScene
             {
                 currentPlayerPosition = targetMove;
 
-                if (IsOutsideBoard(targetMove))
+                if (IsOutsideBoard(targetMove) || rockMap.Contains(targetMove))
                 {
                     // Reset game cuz it fail
                     playerController.PlayAnimationIdle();
@@ -161,10 +168,12 @@ namespace GameScene
                 }
                 else
                 {
+                    
+                    yield return new WaitForSpineAnimationComplete(tracker);
                     if (targetChecker.ContainsKey(currentPlayerPosition))
                     {
-                        yield return new WaitForSpineAnimationComplete(tracker);
-                        if (conditionChecker[currentPlayerPosition]) // need condition!
+                        if (conditionChecker.ContainsKey(currentPlayerPosition) &&
+                            conditionChecker[currentPlayerPosition]) // need condition!
                         {
                             // Reset game cuz you eat something wrong, hohoho
                             valid = false;
@@ -173,14 +182,12 @@ namespace GameScene
                             yield return new WaitForSeconds(1f);
                             yield break;
                         }
-                        else // normal fruits
-                        {
-                            targetChecker[currentPlayerPosition] = true;
-                            targetReferences[currentPlayerPosition].gameObject.SetActive(false);
-                        }
+
+                        // normal fruits
+                        targetChecker[currentPlayerPosition] = true;
+                        targetReferences[currentPlayerPosition].gameObject.SetActive(false);
                     }
 
-                    yield return new WaitForSpineAnimationComplete(tracker);
                     playerController.PlayAnimationIdle();
                 }
             }
@@ -201,6 +208,7 @@ namespace GameScene
             {
                 if (!value) // any not get
                 {
+                    Debug.Log("Not eat all");
                     return false;
                 }
             }

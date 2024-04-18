@@ -36,3 +36,4 @@ MonoBehaviour:
   boardCellModel: {fileID: 8313896542140405589, guid: ba55010254c6eb64696f2c69bf1da902, type: 3}
   loopPrefab: {fileID: 4903770973405204659, guid: c5781ed7ba32e36419fdcbd4e13f42ab, type: 3}
   conditionPrefab: {fileID: 4903770973405204659, guid: e287f02ed86f2b242af7ae811b9d1081, type: 3}
+  blockPrefab: {fileID: 802349416297577777, guid: 5a4a4c9ab7710174cbd998fa3ab40e84, type: 3}

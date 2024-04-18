@@ -31,6 +31,7 @@ namespace GameScene.GameCondition
             currentPlayerPosition = basePlayerPosition;
             boardController.PlaceObjectToBoard(playerController.transform, basePlayerPosition);
             CreateTarget();
+            CreateBlockers();
         }
 
         private void Update()
@@ -42,7 +43,7 @@ namespace GameScene.GameCondition
 
             padSelectController.HandleMouseMoveSelected();
         }
-    
+
         #region CALL BACK
 
         // Start Moving

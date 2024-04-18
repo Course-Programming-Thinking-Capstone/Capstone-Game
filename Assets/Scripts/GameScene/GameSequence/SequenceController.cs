@@ -33,6 +33,7 @@ namespace GameScene.GameSequence
             currentPlayerPosition = basePlayerPosition;
             boardController.PlaceObjectToBoard(playerController.transform, basePlayerPosition);
             CreateTarget();
+            CreateBlockers();
         }
 
         private void Update()
