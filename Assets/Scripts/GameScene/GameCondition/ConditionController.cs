@@ -16,12 +16,12 @@ namespace GameScene.GameCondition
                 return;
             }
 
-            view.SetDetail(gameMode + " mode: " + " Level " + (levelIndex + 1));
+            view.SetDetail(gameMode + " mode: " + " Level " + (levelIndex+1));
+
             playButton.onClick.AddListener(OnClickPlay);
             padSelectController.CreateSelector(generateList, model.Resource);
             boardController.CreateBoard(new Vector2(8, 6), model.Resource.BoardCellModel);
             playerController = Instantiate(model.Resource.PlayerModel).GetComponent<PlayerController>();
-
             if (targetPosition[0].x > basePlayerPosition.x)
             {
                 playerController.RotatePlayer(true, 0.1f);

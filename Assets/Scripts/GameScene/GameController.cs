@@ -15,7 +15,6 @@ namespace GameScene
     {
         // SERVICES
         [Header("All Mode")]
-        [SerializeField] private bool isTesting;
         [SerializeField] protected GameMode gameMode;
         [SerializeField] protected GameObject loading;
         [SerializeField] protected PlayerController playerController;
@@ -34,31 +33,20 @@ namespace GameScene
 
         protected void Awake()
         {
-            if (isTesting)
-            {
-                return;
-            }
-
             clientService = GameServices.Instance.GetService<ClientService>();
             playerService = GameServices.Instance.GetService<PlayerService>();
             startTime = DateTime.Now;
-    
         }
 
         protected async Task<bool> LoadData()
         {
-            if (isTesting)
-            {
-                return true;
-            }
-
             loading.SetActive(true);
             var param = PopupHelpers.PassParamPopup();
             levelIndex = param.GetObject<int>(ParamType.LevelIndex);
             var levelData = await clientService.GetLevelData((int)gameMode, levelIndex);
             loading.SetActive(false);
             startTime = DateTime.Now;
-            
+
             if (levelData != null)
             {
                 basePlayerPosition = ConvertIntToVector2(levelData.vStartPosition);
