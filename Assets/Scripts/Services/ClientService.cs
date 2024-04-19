@@ -18,7 +18,7 @@ namespace Services
         public int UserId { get; set; }
         public int Coin { get; set; }
         public int Gem { get; set; }
-        public List<GameShopItemResponse> CacheShopData { get; set; }
+        public List<GameItemResponse> CacheShopData { get; set; }
         public List<int> UserOwnedShopItem { get; set; }
         public bool IsLogin => UserId != -1;
 
@@ -87,12 +87,12 @@ namespace Services
             }
         }
 
-        public async Task<List<GameShopItemResponse>> GetShopData()
+        public async Task<List<GameItemResponse>> GetShopData()
         {
             var api = baseApi + "games/shop-item";
             try
             {
-                CacheShopData = await Get<List<GameShopItemResponse>>(api);
+                CacheShopData = await Get<List<GameItemResponse>>(api);
                 return CacheShopData;
             }
             catch (Exception e)
@@ -244,7 +244,11 @@ namespace Services
         public async Task<TResultType> Get<TResultType>(string url)
         {
             using UnityWebRequest request = UnityWebRequest.Get(url);
-            request.SetRequestHeader("Authorization", jwt);
+
+            if (!string.IsNullOrEmpty(jwt))
+            {
+                request.SetRequestHeader("Authorization",  "Bearer "+ jwt);
+            }
 
             var operation = request.SendWebRequest();
             while (!operation.isDone) // wait for operation
@@ -282,7 +286,11 @@ namespace Services
         {
             var payload = JsonConvert.SerializeObject(requestData);
             using UnityWebRequest request = UnityWebRequest.Post(url, payload, "application/json");
-            request.SetRequestHeader("Authorization", jwt);
+
+            if (!string.IsNullOrEmpty(jwt))
+            {
+                request.SetRequestHeader("Authorization",  "Bearer "+ jwt);
+            }
 
             var operation = request.SendWebRequest();
             while (!operation.isDone) // wait for operation
@@ -322,8 +330,11 @@ namespace Services
         {
             var payload = JsonConvert.SerializeObject(requestData);
             using UnityWebRequest request = UnityWebRequest.Put(url, payload);
-            request.SetRequestHeader("Authorization", jwt);
-
+         
+            if (!string.IsNullOrEmpty(jwt))
+            {
+                request.SetRequestHeader("Authorization",  "Bearer "+ jwt);
+            }
             var operation = request.SendWebRequest();
             while (!operation.isDone) // wait for operation
             {
@@ -350,7 +361,10 @@ namespace Services
             using UnityWebRequest request = UnityWebRequest.Delete(url);
             var operation = request.SendWebRequest();
 
-            request.SetRequestHeader("Authorization", jwt);
+            if (!string.IsNullOrEmpty(jwt))
+            {
+                request.SetRequestHeader("Authorization",  "Bearer "+ jwt);
+            }
             while (!operation.isDone)
             {
                 await Task.Yield();

@@ -1,5 +1,6 @@
 using AYellowpaper.SerializedCollections;
 using Services;
+using Services.Response;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,6 +32,8 @@ namespace GenericPopup.Inventory
         private ClientService clientService;
         [Header("System")]
         [SerializeField] private string resourcesPath;
+
+
 
         private void Awake()
         {
@@ -75,6 +78,22 @@ namespace GenericPopup.Inventory
 
         public void OnClickViewItem()
         {
+        }
+
+        public void HideDetail()
+        {
+            
+        }
+        public void SetCurrentDetail(GameItemResponse model, int numberHave)
+        {
+            var render = Resources.Load<Sprite>(resourcesPath + model.SpritesUrl);
+            imageDetailRate.sprite = rateRender[(Enums.RateType)model.ItemRateType];
+            imageDetail.sprite = render;
+            countTxt.text = numberHave.ToString();
+            rateTxt.text = ((Enums.RateType)model.ItemRateType).ToString();
+            itemNameTxt.text = model.ItemName;
+            itemDetailTxt.text = model.Details;
+            sellValueTxt.text = model.Price.ToString();
         }
     }
 }

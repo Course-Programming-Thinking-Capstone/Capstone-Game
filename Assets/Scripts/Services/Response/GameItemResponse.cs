@@ -1,6 +1,6 @@
 namespace Services.Response
 {
-    public class GameShopItemResponse
+    public class GameItemResponse
     {
         public int Id { get; set; }
         public string ItemName { get; set; } = null!;

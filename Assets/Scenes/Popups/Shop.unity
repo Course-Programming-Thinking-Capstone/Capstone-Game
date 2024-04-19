@@ -12312,8 +12312,8 @@ MonoBehaviour:
   m_text: "Fires laser ball. \nCausing 10damage against\nevery bricks at horizontal
     line."
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c1482dbce654844b9ba1c753cbea5d80, type: 2}
-  m_sharedMaterial: {fileID: 7374927986402738804, guid: c1482dbce654844b9ba1c753cbea5d80, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 6767fa1a8db2e32448872a487b1cb2fa, type: 2}
+  m_sharedMaterial: {fileID: -8043995617976082112, guid: 6767fa1a8db2e32448872a487b1cb2fa, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
