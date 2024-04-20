@@ -4,6 +4,7 @@ using Services.Response;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Utilities;
 
 namespace GenericPopup.Inventory
 {
@@ -33,34 +34,41 @@ namespace GenericPopup.Inventory
         [Header("System")]
         [SerializeField] private string resourcesPath;
 
-
+        private int selectedId;
+        private int soldNumber;
 
         private void Awake()
         {
             clientService = GameServices.Instance.GetService<ClientService>();
         }
 
-        private void Start()
+        private async void Start()
         {
             coinTxt.text = clientService.Coin.ToString();
             gemTxt.text = clientService.Gem.ToString();
             energyTxt.text = "60 / 60";
 
-            for (int i = 0; i < 10; i++)
+            loading.SetActive(true);
+            var inventItem = await clientService.GetUserOwnedItems();
+            if (inventItem != null && inventItem.Count > 0)
             {
-                var fakeIt = CreateItem();
-                fakeIt.InitializedItem(
-                    rateRender[(Enums.RateType)Random.Range(1, 7)],
-                    Resources.Load<Sprite>(resourcesPath + "T_fruit_" + Random.Range(1, 15)),
-                    Random.Range(1, 7),
-                    () => { Debug.Log("CLICKED"); }
-                );
+                foreach (var item in inventItem)
+                {
+                    var temp = item;
+                    var itemObj = CreateItem();
+                    itemObj.InitializedItem(
+                        rateRender[(Enums.RateType)item.GameItem.ItemRateType],
+                        Resources.Load<Sprite>(resourcesPath + item.GameItem.SpritesUrl),
+                        item.Quantity,
+                        () => { SetCurrentDetail(temp.GameItem, item.Quantity); }
+                    );
+                }
             }
 
             loading.SetActive(false);
         }
 
-        public InventItem CreateItem()
+        private InventItem CreateItem()
         {
             var obj = Instantiate(itemPrefab, itemContainer);
             obj.transform.localScale = Vector3.one;
@@ -76,14 +84,6 @@ namespace GenericPopup.Inventory
         {
         }
 
-        public void OnClickViewItem()
-        {
-        }
-
-        public void HideDetail()
-        {
-            
-        }
         public void SetCurrentDetail(GameItemResponse model, int numberHave)
         {
             var render = Resources.Load<Sprite>(resourcesPath + model.SpritesUrl);
