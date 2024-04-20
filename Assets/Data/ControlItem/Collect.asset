@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Collect
   m_EditorClassIdentifier: 
   itemType: 5
-  unSelectRender: {fileID: 21300000, guid: 0946204cce3955c499a18037dc619f38, type: 3}
-  selectedRender: {fileID: 21300000, guid: e62f21787936c654a97885b672eab284, type: 3}
+  unSelectRender: {fileID: 21300000, guid: bdc40e4ccdeac194eb7ea5c7bc6a5998, type: 3}
+  selectedRender: {fileID: 21300000, guid: 64b62da87e7f5054aa334667009ca169, type: 3}
