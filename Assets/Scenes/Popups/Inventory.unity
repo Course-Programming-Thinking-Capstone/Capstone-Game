@@ -292,7 +292,7 @@ MonoBehaviour:
   rateTxt: {fileID: 134526601932924404}
   itemNameTxt: {fileID: 134526601673215462}
   itemDetailTxt: {fileID: 134526602531052300}
-  sellValueTxt: {fileID: 0}
+  sellValueTxt: {fileID: 134526602085022669}
   resourcesPath: Fruits/
 --- !u!1001 &1286631247
 PrefabInstance:

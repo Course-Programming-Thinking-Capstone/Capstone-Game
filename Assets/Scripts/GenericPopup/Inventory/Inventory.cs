@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
 using Services;
 using Services.Response;
@@ -33,7 +34,7 @@ namespace GenericPopup.Inventory
         private ClientService clientService;
         [Header("System")]
         [SerializeField] private string resourcesPath;
-
+        private List<InventItem> cache = new();
         private int selectedId;
         private int soldNumber;
 
@@ -56,11 +57,19 @@ namespace GenericPopup.Inventory
                 {
                     var temp = item;
                     var itemObj = CreateItem();
+                    cache.Add(itemObj);
                     itemObj.InitializedItem(
                         rateRender[(Enums.RateType)item.GameItem.ItemRateType],
                         Resources.Load<Sprite>(resourcesPath + item.GameItem.SpritesUrl),
                         item.Quantity,
-                        () => { SetCurrentDetail(temp.GameItem, item.Quantity); }
+                        () =>
+                        {
+                            foreach (var inventItemCache in cache)
+                            {
+                                inventItemCache.SetFocus(false);
+                            }
+                            SetCurrentDetail(temp.GameItem, item.Quantity);
+                        }
                     );
                 }
             }
@@ -84,7 +93,7 @@ namespace GenericPopup.Inventory
         {
         }
 
-        public void SetCurrentDetail(GameItemResponse model, int numberHave)
+        private void SetCurrentDetail(GameItemResponse model, int numberHave)
         {
             var render = Resources.Load<Sprite>(resourcesPath + model.SpritesUrl);
             imageDetailRate.sprite = rateRender[(Enums.RateType)model.ItemRateType];

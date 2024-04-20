@@ -1,6 +1,5 @@
 using System.Collections;
 using JetBrains.Annotations;
-
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -21,7 +20,7 @@ namespace GenericPopup.SimplePopup
         [SerializeField] private TextMeshProUGUI itemName;
         [SerializeField] private GameObject fruitObj;
         private UnityAction onClickNextLevelCallBack;
-
+        [SerializeField] private string resourcesPath = "Fruits/";
         private void Start()
         {
             var parameter = PopupHelpers.PassParamPopup();
@@ -39,13 +38,13 @@ namespace GenericPopup.SimplePopup
 
         private void SetEarnItem([CanBeNull] string spritesUrl, [CanBeNull] string itemWinName)
         {
-            if (spritesUrl == null || itemWinName == null)
+            if (string.IsNullOrEmpty(spritesUrl) || string.IsNullOrEmpty(itemWinName))
             {
                 fruitObj.SetActive(false);
             }
             else
             {
-                var sprites = Resources.Load<Sprite>(spritesUrl);
+                var sprites = Resources.Load<Sprite>(resourcesPath+spritesUrl);
                 if (sprites != null)
                 {
                     renderItem.sprite = sprites;

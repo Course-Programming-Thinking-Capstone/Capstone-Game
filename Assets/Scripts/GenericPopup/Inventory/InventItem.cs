@@ -7,7 +7,6 @@ namespace GenericPopup.Inventory
 {
     public class InventItem : MonoBehaviour
     {
-    
         [SerializeField] private Image renderImg;
         [SerializeField] private Image rateRenderImg;
         [SerializeField] private TextMeshProUGUI quantityTxt;
@@ -25,8 +24,8 @@ namespace GenericPopup.Inventory
 
         public void OnClickThisItem()
         {
-            SetFocus(true);
             onClick?.Invoke();
+            SetFocus(true);
         }
 
         public void SetFocus(bool isActive)

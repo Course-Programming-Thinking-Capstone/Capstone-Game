@@ -105,6 +105,11 @@ namespace GameScene
                         parameter.SaveObject(ParamType.WinItemName, item.ItemName);
                     }
                 }
+                else
+                {
+                    parameter.SaveObject(ParamType.WinItemUrl, "");
+                    parameter.SaveObject(ParamType.WinItemName, "");
+                }
 
                 coinWin = result.UserCoin - result.OldCoin;
                 gemWin = result.UserGem - result.OldGem;
