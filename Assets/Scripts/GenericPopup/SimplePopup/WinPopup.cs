@@ -1,4 +1,6 @@
 using System.Collections;
+using JetBrains.Annotations;
+
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -14,7 +16,10 @@ namespace GenericPopup.SimplePopup
         [SerializeField] private TextMeshProUGUI coinWinTxt;
         [SerializeField] private Button nextLevelButton;
         [SerializeField] private Button homeButton;
-        
+        [Header("fruit")]
+        [SerializeField] private Image renderItem;
+        [SerializeField] private TextMeshProUGUI itemName;
+        [SerializeField] private GameObject fruitObj;
         private UnityAction onClickNextLevelCallBack;
 
         private void Start()
@@ -24,7 +29,30 @@ namespace GenericPopup.SimplePopup
             onClickNextLevelCallBack = parameter.GetAction(PopupKey.YesOption);
             nextLevelButton.onClick.AddListener(OnClickNextLevel);
             homeButton.onClick.AddListener(OnClickHome);
+
             coinWinTxt.text = parameter.GetObject<int>(ParamType.CoinTxt).ToString();
+            SetEarnItem(
+                parameter.GetObject<string>(ParamType.WinItemUrl.ToString())
+                , parameter.GetObject<string>(ParamType.WinItemName.ToString()
+                ));
+        }
+
+        private void SetEarnItem([CanBeNull] string spritesUrl, [CanBeNull] string itemWinName)
+        {
+            if (spritesUrl == null || itemWinName == null)
+            {
+                fruitObj.SetActive(false);
+            }
+            else
+            {
+                var sprites = Resources.Load<Sprite>(spritesUrl);
+                if (sprites != null)
+                {
+                    renderItem.sprite = sprites;
+                }
+
+                itemName.text = itemWinName;
+            }
         }
 
         private void OnClickHome()
@@ -50,6 +78,7 @@ namespace GenericPopup.SimplePopup
             {
                 PopupHelpers.Close(gameObject.scene);
             }
+
             onClickNextLevelCallBack?.Invoke();
         }
 

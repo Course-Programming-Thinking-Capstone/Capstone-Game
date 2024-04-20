@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Services.Response
 {
     public class UserDataResponse
@@ -8,5 +10,6 @@ namespace Services.Response
         public int OldCoin { get; set; }
         public int UserCoin { get; set; }
         public int UserGem { get; set; }
+        public List<GameItemResponse> GameItemGet { get; set; }
     }
 }

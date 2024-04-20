@@ -94,15 +94,24 @@ namespace GameScene
             levelIndex++;
             var coinWin = 0;
             var gemWin = 0;
+            var parameter = PopupHelpers.PassParamPopup();
             if (result != null)
             {
+                if (result.GameItemGet != null && result.GameItemGet.Count > 0)
+                {
+                    foreach (var item in result.GameItemGet)
+                    {
+                        parameter.SaveObject(ParamType.WinItemUrl, item.SpritesUrl);
+                        parameter.SaveObject(ParamType.WinItemName, item.ItemName);
+                    }
+                }
+
                 coinWin = result.UserCoin - result.OldCoin;
                 gemWin = result.UserGem - result.OldGem;
                 clientService.Coin = result.UserCoin;
                 clientService.Gem = result.UserGem;
             }
 
-            var parameter = PopupHelpers.PassParamPopup();
             parameter.AddAction(PopupKey.YesOption, OnLoadNextLevel);
             parameter.SaveObject(ParamType.CoinTxt, coinWin);
             parameter.SaveObject(ParamType.GemTxt, gemWin);

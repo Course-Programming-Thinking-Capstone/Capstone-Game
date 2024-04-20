@@ -18,6 +18,8 @@ public enum ParamType
     CoinTxt,
     GemTxt,
     IsInGame,
+    WinItemUrl,
+    WinItemName,
 }
 
 public class Parameter : MonoBehaviour
