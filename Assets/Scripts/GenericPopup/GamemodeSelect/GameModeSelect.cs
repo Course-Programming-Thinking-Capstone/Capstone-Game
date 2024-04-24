@@ -44,7 +44,7 @@ namespace GenericPopup.GameModeSelect
 
             loading.SetActive(true);
             var modeData = await clientService.GetGameMode();
-            // var userProcess = await clientService.GetUserProcess();
+            var userProcess = await clientService.GetUserProcess();
             loading.SetActive(false);
 
             if (modeData == null || modeData.Count == 0)
@@ -70,11 +70,24 @@ namespace GenericPopup.GameModeSelect
                         var isLocked = true;
                         if (previousMode != null)
                         {
-                          var previousLevel=  playerService.GetCurrentLevel(previousMode.idMode);
-                          if (previousLevel >= 3)
-                          {
-                              isLocked = false;
-                          }
+                            var previousLevel = playerService.GetCurrentLevel(previousMode.idMode);
+                            if (previousLevel >= 3)
+                            {
+                                isLocked = false;
+                            }
+
+                            if (clientService.IsLogin)
+                            {
+                                var obj = userProcess.FirstOrDefault(o => o.mode == (GameMode)previousMode.idMode);
+                                if (obj != null && obj.PlayedLevel.Count > 0)
+                                {
+                                    var max = obj.PlayedLevel.Max();
+                                    if (max >= 3)
+                                    {
+                                        isLocked = false;
+                                    }
+                                }
+                            }
                         }
                         else
                         {
