@@ -1,22 +1,36 @@
 using Services;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using Utilities;
 
 namespace GenericPopup.SimplePopup
 {
     public class ShopVoucher : PopupAdditive
     {
-        
-        [SerializeField] private Image rateImage;
-        [SerializeField] private GameObject buyButton;
-        [SerializeField] private GameObject selectButton;
         [SerializeField] private TextMeshProUGUI coinTxt;
         [SerializeField] private TextMeshProUGUI gemTxt;
 
         private ClientService clientService;
         private PlayerService playerService;
+
+        private void Awake()
+        {
+            clientService = GameServices.Instance.GetService<ClientService>();
+            playerService = GameServices.Instance.GetService<PlayerService>();
+            var param = PopupHelpers.PassParamPopup();
+            clientService.OnFailed = err =>
+            {
+                ActiveSafePanel(false);
+                PopupHelpers.ShowError(err, "ERROR");
+            };
+        }
+
+        private void Start()
+        {
+            coinTxt.text = clientService.Coin.ToString();
+            gemTxt.text = clientService.Gem.ToString();
+
+        }
 
         public async void OnClickBuy(int index)
         {
@@ -37,10 +51,9 @@ namespace GenericPopup.SimplePopup
                 coinTxt.text = result.CurrentCoin.ToString();
                 gemTxt.text = result.CurrentGem.ToString();
                 PopupHelpers.ShowError("Buy successfully", "Congratulation");
-                buyButton.SetActive(false);
-                selectButton.SetActive(true);
             }
         }
+
         public void OnClickClose()
         {
             ClosePopup();
