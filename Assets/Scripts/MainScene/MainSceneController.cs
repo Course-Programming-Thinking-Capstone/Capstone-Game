@@ -12,6 +12,7 @@ namespace MainScene
         [SerializeField] private MainSceneView view;
         [Header("MainMenu Button")]
         [SerializeField] private Button playButton;
+        [SerializeField] private Button characterButton;
         [SerializeField] private Button shopButton;
         [SerializeField] private Button inventoryButton;
         [SerializeField] private Button userButton;
@@ -94,10 +95,11 @@ namespace MainScene
         private void AssignButton()
         {
             userButton.onClick.AddListener(OnClickUser);
-            shopButton.onClick.AddListener(OnClickShop);
+            characterButton.onClick.AddListener(OnClickCharacter);
             settingButton.onClick.AddListener(OnClickSetting);
             inventoryButton.onClick.AddListener(OnClickInventory);
             playButton.onClick.AddListener(OnClickPlay);
+            shopButton.onClick.AddListener(OnClickShop);
         }
 
         private void InitMain()
@@ -142,11 +144,16 @@ namespace MainScene
             PopupHelpers.Show(Constants.InventoryPopup);
         }
 
-        private void OnClickShop()
+        private void OnClickCharacter()
         {
             var param = PopupHelpers.PassParamPopup();
             param.AddAction(PopupKey.CallBack, LoadCharacter);
             PopupHelpers.Show(Constants.ShopPopup);
+        }
+
+        private void OnClickShop()
+        {
+            PopupHelpers.Show(Constants.ShopVoucher);
         }
 
         private void OnClickUser()

@@ -31,6 +31,7 @@ public static class Constants
     public const string SettingPopup = "Scenes/Popups/Setting";
     public const string InventoryPopup = "Scenes/Popups/Inventory";
     public const string ShopPopup = "Scenes/Popups/Shop";
+    public const string ShopVoucher = "Scenes/Popups/ShopVoucher";
     public const string PausePopup = "Scenes/Popups/Pause";
     public const string FailPopup = "Scenes/Popups/Fail";
     public const string TutorialPopup = "Scenes/Popups/Tutorial";
