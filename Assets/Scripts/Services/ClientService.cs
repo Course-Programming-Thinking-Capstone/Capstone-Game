@@ -92,7 +92,28 @@ namespace Services
         #endregion
 
         #region SHOP
+        public async Task<BuyResponse> BuyVoucher(int itemId)
+        {
+            // var api = baseApi + "games/game-shop-item-owned?itemId=" + itemId + "&userId=" + UserId;
+            // try
+            // {
+            //     var response = await Post<BuyResponse>(api, null);
+            //     if (response != null)
+            //     {
+            //         Coin = response.CurrentCoin;
+            //         Gem = response.CurrentGem;
+            //         UserOwnedShopItem = response.OwnedItem;
+            //     }
+            //
+            //     return response;
+            // }
+            // catch (Exception e)
+            // {
+            //     OnFailed.Invoke(e.Message);
+            // }
 
+            return null;
+        }
         public async Task<BuyResponse> BuyItem(int itemId)
         {
             var api = baseApi + "games/game-shop-item-owned?itemId=" + itemId + "&userId=" + UserId;
