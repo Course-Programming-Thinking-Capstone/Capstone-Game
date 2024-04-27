@@ -71,7 +71,7 @@ namespace GenericPopup.GameModeSelect
                         if (previousMode != null)
                         {
                             var previousLevel = playerService.GetCurrentLevel(previousMode.idMode);
-                            if (previousLevel >= 3)
+                            if (previousLevel >= Constants.FreeLevel)
                             {
                                 isLocked = false;
                             }
@@ -82,7 +82,7 @@ namespace GenericPopup.GameModeSelect
                                 if (obj != null && obj.PlayedLevel.Count > 0)
                                 {
                                     var max = obj.PlayedLevel.Max();
-                                    if (max >= 3)
+                                    if (max >= Constants.FreeLevel)
                                     {
                                         isLocked = false;
                                     }
