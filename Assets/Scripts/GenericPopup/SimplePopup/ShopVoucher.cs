@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
 using Services;
-using Services.Response;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Utilities;
 
 namespace GenericPopup.SimplePopup
@@ -19,12 +19,15 @@ namespace GenericPopup.SimplePopup
         [Header("View")]
         [SerializeField] private TextMeshProUGUI voucher1TxtPrice;
         [SerializeField] private TextMeshProUGUI voucher1CountLeft;
+        [SerializeField] private Button voucher1Btn;
 
         [SerializeField] private TextMeshProUGUI voucher2TxtPrice;
         [SerializeField] private TextMeshProUGUI voucher2CountLeft;
+        [SerializeField] private Button voucher2Btn;
 
         [SerializeField] private TextMeshProUGUI voucher3TxtPrice;
         [SerializeField] private TextMeshProUGUI voucher3CountLeft;
+        [SerializeField] private Button voucher3Btn;
 
         [SerializeField]
         [SerializedDictionary("index", "price")]
@@ -55,18 +58,43 @@ namespace GenericPopup.SimplePopup
             coinTxt.text = clientService.Coin.ToString();
             gemTxt.text = clientService.Gem.ToString();
 
-            voucher1TxtPrice.text = priceDictionary[1]+ " Left";
-            voucher2TxtPrice.text = priceDictionary[2]+ " Left";
-            voucher3TxtPrice.text = priceDictionary[3]+ " Left";
+            voucher1TxtPrice.text = priceDictionary[1].ToString();
+            voucher2TxtPrice.text = priceDictionary[2].ToString();
+            voucher3TxtPrice.text = priceDictionary[3].ToString();
 
+            LoadVoucherCountLeft();
+            animator.gameObject.SetActive(true);
+        }
+
+        private void LoadVoucherCountLeft()
+        {
             if (clientService.IsLogin)
             {
-                voucher1CountLeft.text = playerService.LoadVoucherBoughtLeft(clientService.UserId, 1).ToString();
-                voucher2CountLeft.text = playerService.LoadVoucherBoughtLeft(clientService.UserId, 2).ToString();
-                voucher3CountLeft.text = playerService.LoadVoucherBoughtLeft(clientService.UserId, 3).ToString();
-            }
+                var value1 = playerService.LoadVoucherBoughtLeft(clientService.UserId, 1);
+                var value2 = playerService.LoadVoucherBoughtLeft(clientService.UserId, 2);
+                var value3 = playerService.LoadVoucherBoughtLeft(clientService.UserId, 3);
+                voucher1CountLeft.text = value1 + " Left";
+                voucher2CountLeft.text = value2 + " Left";
+                voucher3CountLeft.text = value3 + " Left";
 
-            animator.gameObject.SetActive(true);
+                if (value1 == 0)
+                {
+                    voucher1CountLeft.text = "Out of stock";
+                    voucher1Btn.interactable = false;
+                }
+
+                if (value2 == 0)
+                {
+                    voucher1CountLeft.text = "Out of stock";
+                    voucher2Btn.interactable = false;
+                }
+
+                if (value3 == 0)
+                {
+                    voucher1CountLeft.text = "Out of stock";
+                    voucher3Btn.interactable = false;
+                }
+            }
         }
 
         private int tempIndex;
@@ -94,19 +122,18 @@ namespace GenericPopup.SimplePopup
             if (voucherIndex.Contains(tempIndex))
             {
                 // Buy voucher
-                 clientService.BuyVoucher(itemId, priceDictionary[itemId], s =>
+                clientService.BuyVoucher(itemId, priceDictionary[itemId], s =>
                 {
-                    
-                    PopupHelpers.Show("Buy Success, Thank for your purchase");
-                }, e =>
-                {
-                    
-                });
+                    coinTxt.text = clientService.Coin.ToString();
+                    gemTxt.text = clientService.Gem.ToString();
+                    playerService.SaveVoucherBought(clientService.UserId, itemId);
+                    LoadVoucherCountLeft();
+                    PopupHelpers.ShowError("Buy Success, Thank for your purchase", "Notification");
+                }, e => { PopupHelpers.ShowError(e); });
             }
             else
             {
-                // buy gold
-                // result =  clientService.BuyVoucher(itemId);
+                PopupHelpers.ShowError("Ermm, This function not maintain yet. So sorry :(");
             }
 
             ActiveSafePanel(false);

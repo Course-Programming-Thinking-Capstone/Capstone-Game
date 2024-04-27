@@ -7,8 +7,13 @@ namespace MainScene
     {
         [Header("MainMenu")]
         [SerializeField] private TextMeshProUGUI userCoin;
+        [SerializeField] private TextMeshProUGUI userGem;
         [SerializeField] private TextMeshProUGUI userEnergy;
         [SerializeField] private TextMeshProUGUI userName;
+        public void SetDisplayUserGem(int value)
+        {
+            userGem.text = value.ToString();
+        }
 
         public void SetDisplayUserCoin(int value)
         {

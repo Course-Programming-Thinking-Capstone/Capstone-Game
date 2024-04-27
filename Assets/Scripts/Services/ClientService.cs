@@ -116,7 +116,7 @@ namespace Services
             }
 
             OnFailed = onFail;
-            var api = baseApi + "game-voucher/";
+            var api = baseApi + "games/game-voucher";
             var requestParam = new
             {
                 UserId = UserId,
@@ -297,6 +297,8 @@ namespace Services
             UserId = -1;
             UserEmail = "";
             UserDisplayName = "";
+            Coin = 0;
+            Gem = 0;
             UserOwnedShopItem = new List<int>();
         }
 

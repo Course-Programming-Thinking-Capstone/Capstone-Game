@@ -107,6 +107,7 @@ namespace MainScene
             if (clientService.UserId != -1)
             {
                 view.SetDisplayUserCoin(clientService.Coin);
+                view.SetDisplayUserGem(clientService.Gem);
                 view.SetDisplayUserName(clientService.UserDisplayName);
             }
             else
@@ -141,18 +142,49 @@ namespace MainScene
 
         private void OnClickInventory()
         {
+            if (clientService.IsLogin)
+            {
+                var param = PopupHelpers.PassParamPopup();
+                param.AddAction(PopupKey.CallBack, () =>
+                {
+                    view.SetDisplayUserCoin(clientService.Coin);
+                    view.SetDisplayUserGem(clientService.Gem);
+                });
+            }
+
             PopupHelpers.Show(Constants.InventoryPopup);
         }
 
         private void OnClickCharacter()
         {
             var param = PopupHelpers.PassParamPopup();
-            param.AddAction(PopupKey.CallBack, LoadCharacter);
+            param.AddAction(PopupKey.CallBack, () =>
+            {
+                LoadCharacter();
+                if (clientService.IsLogin)
+                {
+                    view.SetDisplayUserCoin(clientService.Coin);
+                    view.SetDisplayUserGem(clientService.Gem);
+                }
+            });
             PopupHelpers.Show(Constants.ShopPopup);
         }
 
+        /// <summary>
+        /// Shop voucher and coin
+        /// </summary>
         private void OnClickShop()
         {
+            if (clientService.IsLogin)
+            {
+                var param = PopupHelpers.PassParamPopup();
+                param.AddAction(PopupKey.CallBack, () =>
+                {
+                    view.SetDisplayUserCoin(clientService.Coin);
+                    view.SetDisplayUserGem(clientService.Gem);
+                });
+            }
+
             PopupHelpers.Show(Constants.ShopVoucher);
         }
 
@@ -164,6 +196,7 @@ namespace MainScene
                 param.AddAction(PopupKey.CallBack, () =>
                 {
                     view.SetDisplayUserCoin(clientService.Coin);
+                    view.SetDisplayUserGem(clientService.Gem);
                     view.SetDisplayUserName(clientService.UserDisplayName);
                     LoadCharacter();
                 });
