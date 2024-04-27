@@ -2374,7 +2374,6 @@ MonoBehaviour:
       Value: {fileID: 21300000, guid: 60575ac29ab27db41abff0bde81e6e5a, type: 3}
   soldCount: {fileID: 223360090}
   sellValueTxt: {fileID: 134526602085022669}
-  soldButton: {fileID: 134526601116098826}
   confirmSold: {fileID: 119487244}
   detailConfirmSold: {fileID: 1929655956}
   energyTxt: {fileID: 5500875111696726970}
@@ -2382,6 +2381,8 @@ MonoBehaviour:
   gemTxt: {fileID: 5500875111216825571}
   itemContainer: {fileID: 134526601018387581}
   itemPrefab: {fileID: 4984476994651768992, guid: 872c5975e75da8842b2356cd3a2b62e5, type: 3}
+  maskItemObj: {fileID: 1297925049}
+  detailObj: {fileID: 6152813857082132656}
   imageDetailRate: {fileID: 6152813858311618799}
   imageDetail: {fileID: 6152813856930926043}
   countTxt: {fileID: 6152813857032101568}
