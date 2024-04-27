@@ -67,7 +67,8 @@ namespace Services
             return null;
         }
 
-        public async void SellItem(int itemId, int sellCount, UnityAction<BuyResponse> onSuccess, UnityAction<string> onFail)
+        public async void SellItem(int itemId, int sellCount, UnityAction<BuyResponse> onSuccess,
+            UnityAction<string> onFail)
         {
             if (!IsLogin)
             {
@@ -95,7 +96,6 @@ namespace Services
                 {
                     OnFailed.Invoke("Sold fail");
                 }
-               
             }
             catch (Exception e)
             {
@@ -107,27 +107,36 @@ namespace Services
 
         #region SHOP
 
-        public async Task<BuyResponse> BuyVoucher(int itemId)
+        public async void BuyVoucher(int voucherId, int cost, UnityAction<BuyResponse> onSuccess,
+            UnityAction<string> onFail)
         {
-            // var api = baseApi + "games/game-shop-item-owned?itemId=" + itemId + "&userId=" + UserId;
-            // try
-            // {
-            //     var response = await Post<BuyResponse>(api, null);
-            //     if (response != null)
-            //     {
-            //         Coin = response.CurrentCoin;
-            //         Gem = response.CurrentGem;
-            //         UserOwnedShopItem = response.OwnedItem;
-            //     }
-            //
-            //     return response;
-            // }
-            // catch (Exception e)
-            // {
-            //     OnFailed.Invoke(e.Message);
-            // }
+            if (!IsLogin)
+            {
+                return;
+            }
 
-            return null;
+            OnFailed = onFail;
+            var api = baseApi + "game-voucher/";
+            var requestParam = new
+            {
+                UserId = UserId,
+                Cost = cost,
+                VoucherType = voucherId
+            };
+            try
+            {
+                var response = await Post<BuyResponse>(api, requestParam);
+                if (response != null)
+                {
+                    Coin = response.CurrentCoin;
+                    Gem = response.CurrentGem;
+                    onSuccess?.Invoke(response);
+                }
+            }
+            catch (Exception e)
+            {
+                OnFailed.Invoke(e.Message);
+            }
         }
 
         public async Task<BuyResponse> BuyItem(int itemId)

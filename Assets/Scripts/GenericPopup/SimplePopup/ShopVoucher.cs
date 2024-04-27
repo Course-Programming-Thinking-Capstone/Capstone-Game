@@ -25,7 +25,7 @@ namespace GenericPopup.SimplePopup
 
         [SerializeField] private TextMeshProUGUI voucher3TxtPrice;
         [SerializeField] private TextMeshProUGUI voucher3CountLeft;
-      
+
         [SerializeField]
         [SerializedDictionary("index", "price")]
         private SerializedDictionary<int, int> priceDictionary;
@@ -55,9 +55,17 @@ namespace GenericPopup.SimplePopup
             coinTxt.text = clientService.Coin.ToString();
             gemTxt.text = clientService.Gem.ToString();
 
-            voucher1TxtPrice.text = priceDictionary[1].ToString();
-            voucher2TxtPrice.text = priceDictionary[2].ToString();
-            voucher3TxtPrice.text = priceDictionary[3].ToString();
+            voucher1TxtPrice.text = priceDictionary[1]+ " Left";
+            voucher2TxtPrice.text = priceDictionary[2]+ " Left";
+            voucher3TxtPrice.text = priceDictionary[3]+ " Left";
+
+            if (clientService.IsLogin)
+            {
+                voucher1CountLeft.text = playerService.LoadVoucherBoughtLeft(clientService.UserId, 1).ToString();
+                voucher2CountLeft.text = playerService.LoadVoucherBoughtLeft(clientService.UserId, 2).ToString();
+                voucher3CountLeft.text = playerService.LoadVoucherBoughtLeft(clientService.UserId, 3).ToString();
+            }
+
             animator.gameObject.SetActive(true);
         }
 
@@ -78,31 +86,37 @@ namespace GenericPopup.SimplePopup
             confirmBuy.SetActive(true);
         }
 
-        public async void ConfirmBuy()
+        public void ConfirmBuy()
         {
             ActiveSafePanel(true);
             var itemId = tempIndex;
 
-            BuyResponse result;
             if (voucherIndex.Contains(tempIndex))
             {
                 // Buy voucher
-                result = await clientService.BuyVoucher(itemId);
+                 clientService.BuyVoucher(itemId, priceDictionary[itemId], s =>
+                {
+                    
+                    PopupHelpers.Show("Buy Success, Thank for your purchase");
+                }, e =>
+                {
+                    
+                });
             }
             else
             {
-                // buy gole
-                result = await clientService.BuyVoucher(itemId);
+                // buy gold
+                // result =  clientService.BuyVoucher(itemId);
             }
 
             ActiveSafePanel(false);
 
-            if (result != null)
-            {
-                coinTxt.text = result.CurrentCoin.ToString();
-                gemTxt.text = result.CurrentGem.ToString();
-                PopupHelpers.ShowError("Buy successfully", "Congratulation");
-            }
+            // if (result != null)
+            // {
+            //     coinTxt.text = result.CurrentCoin.ToString();
+            //     gemTxt.text = result.CurrentGem.ToString();
+            //     PopupHelpers.ShowError("Buy successfully", "Congratulation");
+            // }
         }
 
         public void CloseConfirm()

@@ -9,6 +9,7 @@ namespace Services
         private const char Break = '~';
         private const string LevelPlayedKey = "lpk";
         private const string SelectCharacterKey = "sck";
+        private const string VoucherBuyKey = "vbk";
         private Dictionary<int, int> levelPlayer;
 
         public int SelectedCharacter { get; set; } = PlayerPrefs.GetInt(SelectCharacterKey, -1);
@@ -35,6 +36,44 @@ namespace Services
             {
                 PlayerPrefs.SetInt(LevelPlayedKey + modeId, currentLevel);
             }
+        }
+
+        private Dictionary<int, int> cacheVoucherBuyLeft;
+
+        public int LoadVoucherBoughtLeft(int userId, int voucherId)
+        {
+            var result = 0;
+            switch (voucherId)
+            {
+                case 1:
+                {
+                    result = PlayerPrefs.GetInt(VoucherBuyKey + userId + voucherId, 3);
+                    break;
+                }
+                case 2:
+                {
+                    result = PlayerPrefs.GetInt(VoucherBuyKey + userId + voucherId, 2);
+                    break;
+                }
+                case 3:
+                {
+                    result = PlayerPrefs.GetInt(VoucherBuyKey + userId + voucherId, 1);
+                    break;
+                }
+                default:
+                {
+                    return 0;
+                }
+            }
+
+            return result;
+        }
+
+        public void SaveVoucherBought(int userId, int voucherId)
+        {
+            var current = LoadVoucherBoughtLeft(userId, voucherId);
+            current--;
+            PlayerPrefs.SetInt(VoucherBuyKey + userId + voucherId, current);
         }
 
         #region Ultils method
