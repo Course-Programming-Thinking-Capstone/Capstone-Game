@@ -29,6 +29,7 @@ namespace GenericPopup.SimplePopup
         private GameObject currentChar;
         private ClientService clientService;
         private PlayerService playerService;
+        private AudioService audioService;
         private int currentIndex = 0;
         private int maxIndex = 0;
         private UnityAction onSelectedNew;
@@ -37,6 +38,7 @@ namespace GenericPopup.SimplePopup
         {
             clientService = GameServices.Instance.GetService<ClientService>();
             playerService = GameServices.Instance.GetService<PlayerService>();
+            audioService = GameServices.Instance.GetService<AudioService>();
             var param = PopupHelpers.PassParamPopup();
             onSelectedNew = param.GetAction(PopupKey.CallBack);
             clientService.OnFailed = err =>
@@ -82,6 +84,7 @@ namespace GenericPopup.SimplePopup
                 PopupHelpers.ShowError("Dose not have any shop item");
                 return;
             }
+
             var character = clientService.CacheShopData[currentIndex];
             rateImage.sprite = rateRender[(Enums.RateType)character.ItemRateType];
             rankTxt.text = ((Enums.RateType)character.ItemRateType).ToString();
@@ -139,6 +142,7 @@ namespace GenericPopup.SimplePopup
 
         public void OnClickSelect()
         {
+            audioService.PlaySound(SoundToPlay.Success);
             playerService.SaveSelectedCharacter(clientService.CacheShopData[currentIndex].Id);
             onSelectedNew?.Invoke();
             PopupHelpers.ShowError("Character equipped ", "Notification");
@@ -149,6 +153,7 @@ namespace GenericPopup.SimplePopup
         {
             if (!clientService.IsLogin)
             {
+                audioService.PlaySound(SoundToPlay.Popup);
                 PopupHelpers.ShowError(
                     "You need to register and upgrade to a student account to continue perform this action.",
                     "Notification");
@@ -163,6 +168,7 @@ namespace GenericPopup.SimplePopup
             {
                 coinTxt.text = result.CurrentCoin.ToString();
                 gemTxt.text = result.CurrentGem.ToString();
+                audioService.PlaySound(SoundToPlay.Success);
                 PopupHelpers.ShowError("Buy successfully", "Congratulation");
                 buyButton.SetActive(false);
                 selectButton.SetActive(true);
@@ -176,7 +182,7 @@ namespace GenericPopup.SimplePopup
             {
                 currentIndex = maxIndex;
             }
-
+            audioService.PlaySound(SoundToPlay.Click);
             LoadCharacterData();
         }
 
@@ -187,12 +193,13 @@ namespace GenericPopup.SimplePopup
             {
                 currentIndex = 0;
             }
-
+            audioService.PlaySound(SoundToPlay.Click);
             LoadCharacterData();
         }
 
         public void OnClickClose()
         {
+            audioService.PlaySound(SoundToPlay.Click);
             ClosePopup();
         }
     }

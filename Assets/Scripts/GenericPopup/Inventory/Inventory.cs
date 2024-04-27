@@ -43,6 +43,7 @@ namespace GenericPopup.Inventory
         [SerializeField] private TextMeshProUGUI itemNameTxt;
         [SerializeField] private TextMeshProUGUI itemDetailTxt;
         private ClientService clientService;
+        private AudioService audioService;
         [Header("System")]
         [SerializeField] private string resourcesPath;
         private List<InventItem> cache = new();
@@ -54,6 +55,7 @@ namespace GenericPopup.Inventory
         private void Awake()
         {
             clientService = GameServices.Instance.GetService<ClientService>();
+            audioService = GameServices.Instance.GetService<AudioService>();
         }
 
         private void Start()
@@ -112,16 +114,18 @@ namespace GenericPopup.Inventory
 
         public void OnClickClose()
         {
+            audioService.PlaySound(SoundToPlay.Click);
             ClosePopup();
         }
 
         public void OnClickRight()
         {
+            
             if (soldNumber >= numberHave)
             {
                 return;
             }
-
+            audioService.PlaySound(SoundToPlay.Click);
             soldNumber++;
 
             UpdateSoldValue();
@@ -133,7 +137,7 @@ namespace GenericPopup.Inventory
             {
                 return;
             }
-
+            audioService.PlaySound(SoundToPlay.Click);
             soldNumber--;
             UpdateSoldValue();
         }
@@ -146,12 +150,14 @@ namespace GenericPopup.Inventory
 
         public void OnClickSold()
         {
+            audioService.PlaySound(SoundToPlay.Popup);
             detailConfirmSold.text = "Are you sure to sold this item for: " + price * soldNumber + " Gems?";
             confirmSold.SetActive(true);
         }
 
         public void ConfirmSold()
         {
+            audioService.PlaySound(SoundToPlay.Click);
             loading.SetActive(true);
             clientService.SellItem(selectedId, soldNumber, o =>
             {
@@ -161,6 +167,7 @@ namespace GenericPopup.Inventory
                 gemTxt.text = clientService.Gem.ToString();
                 maskItemObj.SetActive(true);
                 detailObj.SetActive(false);
+                audioService.PlaySound(SoundToPlay.Success);
                 PopupHelpers.ShowError("Sold success", "Notification");
             }, e =>
             {
@@ -171,6 +178,7 @@ namespace GenericPopup.Inventory
 
         public void CloseConfirm()
         {
+            audioService.PlaySound(SoundToPlay.Click);
             confirmSold.SetActive(false);
         }
 

@@ -632,7 +632,7 @@ MonoBehaviour:
   view: {fileID: 15437188}
   sounds:
   - Name: Click
-    AudioClip: {fileID: 8300000, guid: fa805231c8c850b4f8c357900f12c8eb, type: 3}
+    AudioClip: {fileID: 8300000, guid: 787bd1f9d5714dc4b8e2a05a85e75bae, type: 3}
     Volume: 1
   - Name: Fail
     AudioClip: {fileID: 8300000, guid: 41684a72c8824db4fa92b1d2c0b203b3, type: 3}
@@ -648,6 +648,9 @@ MonoBehaviour:
     Volume: 1
   - Name: Success
     AudioClip: {fileID: 8300000, guid: 5807ec4a32ae9bb44aeed1f219624325, type: 3}
+    Volume: 1
+  - Name: Play
+    AudioClip: {fileID: 8300000, guid: c22ae1033d473294b97114f8f1ebb2ee, type: 3}
     Volume: 1
   music: {fileID: 745272479}
   musicObject: {fileID: 745272477}

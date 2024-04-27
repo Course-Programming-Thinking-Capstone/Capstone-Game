@@ -16,9 +16,11 @@ namespace GenericPopup.SimplePopup
 
         private ClientService clientService;
 
+
         private void Awake()
         {
             clientService = GameServices.Instance.GetService<ClientService>();
+            audioService = GameServices.Instance.GetService<AudioService>();
             clientService.OnFailed = err =>
             {
                 ActiveSafePanel(false);
@@ -32,6 +34,12 @@ namespace GenericPopup.SimplePopup
             userDisplayName.text = clientService.UserDisplayName;
             updateProfile.onClick.AddListener(OnClickUpdateProfile);
             closeButton.onClick.AddListener(ClosePopup);
+        }
+
+        protected override void ClosePopup()
+        {
+            audioService.PlaySound(SoundToPlay.Click);
+            base.ClosePopup();
         }
 
         private void OnClickUpdateProfile()

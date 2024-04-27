@@ -250,6 +250,7 @@ namespace Services
         Fail2,
         Popup,
         Won,
-        Success
+        Success,
+        Play
     }
 }

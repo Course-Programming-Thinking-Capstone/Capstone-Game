@@ -18,11 +18,13 @@ namespace GenericPopup.SimplePopup
         [SerializeField] private Slider music;
 
         private ClientService clientService;
+        private AudioService audioService;
         private UnityAction onLogout;
 
         private void Awake()
         {
             clientService = GameServices.Instance.GetService<ClientService>();
+            audioService = GameServices.Instance.GetService<AudioService>();
             clientService.OnFailed = err =>
             {
                 ActiveSafePanel(false);
@@ -51,6 +53,7 @@ namespace GenericPopup.SimplePopup
 
         private void OnClickLogout()
         {
+            audioService.PlaySound(SoundToPlay.Click);
             clientService.LogOut();
             ClosePopup();
             onLogout?.Invoke();
@@ -58,11 +61,13 @@ namespace GenericPopup.SimplePopup
 
         private void OnClickFB()
         {
+            audioService.PlaySound(SoundToPlay.Click);
             GameServices.Instance.GetService<GameService>().FaceBook();
         }
 
         private void OnClickWebsite()
         {
+            audioService.PlaySound(SoundToPlay.Click);
             GameServices.Instance.GetService<GameService>().Web();
         }
     }

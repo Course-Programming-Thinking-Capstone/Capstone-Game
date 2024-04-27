@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Services;
 using UnityEngine;
 using UnityEngine.Events;
 using Utilities;
@@ -11,7 +12,8 @@ namespace GenericPopup
         [SerializeField] protected GameObject loading;
 
         protected readonly int exit = Animator.StringToHash("Exit");
-
+        protected AudioService audioService;
+      
         protected void ActiveSafePanel(bool isActive)
         {
             loading.SetActive(isActive);
