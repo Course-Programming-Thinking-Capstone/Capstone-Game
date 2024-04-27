@@ -64,13 +64,12 @@ namespace Services
             musicOn = PlayerPrefs.GetInt(musicKey, 1) == 1;
         }
 
-
         // Play Music
-        public void PlayMusic()
+        public void PlayMusic(MusicToPlay musicToPlay)
         {
             if (musicOn == true && musicVolume > 0.0f)
             {
-                music.PlayMusic("music");
+                music.PlayMusic(musicToPlay.ToString());
             }
         }
 
@@ -222,29 +221,35 @@ namespace Services
             get { return vibrateOn; }
             set { vibrateOn = value; }
         }
-        
-        
+
         // AUDIO PLAY
-        
+
         public void PlaySound(SoundToPlay nameSound)
         {
-            if (!soundOn)
+            if (!soundOn && soundVolume > 0.0f)
             {
                 return;
             }
+
             soundAudioSources[nameSound.ToString()].Play();
         }
     }
 
+    public enum MusicToPlay
+    {
+        Basic,
+        Menu,
+        Other,
+        Water,
+    }
+
     public enum SoundToPlay
     {
-        Button,
-        GameOver,
-        GotSkin,
-        HitTorus,
-        Lost,
-        PerfectScore,
-        Scored,
-        Tap
+        Click,
+        Fail,
+        Fail2,
+        Popup,
+        Won,
+        Success
     }
 }

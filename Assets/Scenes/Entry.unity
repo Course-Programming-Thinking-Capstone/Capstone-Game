@@ -448,7 +448,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37abf1c81b7d2c74aa3d187ca8019e79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musics: []
+  musics:
+  - Name: Basic
+    AudioClip: {fileID: 8300000, guid: 838d5923774115940931871244986a86, type: 3}
+    Volume: 1
+  - Name: Menu
+    AudioClip: {fileID: 8300000, guid: 2442166b8e91c7040b898f696f26c443, type: 3}
+    Volume: 1
+  - Name: Other
+    AudioClip: {fileID: 8300000, guid: 8532433f1dcf0624187393da4e08511a, type: 3}
+    Volume: 1
+  - Name: Water
+    AudioClip: {fileID: 8300000, guid: 365f6a69cf11a1047b2709b81f8fbc97, type: 3}
+    Volume: 1
 --- !u!1 &892603471
 GameObject:
   m_ObjectHideFlags: 0
@@ -618,7 +630,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   model: {fileID: 1582869042}
   view: {fileID: 15437188}
-  sounds: []
+  sounds:
+  - Name: Click
+    AudioClip: {fileID: 8300000, guid: fa805231c8c850b4f8c357900f12c8eb, type: 3}
+    Volume: 1
+  - Name: Fail
+    AudioClip: {fileID: 8300000, guid: 41684a72c8824db4fa92b1d2c0b203b3, type: 3}
+    Volume: 1
+  - Name: Fail2
+    AudioClip: {fileID: 8300000, guid: 1e578be185478fb4796903450345e00c, type: 3}
+    Volume: 1
+  - Name: Popup
+    AudioClip: {fileID: 8300000, guid: fb0a6e665ed8a8247a67dd5670efe8cf, type: 3}
+    Volume: 1
+  - Name: Won
+    AudioClip: {fileID: 8300000, guid: ef4309185882d5b4286b2cac43dfbf03, type: 3}
+    Volume: 1
+  - Name: Success
+    AudioClip: {fileID: 8300000, guid: 5807ec4a32ae9bb44aeed1f219624325, type: 3}
+    Volume: 1
   music: {fileID: 745272479}
   musicObject: {fileID: 745272477}
   orentation: {fileID: 2498336594730766422}

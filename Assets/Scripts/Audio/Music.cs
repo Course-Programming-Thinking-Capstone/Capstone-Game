@@ -10,7 +10,7 @@ namespace Audio
 		[SerializeField] private List<Sound> musics;
 
 		private AudioService audioService;
-
+		private string currentMusic = "";
 		// Cache
 		private readonly Dictionary<string, AudioSource> audioSources = new Dictionary<string, AudioSource>();
 		private Dictionary<string, float> musicVolumes = new Dictionary<string, float>();
@@ -81,8 +81,14 @@ namespace Audio
 		/// <param name="name"></param>
 		public void PlayMusic(string name)
 		{
+			if (string.IsNullOrEmpty(currentMusic) && currentMusic != name)
+			{
+				StopMusic(currentMusic);
+			}
+
 			if (audioSources.ContainsKey(name))
 			{
+				currentMusic = name;
 				audioSources[name].Play();
 				audioSources[name].loop = true;
 			}
@@ -143,6 +149,8 @@ namespace Audio
 				Logger.Warning($"Music: {name} not found!");
 			}
 		}
+
+
 		/// <summary>
 		/// Return true if music is playing.
 		/// </summary>
@@ -150,6 +158,7 @@ namespace Audio
 		/// <returns></returns>
 		public bool IsMusicPlaying(string name)
 		{
+
 			if (audioSources.ContainsKey(name))
 			{
 				if (audioSources[name].isPlaying == true)
