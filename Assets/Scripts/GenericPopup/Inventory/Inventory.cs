@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AYellowpaper.SerializedCollections;
 using Services;
 using Services.Response;
@@ -14,6 +15,15 @@ namespace GenericPopup.Inventory
         [SerializeField]
         [SerializedDictionary("RateType", "Sprite color")]
         private SerializedDictionary<Enums.RateType, Sprite> rateRender;
+
+        [Header("Solving")]
+        [SerializeField] private TextMeshProUGUI soldCount;
+        [SerializeField] private TextMeshProUGUI sellValueTxt;
+
+        [Header("ConfirmSold")]
+        [SerializeField] private GameObject confirmSold;
+        [SerializeField] private TextMeshProUGUI detailConfirmSold;
+
         [Header("Header infor")]
         [SerializeField] private TextMeshProUGUI energyTxt;
         [SerializeField] private TextMeshProUGUI coinTxt;
@@ -24,32 +34,47 @@ namespace GenericPopup.Inventory
         [SerializeField] private GameObject itemPrefab;
 
         [Header("Item details")]
+        [SerializeField] private GameObject maskItemObj;
+        [SerializeField] private GameObject detailObj;
         [SerializeField] private Image imageDetailRate;
         [SerializeField] private Image imageDetail;
         [SerializeField] private TextMeshProUGUI countTxt;
         [SerializeField] private TextMeshProUGUI rateTxt;
         [SerializeField] private TextMeshProUGUI itemNameTxt;
         [SerializeField] private TextMeshProUGUI itemDetailTxt;
-        [SerializeField] private TextMeshProUGUI sellValueTxt;
         private ClientService clientService;
         [Header("System")]
         [SerializeField] private string resourcesPath;
         private List<InventItem> cache = new();
         private int selectedId;
         private int soldNumber;
+        private int numberHave;
+        private int price;
 
         private void Awake()
         {
             clientService = GameServices.Instance.GetService<ClientService>();
         }
 
-        private async void Start()
+        private void Start()
         {
             coinTxt.text = clientService.Coin.ToString();
             gemTxt.text = clientService.Gem.ToString();
             energyTxt.text = "60 / 60";
+            maskItemObj.SetActive(true);
+            detailObj.SetActive(false);
+            LoadItem();
+        }
 
+        private async void LoadItem()
+        {
             loading.SetActive(true);
+            foreach (var item in cache)
+            {
+                Destroy(item.gameObject);
+            }
+
+            cache.Clear();
             var inventItem = await clientService.GetUserOwnedItems();
             if (inventItem != null && inventItem.Count > 0)
             {
@@ -68,6 +93,7 @@ namespace GenericPopup.Inventory
                             {
                                 inventItemCache.SetFocus(false);
                             }
+
                             SetCurrentDetail(temp.GameItem, item.Quantity);
                         }
                     );
@@ -89,13 +115,74 @@ namespace GenericPopup.Inventory
             ClosePopup();
         }
 
-        public void OnClickSold()
+        public void OnClickRight()
         {
+            if (soldNumber >= numberHave)
+            {
+                return;
+            }
+
+            soldNumber++;
+
+            UpdateSoldValue();
         }
 
-        private void SetCurrentDetail(GameItemResponse model, int numberHave)
+        public void OnClickLeft()
         {
+            if (soldNumber <= 1)
+            {
+                return;
+            }
+
+            soldNumber--;
+            UpdateSoldValue();
+        }
+
+        private void UpdateSoldValue()
+        {
+            soldCount.text = soldNumber.ToString();
+            sellValueTxt.text = (soldNumber * price).ToString();
+        }
+
+        public void OnClickSold()
+        {
+            detailConfirmSold.text = "Are you sure to sold this item for: " + price * soldNumber + " Gems?";
+            confirmSold.SetActive(true);
+        }
+
+        public void ConfirmSold()
+        {
+            loading.SetActive(true);
+            clientService.SellItem(selectedId, soldNumber, o =>
+            {
+                loading.SetActive(false);
+                LoadItem();
+                coinTxt.text = clientService.Coin.ToString();
+                gemTxt.text = clientService.Gem.ToString();
+                maskItemObj.SetActive(true);
+                detailObj.SetActive(false);
+                PopupHelpers.ShowError("Sold success", "Notification");
+            }, e =>
+            {
+                loading.SetActive(false);
+                PopupHelpers.ShowError(e);
+            });
+        }
+
+        public void CloseConfirm()
+        {
+            confirmSold.SetActive(false);
+        }
+
+        private void SetCurrentDetail(GameItemResponse model, int numberHaveParam)
+        {
+            maskItemObj.SetActive(false);
+            detailObj.SetActive(true);
             var render = Resources.Load<Sprite>(resourcesPath + model.SpritesUrl);
+            soldNumber = 1;
+            numberHave = numberHaveParam;
+            UpdateSoldValue();
+            selectedId = model.Id;
             imageDetailRate.sprite = rateRender[(Enums.RateType)model.ItemRateType];
             imageDetail.sprite = render;
             countTxt.text = numberHave.ToString();
@@ -103,6 +190,7 @@ namespace GenericPopup.Inventory
             itemNameTxt.text = model.ItemName;
             itemDetailTxt.text = model.Details;
             sellValueTxt.text = model.Price.ToString();
+            price = model.Price;
         }
     }
 }

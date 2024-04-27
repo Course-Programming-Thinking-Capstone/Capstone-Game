@@ -67,31 +67,46 @@ namespace Services
             return null;
         }
 
-        public async Task SellItem(int itemId, int sellCount)
+        public async void SellItem(int itemId, int sellCount, UnityAction<BuyResponse> onSuccess, UnityAction<string> onFail)
         {
             if (!IsLogin)
             {
                 return;
             }
 
-            var api = baseApi + "games/game-drop-item-owned/" + UserId;
+            OnFailed = onFail;
+            var api = baseApi + "games/game-drop-item-owned";
+            var requestBody = new
+            {
+                userId = UserId,
+                soldItemId = itemId,
+                quantity = sellCount,
+            };
             try
             {
-                var result = await Get<List<GameItemResponse>>(api);
-
-                return;
+                var result = await Post<BuyResponse>(api, requestBody);
+                if (result != null)
+                {
+                    Coin = result.CurrentCoin;
+                    Gem = result.CurrentGem;
+                    onSuccess?.Invoke(result);
+                }
+                else
+                {
+                    OnFailed.Invoke("Sold fail");
+                }
+               
             }
             catch (Exception e)
             {
                 OnFailed.Invoke(e.Message);
             }
-
-            return;
         }
 
         #endregion
 
         #region SHOP
+
         public async Task<BuyResponse> BuyVoucher(int itemId)
         {
             // var api = baseApi + "games/game-shop-item-owned?itemId=" + itemId + "&userId=" + UserId;
@@ -114,6 +129,7 @@ namespace Services
 
             return null;
         }
+
         public async Task<BuyResponse> BuyItem(int itemId)
         {
             var api = baseApi + "games/game-shop-item-owned?itemId=" + itemId + "&userId=" + UserId;
