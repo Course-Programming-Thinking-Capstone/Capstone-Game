@@ -35,7 +35,7 @@ namespace GenericPopup.SimplePopup
 
         private void Start()
         {
-            audioService.PlaySound(SoundToPlay.Popup);
+            audioService.PlaySound(GUISound.Popup);
             var parameter = PopupHelpers.PassParamPopup();
             onLogin = parameter.GetAction(PopupKey.CallBack);
 
@@ -52,12 +52,12 @@ namespace GenericPopup.SimplePopup
                 return;
             }
 
-            audioService.PlaySound(SoundToPlay.Click);
+            audioService.PlaySound(GUISound.Click);
             ActiveSafePanel(true);
             clientService.LoginWithEmail(user.text, password.text,
                 () =>
                 {
-                    audioService.PlaySound(SoundToPlay.Success);
+                    audioService.PlaySound(GUISound.Success);
                     onLogin?.Invoke();
                     ActiveSafePanel(false);
                     ClosePopup();
@@ -67,13 +67,13 @@ namespace GenericPopup.SimplePopup
 
         protected override void ClosePopup()
         {
-            audioService.PlaySound(SoundToPlay.Click);
+            audioService.PlaySound(GUISound.Click);
             base.ClosePopup();
         }
 
         private void OnClickSigning()
         {
-            audioService.PlaySound(SoundToPlay.Click);
+            audioService.PlaySound(GUISound.Click);
             gameService.Web();
         }
     }

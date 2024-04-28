@@ -50,7 +50,7 @@ namespace GenericPopup.SimplePopup
 
         private async void Start()
         {
-            audioService.PlaySound(SoundToPlay.Popup);
+            audioService.PlaySound(GUISound.Popup);
             coinTxt.text = clientService.Coin.ToString();
             gemTxt.text = clientService.Gem.ToString();
 
@@ -143,7 +143,7 @@ namespace GenericPopup.SimplePopup
 
         public void OnClickSelect()
         {
-            audioService.PlaySound(SoundToPlay.Success);
+            audioService.PlaySound(GUISound.Success);
             playerService.SaveSelectedCharacter(clientService.CacheShopData[currentIndex].Id);
             onSelectedNew?.Invoke();
             PopupHelpers.ShowError("Character equipped ", "Notification");
@@ -152,10 +152,10 @@ namespace GenericPopup.SimplePopup
 
         public async void OnClickBuy()
         {
-            audioService.PlaySound(SoundToPlay.Click);
+            audioService.PlaySound(GUISound.Click);
             if (!clientService.IsLogin)
             {
-                audioService.PlaySound(SoundToPlay.Fail);
+                audioService.PlaySound(GUISound.Fail);
                 PopupHelpers.ShowError(
                     "You need to register and upgrade to a student account to continue perform this action.",
                     "Notification");
@@ -170,7 +170,7 @@ namespace GenericPopup.SimplePopup
             {
                 coinTxt.text = result.CurrentCoin.ToString();
                 gemTxt.text = result.CurrentGem.ToString();
-                audioService.PlaySound(SoundToPlay.Success);
+                audioService.PlaySound(GUISound.Success);
                 PopupHelpers.ShowError("Buy successfully", "Congratulation");
                 buyButton.SetActive(false);
                 selectButton.SetActive(true);
@@ -185,7 +185,7 @@ namespace GenericPopup.SimplePopup
                 currentIndex = maxIndex;
             }
 
-            audioService.PlaySound(SoundToPlay.Click);
+            audioService.PlaySound(GUISound.Click);
             LoadCharacterData();
         }
 
@@ -197,13 +197,13 @@ namespace GenericPopup.SimplePopup
                 currentIndex = 0;
             }
 
-            audioService.PlaySound(SoundToPlay.Click);
+            audioService.PlaySound(GUISound.Click);
             LoadCharacterData();
         }
 
         public void OnClickClose()
         {
-            audioService.PlaySound(SoundToPlay.Click);
+            audioService.PlaySound(GUISound.Click);
             ClosePopup();
         }
     }

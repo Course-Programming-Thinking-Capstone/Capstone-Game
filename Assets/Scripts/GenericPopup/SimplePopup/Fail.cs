@@ -29,7 +29,7 @@ namespace GenericPopup.SimplePopup
 
         private void Start()
         {
-            audioService.PlaySound(SoundToPlay.Fail2);
+            audioService.PlaySound(GUISound.Fail2);
             var parameter = PopupHelpers.PassParamPopup();
             gameMode = parameter.GetObject<int>(ParamType.ModeGame);
             levelIndex = parameter.GetObject<int>(ParamType.LevelIndex);
@@ -40,7 +40,7 @@ namespace GenericPopup.SimplePopup
 
         public void OnClickReset()
         {
-            audioService.PlaySound(SoundToPlay.Click);
+            audioService.PlaySound(GUISound.Click);
             var param = PopupHelpers.PassParamPopup();
             param.SaveObject(ParamType.LevelIndex, levelIndex);
             switch ((GameMode)gameMode)
@@ -65,7 +65,7 @@ namespace GenericPopup.SimplePopup
 
         public void OnClickExit()
         {
-            audioService.PlaySound(SoundToPlay.Click);
+            audioService.PlaySound(GUISound.Click);
             SceneManager.LoadScene(Constants.MainMenu);
         }
     }

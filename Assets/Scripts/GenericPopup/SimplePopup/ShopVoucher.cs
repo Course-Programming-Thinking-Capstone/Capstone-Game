@@ -56,7 +56,7 @@ namespace GenericPopup.SimplePopup
 
         private void Start()
         {
-            audioService.PlaySound(SoundToPlay.Popup);
+            audioService.PlaySound(GUISound.Popup);
             coinTxt.text = clientService.Coin.ToString();
             gemTxt.text = clientService.Gem.ToString();
 
@@ -103,16 +103,16 @@ namespace GenericPopup.SimplePopup
 
         public void OnClickBuy(int index)
         {
-            audioService.PlaySound(SoundToPlay.Click);
+            audioService.PlaySound(GUISound.Click);
             if (!clientService.IsLogin)
             {
-                audioService.PlaySound(SoundToPlay.Fail);
+                audioService.PlaySound(GUISound.Fail);
                 PopupHelpers.ShowError(
                     "You need to register and upgrade to a student account to continue perform this action.",
                     "Notification");
                 return;
             }
-            audioService.PlaySound(SoundToPlay.Popup);
+            audioService.PlaySound(GUISound.Popup);
             detailConfirmBuy.text = "Are you sure want to buy this item for " + priceDictionary[index] + " Gems?";
             tempIndex = index;
             confirmBuy.SetActive(true);
@@ -122,7 +122,7 @@ namespace GenericPopup.SimplePopup
         {
             ActiveSafePanel(true);
             var itemId = tempIndex;
-            audioService.PlaySound(SoundToPlay.Click);
+            audioService.PlaySound(GUISound.Click);
             if (voucherIndex.Contains(tempIndex))
             {
                 // Buy voucher
@@ -132,14 +132,14 @@ namespace GenericPopup.SimplePopup
                     gemTxt.text = clientService.Gem.ToString();
                     playerService.SaveVoucherBought(clientService.UserId, itemId);
                     LoadVoucherCountLeft();
-                    audioService.PlaySound(SoundToPlay.Success);
-                    audioService.PlaySound(SoundToPlay.Popup);
+                    audioService.PlaySound(GUISound.Success);
+                    audioService.PlaySound(GUISound.Popup);
                     PopupHelpers.ShowError("Buy Success, Thank for your purchase", "Notification");
                 }, e => { PopupHelpers.ShowError(e); });
             }
             else
             {
-                audioService.PlaySound(SoundToPlay.Fail);
+                audioService.PlaySound(GUISound.Fail);
                 PopupHelpers.ShowError("Ermm, This function not maintain yet. So sorry :(");
             }
 
@@ -149,13 +149,13 @@ namespace GenericPopup.SimplePopup
 
         public void CloseConfirm()
         {
-            audioService.PlaySound(SoundToPlay.Click);
+            audioService.PlaySound(GUISound.Click);
             confirmBuy.SetActive(false);
         }
 
         public void OnClickClose()
         {
-            audioService.PlaySound(SoundToPlay.Click);
+            audioService.PlaySound(GUISound.Click);
             ClosePopup();
         }
     }

@@ -39,7 +39,7 @@ namespace GenericPopup.SimplePopup
 
             sound.onValueChanged.AddListener(o => { audioService.SoundVolume = o; });
             music.onValueChanged.AddListener(o => { audioService.MusicVolume = o; });
-            audioService.PlaySound(SoundToPlay.Popup);
+            audioService.PlaySound(GUISound.Popup);
             var parameter = PopupHelpers.PassParamPopup();
 
             if (parameter != null)
@@ -59,7 +59,7 @@ namespace GenericPopup.SimplePopup
 
         private void OnClickLogout()
         {
-            audioService.PlaySound(SoundToPlay.Click);
+            audioService.PlaySound(GUISound.Click);
             clientService.LogOut();
             ClosePopup();
             onLogout?.Invoke();
@@ -68,19 +68,19 @@ namespace GenericPopup.SimplePopup
         protected override void ClosePopup()
         {
             audioService.SaveSoundAndMusicVolume();
-            audioService.PlaySound(SoundToPlay.Click);
+            audioService.PlaySound(GUISound.Click);
             base.ClosePopup();
         }
 
         private void OnClickFB()
         {
-            audioService.PlaySound(SoundToPlay.Click);
+            audioService.PlaySound(GUISound.Click);
             GameServices.Instance.GetService<GameService>().FaceBook();
         }
 
         private void OnClickWebsite()
         {
-            audioService.PlaySound(SoundToPlay.Click);
+            audioService.PlaySound(GUISound.Click);
             GameServices.Instance.GetService<GameService>().Web();
         }
     }

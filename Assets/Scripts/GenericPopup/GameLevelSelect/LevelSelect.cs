@@ -112,7 +112,7 @@ namespace GenericPopup.GameLevelSelect
 
         protected override void ClosePopup()
         {
-            audioService.PlaySound(SoundToPlay.Click);
+            audioService.PlaySound(GUISound.Click);
             base.ClosePopup();
         }
 
@@ -125,7 +125,7 @@ namespace GenericPopup.GameLevelSelect
 
         private void OnClickLevel(int index)
         {
-            audioService.PlaySound(SoundToPlay.Level);
+            audioService.PlaySound(GUISound.Level);
             var param = PopupHelpers.PassParamPopup();
             param.SaveObject(ParamType.LevelIndex, index);
             switch ((GameMode)gameMode)

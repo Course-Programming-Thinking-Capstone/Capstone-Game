@@ -60,7 +60,7 @@ namespace GenericPopup.Inventory
 
         private void Start()
         {
-            audioService.PlaySound(SoundToPlay.Popup);
+            audioService.PlaySound(GUISound.Popup);
             coinTxt.text = clientService.Coin.ToString();
             gemTxt.text = clientService.Gem.ToString();
             energyTxt.text = "60 / 60";
@@ -115,30 +115,30 @@ namespace GenericPopup.Inventory
 
         public void OnClickClose()
         {
-            audioService.PlaySound(SoundToPlay.Click);
+            audioService.PlaySound(GUISound.Click);
             ClosePopup();
         }
 
         public void OnClickRight()
         {
-            
+            audioService.PlaySound(GUISound.Click);
             if (soldNumber >= numberHave)
             {
                 return;
             }
-            audioService.PlaySound(SoundToPlay.Click);
-            soldNumber++;
 
+            soldNumber++;
             UpdateSoldValue();
         }
 
         public void OnClickLeft()
         {
+            audioService.PlaySound(GUISound.Click);
             if (soldNumber <= 1)
             {
                 return;
             }
-            audioService.PlaySound(SoundToPlay.Click);
+
             soldNumber--;
             UpdateSoldValue();
         }
@@ -151,15 +151,15 @@ namespace GenericPopup.Inventory
 
         public void OnClickSold()
         {
-            audioService.PlaySound(SoundToPlay.Click);
-            audioService.PlaySound(SoundToPlay.Popup);
+            audioService.PlaySound(GUISound.Click);
+            audioService.PlaySound(GUISound.Popup);
             detailConfirmSold.text = "Are you sure to sold this item for: " + price * soldNumber + " Gems?";
             confirmSold.SetActive(true);
         }
 
         public void ConfirmSold()
         {
-            audioService.PlaySound(SoundToPlay.Click);
+            audioService.PlaySound(GUISound.Click);
             loading.SetActive(true);
             clientService.SellItem(selectedId, soldNumber, o =>
             {
@@ -169,11 +169,11 @@ namespace GenericPopup.Inventory
                 gemTxt.text = clientService.Gem.ToString();
                 maskItemObj.SetActive(true);
                 detailObj.SetActive(false);
-                audioService.PlaySound(SoundToPlay.Success);
+                audioService.PlaySound(GUISound.Success);
                 PopupHelpers.ShowError("Sold success", "Notification");
             }, e =>
             {
-                audioService.PlaySound(SoundToPlay.Fail);
+                audioService.PlaySound(GUISound.Fail);
                 loading.SetActive(false);
                 PopupHelpers.ShowError(e);
             });
@@ -181,12 +181,13 @@ namespace GenericPopup.Inventory
 
         public void CloseConfirm()
         {
-            audioService.PlaySound(SoundToPlay.Click);
+            audioService.PlaySound(GUISound.Click);
             confirmSold.SetActive(false);
         }
 
         private void SetCurrentDetail(GameItemResponse model, int numberHaveParam)
         {
+            audioService.PlaySound(GUISound.Click);
             maskItemObj.SetActive(false);
             detailObj.SetActive(true);
             var render = Resources.Load<Sprite>(resourcesPath + model.SpritesUrl);

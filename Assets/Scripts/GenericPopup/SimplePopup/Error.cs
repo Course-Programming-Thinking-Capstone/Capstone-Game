@@ -24,7 +24,7 @@ namespace GenericPopup.SimplePopup
 
             okButton.onClick.AddListener(() =>
             {
-                audioService.PlaySound(SoundToPlay.Click);
+                audioService.PlaySound(GUISound.Click);
                 ClosePopup();
             });
 

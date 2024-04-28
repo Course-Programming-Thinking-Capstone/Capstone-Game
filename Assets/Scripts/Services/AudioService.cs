@@ -232,14 +232,14 @@ namespace Services
 
         // AUDIO PLAY
 
-        public void PlaySound(SoundToPlay nameSound)
+        public void PlaySound(GUISound nameGUISound)
         {
             if (!soundOn && soundVolume > 0.0f)
             {
                 return;
             }
 
-            soundAudioSources[nameSound.ToString()].Play();
+            soundAudioSources[nameGUISound.ToString()].Play();
         }
     }
 
@@ -251,7 +251,7 @@ namespace Services
         Water,
     }
 
-    public enum SoundToPlay
+    public enum GUISound
     {
         Click,
         Fail,

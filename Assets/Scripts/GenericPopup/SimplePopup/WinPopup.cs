@@ -33,7 +33,7 @@ namespace GenericPopup.SimplePopup
         {
             var parameter = PopupHelpers.PassParamPopup();
 
-            audioService.PlaySound(SoundToPlay.Won);
+            audioService.PlaySound(GUISound.Won);
             onClickNextLevelCallBack = parameter.GetAction(PopupKey.YesOption);
             nextLevelButton.onClick.AddListener(OnClickNextLevel);
             homeButton.onClick.AddListener(OnClickHome);
@@ -65,7 +65,7 @@ namespace GenericPopup.SimplePopup
 
         private void OnClickHome()
         {
-            audioService.PlaySound(SoundToPlay.Click);
+            audioService.PlaySound(GUISound.Click);
             if (animator != null)
             {
                 animator.SetBool(exit, true);
@@ -79,7 +79,7 @@ namespace GenericPopup.SimplePopup
 
         private void OnClickNextLevel()
         {
-            audioService.PlaySound(SoundToPlay.Click);
+            audioService.PlaySound(GUISound.Click);
             if (animator != null)
             {
                 animator.SetBool(exit, true);
@@ -94,7 +94,7 @@ namespace GenericPopup.SimplePopup
 
         private IEnumerator LoadMain(float delay)
         {
-            audioService.PlaySound(SoundToPlay.Click);
+            audioService.PlaySound(GUISound.Click);
             yield return new WaitForSeconds(delay);
             SceneManager.LoadScene(Constants.MainMenu);
         }

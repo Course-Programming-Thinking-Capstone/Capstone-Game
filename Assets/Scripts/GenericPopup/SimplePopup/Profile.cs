@@ -30,7 +30,7 @@ namespace GenericPopup.SimplePopup
 
         private void Start()
         {
-            audioService.PlaySound(SoundToPlay.Popup);
+            audioService.PlaySound(GUISound.Popup);
             userEmail.text = clientService.UserEmail;
             userDisplayName.text = clientService.UserDisplayName;
             updateProfile.onClick.AddListener(OnClickUpdateProfile);
@@ -39,13 +39,13 @@ namespace GenericPopup.SimplePopup
 
         protected override void ClosePopup()
         {
-            audioService.PlaySound(SoundToPlay.Click);
+            audioService.PlaySound(GUISound.Click);
             base.ClosePopup();
         }
 
         private void OnClickUpdateProfile()
         {
-            audioService.PlaySound(SoundToPlay.Click);
+            audioService.PlaySound(GUISound.Click);
         }
     }
 }
