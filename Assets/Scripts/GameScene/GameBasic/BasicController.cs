@@ -30,7 +30,7 @@ namespace GameScene.GameBasic
                 SceneManager.LoadScene(Constants.MainMenu);
                 return;
             }
-
+            audioService.PlayMusic(MusicToPlay.Basic);
             gameView.SetDetail(gameMode + " mode: " + " Level " + (levelIndex+1));
             Validation();
             CalcSolution();
@@ -135,29 +135,6 @@ namespace GameScene.GameBasic
             param.SaveObject(ParamType.LevelIndex, levelIndex);
 
             PopupHelpers.Show(Constants.FailPopup);
-
-            // playerController.transform.position = boardController.GetPositionFromBoard(basePlayerPosition);
-            // playerController.PlayAnimationIdle();
-            // playerController.RotatePlayer(true, 0.1f);
-            // if (targetPosition[0].x > basePlayerPosition.x)
-            // {
-            //     playerController.RotatePlayer(true, 0.1f);
-            // }
-            //
-            // // board
-            // foreach (var item in listBoard)
-            // {
-            //     item.ChangeToQuestionRender();
-            // }
-            //
-            // // Selector
-            // gameView.CountLeft = 0;
-            // gameView.CountRight = 0;
-            // foreach (var item in listSelector)
-            // {
-            //     gameView.AddRoadToContainer(item.transform);
-            //     item.gameObject.SetActive(true);
-            // }
         }
 
         #region INITIALIZE

@@ -17,7 +17,7 @@ namespace GameScene.GameFunction
                 SceneManager.LoadScene(Constants.MainMenu);
                 return;
             }
-            
+            audioService.PlayMusic(MusicToPlay.Water);
             view.SetDetail(gameMode + " mode: " + " Level " + (levelIndex+1));
             playButton.onClick.AddListener(OnClickPlay);
             padSelectController.CreateSelector(generateList, model.Resource);
@@ -60,56 +60,7 @@ namespace GameScene.GameFunction
             padSelectController.HandleMouseMoveSelected();
         }
 
-        // private void HandleMouseMoveSelected()
-        // {
-        //     var mousePos = Input.mousePosition;
-        //     isDelete = IsPointInRT(mousePos, deleteZone);
-        //
-        //     var func = CheckInsideFunc();
-        //     if (func)
-        //     {
-        //         view.ReSortItemsSelected(storeFuncSelected.Select(o => o.RectTransform).ToList());
-        //         selectedObject!.RectTransform.position = mousePos;
-        //         HandleFuncDisplayCalculate(mousePos);
-        //         return;
-        //     }
-        //
-        //     selectedObject!.RectTransform.position = mousePos;
-        //     // check to make space
-        //
-        //     if (storeSelected.Count == 10)
-        //     {
-        //         isDelete = true;
-        //         return;
-        //     }
-        //
-        //     view.ReSortItemsSelected(storeSelected.Select(o => o.RectTransform).ToList());
-        //     HandleDisplayCalculate(mousePos);
-        // }
-        //
-        // private bool CheckInsideFunc()
-        // {
-        //     if (selectedObject.SelectType == SelectType.Func)
-        //     {
-        //         return false;
-        //     }
-        //
-        //     if (storeFuncSelected.Count == 5)
-        //     {
-        //         return false;
-        //     }
-        //
-        //     var startPosition = (selectedObject.transform.position);
-        //     startPosition.z = -5;
-        //     Ray ray = new Ray(startPosition, Vector3.forward * 100);
-        //     if (Physics.Raycast(ray, out var hit))
-        //     {
-        //         return funcTransform == hit.transform;
-        //     }
-        //
-        //     return false;
-        // }
-
+      
         #region Calulate func
 
         //

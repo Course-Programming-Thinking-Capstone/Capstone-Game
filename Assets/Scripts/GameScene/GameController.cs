@@ -24,18 +24,20 @@ namespace GameScene
         private DateTime startTime;
         private ClientService clientService;
         private PlayerService playerService;
+        protected AudioService audioService;
 
         [Header("Game data")]
-        protected Vector2 basePlayerPosition = new Vector2();
-        protected List<Vector2> targetPosition = new List<Vector2>();
-        protected List<Vector2> boardMap = new List<Vector2>();
-        protected List<Vector2> rockMap = new List<Vector2>();
+        protected Vector2 basePlayerPosition;
+        protected List<Vector2> targetPosition = new();
+        protected List<Vector2> boardMap = new();
+        protected List<Vector2> rockMap = new();
         protected Vector2 boardSize = new(8, 6);
 
         protected void Awake()
         {
             clientService = GameServices.Instance.GetService<ClientService>();
             playerService = GameServices.Instance.GetService<PlayerService>();
+            audioService = GameServices.Instance.GetService<AudioService>();
             startTime = DateTime.Now;
         }
 

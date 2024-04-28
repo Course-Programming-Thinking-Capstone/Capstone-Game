@@ -15,7 +15,7 @@ namespace GameScene.GameCondition
                 SceneManager.LoadScene(Constants.MainMenu);
                 return;
             }
-
+            audioService.PlayMusic(MusicToPlay.Water);
             view.SetDetail(gameMode + " mode: " + " Level " + (levelIndex + 1));
 
             playButton.onClick.AddListener(OnClickPlay);

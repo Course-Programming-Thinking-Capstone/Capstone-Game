@@ -81,10 +81,7 @@ namespace Audio
 		/// <param name="name"></param>
 		public void PlayMusic(string name)
 		{
-			if (string.IsNullOrEmpty(currentMusic) && currentMusic != name)
-			{
-				StopMusic(currentMusic);
-			}
+			StopMusic(currentMusic);
 
 			if (audioSources.ContainsKey(name))
 			{
