@@ -8,6 +8,7 @@ namespace GenericPopup.SimplePopup
 {
     public class Setting : PopupAdditive
     {
+        [SerializeField] private GameObject confirmPop;
         [SerializeField] private Button closeButton;
         [SerializeField] private Button webButton;
         [SerializeField] private Button facebookButton;
@@ -69,6 +70,24 @@ namespace GenericPopup.SimplePopup
             audioService.SaveSoundAndMusicVolume();
             audioService.PlaySound(GUISound.Click);
             base.ClosePopup();
+        }
+
+        public void OnClickDelete()
+        {
+            audioService.PlaySound(GUISound.Click);
+            confirmPop.SetActive(true);
+        }
+
+        public void DeleteLocalData()
+        {
+            PlayerPrefs.DeleteAll();
+            PopupHelpers.ShowError("Delete success", "Notification");
+        }
+
+        public void CloseConfirm()
+        {
+            audioService.PlaySound(GUISound.Click);
+            confirmPop.SetActive(false);
         }
 
         private void OnClickFB()
