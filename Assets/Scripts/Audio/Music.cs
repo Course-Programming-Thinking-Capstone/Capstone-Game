@@ -88,7 +88,7 @@ namespace Audio
         {
             if (!currentMusic.Equals(name))
             {
-                StopMusic(currentMusic);
+                FadeMusic(currentMusic, 1f);
             }
 
             if (audioSources.ContainsKey(name))
