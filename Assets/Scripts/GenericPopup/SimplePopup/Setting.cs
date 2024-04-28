@@ -34,7 +34,11 @@ namespace GenericPopup.SimplePopup
 
         private void Start()
         {
+            sound.value = audioService.SoundVolume;
+            music.value = audioService.MusicVolume;
 
+            sound.onValueChanged.AddListener(o => { audioService.SoundVolume = o; });
+            music.onValueChanged.AddListener(o => { audioService.MusicVolume = o; });
             audioService.PlaySound(SoundToPlay.Popup);
             var parameter = PopupHelpers.PassParamPopup();
 
@@ -60,11 +64,14 @@ namespace GenericPopup.SimplePopup
             ClosePopup();
             onLogout?.Invoke();
         }
+
         protected override void ClosePopup()
         {
+            audioService.SaveSoundAndMusicVolume();
             audioService.PlaySound(SoundToPlay.Click);
             base.ClosePopup();
         }
+
         private void OnClickFB()
         {
             audioService.PlaySound(SoundToPlay.Click);

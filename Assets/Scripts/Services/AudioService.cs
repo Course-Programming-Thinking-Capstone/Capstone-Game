@@ -33,7 +33,8 @@ namespace Services
 
         private const string soundKey = "soundk";
         private const string musicKey = "musick";
-
+        private const string soundVolumeKey = "soundvk";
+        private const string musicVolumeKey = "musicvk";
         /// <summary>
         /// Initiate audio service.
         /// </summary>
@@ -62,8 +63,15 @@ namespace Services
 
             soundOn = PlayerPrefs.GetInt(soundKey, 1) == 1;
             musicOn = PlayerPrefs.GetInt(musicKey, 1) == 1;
-        }
 
+            soundVolume = PlayerPrefs.GetFloat(soundVolumeKey, 1);
+            musicVolume = PlayerPrefs.GetFloat(musicVolumeKey, 1);
+        }
+        public void SaveSoundAndMusicVolume()
+        {
+            PlayerPrefs.SetFloat(soundVolumeKey,  soundVolume);
+            PlayerPrefs.SetFloat(musicVolumeKey,  musicVolume);
+        }
         // Play Music
         public void PlayMusic(MusicToPlay musicToPlay)
         {

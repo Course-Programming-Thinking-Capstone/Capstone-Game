@@ -46,6 +46,12 @@ namespace GenericPopup.SimplePopup
 
         private void OnClickLogin()
         {
+            if (string.IsNullOrEmpty(user.text) || string.IsNullOrEmpty(password.text))
+            {
+                PopupHelpers.ShowError("Please fill your information");
+                return;
+            }
+
             audioService.PlaySound(SoundToPlay.Click);
             ActiveSafePanel(true);
             clientService.LoginWithEmail(user.text, password.text,
@@ -58,11 +64,13 @@ namespace GenericPopup.SimplePopup
                     PopupHelpers.ShowError("Login successfully", "Notification");
                 });
         }
+
         protected override void ClosePopup()
         {
             audioService.PlaySound(SoundToPlay.Click);
             base.ClosePopup();
         }
+
         private void OnClickSigning()
         {
             audioService.PlaySound(SoundToPlay.Click);

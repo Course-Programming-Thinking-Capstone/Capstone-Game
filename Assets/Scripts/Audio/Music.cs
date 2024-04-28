@@ -72,11 +72,11 @@ namespace Audio
             foreach (var music in audioSources)
             {
                 music.Value.volume = volume * musicVolumes[music.Key];
-                if (IsMusicPlaying(music.Key) == false && music.Value.volume > 0f)
-                {
-                    PlayMusic(music.Key);
-                    music.Value.loop = true;
-                }
+                // if (IsMusicPlaying(music.Key) == false && music.Value.volume > 0f)
+                // {
+                //     PlayMusic(music.Key);
+                //     music.Value.loop = true;
+                // }
             }
         }
 
@@ -86,7 +86,7 @@ namespace Audio
         /// <param name="name"></param>
         public void PlayMusic(string name)
         {
-            if (!currentMusic.Equals(name))
+            if (!string.IsNullOrEmpty(currentMusic) && !currentMusic.Equals(name))
             {
                 FadeMusic(currentMusic, 1f);
             }
