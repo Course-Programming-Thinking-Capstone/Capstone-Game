@@ -251,6 +251,7 @@ namespace Services
         Popup,
         Won,
         Success,
-        Play
+        Play,
+        Level
     }
 }

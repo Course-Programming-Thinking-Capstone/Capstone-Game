@@ -60,6 +60,7 @@ namespace GenericPopup.Inventory
 
         private void Start()
         {
+            audioService.PlaySound(SoundToPlay.Popup);
             coinTxt.text = clientService.Coin.ToString();
             gemTxt.text = clientService.Gem.ToString();
             energyTxt.text = "60 / 60";
@@ -150,6 +151,7 @@ namespace GenericPopup.Inventory
 
         public void OnClickSold()
         {
+            audioService.PlaySound(SoundToPlay.Click);
             audioService.PlaySound(SoundToPlay.Popup);
             detailConfirmSold.text = "Are you sure to sold this item for: " + price * soldNumber + " Gems?";
             confirmSold.SetActive(true);
@@ -171,6 +173,7 @@ namespace GenericPopup.Inventory
                 PopupHelpers.ShowError("Sold success", "Notification");
             }, e =>
             {
+                audioService.PlaySound(SoundToPlay.Fail);
                 loading.SetActive(false);
                 PopupHelpers.ShowError(e);
             });

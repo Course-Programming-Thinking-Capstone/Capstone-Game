@@ -28,6 +28,7 @@ namespace GenericPopup.GameLevelSelect
         {
             clientService = GameServices.Instance.GetService<ClientService>();
             playerService = GameServices.Instance.GetService<PlayerService>();
+            audioService = GameServices.Instance.GetService<AudioService>();
 
             clientService.OnFailed = err =>
             {
@@ -75,8 +76,6 @@ namespace GenericPopup.GameLevelSelect
                 var isPlayed = false;
                 var isLocked = true;
 
-                
-                
                 if (clientService.UserId != -1 && userPlayedLevel != null && userPlayedLevel.Count > 0) // already login
                 {
                     if (i <= userPlayedLevel.Max() + 1)
@@ -89,7 +88,7 @@ namespace GenericPopup.GameLevelSelect
                         isPlayed = true;
                     }
                 }
-                
+
                 if (i < baseUnlockLevel) // handle if below free level
                 {
                     if (i <= currentLocalPlayed) // previous played
@@ -111,6 +110,12 @@ namespace GenericPopup.GameLevelSelect
             }
         }
 
+        protected override void ClosePopup()
+        {
+            audioService.PlaySound(SoundToPlay.Click);
+            base.ClosePopup();
+        }
+
         private LevelItem CreateLevelItem()
         {
             var obj = Instantiate(levelItem, contentContainer);
@@ -120,6 +125,7 @@ namespace GenericPopup.GameLevelSelect
 
         private void OnClickLevel(int index)
         {
+            audioService.PlaySound(SoundToPlay.Level);
             var param = PopupHelpers.PassParamPopup();
             param.SaveObject(ParamType.LevelIndex, index);
             switch ((GameMode)gameMode)

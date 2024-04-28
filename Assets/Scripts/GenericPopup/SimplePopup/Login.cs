@@ -51,13 +51,18 @@ namespace GenericPopup.SimplePopup
             clientService.LoginWithEmail(user.text, password.text,
                 () =>
                 {
+                    audioService.PlaySound(SoundToPlay.Success);
                     onLogin?.Invoke();
                     ActiveSafePanel(false);
                     ClosePopup();
                     PopupHelpers.ShowError("Login successfully", "Notification");
                 });
         }
-
+        protected override void ClosePopup()
+        {
+            audioService.PlaySound(SoundToPlay.Click);
+            base.ClosePopup();
+        }
         private void OnClickSigning()
         {
             audioService.PlaySound(SoundToPlay.Click);

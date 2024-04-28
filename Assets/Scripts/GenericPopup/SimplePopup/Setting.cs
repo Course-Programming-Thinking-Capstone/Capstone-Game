@@ -60,7 +60,11 @@ namespace GenericPopup.SimplePopup
             ClosePopup();
             onLogout?.Invoke();
         }
-
+        protected override void ClosePopup()
+        {
+            audioService.PlaySound(SoundToPlay.Click);
+            base.ClosePopup();
+        }
         private void OnClickFB()
         {
             audioService.PlaySound(SoundToPlay.Click);

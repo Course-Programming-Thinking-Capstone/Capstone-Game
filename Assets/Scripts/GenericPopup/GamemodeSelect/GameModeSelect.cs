@@ -27,6 +27,7 @@ namespace GenericPopup.GameModeSelect
 
         private void Awake()
         {
+            audioService = GameServices.Instance.GetService<AudioService>();
             clientService = GameServices.Instance.GetService<ClientService>();
             playerService = GameServices.Instance.GetService<PlayerService>();
             clientService.OnFailed = err =>
@@ -49,6 +50,7 @@ namespace GenericPopup.GameModeSelect
 
             if (modeData == null || modeData.Count == 0)
             {
+                audioService.PlaySound(SoundToPlay.Fail);
                 PopupHelpers.ShowError("Not found any level, please contact our support or try again later",
                     "Notification");
                 return;
@@ -56,6 +58,7 @@ namespace GenericPopup.GameModeSelect
 
             if (modesIndex.Count != modesIndex.Distinct().Count())
             {
+                audioService.PlaySound(SoundToPlay.Fail);
                 PopupHelpers.ShowError("List index mode not valid");
                 return;
             }
@@ -103,6 +106,12 @@ namespace GenericPopup.GameModeSelect
             }
         }
 
+        protected override void ClosePopup()
+        {
+            audioService.PlaySound(SoundToPlay.Click);
+            base.ClosePopup();
+        }
+
         private StageItem CreateGameModeItem()
         {
             var obj = Instantiate(gameModeItem, contentContainer);
@@ -112,6 +121,7 @@ namespace GenericPopup.GameModeSelect
 
         private void OnClickStage(int mode)
         {
+            audioService.PlaySound(SoundToPlay.Play);
             var param = PopupHelpers.PassParamPopup();
             param.SaveObject(ParamType.ModeGame, mode);
             PopupHelpers.Show(Constants.LevelPopup);
