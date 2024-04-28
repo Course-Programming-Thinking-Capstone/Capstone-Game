@@ -34,6 +34,8 @@ namespace GenericPopup.SimplePopup
 
         private void Start()
         {
+
+            audioService.PlaySound(SoundToPlay.Popup);
             var parameter = PopupHelpers.PassParamPopup();
 
             if (parameter != null)

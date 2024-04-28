@@ -1,3 +1,4 @@
+using Services;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,6 +14,7 @@ namespace GenericPopup.SimplePopup
 
         private void Start()
         {
+            audioService = GameServices.Instance.GetService<AudioService>();
             var parameter = PopupHelpers.PassParamPopup();
 
             if (parameter == null)
@@ -20,7 +22,11 @@ namespace GenericPopup.SimplePopup
                 ClosePopup();
             }
 
-            okButton.onClick.AddListener(ClosePopup);
+            okButton.onClick.AddListener(() =>
+            {
+                audioService.PlaySound(SoundToPlay.Click);
+                ClosePopup();
+            });
 
             header.text = parameter.GetObject<string>(PopupKey.IsErrorKey.ToString());
             detail.text = parameter.GetObject<string>(PopupKey.DescriptionKey.ToString());

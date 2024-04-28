@@ -50,6 +50,7 @@ namespace GenericPopup.SimplePopup
 
         private async void Start()
         {
+            audioService.PlaySound(SoundToPlay.Popup);
             coinTxt.text = clientService.Coin.ToString();
             gemTxt.text = clientService.Gem.ToString();
 
@@ -151,9 +152,10 @@ namespace GenericPopup.SimplePopup
 
         public async void OnClickBuy()
         {
+            audioService.PlaySound(SoundToPlay.Click);
             if (!clientService.IsLogin)
             {
-                audioService.PlaySound(SoundToPlay.Popup);
+                audioService.PlaySound(SoundToPlay.Fail);
                 PopupHelpers.ShowError(
                     "You need to register and upgrade to a student account to continue perform this action.",
                     "Notification");
@@ -182,6 +184,7 @@ namespace GenericPopup.SimplePopup
             {
                 currentIndex = maxIndex;
             }
+
             audioService.PlaySound(SoundToPlay.Click);
             LoadCharacterData();
         }
@@ -193,6 +196,7 @@ namespace GenericPopup.SimplePopup
             {
                 currentIndex = 0;
             }
+
             audioService.PlaySound(SoundToPlay.Click);
             LoadCharacterData();
         }

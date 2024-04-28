@@ -17,11 +17,15 @@ namespace GenericPopup.SimplePopup
         [SerializeField] private Button signUp;
 
         private ClientService clientService;
+        private GameService gameService;
         private UnityAction onLogin;
 
         private void Awake()
         {
+            audioService = GameServices.Instance.GetService<AudioService>();
+
             clientService = GameServices.Instance.GetService<ClientService>();
+            gameService = GameServices.Instance.GetService<GameService>();
             clientService.OnFailed = err =>
             {
                 ActiveSafePanel(false);
@@ -31,6 +35,7 @@ namespace GenericPopup.SimplePopup
 
         private void Start()
         {
+            audioService.PlaySound(SoundToPlay.Popup);
             var parameter = PopupHelpers.PassParamPopup();
             onLogin = parameter.GetAction(PopupKey.CallBack);
 
@@ -41,6 +46,7 @@ namespace GenericPopup.SimplePopup
 
         private void OnClickLogin()
         {
+            audioService.PlaySound(SoundToPlay.Click);
             ActiveSafePanel(true);
             clientService.LoginWithEmail(user.text, password.text,
                 () =>
@@ -54,7 +60,8 @@ namespace GenericPopup.SimplePopup
 
         private void OnClickSigning()
         {
-            Application.OpenURL("https://www.facebook.com/DenkTieu/");
+            audioService.PlaySound(SoundToPlay.Click);
+            gameService.Web();
         }
     }
 }

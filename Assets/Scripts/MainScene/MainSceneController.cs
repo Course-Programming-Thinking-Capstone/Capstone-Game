@@ -132,7 +132,7 @@ namespace MainScene
 
         private void OnClickSetting()
         {
-            audioService.PlaySound(SoundToPlay.Popup);
+            audioService.PlaySound(SoundToPlay.Click);
             var param = PopupHelpers.PassParamPopup();
             param.AddAction(PopupKey.CallBack, () =>
             {
@@ -145,7 +145,7 @@ namespace MainScene
 
         private void OnClickInventory()
         {
-            audioService.PlaySound(SoundToPlay.Popup);
+            audioService.PlaySound(SoundToPlay.Click);
             if (clientService.IsLogin)
             {
                 var param = PopupHelpers.PassParamPopup();
@@ -161,7 +161,7 @@ namespace MainScene
 
         private void OnClickCharacter()
         {
-            audioService.PlaySound(SoundToPlay.Popup);
+            audioService.PlaySound(SoundToPlay.Click);
             var param = PopupHelpers.PassParamPopup();
             param.AddAction(PopupKey.CallBack, () =>
             {
@@ -180,7 +180,7 @@ namespace MainScene
         /// </summary>
         private void OnClickShop()
         {
-            audioService.PlaySound(SoundToPlay.Popup);
+            audioService.PlaySound(SoundToPlay.Click);
             if (clientService.IsLogin)
             {
                 var param = PopupHelpers.PassParamPopup();
@@ -196,7 +196,7 @@ namespace MainScene
 
         private void OnClickUser()
         {
-            audioService.PlaySound(SoundToPlay.Popup);
+            audioService.PlaySound(SoundToPlay.Click);
             if (clientService.UserId == -1)
             {
                 var param = PopupHelpers.PassParamPopup();

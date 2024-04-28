@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using JetBrains.Annotations;
+using Services;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -21,10 +23,17 @@ namespace GenericPopup.SimplePopup
         [SerializeField] private GameObject fruitObj;
         private UnityAction onClickNextLevelCallBack;
         [SerializeField] private string resourcesPath = "Fruits/";
+
+        private void Awake()
+        {
+            audioService = GameServices.Instance.GetService<AudioService>();
+        }
+
         private void Start()
         {
             var parameter = PopupHelpers.PassParamPopup();
 
+            audioService.PlaySound(SoundToPlay.Won);
             onClickNextLevelCallBack = parameter.GetAction(PopupKey.YesOption);
             nextLevelButton.onClick.AddListener(OnClickNextLevel);
             homeButton.onClick.AddListener(OnClickHome);
@@ -44,7 +53,7 @@ namespace GenericPopup.SimplePopup
             }
             else
             {
-                var sprites = Resources.Load<Sprite>(resourcesPath+spritesUrl);
+                var sprites = Resources.Load<Sprite>(resourcesPath + spritesUrl);
                 if (sprites != null)
                 {
                     renderItem.sprite = sprites;
@@ -56,6 +65,7 @@ namespace GenericPopup.SimplePopup
 
         private void OnClickHome()
         {
+            audioService.PlaySound(SoundToPlay.Click);
             if (animator != null)
             {
                 animator.SetBool(exit, true);
@@ -69,6 +79,7 @@ namespace GenericPopup.SimplePopup
 
         private void OnClickNextLevel()
         {
+            audioService.PlaySound(SoundToPlay.Click);
             if (animator != null)
             {
                 animator.SetBool(exit, true);
@@ -83,6 +94,7 @@ namespace GenericPopup.SimplePopup
 
         private IEnumerator LoadMain(float delay)
         {
+            audioService.PlaySound(SoundToPlay.Click);
             yield return new WaitForSeconds(delay);
             SceneManager.LoadScene(Constants.MainMenu);
         }
