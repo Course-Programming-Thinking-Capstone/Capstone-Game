@@ -6,6 +6,7 @@ using GameScene.Component;
 using GameScene.Component.SelectControl;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
+using Services;
 using UnityEngine;
 using UnityEngine.UI;
 using Utilities;
@@ -43,6 +44,7 @@ namespace GameScene
         private int maxFuncControl = 5;
         private List<InteractionItem> storeFuncSelected = new();
         private List<float> tempFuncPosition = new();
+        private AudioService audioService;
 
         private void OpenFunc(bool isOpen = true)
         {
@@ -58,6 +60,8 @@ namespace GameScene
 
         private void Awake()
         {
+            audioService = GameServices.Instance.GetService<AudioService>();
+
             storeSelected = new List<InteractionItem>();
             tempPosition = new List<float>();
             controlButton.onClick.AddListener(OnClickOpenClose);
@@ -144,6 +148,7 @@ namespace GameScene
                 }
             }
 
+            audioService.PlaySound(GameSound.PlaceSelector);
             if (storeSelected.Any(o => o.SelectType == SelectType.Func))
             {
                 OpenFunc();
@@ -466,6 +471,7 @@ namespace GameScene
         private void OnClickedSelector(InteractionItem selectedObj)
         {
             // Generate new selected
+            audioService.PlaySound(GameSound.ClickSelector);
             if (selectedObj.SelectType == SelectType.Loop
                 || selectedObj.SelectType == SelectType.Condition)
             {
@@ -502,6 +508,7 @@ namespace GameScene
         {
             // Get object to move
             // not have?
+            audioService.PlaySound(GameSound.ClickSelector);
             storeSelected.Remove(selectedObj);
             storeFuncSelected.Remove(selectedObj);
             foreach (var selector in storeSelected)

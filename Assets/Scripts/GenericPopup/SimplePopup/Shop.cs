@@ -29,7 +29,6 @@ namespace GenericPopup.SimplePopup
         private GameObject currentChar;
         private ClientService clientService;
         private PlayerService playerService;
-        private AudioService audioService;
         private int currentIndex = 0;
         private int maxIndex = 0;
         private UnityAction onSelectedNew;

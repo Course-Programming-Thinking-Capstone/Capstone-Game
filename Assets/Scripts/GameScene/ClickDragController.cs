@@ -155,6 +155,7 @@ namespace GameScene
             if (isEat)
             {
                 var tracker = playerController.PlayAnimationEat();
+              
                 if (direction.SelectType == SelectType.Condition)
                 {
                     yield return new WaitForSpineAnimationComplete(tracker);

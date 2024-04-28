@@ -43,7 +43,6 @@ namespace GenericPopup.Inventory
         [SerializeField] private TextMeshProUGUI itemNameTxt;
         [SerializeField] private TextMeshProUGUI itemDetailTxt;
         private ClientService clientService;
-        private AudioService audioService;
         [Header("System")]
         [SerializeField] private string resourcesPath;
         private List<InventItem> cache = new();

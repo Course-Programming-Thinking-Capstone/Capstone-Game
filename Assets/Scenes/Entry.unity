@@ -655,6 +655,18 @@ MonoBehaviour:
   - Name: Level
     AudioClip: {fileID: 8300000, guid: 18b6d71f42c07454eb16ad3bc3787f5c, type: 3}
     Volume: 1
+  - Name: ClickSelector
+    AudioClip: {fileID: 8300000, guid: 289ff3811f64a69459927dbd8a21e12b, type: 3}
+    Volume: 1
+  - Name: PlaceSelector
+    AudioClip: {fileID: 8300000, guid: fb7502de5fd3b67448d45be3bc330d70, type: 3}
+    Volume: 1
+  - Name: Jump
+    AudioClip: {fileID: 8300000, guid: 138da31c51d780946bef0cfbb52bbb74, type: 3}
+    Volume: 1
+  - Name: Eat
+    AudioClip: {fileID: 8300000, guid: f424f2b6b542b314aa22b8206a5b3086, type: 3}
+    Volume: 1
   music: {fileID: 745272479}
   musicObject: {fileID: 745272477}
   orentation: {fileID: 2498336594730766422}

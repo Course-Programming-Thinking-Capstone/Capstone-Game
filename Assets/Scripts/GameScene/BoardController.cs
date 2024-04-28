@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Services;
 using UnityEngine;
 
 namespace GameScene
@@ -12,7 +13,8 @@ namespace GameScene
         private Vector2 boardSize;
         private List<Transform> cacheBoardItem;
         private List<Animator> cacheBoardAnimator;
-        
+       
+
         private void Awake()
         {
             cacheBoardItem = new List<Transform>();

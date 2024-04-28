@@ -30,8 +30,9 @@ namespace GameScene.GameBasic
                 SceneManager.LoadScene(Constants.MainMenu);
                 return;
             }
+
             audioService.PlayMusic(MusicToPlay.Basic);
-            gameView.SetDetail(gameMode + " mode: " + " Level " + (levelIndex+1));
+            gameView.SetDetail(gameMode + " mode: " + " Level " + (levelIndex + 1));
             Validation();
             CalcSolution();
             GenerateGround();
@@ -83,7 +84,7 @@ namespace GameScene.GameBasic
             selectedObject = null;
 
             // Checking for play
-
+            audioService.PlaySound(GameSound.PlaceSelector);
             foreach (var item in listBoard)
             {
                 if (item.CurrentDisplay == null)
@@ -111,7 +112,7 @@ namespace GameScene.GameBasic
                 {
                     // Create a promise for the current animation
                     var targetMove = listBoard[i].transform.position;
-                    yield return MovePlayer(targetMove, model.PlayerMoveTime);
+                    yield return playerController.MovePlayer(targetMove, model.PlayerMoveTime);
                 }
                 else
                 {
@@ -122,7 +123,7 @@ namespace GameScene.GameBasic
                 }
             }
 
-            yield return MovePlayer(boardController.GetPositionFromBoard(targetPosition[0]), model.PlayerMoveTime);
+            yield return  playerController.MovePlayer(boardController.GetPositionFromBoard(targetPosition[0]), model.PlayerMoveTime);
             ShowWinPopup();
             gameView.ActiveSavePanel(false);
         }
@@ -199,6 +200,7 @@ namespace GameScene.GameBasic
         /// <param name="arg0"></param>
         private void OnClickRoad(GroundRoad arg0)
         {
+            audioService.PlaySound(GameSound.ClickSelector);
             var oldPart = arg0.CurrentDisplay;
             arg0.ChangeToQuestionRender();
             oldPart.gameObject.SetActive(true);
@@ -208,6 +210,7 @@ namespace GameScene.GameBasic
 
         private void OnClickSelector(InteractionItem road)
         {
+            audioService.PlaySound(GameSound.ClickSelector);    
             selectedObject = road;
             gameView.GetRoadToMove(selectedObject.transform);
         }

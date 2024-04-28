@@ -35,6 +35,7 @@ namespace Services
         private const string musicKey = "musick";
         private const string soundVolumeKey = "soundvk";
         private const string musicVolumeKey = "musicvk";
+
         /// <summary>
         /// Initiate audio service.
         /// </summary>
@@ -67,11 +68,13 @@ namespace Services
             soundVolume = PlayerPrefs.GetFloat(soundVolumeKey, 1);
             musicVolume = PlayerPrefs.GetFloat(musicVolumeKey, 1);
         }
+
         public void SaveSoundAndMusicVolume()
         {
-            PlayerPrefs.SetFloat(soundVolumeKey,  soundVolume);
-            PlayerPrefs.SetFloat(musicVolumeKey,  musicVolume);
+            PlayerPrefs.SetFloat(soundVolumeKey, soundVolume);
+            PlayerPrefs.SetFloat(musicVolumeKey, musicVolume);
         }
+
         // Play Music
         public void PlayMusic(MusicToPlay musicToPlay)
         {
@@ -231,7 +234,15 @@ namespace Services
         }
 
         // AUDIO PLAY
+        public void PlaySound(GameSound nameGameSound)
+        {
+            if (!soundOn && soundVolume > 0.0f)
+            {
+                return;
+            }
 
+            soundAudioSources[nameGameSound.ToString()].Play();
+        }
         public void PlaySound(GUISound nameGUISound)
         {
             if (!soundOn && soundVolume > 0.0f)
@@ -249,6 +260,14 @@ namespace Services
         Menu,
         Other,
         Water,
+    }
+
+    public enum GameSound
+    {
+        Eat,
+        Jump,
+        PlaceSelector,
+        ClickSelector
     }
 
     public enum GUISound

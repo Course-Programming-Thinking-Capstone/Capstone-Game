@@ -172,6 +172,7 @@ namespace GameScene
 
         public void OnClickPause()
         {
+            audioService.PlaySound(GUISound.Click);
             var param = PopupHelpers.PassParamPopup();
             param.SaveObject(ParamType.ModeGame, gameMode);
             param.SaveObject(ParamType.LevelIndex, levelIndex);
@@ -179,20 +180,20 @@ namespace GameScene
             PopupHelpers.Show(Constants.PausePopup);
         }
 
-        protected IEnumerator MovePlayer(Vector2 targetMove, float moveTime)
-        {
-            if (targetMove.x < playerController.transform.position.x)
-            {
-                playerController.RotatePlayer(false, moveTime);
-            }
-            else if (targetMove.x > playerController.transform.position.x)
-            {
-                playerController.RotatePlayer(true, moveTime);
-            }
-
-            var movePromise = playerController.transform.DOMove(targetMove, moveTime);
-            playerController.PlayAnimationMove();
-            yield return movePromise.WaitForCompletion();
-        }
+        // protected IEnumerator MovePlayer(Vector2 targetMove, float moveTime)
+        // {
+        //     if (targetMove.x < playerController.transform.position.x)
+        //     {
+        //         playerController.RotatePlayer(false, moveTime);
+        //     }
+        //     else if (targetMove.x > playerController.transform.position.x)
+        //     {
+        //         playerController.RotatePlayer(true, moveTime);
+        //     }
+        //
+        //     var movePromise = playerController.transform.DOMove(targetMove, moveTime);
+        //     playerController.PlayAnimationMove();
+        //     yield return movePromise.WaitForCompletion();
+        // }
     }
 }

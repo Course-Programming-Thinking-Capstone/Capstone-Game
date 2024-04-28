@@ -18,7 +18,6 @@ namespace GenericPopup.SimplePopup
         [SerializeField] private Slider music;
 
         private ClientService clientService;
-        private AudioService audioService;
         private UnityAction onLogout;
 
         private void Awake()

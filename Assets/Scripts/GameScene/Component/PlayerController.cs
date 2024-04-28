@@ -19,11 +19,13 @@ namespace GameScene.Component
         [SerializeField] private string idleAnimation;
         [SerializeField] private string moveAnimation;
         [SerializeField] private string collectAnimation;
+        private AudioService audioService;
 
         private void Start()
         {
             var clientService = GameServices.Instance.GetService<ClientService>();
             var playerService = GameServices.Instance.GetService<PlayerService>();
+            audioService = GameServices.Instance.GetService<AudioService>();
 
             if (!clientService.IsLogin)
             {
@@ -77,6 +79,7 @@ namespace GameScene.Component
 
         public IEnumerator MovePlayer(Vector2 targetMove, float moveTime)
         {
+            audioService.PlaySound(GameSound.Jump);
             if (targetMove.x < transform.position.x)
             {
                 RotatePlayer(false, moveTime);
@@ -105,12 +108,15 @@ namespace GameScene.Component
         {
             return skeletonAnimation.AnimationState.SetAnimation(0, idleAnimation, isLoop);
         }
+
         public TrackEntry PlayAnimationFail()
         {
             return skeletonAnimation.AnimationState.SetAnimation(0, deadAnimation, true);
         }
+
         public TrackEntry PlayAnimationEat()
         {
+            audioService.PlaySound(GameSound.Eat);
             return skeletonAnimation.AnimationState.SetAnimation(0, collectAnimation, true);
         }
 
