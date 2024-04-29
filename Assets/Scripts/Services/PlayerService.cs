@@ -18,6 +18,14 @@ namespace Services
         {
         }
 
+        public void ClearData()
+        {
+            for (int i = 0; i < 20; i++)
+            {
+                PlayerPrefs.DeleteKey(LevelPlayedKey + i);
+            }
+        }
+
         public void SaveSelectedCharacter(int selectedId)
         {
             SelectedCharacter = selectedId;

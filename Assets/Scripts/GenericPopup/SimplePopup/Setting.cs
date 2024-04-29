@@ -80,7 +80,7 @@ namespace GenericPopup.SimplePopup
 
         public void DeleteLocalData()
         {
-            PlayerPrefs.DeleteAll();
+            GameServices.Instance.GetService<PlayerService>().ClearData();
             PopupHelpers.ShowError("Delete success", "Notification");
         }
 

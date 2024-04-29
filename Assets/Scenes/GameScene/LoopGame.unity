@@ -811,17 +811,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1035767135}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1521673950}
-  m_Father: {fileID: 1745232834}
+  m_Father: {fileID: 1563191253}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -108.5, y: 101.4}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 139, y: 74.625}
   m_SizeDelta: {x: 123.75, y: 149.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1035767137
@@ -983,7 +983,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc2f60c8456941e29fd3618320a8e1f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isTesting: 0
   gameMode: 3
   loading: {fileID: 1949705487}
   playerController: {fileID: 0}
@@ -1422,7 +1421,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 3559835720152044297, guid: 77443370ac562b041a9fa656d73d88b4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1035767136}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 77443370ac562b041a9fa656d73d88b4, type: 3}
 --- !u!224 &1563191253 stripped
@@ -1471,7 +1473,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1035767136}
   - {fileID: 265681267}
   - {fileID: 1491997751}
   m_Father: {fileID: 454645805}
@@ -1866,9 +1867,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4c68963a6f64807a01d82d9ee522fa7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blockOffset: 1.3
   playerMoveTime: 0.6
-  playerModel: {fileID: 7691891174158779115, guid: d9c4bc473832fc043845243f6ad62e1f, type: 3}
   resource: {fileID: 11400000, guid: cfccc6f0ceb3f6c43a381844885fa699, type: 2}
   candySprites:
   - {fileID: 21300000, guid: 32e6ba39a1a90174dac0d553a84d024c, type: 3}
