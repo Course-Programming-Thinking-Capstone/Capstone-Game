@@ -32,6 +32,7 @@ namespace GenericPopup.SimplePopup
         private int currentIndex = 0;
         private int maxIndex = 0;
         private UnityAction onSelectedNew;
+        private UnityAction onClose;
 
         private void Awake()
         {
@@ -49,6 +50,8 @@ namespace GenericPopup.SimplePopup
 
         private async void Start()
         {
+            var parameter = PopupHelpers.PassParamPopup();
+            onClose = parameter.GetAction(PopupKey.CallBack);
             audioService.PlaySound(GUISound.Popup);
             coinTxt.text = clientService.Coin.ToString();
             gemTxt.text = clientService.Gem.ToString();
@@ -202,6 +205,7 @@ namespace GenericPopup.SimplePopup
 
         public void OnClickClose()
         {
+            onClose?.Invoke();
             audioService.PlaySound(GUISound.Click);
             ClosePopup();
         }

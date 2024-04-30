@@ -3,6 +3,7 @@ using AYellowpaper.SerializedCollections;
 using Services;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using Utilities;
 
@@ -39,7 +40,7 @@ namespace GenericPopup.SimplePopup
         private List<int> voucherIndex;
         private ClientService clientService;
         private PlayerService playerService;
-
+        private UnityAction onClose;
         private void Awake()
         {
             animator.gameObject.SetActive(false);
@@ -56,6 +57,8 @@ namespace GenericPopup.SimplePopup
 
         private void Start()
         {
+            var parameter = PopupHelpers.PassParamPopup();
+            onClose = parameter.GetAction(PopupKey.CallBack);
             audioService.PlaySound(GUISound.Popup);
             coinTxt.text = clientService.Coin.ToString();
             gemTxt.text = clientService.Gem.ToString();
@@ -155,6 +158,7 @@ namespace GenericPopup.SimplePopup
 
         public void OnClickClose()
         {
+            onClose?.Invoke();
             audioService.PlaySound(GUISound.Click);
             ClosePopup();
         }

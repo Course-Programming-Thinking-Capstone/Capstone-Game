@@ -5,6 +5,7 @@ using Services;
 using Services.Response;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using Utilities;
 
@@ -50,6 +51,7 @@ namespace GenericPopup.Inventory
         private int soldNumber;
         private int numberHave;
         private int price;
+        private UnityAction onClose;
 
         private void Awake()
         {
@@ -59,6 +61,8 @@ namespace GenericPopup.Inventory
 
         private void Start()
         {
+            var parameter = PopupHelpers.PassParamPopup();
+            onClose = parameter.GetAction(PopupKey.CallBack);
             audioService.PlaySound(GUISound.Popup);
             coinTxt.text = clientService.Coin.ToString();
             gemTxt.text = clientService.Gem.ToString();
@@ -114,6 +118,7 @@ namespace GenericPopup.Inventory
 
         public void OnClickClose()
         {
+            onClose?.Invoke();
             audioService.PlaySound(GUISound.Click);
             ClosePopup();
         }
