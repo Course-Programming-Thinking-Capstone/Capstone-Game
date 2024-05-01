@@ -101,6 +101,10 @@ namespace GenericPopup.GameModeSelect
                         var index = item.idMode;
                         var objet = CreateGameModeItem();
                         objet.Initialized(null, item.typeName, () => { OnClickStage(index); }, isLocked);
+                        if ((GameMode)item.idMode == GameMode.Custom)
+                        {
+                            objet.gameObject.SetActive(false);
+                        }
                     }
                 }
             }
